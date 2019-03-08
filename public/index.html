@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Competency mapper</title>
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/css/foundation.css" />
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/css/theme-ebi-training.css" />
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/css/ebi-global-drupal.css" />
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.2/css/theme-embl-petrol.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.2/css/ebi-global.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/css/theme-ebi-training.css" type="text/css" media="all" />
+
+
+    <link rel="stylesheet" href="https://ebi.emblstatic.net/web_guidelines/EBI-Icon-fonts/v1.2/fonts.css" type="text/css" media="all" />
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous">
+
+    <link href="https://unpkg.com/react-tabs@2/style/react-tabs.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/js/script.js"></script>
+    <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/libraries/foundation-6/js/foundation.js"></script>
+    <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.1/js/foundationExtendEBI.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react.js"></script>
+    <script src="https://cdn.jsdelivr.net/react/0.14.0-rc1/react-dom.js"></script>
+    
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+   <style>
+     .Modal {
+       position: fixed;
+       top: 50px;
+       /*left: 50px;*/
+       /*right: 50px;*/
+       bottom: 50px;
+       padding: 20px;
+       border-radius: 10px;
+       border: 2px solid #ccc;
+       background-color: #f8f8f8;
+       width: 65%;
+       height: 90%;
+       overflow-y:scroll;
+       margin-left: 10%;
+       margin-right: auto;
+
+     }
+
+     .Overlay {
+
+     }
+
+
+     .ModalForm {
+       position: absolute;
+       top: 30%;
+       left: 40%;
+       padding: 20px;
+       border-radius: 10px;
+       border: 2px solid #ccc;
+       background-color: #f8f8f8;
+       width: 350px;
+       height: 250px;
+       overflow-y:scroll;
+     }
+
+     .ModalCompetency{
+       position: absolute;
+       top: 30%;
+       left: 40%;
+       padding: 20px;
+       border-radius: 10px;
+       border: 2px solid #ccc;
+       background-color: #f8f8f8;
+       min-width: 550px;
+       min-height: 450px;
+       position: absolute;
+       overflow-y:auto;
+       z-index: 1000;
+     }
+
+     .ModalCompetencyEdit{
+       position: absolute;
+       top: 40%;
+       left: 30%;
+       padding: 20px;
+       border-radius: 10px;
+       border: 2px solid #ccc;
+       background-color: #f8f8f8;
+       min-width: 550px;
+       min-height: 150px;
+       position: absolute;
+       overflow-y:auto;
+       z-index: 1000;
+     }
+
+     .ModalAttribute{
+       position: absolute;
+       top: 30%;
+       left: 25%;
+       padding: 20px;
+       border-radius: 10px;
+       border: 2px solid #ccc;
+       background-color: #f8f8f8;
+       min-width: 550px;
+       min-height: 450px;
+       position: absolute;
+       overflow-y:auto;
+       z-index: 1000;
+     }
+
+     .OverlayForm {
+
+     }
+
+     /* Tooltip container */
+     .tooltip-td {
+       position: relative;
+
+       /*border-bottom: 1px dotted black;  If you want dots under the hoverable text */
+     }
+
+     /* Tooltip text */
+     .tooltip-td .tooltiptext {
+       visibility: hidden;
+       width: 120px;
+       background-color: black;
+       color: #fff;
+       text-align: center;
+       padding: 5px 0;
+       border-radius: 6px;
+       display: inline;
+       /* Position the tooltip text - see examples below! */
+       position: absolute;
+       z-index: 1;
+       left:-100px;
+     }
+
+     /* Show the tooltip text when you mouse over the tooltip container */
+     .tooltip-td:hover .tooltiptext {
+       visibility: visible;
+     }
+
+     .position-icon{
+       cursor: move;
+     }
+
+     ul#frm li {
+       display:inline;
+       border: 1px solid #fff;
+       left:-20px;
+
+     }
+
+     #footer-button{
+       position: fixed;
+       bottom: 0;
+       width: 100%;
+       height: 100px;
+       background-color: #5c5c5c;
+       text-align: center;
+       padding:5px;
+     }
+
+
+   </style>
+
+    
+  </head>
+  <body>
+
+  <div data-sticky-container>
+    <div class="top-bar"  style="width:100%">
+      <div class="top-bar-right" id="userarea">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text">You are Framework Manager</li>
+          <li>
+            <a href="#">Manage Competencies</a>
+              <ul class="menu vertical">
+                <li><a href="/framework/bioexcel/manage/competencies">BioExcel</a></li>
+                <li><a href="/framework/corbel/manage/competencies">CORBEL</a></li>
+                <li><a href="/framework/iscb/manage/competencies">ISCB</a></li>
+                <li><a href="/framework/ritrain/manage/competencies">RITrain</a></li>
+                <li><a href="/framework/nhs/manage/competencies">NHS</a></li>
+              </ul>
+          </li>
+          <li>
+            <a href="/all-training-resources">Manage Training Resources</a>
+          </li>
+          <li><a href="#">My Profile</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+
+      <div class="top-bar-left">
+        <ul class="dropdown menu" data-dropdown-menu>
+          <li class="menu-text"><i class="fas fa-link"></i> Competency Mapper  </li>
+          <li>
+            <a href="#"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li>
+            <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    <div data-sticky-container="" class="sticky-container" style="height: 100px;">
+      <header id="masthead" class="masthead  sticky meta-background-color meta-background-image is-anchored is-at-top" style="background-color: rgb(17, 17, 17); background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg'); max-width: 2903.7px; margin-top: 0px; bottom: auto; top: 0px;">
+        <div class="row masthead-inner">
+          <!-- local-title -->
+          <div class="columns medium-12" id="local-title">
+            <h1><a href="../../" title="Back to [service-name] homepage">Competency Mapper</a></h1>
+          </div>
+        </div>
+      </header>
+    </div>
+
+  <div class="row" id="content">
+    <div class="small-12 large-12 medium-12 columns" id="root"></div>
+
+  </div>
+</div>
+
+<div id="global-footer" class="global-footer">
+      <nav id="global-nav-expanded" class="global-nav-expanded row">
+        <div class="columns small-12">
+          <h4 class="inline-block">
+            <a href="https://www.ebi.ac.uk" class="no-underline" title="EMBL-EBI">Competency Mapper</a>
+          </h4>
+        </div>
+        <div class="medium-up-5 small-up-2">
+          <div class="column">
+            <h5 class="services">
+              <a class="services-color" href="https://www.ebi.ac.uk/services">Services</a>
+            </h5>
+            <ul> 
+              <li class="first">
+                <a href="https://www.ebi.ac.uk/services">By topic</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/services/all">By name (A-Z)</a>
+              </li>  
+              <li class="last">
+                <a href="https://www.ebi.ac.uk/support">Help &amp; Support</a>
+              </li> 
+            </ul>
+          </div>
+          <div class="column">
+            <h5 class="research">
+              <a class="research-color" href="https://www.ebi.ac.uk/research">Research</a>
+            </h5>
+            <ul> 
+              <li>
+                <a href="https://www.ebi.ac.uk/research/publications">Publications</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/research/groups">Research groups</a>
+              </li>  
+              <li class="last">
+                <a href="https://www.ebi.ac.uk/research/postdocs">Postdocs</a> &amp; <a href="https://www.ebi.ac.uk/research/eipp">PhDs</a>
+              </li> 
+            </ul>
+          </div>
+          <div class="column"> 
+            <h5 class="training">
+              <a class="training-color" href="https://www.ebi.ac.uk/training">Training</a>
+            </h5>
+            <ul> 
+              <li>
+                <a href="https://www.ebi.ac.uk/training/handson">Train at EBI</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/training/roadshow">Train outside EBI</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/training/online">Train online</a>
+              </li>  
+              <li class="last">
+                <a href="https://www.ebi.ac.uk/training/contact-us">Contact organisers</a>
+              </li> 
+            </ul>
+          </div> 
+          <div class="column"> 
+            <h5 class="industry">
+              <a class="industry-color" href="https://www.ebi.ac.uk/industry">Industry</a>
+            </h5>
+            <ul> 
+              <li>
+                <a href="https://www.ebi.ac.uk/industry/private">Members Area</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/industry/workshops">Workshops</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/industry/sme-forum"><abbr title="Small Medium Enterprise">SME</abbr> Forum</a>
+              </li>  
+              <li class="last">
+                <a href="https://www.ebi.ac.uk/industry/contact">Contact Industry programme</a>
+              </li> 
+            </ul>
+          </div> 
+          <div class="column"> 
+            <h5 class="about">
+              <a class="ebi-color" href="https://www.ebi.ac.uk/about">About</a>
+            </h5>
+            <ul>  
+              <li>
+                <a href="https://www.ebi.ac.uk/about/contact">Contact us</a>
+              </li>
+              <li>
+                <a href="https://www.ebi.ac.uk/about/events">Events</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/about/jobs" title="Jobs, postdocs, PhDs...">Jobs</a>
+              </li>  
+              <li class="first">
+                <a href="https://www.ebi.ac.uk/about/news">News</a>
+              </li>  
+              <li>
+                <a href="https://www.ebi.ac.uk/about/people">People &amp; groups</a>
+              </li> 
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <section id="ebi-footer-meta" class="ebi-footer-meta row">
+        <div class="columns">
+          <p class="address">EMBL-EBI, Wellcome Genome Campus, Hinxton, Cambridgeshire, CB10 1SD, UK. +44 (0)1223 49 44 44</p> 
+          <p class="legal">Copyright © EMBL-EBI 2018 | EMBL-EBI is <a href="http://www.embl.org/">part of the European Molecular Biology Laboratory</a> | <a href="https://www.ebi.ac.uk/about/terms-of-use">Terms of use</a></p>
+        </div>
+      </section>
+    </div>
+</body>
+
+
+
+</html>
+<script>
+    $( "#accordion" ).accordion();
+    $(document).foundation();
+    
+</script>
+ 
