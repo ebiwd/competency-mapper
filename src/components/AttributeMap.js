@@ -200,17 +200,17 @@ class AttributeMap extends React.Component{
 
         //console.log(this.state.selectedAttributes);
 
-        {frameworkDetails.map((item, ikey) => {
+        frameworkDetails.forEach((item, ikey) => {
                 if(item.name.toLowerCase() === this.state.framework){
                     frameworkName = item.name;
                     this.state.frameworkUUID = item.uuid;
-                    item.attribute_types.map((attribute_type) =>
+                    item.attribute_types.forEach((attribute_type) =>
                         {
-                            frameworkDefs.push(attribute_type.title),
+                            frameworkDefs.push(attribute_type.title);
                                 attributeTypeOptions.push(<option data-id={attribute_type.id} value={attribute_type.uuid}>{attribute_type.title}</option>)
                         }
-                    ),
-                        item.domains.map((domain) =>
+                    );
+                        item.domains.forEach((domain) =>
                             {
                                 domainsOptions.push(<option data-id={domain.id} value={domain.uuid}>{domain.title}</option>);
                             }
@@ -218,7 +218,7 @@ class AttributeMap extends React.Component{
 
                 }
             }
-        )}
+        )
 
 
         const ListOfCompetencies = data.map((item) =>

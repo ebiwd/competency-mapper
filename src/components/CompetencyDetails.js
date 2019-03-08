@@ -15,7 +15,7 @@ class CompetencyDetails extends React.Component{
 	constructor(props){
 		super(props);
 		this.state = {
-			data: [], 
+			data: [],
 			path: this.props.location.pathname.split("/"),
 			cid:'',
 			frameworkDetails:[],
@@ -34,7 +34,7 @@ class CompetencyDetails extends React.Component{
 			this.setState({csrf: findresponse2})
 		});
 
-		
+
 		let frameworkID = this.state.path[2].toLowerCase();
 		let fetchCompetencyList = "https://dev-competency-mapper.pantheonsite.io/api/v1/framework/"+frameworkID+"?_format=json";
 		fetch(fetchCompetencyList)
@@ -43,7 +43,7 @@ class CompetencyDetails extends React.Component{
 		{
 			this.setState({
 				data:findresponse,
-				
+
 			})
 		});
 
@@ -93,11 +93,11 @@ class CompetencyDetails extends React.Component{
 									this.state.frameworkUUID = item.uuid;
 									item.attribute_types.map((attribute_type) =>
 											{
-												frameworkDefs.push(attribute_type.title),
+												frameworkDefs.push(attribute_type.title);
 												attributeTypeOptions.push(<option data-id={attribute_type.id} value={attribute_type.uuid}>{attribute_type.title}</option>)
 											}
 										)
-								
+
 								}
 							}
 						)}
@@ -121,9 +121,9 @@ class CompetencyDetails extends React.Component{
 																	return <div>
 																				<div> <strong><em>{def}</em></strong></div>
 																				{
-																				competency.attributes.map((attribute) =>{ 
+																				competency.attributes.map((attribute) =>{
 																						if(attribute.type == def)
-																						return	<li key={attribute.id}>{attribute.title} </li> 
+																						return	<li key={attribute.id}>{attribute.title} </li>
 																						}
 																				)
 																			}
