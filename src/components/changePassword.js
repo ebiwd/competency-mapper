@@ -49,7 +49,7 @@ class changePassword extends React.Component {
             .then((resp) => resp)
             .then((data)=>
                 setTimeout(() => {
-                    alert("Password changed successfully"),
+                    alert("Password changed successfully");
                     window.location.reload();
                 },1000),
             );

@@ -19,9 +19,9 @@ class CompetencyList extends React.Component{
 		this.state = {
 			data: [],
 			resources:[],
-			frameworkdetails:[], 
-			framework: this.props.location.pathname.split("/"), 
-			selectedID:'', 
+			frameworkdetails:[],
+			framework: this.props.location.pathname.split("/"),
+			selectedID:'',
 			selectedUUID:'',
 			competencyTitle:'',
 			frameworkUUID:'',
@@ -59,13 +59,13 @@ class CompetencyList extends React.Component{
 	handleOpenModal (temp) {
     this.setState({ selectedID:temp });
   }
-  
+
   handleCloseModal () {
     this.setState({ showModal: false });
   }
 
   handleOpenForm () {
-  		this.setState({ showForm: true});  
+  		this.setState({ showForm: true});
   }
 
   handleCloseForm () {
@@ -75,17 +75,17 @@ class CompetencyList extends React.Component{
   handleOpenForm2 (temp1, temp2, temp3, temp4) {
     this.setState({ showForm2: true, selectedID: temp1, selectedUUID: temp2, competencyTitle: temp3});
   }
-  
+
   handleCloseForm2 () {
     this.setState({ showForm2: false });
-  
+
 
   }
 
   handleOpenForm3 (temp1, temp2, temp3, temp4) {
     this.setState({ showForm3: true, selectedID: temp1, selectedUUID: temp2, competencyTitle: temp3});
   }
-  
+
   handleCloseForm3 () {
     this.setState({ showForm3: false });
   }
@@ -122,7 +122,7 @@ class CompetencyList extends React.Component{
 		//console.log(this.state.demo);
 
 		this.increase();
-		
+
 		let csrfURL = "https://dev-competency-mapper.pantheonsite.io/rest/session/token";
 		fetch(csrfURL)
 		.then((Response)=>Response)
@@ -130,7 +130,7 @@ class CompetencyList extends React.Component{
 			this.setState({csrf: findresponse2})
 		});
 
-		
+
 		let frameworkID = this.state.framework[2];
 		let fetchCompetencyList = "https://dev-competency-mapper.pantheonsite.io/api/v1/framework/"+frameworkID+"?_format=json";
 		fetch(fetchCompetencyList)
@@ -139,7 +139,7 @@ class CompetencyList extends React.Component{
 		{
 			this.setState({
 				data:findresponse,
-				
+
 			})
 		});
 
@@ -168,8 +168,8 @@ class CompetencyList extends React.Component{
 		for(var i=0; i<50; i++){
 			this.setState({'progress':i});
 		}
-		
-		
+
+
 	}
 
 	filter(e){
@@ -212,28 +212,28 @@ class CompetencyList extends React.Component{
         }
 
 
-		{frameworkDetails.map((item, ikey) => {
+		{frameworkDetails.forEach((item, ikey) => {
 								if(item.name.toLowerCase() == this.state.framework[2]){
 									frameworkName = item.name;
 									desc = item.description;
 									this.state.frameworkUUID = item.uuid;
-									item.attribute_types.map((attribute_type) =>
+									item.attribute_types.forEach((attribute_type) =>
 											{
-												frameworkDefs.push(attribute_type.title),
+												frameworkDefs.push(attribute_type.title);
 												attributeTypeOptions.push(<option data-id={attribute_type.id} value={attribute_type.uuid}>{attribute_type.title}</option>)
 											}
-										),
-									item.domains.map((domain) =>
+										);
+									item.domains.forEach((domain) =>
 											{
 												domainsOptions.push(<option data-id={domain.id} value={domain.uuid}>{domain.title}</option>);
 											}
 										)
-								
+
 								}
 							}
 						)}
-		
-		
+
+
 		const ListOfCompetencies = data.map((item) =>
 
                 item.domains.map((domain, did) =>
@@ -359,8 +359,8 @@ class CompetencyList extends React.Component{
 		 												if(competency.id == this.state.selectedID){
 			 														return <div className="row">
 			 																	<div className="column large-7">
-				 																	<h1>{item.title}</h1> 
-				 																	<h3> {domain.title}</h3> 
+				 																	<h1>{item.title}</h1>
+				 																	<h3> {domain.title}</h3>
 				 																	<h4>{competency.title}</h4>
 				 																	<ul>
 				 																		{
@@ -368,9 +368,9 @@ class CompetencyList extends React.Component{
 																	return <div>
 																				<div> <strong><em>{def}</em></strong></div>
 																				{
-																				competency.attributes.map((attribute) =>{ 
+																				competency.attributes.map((attribute) =>{
 																						if(attribute.type == def)
-																						return	<li key={attribute.id}>{attribute.title} </li> 
+																						return	<li key={attribute.id}>{attribute.title} </li>
 																						}
 																				)
 																			}
@@ -451,16 +451,16 @@ class CompetencyList extends React.Component{
 							)
 		);
 
-				        			
+
 		return(
-				
+
 				<div key={1234}>
 
 
 					<h3 id="page">{frameworkName}</h3>
                     {Parser(desc)}
 					{frameworkDomains[2]}
-					
+
 					<Tabs>
 
 				    <TabList>
@@ -468,7 +468,7 @@ class CompetencyList extends React.Component{
 				      <Tab>Training resources</Tab>
 				    </TabList>
 
-				   			    
+
 
 				    <TabPanel>
 				  		<div className="row">
@@ -487,7 +487,7 @@ class CompetencyList extends React.Component{
 					       <ReactModal isOpen={this.state.showModal} className="Modal" overlayClassName="Overlay" contentLabel="Minimal Modal Example">
 					        <div style={{'textAlign':'center',  'width':'102%', 'height':'70px', 'top':'-18px', 'left':'-15px', 'position':'relative', 'padding':'5px'}}>
 				        		<h2 className="services-background white-color">Competency details <i className="fas fa-window-close float-right" data-close onClick={this.handleCloseModal}></i>	</h2>
-			        		</div>	
+			        		</div>
 					        		{competencyDetails}
 					        </ReactModal>
 				    	</div>
@@ -527,32 +527,32 @@ class CompetencyList extends React.Component{
 			        		<a><h4>				     </h4>   </a>
 			        	</div>
 			        		<CompetencyForm frameworkName={frameworkName} domainsOptions={domainsOptions} />
-						
+
 			        </ReactModal>
 
 			         <ReactModal isOpen={this.state.showForm2} className="ModalAttribute" overlayClassName="OverlayForm" contentLabel="Create attribute form">
 			        	<div style={{'background-color':'#ccc', 'text-align':'center',  'width':'104%', 'height':'50px', 'top':'-18px', 'left':'-17px', 'position':'relative', 'padding':'5px'}}>
 			        		<h4 style={{'color':'black'}}>Create attribute <i className="fas fa-window-close float-right" data-close onClick={this.handleCloseForm2}></i></h4>
-			        		<a><h4>					     </h4>   </a>	
-			        	</div>				        
+			        		<a><h4>					     </h4>   </a>
+			        	</div>
 			        		<AttributeForm selectedCompetencyUUID={this.state.selectedUUID} selectedCompetencyTitle={this.state.competencyTitle} selectedCompetencyID={this.state.selectedID} attributeTypeOptions={attributeTypeOptions} />
 			        </ReactModal>
-				        
+
 				    <ReactModal isOpen={this.state.showForm3} className="ModalCompetencyEdit" overlayClassName="OverlayForm" contentLabel="Edit competency">
 			        	<div style={{'background-color':'#ccc', 'text-align':'center',  'width':'107%', 'height':'50px', 'top':'-18px', 'left':'-17px', 'position':'relative', 'padding':'5px'}}>
 			        		<h4 style={{'color':'black'}}>Edit competency <i className="fas fa-window-close float-right" data-close onClick={this.handleCloseForm3}></i></h4>
-			        	</div>				        
+			        	</div>
 			        		<CompetencyEdit competencyID={this.state.selectedID} competencyTitle={this.state.competencyTitle} competencyUUID={this.state.selectedUUID} />
-			        		
+
 			        </ReactModal>
-				        
+
 
 				        {/*<Line percent={this.state.progress} strokeWidth="2" strokeColor="green" trailColor="#ccc" />
 				        <button onClick={this.restart}>Restart</button>*/}
 
 				        <CompetencyDetails data={competencyDetails} />
-  						
-			        
+
+
 
 		    	</div>
 			</div>

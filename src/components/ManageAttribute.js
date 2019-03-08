@@ -6,9 +6,9 @@ class ManageAttribute extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-    	valuesAttribute: '', 
-    	attributeTypeID: '', 
-    	attributeTypeUUID:'', 
+    	valuesAttribute: '',
+    	attributeTypeID: '',
+    	attributeTypeUUID:'',
     	selectedAttributeType:0,
     	data: [],
 		csrf:'',
@@ -17,7 +17,7 @@ class ManageAttribute extends React.Component {
 		selectedCompetencyUUID:'',
 		selectedCompetencyTitle:'',
 		selectedAttribute:'',
-		
+
     };
     this.handleSubmit = this.handleSubmit.bind(this);
       this.archiveHandle = this.archiveHandle.bind(this);
@@ -56,7 +56,7 @@ class ManageAttribute extends React.Component {
 		{
 			this.setState({
 				data:findresponse,
-				
+
 			})
 		});
 
@@ -83,7 +83,7 @@ class ManageAttribute extends React.Component {
         console.log(localStorage.getItem('roles'))
     }
 
-  
+
   handleSubmit(event) {
       	let token = localStorage.getItem('csrf_token');
 		let attributes = this.state.valuesAttribute;
@@ -91,7 +91,7 @@ class ManageAttribute extends React.Component {
 
 		let competencyID = this.state.path[5];
 		let competecyUUID = this.state.selectedCompetencyUUID;
-				
+
 		let attributeTypeID = '';
 		let attributeTypeUUID = '';
 
@@ -134,7 +134,7 @@ class ManageAttribute extends React.Component {
 							      "target_id": "attribute"
 							  	}
 							   ],
-							   
+
 							   "_embedded": {
 							      "https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_competency": [
 							        {
@@ -179,7 +179,7 @@ class ManageAttribute extends React.Component {
 						)
 					});
       this.setState({'updateFlag':true});
-		
+
 
     event.preventDefault();
   }
@@ -190,7 +190,7 @@ class ManageAttribute extends React.Component {
   }
 
   handleEdit(e){
-  	
+
   	let aid = this.state.selectedAttribute;
   	let title = e["message"];
 			fetch('https://dev-competency-mapper.pantheonsite.io/node/'+ aid +'?_format=hal_json', {
@@ -283,12 +283,12 @@ class ManageAttribute extends React.Component {
   	{this.state.frameworkDetails.map((item, ikey) => {
 								if(item.name.toLowerCase() == this.state.path[2]){
 									frameworkName = item.name;
-									item.attribute_types.map((attribute_type) =>
+									item.attribute_types.forEach((attribute_type) =>
 											{
-												frameworkDefs.push(attribute_type.title),
+												frameworkDefs.push(attribute_type.title);
 												attributeTypeOptions.push(<option data-id={attribute_type.id} value={attribute_type.uuid}>{attribute_type.title}</option>)
 											}
-										)								
+										)
 								}
 							}
 						)}
@@ -345,7 +345,7 @@ class ManageAttribute extends React.Component {
 
                                                                     }
 																</tbody>
-  													}		
+  													}
   											)
   									)
   							)
@@ -385,7 +385,7 @@ class ManageAttribute extends React.Component {
 				  </form>
 				</div>
 			</div>
-	    
+
 
 	     <div className="row">
 	     	<div className="column large-12">

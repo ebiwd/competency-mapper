@@ -1,3 +1,24 @@
+# Competency Mapper
+
+[TODO: add description]
+
+The service can be accessed at
+[here](https://ebiwd.github.io/competency-mapper).
+
+## Development server
+
+To develop locally run the development server following one of these recipes:
+
+```
+npm ci
+patch -p0 < react-edit-inline.patch
+npm run start
+```
+
+Use `npm run deploy` to deploy to github pages.
+
+## React
+
 This project was bootstrapped with [Create React App](https://github.com/facebookincubator/create-react-app).
 
 Below you will find some information on how to perform common tasks.<br>
