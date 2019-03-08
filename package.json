@@ -4,25 +4,25 @@
   "private": true,
   "homepage": "https://ebiwd.github.io/competency-mapper/",
   "dependencies": {
-    "html-react-parser": "^0.4.6",
-    "rc-progress": "^2.2.5",
-    "react": "^16.4.0",
-    "react-alert": "^4.0.4",
+    "html-react-parser": "^0.6.2",
+    "rc-progress": "^2.3.0",
+    "react": "^16.8.4",
+    "react-alert": "^5.2.0",
     "react-alert-template-basic": "^1.0.0",
     "react-ckeditor-component": "^1.1.0",
-    "react-collapsible": "^2.2.0",
+    "react-collapsible": "^2.6.0",
     "react-cookies": "^0.1.0",
-    "react-csv": "^1.0.15-RC2",
-    "react-dom": "^16.4.0",
+    "react-csv": "^1.1.1",
+    "react-dom": "^16.8.4",
     "react-global-configuration": "^1.3.0",
-    "react-modal": "^3.4.5",
+    "react-modal": "^3.8.1",
     "react-responsive-accordion": "^1.0.0",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "1.1.1",
+    "react-scripts": "2.1.8",
     "react-sweet-progress": "^1.1.2",
-    "react-tabs": "^2.2.2",
-    "react-transition-group": "^2.4.0",
-    "universal-cookie": "^3.0.4"
+    "react-tabs": "^3.0.0",
+    "react-transition-group": "^2.6.0",
+    "universal-cookie": "^3.0.7"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -33,7 +33,8 @@
     "deploy": "gh-pages -d build"
   },
   "devDependencies": {
-    "gh-pages": "^1.2.0",
+    "gh-pages": "^2.0.1",
+    "npm-check-updates": "^3.0.2",
     "react-edit-inline": "^1.0.8"
   }
 }
