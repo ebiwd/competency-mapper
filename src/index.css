@@ -1,15 +1,16 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
+  font: 14px 'Century Gothic', Futura, sans-serif;
   margin: 20px;
 }
 
-ol, ul {
+ol,
+ul {
   padding-left: 30px;
 }
 
 .board-row:after {
   clear: both;
-  content: "";
+  content: '';
   display: table;
 }
 
@@ -49,6 +50,6 @@ ol, ul {
   margin-left: 20px;
 }
 
-.Competency-title{
-  color:#389198;
+.Competency-title {
+  color: #389198;
 }
