@@ -1,10 +1,9 @@
-import React from 'react'
-import { Switch, Route } from 'react-router-dom'
-import Home from './Home'
-import Roster from './Roster'
-import Frameworks from './Frameworks'
-import CompetencyList from './CompetencyList'
-
+import React from 'react';
+import { Switch, Route } from 'react-router-dom';
+import Home from './Home';
+import Roster from './Roster';
+import Frameworks from './Frameworks';
+import CompetencyList from './CompetencyList';
 
 // The Main component renders one of the three provided
 // Routes (provided that one matches). Both the /roster
@@ -14,11 +13,11 @@ import CompetencyList from './CompetencyList'
 const Main = () => (
   <main>
     <Switch>
-      <Route exact path='/' component={Frameworks}/>
-      <Route exact path='/roster' component={Roster}/>
-      <Route exact path='/framework/bioexcel' component={CompetencyList} />
+      <Route exact path="/" component={Frameworks} />
+      <Route exact path="/roster" component={Roster} />
+      <Route exact path="/framework/bioexcel" component={CompetencyList} />
     </Switch>
   </main>
-)
+);
 
-export default Main
+export default Main;
