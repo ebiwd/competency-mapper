@@ -1,6 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import InlineEdit from 'react-edit-inline';
+import CompetencyService, { apiUrl } from '../services/competency/compentency';
+import Body from '../services/competency/body';
+import Headers from '../services/competency/header';
 
 class ManageAttribute extends React.Component {
   constructor(props) {
@@ -18,56 +21,38 @@ class ManageAttribute extends React.Component {
       selectedCompetencyTitle: '',
       selectedAttribute: ''
     };
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.archiveHandle = this.archiveHandle.bind(this);
+
+    this.competencyService = new CompetencyService();
+    this.headers = new Headers();
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     if (this.state.updateFlag) {
-      this.fetchData();
-      setTimeout(() => {
-        this.setState({ updateFlag: false });
-      }, 1000);
-
-      console.log('componentDidUpdate');
+      await this.fetchData();
+      this.setState({ updateFlag: false });
     }
   }
 
-  componentDidMount() {
-    this.fetchData();
+  async componentDidMount() {
+    await this.fetchData();
   }
 
-  fetchData() {
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
-    fetch(csrfURL)
-      .then(Response => Response)
-      .then(findresponse2 => {
-        this.setState({ csrf: findresponse2 });
-      });
+  async fetchData() {
+    const promise1 = this.fetchFramework();
+    const promise2 = this.fetchFrameworkDetails();
+    await promise1;
+    await promise2;
+  }
 
+  async fetchFramework() {
     let framework = this.state.path[2].toLowerCase();
-    let fetchCompetencyList =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework/' +
-      framework +
-      '?_format=json';
-    fetch(fetchCompetencyList)
-      .then(Response => Response.json())
-      .then(findresponse => {
-        this.setState({
-          data: findresponse
-        });
-      });
+    const frameworkData = await this.competencyService.getFramework(framework);
+    this.setState({ data: frameworkData });
+  }
 
-    let fetchFrameworkDetails =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework?_format=json';
-    fetch(fetchFrameworkDetails)
-      .then(Response => Response.json())
-      .then(findresponse1 => {
-        this.setState({
-          frameworkDetails: findresponse1
-        });
-      });
+  async fetchFrameworkDetails() {
+    const frameworkDetailsData = await this.competencyService.getAllFrameworks();
+    this.setState({ frameworkDetails: frameworkDetailsData });
   }
 
   checkUser() {
@@ -79,14 +64,9 @@ class ManageAttribute extends React.Component {
       );
       this.props.history.push('/');
     }
-    console.log(localStorage.getItem('roles'));
   }
 
-  handleSubmit(event) {
-    let token = localStorage.getItem('csrf_token');
-    let attributes = this.state.valuesAttribute;
-    let attributeTypes = this.state.valuesType;
-
+  async handleSubmit() {
     let competencyID = this.state.path[5];
     let competecyUUID = this.state.selectedCompetencyUUID;
 
@@ -98,193 +78,50 @@ class ManageAttribute extends React.Component {
 
     let title = this.refs.title.value;
 
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'POST',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': token,
-          Authorization: 'Basic'
-        },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute'
-            },
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_competency': {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/node/' +
-                competencyID +
-                '?_format=hal_json'
-            },
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_attribute_type': {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/node/' +
-                attributeTypeID +
-                '?_format=hal_json'
-            }
-          },
-          title: [
-            {
-              value: title
-            }
-          ],
-          type: [
-            {
-              target_id: 'attribute'
-            }
-          ],
+    await fetch(`${apiUrl}/node?_format=hal_json`, {
+      credentials: 'include',
+      method: 'POST',
+      cookies: 'x-access-token',
+      headers: this.headers.get(),
+      body: Body.mutateCompetencyName(
+        competencyID,
+        attributeTypeID,
+        title,
+        competecyUUID,
+        attributeTypeUUID
+      )
+    });
 
-          _embedded: {
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_competency': [
-              {
-                _links: {
-                  self: {
-                    href:
-                      'https://dev-competency-mapper.pantheonsite.io/node/' +
-                      competencyID +
-                      '?_format=hal_json'
-                  },
-                  type: {
-                    href:
-                      'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
-                  }
-                },
-                uuid: [
-                  {
-                    value: competecyUUID //"b20064ef-5cbf-4147-90f8-08e7a6693e17"
-                  }
-                ],
-                lang: 'en'
-              }
-            ],
-
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_attribute_type': [
-              {
-                _links: {
-                  self: {
-                    href:
-                      'https://dev-competency-mapper.pantheonsite.io/node/' +
-                      attributeTypeID +
-                      '?_format=hal_json'
-                  },
-                  type: {
-                    href:
-                      'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute_type'
-                  }
-                },
-                uuid: [
-                  {
-                    value: attributeTypeUUID
-                  }
-                ],
-                lang: 'en'
-              }
-            ]
-          }
-        })
-      }
-    );
     this.setState({ updateFlag: true });
-
-    event.preventDefault();
   }
 
   clickToEdit(id) {
-    //alert(id);
     this.setState({ selectedAttribute: id });
   }
 
-  handleEdit(e) {
-    let aid = this.state.selectedAttribute;
-    let title = e['message'];
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
-        aid +
-        '?_format=hal_json',
-      {
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': this.state.csrf,
-          Authorization: 'Basic'
-        },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute'
-            }
-          },
-          title: [
-            {
-              value: title
-            }
-          ],
-          type: [
-            {
-              target_id: 'attribute'
-            }
-          ]
-        })
-      }
-    );
+  async handleEdit(e) {
+    const aid = this.state.selectedAttribute;
+    const title = e['message'];
+
+    await fetch(`${apiUrl}/node/${aid}?_format=hal_json`, {
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: this.headers.get(),
+      body: Body.mutateAttribute('title', title)
+    });
+
     this.setState({ updateFlag: true });
   }
 
-  archiveHandle(aid, status, event) {
-    //alert("attribute "+ aid+ "is "+ status);
-    let archivedStatus = '';
-    if (status === 1) {
-      archivedStatus = false;
-    } else {
-      archivedStatus = true;
-    }
-
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
-        aid +
-        '?_format=hal_json',
-      {
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': this.state.csrf,
-          Authorization: 'Basic'
-        },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute'
-            }
-          },
-          field_archived: [
-            {
-              value: archivedStatus
-            }
-          ],
-          type: [
-            {
-              target_id: 'attribute'
-            }
-          ]
-        })
-      }
-    );
+  async toggleArchive(aid, isArchived) {
+    await fetch(`${apiUrl}/node/${aid}?_format=hal_json`, {
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: this.headers.get(),
+      body: Body.mutateAttribute('field_archived', !isArchived)
+    });
 
     this.setState({ updateFlag: true });
-
-    event.preventDefault();
   }
 
   onSelectChange(e) {
@@ -301,31 +138,34 @@ class ManageAttribute extends React.Component {
     let attributeTypeOptions = [];
     let frameworkName = '';
     let frameworkDefs = [];
-    {
-      this.state.frameworkDetails.map((item, ikey) => {
-        if (item.name.toLowerCase() == this.state.path[2]) {
-          frameworkName = item.name;
-          item.attribute_types.forEach(attribute_type => {
-            frameworkDefs.push(attribute_type.title);
-            attributeTypeOptions.push(
-              <option data-id={attribute_type.id} value={attribute_type.uuid}>
-                {attribute_type.title}
-              </option>
-            );
-          });
-        }
-      });
-    }
+
+    this.state.frameworkDetails.map((item, ikey) => {
+      if (item.name.toLowerCase() === this.state.path[2]) {
+        frameworkName = item.name;
+        item.attribute_types.forEach(attribute_type => {
+          frameworkDefs.push(attribute_type.title);
+          attributeTypeOptions.push(
+            <option data-id={attribute_type.id} value={attribute_type.uuid}>
+              {attribute_type.title}
+            </option>
+          );
+        });
+      }
+      return null;
+    });
 
     let attributesList = this.state.data.map(item =>
       item.domains.map(domain =>
         domain.competencies
           .filter((competency, id) => {
-            if (competency.id == selectedCompetency) {
+            if (competency.id === selectedCompetency) {
               this.state.selectedCompetencyUUID = competency.uuid;
+              // this.setState({ selectedCompetencyUUID: competency.uuid });
               this.state.selectedCompetencyTitle = competency.title;
-              return competency;
+              // this.setState({ selectedCompetencyTitle: competency.title });
+              return true;
             }
+            return false;
           })
           .map(competency =>
             frameworkDefs.map(def => {
@@ -341,7 +181,7 @@ class ManageAttribute extends React.Component {
                     <td />
                   </tr>
                   {competency.attributes.map(attribute => {
-                    if (attribute.type == def) {
+                    if (attribute.type === def) {
                       return (
                         <tr>
                           <td>
@@ -350,14 +190,14 @@ class ManageAttribute extends React.Component {
                           <td
                             style={{ left: '20px' }}
                             className="tooltip-td"
-                            onClick={this.clickToEdit.bind(this, attribute.id)}
+                            onClick={() => this.clickToEdit(attribute.id)}
                           >
                             <InlineEdit
                               text={attribute.title}
                               data-id="12"
                               staticElement="div"
                               paramName="message"
-                              change={this.handleEdit.bind(this)}
+                              change={e => this.handleEdit(e)}
                               style={{
                                 display: 'inline-block',
                                 margin: 0,
@@ -369,37 +209,29 @@ class ManageAttribute extends React.Component {
                             />
                           </td>
                           <td>
-                            {' '}
-                            {attribute.archived == 1 ? 'Archived' : ''}
-                            {attribute.archived == 1 ? (
+                            {attribute.archived === '1' ? (
                               <a
-                                href="#"
-                                onClick={this.archiveHandle.bind(
-                                  this,
-                                  attribute.id,
-                                  1
-                                )}
+                                onClick={() =>
+                                  this.toggleArchive(attribute.id, true)
+                                }
                               >
-                                {' '}
-                                <i className="fas fa-toggle-on" />
+                                <span className="fas fa-toggle-on" />
+                                <span>Archived</span>
                               </a>
                             ) : (
                               <a
-                                href="#"
-                                onClick={this.archiveHandle.bind(
-                                  this,
-                                  attribute.id,
-                                  0
-                                )}
+                                onClick={() =>
+                                  this.toggleArchive(attribute.id, false)
+                                }
                               >
-                                {' '}
-                                <i className="fas fa-toggle-off" />
+                                <span className="fas fa-toggle-off" />
                               </a>
                             )}
                           </td>
                         </tr>
                       );
                     }
+                    return null;
                   })}
                 </tbody>
               );
@@ -432,7 +264,7 @@ class ManageAttribute extends React.Component {
         <div className="row">
           <div className="column 12 callout">
             <h4>Create new attribute</h4>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={() => this.handleSubmit()}>
               <div className="row">
                 <div className="column large-7">
                   <input
