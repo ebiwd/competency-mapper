@@ -1,6 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
+
 import InlineEdit from 'react-edit-inline';
+
 import CompetencyService, { apiUrl } from '../services/competency/compentency';
 import Body from '../services/competency/body';
 import Headers from '../services/competency/header';
@@ -8,14 +10,16 @@ import Headers from '../services/competency/header';
 class ManageAttribute extends React.Component {
   constructor(props) {
     super(props);
+    const path = this.props.location.pathname.split('/');
     this.state = {
+      data: [],
+      framework: path[2],
+      frameworkName: '',
       valuesAttribute: '',
       attributeTypeID: '',
       attributeTypeUUID: '',
       selectedAttributeType: 0,
-      data: [],
-      csrf: '',
-      path: this.props.location.pathname.split('/'),
+      path: path,
       frameworkDetails: [],
       selectedCompetencyUUID: '',
       selectedCompetencyTitle: '',
@@ -34,24 +38,29 @@ class ManageAttribute extends React.Component {
   }
 
   async componentDidMount() {
-    await this.fetchData();
-  }
-
-  async fetchData() {
-    const promise1 = this.fetchFramework();
+    const promise1 = this.fetchData();
     const promise2 = this.fetchFrameworkDetails();
     await promise1;
     await promise2;
   }
 
+  fetchData() {
+    return this.fetchFramework();
+  }
+
   async fetchFramework() {
-    let framework = this.state.path[2].toLowerCase();
-    const frameworkData = await this.competencyService.getFramework(framework);
+    const frameworkData = await this.competencyService.getFramework(
+      this.state.framework
+    );
     this.setState({ data: frameworkData });
   }
 
   async fetchFrameworkDetails() {
     const frameworkDetailsData = await this.competencyService.getAllFrameworks();
+    const frameworkMatch = frameworkDetailsData.filter(
+      item => item.name.toLowerCase() === this.state.path[2]
+    );
+    frameworkMatch && this.setState({ frameworkName: frameworkMatch[0].name });
     this.setState({ frameworkDetails: frameworkDetailsData });
   }
 
@@ -136,12 +145,10 @@ class ManageAttribute extends React.Component {
 
     let selectedCompetency = this.state.path[5].toLowerCase();
     let attributeTypeOptions = [];
-    let frameworkName = '';
     let frameworkDefs = [];
 
     this.state.frameworkDetails.map((item, ikey) => {
       if (item.name.toLowerCase() === this.state.path[2]) {
-        frameworkName = item.name;
         item.attribute_types.forEach(attribute_type => {
           frameworkDefs.push(attribute_type.title);
           attributeTypeOptions.push(
@@ -247,16 +254,13 @@ class ManageAttribute extends React.Component {
             <h3>Manage attributes</h3>
             <h4>
               <a
-                href={
-                  '/competency-mapper/#/framework/' +
-                  frameworkName +
-                  '/manage/competencies'
-                }
+                href={`/competency-mapper/#/framework/${
+                  this.state.framework
+                }/manage/competencies`}
               >
-                {' '}
-                {frameworkName}
-              </a>{' '}
-              / {this.state.selectedCompetencyTitle}
+                {this.state.frameworkName}
+              </a>
+              {`: ${this.state.selectedCompetencyTitle}`}
             </h4>
           </div>
         </div>
