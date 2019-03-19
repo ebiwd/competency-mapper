@@ -59,7 +59,7 @@ class User extends React.Component {
           localStorage.setItem('logout_token', data.logout_token);
           localStorage.setItem('user', data.current_user.name);
           localStorage.setItem('userid', data.current_user.uid);
-          console.log(data);
+          // console.log(data);
           this.setState({ roles: localStorage.getItem('roles') });
           this.setState({ user: localStorage.getItem('user') });
           setTimeout(() => {
@@ -108,7 +108,7 @@ class User extends React.Component {
         test += 'content_manager';
       }
 
-      console.log(test);
+      // console.log(test);
 
       output = (
         <div>

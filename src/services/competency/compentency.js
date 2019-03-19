@@ -1,5 +1,5 @@
-import Header from './header';
 import HttpService from '../http/http.js';
+import Body from './body';
 
 export const apiUrl = process.env.REACT_APP_API_URL;
 
@@ -12,7 +12,6 @@ class CompetencyService {
     }
 
     this.instance = this;
-    this.header = new Header();
     this.http = new HttpService();
   }
 
@@ -27,6 +26,24 @@ class CompetencyService {
     const response = await this.http.get(
       `${apiUrl}/api/v1/framework/?_format=json`
     );
+    return response.json();
+  }
+
+  async createCompetency(options) {
+    const response = await this.http.post(
+      `${apiUrl}/node?_format=hal_json`,
+      Body.createCompetency(options)
+    );
+
+    return response.json();
+  }
+
+  async patchAttribute(aId, key, value) {
+    const response = await this.http.patch(
+      `${apiUrl}/node/${aId}?_format=hal_json`,
+      Body.mutateAttribute(key, value)
+    );
+
     return response.json();
   }
 }

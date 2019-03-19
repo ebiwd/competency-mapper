@@ -1,9 +1,36 @@
-class HttpService {
-  constructor() {}
+import Headers from './headers.js';
 
-  async get(url) {
+class HttpService {
+  constructor() {
+    this.headers = new Headers();
+  }
+
+  get(url) {
+    return this.executeFetch(url);
+  }
+
+  post(url, body) {
+    return this.executeFetch(url, {
+      method: 'POST',
+      credentials: 'include',
+      cookies: 'x-access-token',
+      headers: this.headers.get(),
+      body: body
+    });
+  }
+
+  patch(url, body) {
+    return this.executeFetch(url, {
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: this.headers.get(),
+      body: body
+    });
+  }
+
+  async executeFetch(url, options = {}) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(url, options);
       if (!response.ok) {
         return this.handleNotOkResponses(response);
       }
@@ -12,10 +39,6 @@ class HttpService {
       return this.handleNetworkErrors(error);
     }
   }
-
-  post() {}
-
-  patch() {}
 
   handleNetworkErrors(error) {
     this.inform('Network problem!');
