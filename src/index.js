@@ -5,7 +5,7 @@ import App from './components/App';
 import User from './components/User';
 
 ReactDOM.render(
-  <BrowserRouter>
+  <BrowserRouter basename={process.env.PUBLIC_URL}>
     <App />
   </BrowserRouter>,
   document.getElementById('root')
