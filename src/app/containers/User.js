@@ -28,6 +28,7 @@ class User extends React.Component {
     if (localStorage.getItem('roles')) {
       this.setState({ roles: localStorage.getItem('roles'), user: localStorage.getItem('user') });
     }
+    $(this.refs.dropdown).foundation();
   }
 
   handleLogin(e) {
@@ -109,7 +110,7 @@ class User extends React.Component {
 
       output = (
         <div>
-          <ul className="dropdown menu" data-dropdown-menu>
+          <ul ref="dropdown" className="dropdown menu" data-dropdown-menu>
             {localStorage.getItem('roles').includes('framework_manager') ? (
               <li>
                 <a>Manage Competencies</a>
