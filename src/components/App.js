@@ -15,6 +15,76 @@ import ResourceEdit from './ResourceEdit';
 import changePassword from './changePassword';
 
 const App = () => (
+    <div data-sticky-container>
+      <div class="top-bar" style="width:100%">
+        <div class="top-bar-right" id="userarea">
+          <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">You are Framework Manager</li>
+            <li>
+              <a href="#">Manage Competencies</a>
+              <ul class="menu vertical">
+                <li>
+                  <a href="/framework/bioexcel/manage/competencies">BioExcel</a>
+                </li>
+                <li>
+                  <a href="/framework/corbel/manage/competencies">CORBEL</a>
+                </li>
+                <li><a href="/framework/iscb/manage/competencies">ISCB</a></li>
+                <li>
+                  <a href="/framework/ritrain/manage/competencies">RITrain</a>
+                </li>
+                <li><a href="/framework/nhs/manage/competencies">NHS</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="/all-training-resources">Manage Training Resources</a>
+            </li>
+            <li><a href="#">My Profile</a></li>
+            <li><a href="#">Logout</a></li>
+          </ul>
+        </div>
+
+        <div class="top-bar-left">
+          <ul class="dropdown menu" data-dropdown-menu>
+            <li class="menu-text">
+              <i class="fas fa-link"></i> Competency Mapper
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-home"></i> Home</a>
+            </li>
+            <li>
+              <a href="#"><i class="fas fa-question-circle"></i> Support</a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div
+      data-sticky-container=""
+      class="sticky-container"
+      style="height: 100px;"
+    >
+      <header
+        id="masthead"
+        class="masthead  sticky meta-background-color meta-background-image is-anchored is-at-top"
+        style="background-color: rgb(17, 17, 17); background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg'); max-width: 2903.7px; margin-top: 0px; bottom: auto; top: 0px;"
+      >
+        <div class="row masthead-inner">
+          <!-- local-title -->
+          <div class="columns medium-12" id="local-title">
+            <h1>
+              <a href="../../" title="Back to [service-name] homepage"
+                >Competency Mapper</a
+              >
+            </h1>
+          </div>
+        </div>
+      </header>
+    </div>
+
+    <div class="row" id="content">
+      <div class="small-12 large-12 medium-12 columns">
   <main>
     <Switch>
       <Route
@@ -39,6 +109,8 @@ const App = () => (
       <Route path="/" component={Frameworks} />
     </Switch>
   </main>
+    </div>
+    </div>
 );
 
 export default App;

@@ -118,23 +118,23 @@ class User extends React.Component {
                 <a href="#">Manage Competencies</a>
                 <ul className="menu vertical">
                   <li>
-                    <a href="#/framework/bioexcel/manage/competencies">
+                    <a href="/framework/bioexcel/manage/competencies">
                       BioExcel
                     </a>
                   </li>
                   <li>
-                    <a href="#/framework/corbel/manage/competencies">CORBEL</a>
+                    <a href="/framework/corbel/manage/competencies">CORBEL</a>
                   </li>
                   <li>
-                    <a href="#/framework/iscb/manage/competencies">ISCB</a>
+                    <a href="/framework/iscb/manage/competencies">ISCB</a>
                   </li>
                   <li>
-                    <a href="#/framework/ritrain/manage/competencies">
+                    <a href="/framework/ritrain/manage/competencies">
                       RITrain
                     </a>
                   </li>
                   <li>
-                    <a href="#/framework/nhs/manage/competencies">NHS</a>
+                    <a href="/framework/nhs/manage/competencies">NHS</a>
                   </li>
                 </ul>
               </li>
@@ -143,7 +143,7 @@ class User extends React.Component {
             )}
             {localStorage.getItem('roles').includes('content_manager') ? (
               <li>
-                <a href="#/all-training-resources">Manage Training Resources</a>
+                <a href="/all-training-resources">Manage Training Resources</a>
               </li>
             ) : (
               ''
@@ -155,7 +155,7 @@ class User extends React.Component {
               <ul className="menu vertical">
                 <li>
                   {' '}
-                  <a href={'#/user/change/password'}>Change password</a>{' '}
+                  <a href={'/user/change/password'}>Change password</a>{' '}
                 </li>
                 <li>
                   {' '}

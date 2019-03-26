@@ -5,15 +5,9 @@ import App from './components/App';
 import User from './components/User';
 
 ReactDOM.render(
-  <BrowserRouter basename={process.env.PUBLIC_URL}>
+  // <BrowserRouter basename={process.env.PUBLIC_URL}>
+  <BrowserRouter>
     <App />
   </BrowserRouter>,
   document.getElementById('root')
-);
-
-ReactDOM.render(
-  <BrowserRouter>
-    <User />
-  </BrowserRouter>,
-  document.getElementById('userarea')
 );
