@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 
+import User from './User';
 import Roster from './Roster';
 import Frameworks from './Frameworks';
 import Competencies from './CompetencyList';
@@ -17,72 +18,42 @@ import changePassword from './changePassword';
 const Root = () => (
   <React.Fragment>
     <div data-sticky-container>
-      <div class="top-bar" style={{width:"100%"}}>
-        <div class="top-bar-right" id="userarea">
-          <ul class="dropdown menu" data-dropdown-menu>
-            <li class="menu-text">You are Framework Manager</li>
-            <li>
-              <a href="#">Manage Competencies</a>
-              <ul class="menu vertical">
-                <li>
-                  <a href="/framework/bioexcel/manage/competencies">BioExcel</a>
-                </li>
-                <li>
-                  <a href="/framework/corbel/manage/competencies">CORBEL</a>
-                </li>
-                <li>
-                  <a href="/framework/iscb/manage/competencies">ISCB</a>
-                </li>
-                <li>
-                  <a href="/framework/ritrain/manage/competencies">RITrain</a>
-                </li>
-                <li>
-                  <a href="/framework/nhs/manage/competencies">NHS</a>
-                </li>
-              </ul>
+      <div className="top-bar" style={{ width: '100%' }}>
+        <div className="top-bar-left">
+          <ul className="dropdown menu" data-dropdown-menu>
+            <li className="menu-text">
+              <i className="fas fa-link" /> Competency Mapper
             </li>
             <li>
-              <a href="/all-training-resources">Manage Training Resources</a>
+              <a href="#">
+                <i className="fas fa-home" /> Home
+              </a>
             </li>
             <li>
-              <a href="#">My Profile</a>
-            </li>
-            <li>
-              <a href="#">Logout</a>
+              <a href="#">
+                <i className="fas fa-question-circle" /> Support
+              </a>
             </li>
           </ul>
         </div>
 
-        <div class="top-bar-left">
-          <ul class="dropdown menu" data-dropdown-menu>
-            <li class="menu-text">
-              <i class="fas fa-link" /> Competency Mapper
-            </li>
-            <li>
-              <a href="#">
-                <i class="fas fa-home" /> Home
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="fas fa-question-circle" /> Support
-              </a>
-            </li>
-          </ul>
+        <div className="top-bar-right">
+          <User />
         </div>
       </div>
     </div>
 
     <div
       data-sticky-container=""
-      class="sticky-container"
-      style={{height: "100px"}}
+      className="sticky-container"
+      style={{ height: '100px' }}
     >
       <header
         id="masthead"
-        class="masthead  sticky meta-background-color meta-background-image is-anchored is-at-top">
-        <div class="row masthead-inner">
-          <div class="columns medium-12" id="local-title">
+        className="masthead  sticky meta-background-color meta-background-image is-anchored is-at-top"
+      >
+        <div className="row masthead-inner">
+          <div className="columns medium-12" id="local-title">
             <h1>
               <a href="../../" title="Back to [service-name] homepage">
                 Competency Mapper
@@ -93,8 +64,8 @@ const Root = () => (
       </header>
     </div>
 
-    <div class="row" id="content">
-      <div class="small-12 large-12 medium-12 columns">
+    <div className="row" id="content">
+      <div className="small-12 large-12 medium-12 columns">
         <main>
           <Switch>
             <Route

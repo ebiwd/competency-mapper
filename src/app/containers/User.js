@@ -1,6 +1,6 @@
 import React from 'react';
 import Cookies from 'universal-cookie';
-import { Switch, Route } from 'react-router-dom';
+import { Route, Link } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
 import ManageCompetency from './ManageCompetency';
 
@@ -26,8 +26,7 @@ class User extends React.Component {
 
   componentDidMount() {
     if (localStorage.getItem('roles')) {
-      this.setState({ roles: localStorage.getItem('roles') });
-      this.setState({ user: localStorage.getItem('user') });
+      this.setState({ roles: localStorage.getItem('roles'), user: localStorage.getItem('user') });
     }
   }
 
@@ -108,33 +107,31 @@ class User extends React.Component {
         test += 'content_manager';
       }
 
-      // console.log(test);
-
       output = (
         <div>
           <ul className="dropdown menu" data-dropdown-menu>
             {localStorage.getItem('roles').includes('framework_manager') ? (
               <li>
-                <a href="#">Manage Competencies</a>
+                <a>Manage Competencies</a>
                 <ul className="menu vertical">
                   <li>
-                    <a href="/framework/bioexcel/manage/competencies">
+                    <Link to="/framework/bioexcel/manage/competencies">
                       BioExcel
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/framework/corbel/manage/competencies">CORBEL</a>
+                    <Link to="/framework/corbel/manage/competencies">CORBEL</Link>
                   </li>
                   <li>
-                    <a href="/framework/iscb/manage/competencies">ISCB</a>
+                    <Link to="/framework/iscb/manage/competencies">ISCB</Link>
                   </li>
                   <li>
-                    <a href="/framework/ritrain/manage/competencies">
+                    <Link to="/framework/ritrain/manage/competencies">
                       RITrain
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/framework/nhs/manage/competencies">NHS</a>
+                    <Link to="/framework/nhs/manage/competencies">NHS</Link>
                   </li>
                 </ul>
               </li>
@@ -143,25 +140,25 @@ class User extends React.Component {
             )}
             {localStorage.getItem('roles').includes('content_manager') ? (
               <li>
-                <a href="/all-training-resources">Manage Training Resources</a>
+                <Link to="/all-training-resources">Manage Training Resources</Link>
               </li>
             ) : (
               ''
             )}
             <li>
-              <a href="#">
+              <a>
                 <i className="fas fa-user" /> Hi {this.state.user}{' '}
               </a>
               <ul className="menu vertical">
                 <li>
                   {' '}
-                  <a href={'/user/change/password'}>Change password</a>{' '}
+                  <Link to={'/user/change/password'}>Change password</Link>{' '}
                 </li>
                 <li>
                   {' '}
-                  <a href={'#'} onClick={this.handleLogout.bind(this)}>
+                  <Link to={'#'} onClick={this.handleLogout.bind(this)}>
                     Logout
-                  </a>{' '}
+                  </Link>{' '}
                 </li>
               </ul>
             </li>
@@ -188,7 +185,7 @@ class User extends React.Component {
                 />
               </div>
               <div className="large-3 columns">
-                <a className={'button'} onClick={this.handleLogin.bind(this)}>
+                <a className='button' onClick={this.handleLogin.bind(this)}>
                   <i className="fa fa-key" aria-hidden="true" /> Login
                 </a>
               </div>
