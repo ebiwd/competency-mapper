@@ -13,15 +13,14 @@ import CompetencyService from '../services/competency/compentency';
 class ManageAttributes extends React.Component {
   constructor(props) {
     super(props);
-    const path = this.props.location.pathname.split('/');
     this.state = {
-      framework: path[2],
+      framework: props.match.params.framework,
       frameworkName: '',
 
       domainName: '',
-      domainUuid: '',
+      domainId: '',
 
-      competencyId: path[5],
+      competencyId: props.match.params.cid,
       competencyName: '',
       competencyData: [],
       competencyUuid: '',
@@ -37,6 +36,7 @@ class ManageAttributes extends React.Component {
   }
 
   async componentDidMount() {
+    window.scroll(0,0);
     const promise1 = this.fetchCompetency();
     const promise2 = this.fetchFramework();
     await promise1;
@@ -58,7 +58,7 @@ class ManageAttributes extends React.Component {
               .filter(competency => competency.id === id)
               .map(competency => {
                 competency.domainTitle = domain.title;
-                competency.domainUuid = domain.uuid;
+                competency.domainId = domain.nid;
                 return competency;
               })
           )
@@ -79,7 +79,7 @@ class ManageAttributes extends React.Component {
     if (competencyMatch.length) {
       this.setState({
         domainName: competencyMatch[0].domainTitle,
-        domainUuid: competencyMatch[0].domainUuid,
+        domainId: competencyMatch[0].domainId,
         competencyUuid: competencyMatch[0].uuid,
         competencyName: competencyMatch[0].title,
         competencyData: competencyMatch[0]
@@ -250,7 +250,7 @@ class ManageAttributes extends React.Component {
       framework,
       frameworkName,
       domainName,
-      domainUuid,
+      domainId,
       competencyName,
       newAttribute,
       newAttributeTypeUuid
@@ -267,7 +267,7 @@ class ManageAttributes extends React.Component {
               </Link>
               {' / '}
               <Link
-                to={`/framework/${framework}/manage/competencies#${domainUuid}`}
+                to={`/framework/${framework}/manage/competencies/${domainId}`}
               >
                 {domainName}
               </Link>

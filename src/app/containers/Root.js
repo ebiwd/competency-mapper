@@ -6,7 +6,7 @@ import User from './User';
 import Roster from './Roster';
 import Frameworks from './Frameworks';
 import Competencies from './CompetencyList';
-import ManageCompetency from './ManageCompetency';
+import ManageCompetencies from './ManageCompetencies';
 import ManageAttributes from './ManageAttributes';
 import CompetencyDetails from './CompetencyDetails';
 import ResourcesList from './ResourcesList';
@@ -69,18 +69,18 @@ const Root = () => (
         <main>
           <Switch>
             <Route
-              path="/framework/:name/manage/competencies/:cid/manage-attributes"
+              path="/framework/:framework/manage/competencies/:cid/manage-attributes"
               component={ManageAttributes}
             />
             <Route
-              path="/framework/:name/manage/competencies"
-              component={ManageCompetency}
+              path="/framework/:framework/manage/competencies/:cid?"
+              component={ManageCompetencies}
             />
             <Route
-              path="/framework/:name/competency/details/:id"
+              path="/framework/:framework/competency/details/:cid"
               component={CompetencyDetails}
             />
-            <Route path="/framework/:name" component={Competencies} />
+            <Route path="/framework/:framework" component={Competencies} />
             <Route
               path="/training-resource/edit/:nid"
               component={ResourceEdit}

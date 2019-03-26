@@ -1,10 +1,4 @@
 import React from 'react';
-import Cookies from 'universal-cookie';
-import { Switch, Route } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-import ManageCompetency from './ManageCompetency';
-
-const $ = window.$;
 
 class changePassword extends React.Component {
   constructor(props) {
@@ -89,10 +83,4 @@ class changePassword extends React.Component {
   }
 }
 
-const changePass = () => (
-  <Switch>
-    <Route exact path="/user/change/password" component={changePassword} />
-  </Switch>
-);
-
-export default changePass;
+export default changePassword;

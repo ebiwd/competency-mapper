@@ -1,8 +1,5 @@
 import React from 'react';
-import Cookies from 'universal-cookie';
-import { Route, Link } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
-import ManageCompetency from './ManageCompetency';
+import { Link } from 'react-router-dom';
 
 const $ = window.$;
 

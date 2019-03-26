@@ -1,19 +1,16 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
-import ReactModal from 'react-modal';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CompetencyList from './CompetencyList';
-import InlineEdit from 'react-edit-inline';
-const $ = window.$;
-let flag = false;
+import { Link } from 'react-router-dom';
 
-class ManageCompetency extends React.Component {
+import InlineEdit from 'react-edit-inline';
+
+class ManageCompetencies extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
-      path: this.props.location.pathname.split('/'),
+      goToDomainId: props.match.params.cid,
+      framework :  props.match.params.framework,
+      path: props.location.pathname.split('/'),
       csrf: '',
       domainID: '',
       domainUUID: '',
@@ -40,6 +37,13 @@ class ManageCompetency extends React.Component {
         this.setState({ updateFlag: false });
       }, 1000);
       console.log('componentDidUpdate');
+    }
+
+    if(this.state.goToDomainId){
+        const ref = this.refs[this.state.goToDomainId];
+        if(ref){
+            ref.scrollIntoView();
+        }
     }
   }
 
@@ -303,8 +307,8 @@ class ManageCompetency extends React.Component {
 
     competencies = this.state.data.map(item =>
       item.domains.map((domain, did) => (
-        <tbody key={item.nid + domain.nid}>
-          <tr key={domain.nid} className="white-color secondary-background">
+        <tbody key={domain.nid} ref={domain.nid}>
+          <tr className="white-color secondary-background">
             <td />
             <td>{did + 1}</td>
             <td>
@@ -352,37 +356,21 @@ class ManageCompetency extends React.Component {
               </td>
               <td>
                 {competency.archived === 1 ? (
-                  <a
-                    href="#"
-                    onClick={this.archiveHandle.bind(this, competency.id, 1)}
-                  >
-                    {' '}
+                  <a onClick={this.archiveHandle.bind(this, competency.id, 1)}>
                     <i className="fas fa-toggle-on" />
                   </a>
                 ) : (
-                  <a
-                    href="#"
-                    onClick={this.archiveHandle.bind(this, competency.id, 0)}
-                  >
-                    {' '}
+                  <a onClick={this.archiveHandle.bind(this, competency.id, 0)}>
                     <i className="fas fa-toggle-off" />
                   </a>
                 )}
               </td>
               <td>
-                <a
-                  href={
-                    process.env.PUBLIC_URL +
-                    '/#/framework/' +
-                    framework.toLowerCase() +
-                    '/manage/competencies/' +
-                    competency.id +
-                    '/manage-attributes'
-                  }
+                <Link
+                 to={`/framework/${framework.toLowerCase()}/manage/competencies/${competency.id}/manage-attributes`}
                 >
-                  {' '}
-                  <i className="fas fa-sitemap" />{' '}
-                </a>{' '}
+                  <i className="fas fa-sitemap" />
+                </Link>
               </td>
             </tr>
           ))}
@@ -445,15 +433,5 @@ class ManageCompetency extends React.Component {
     );
   }
 }
-
-const ManageCompetencies = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:name/manage/competencies"
-      component={ManageCompetency}
-    />
-  </Switch>
-);
 
 export default ManageCompetencies;
