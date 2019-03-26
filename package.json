@@ -1,8 +1,9 @@
 {
   "name": "competency-app-client",
   "version": "0.1.0",
+  "license": "Apache-2.0",
   "private": true,
-  "homepage": "https://esanzgar.github.io/competency-mapper/",
+  "homepage": "https://ebiwd.github.io/competency-mapper/",
   "dependencies": {
     "html-react-parser": "^0.6.2",
     "rc-progress": "^2.3.0",
