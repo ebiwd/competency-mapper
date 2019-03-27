@@ -1,12 +1,8 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Parser from 'html-react-parser';
 
-// The Roster component matches one of two different routes
-// depending on the full pathname
-const $ = window.$;
-
-class FrameworksList extends React.Component {
+class Frameworks extends React.Component {
   constructor(props) {
     super(props);
     this.state = { data: [] };
@@ -21,12 +17,10 @@ class FrameworksList extends React.Component {
           frameworkID: ''
         });
       });
-    $(document).foundation();
   }
 
   render() {
-    let data = this.state.data;
-    let temp = 0;
+    const data = this.state.data;
 
     return (
       <div>
@@ -37,10 +31,7 @@ class FrameworksList extends React.Component {
               Introduction to the idea of competency frameworks and their
               linkage with training resources. Two lines of description should
               look good and then links can be given to{' '}
-              <a href="#" className="readmore">
-                {' '}
-                read more{' '}
-              </a>
+              <a className="readmore">read more</a>
             </p>
             <table className="responsive-table hover">
               <tbody>
@@ -49,13 +40,7 @@ class FrameworksList extends React.Component {
                     if (id <= 2) {
                       return (
                         <td className="callout text-center">
-                          <a
-                            href={
-                              process.env.PUBLIC_URL +
-                              '/#/framework/' +
-                              item.title.toLowerCase()
-                            }
-                          >
+                          <Link to={`/framework/${item.title.toLowerCase()}`}>
                             <div style={{ height: '170px' }}>
                               <img
                                 src={
@@ -78,7 +63,7 @@ class FrameworksList extends React.Component {
                                 )}
                               </p>
                             </div>
-                          </a>
+                          </Link>
                         </td>
                       );
                     }
@@ -89,13 +74,7 @@ class FrameworksList extends React.Component {
                     if (id >= 3) {
                       return (
                         <td className="callout text-center">
-                          <a
-                            href={
-                              process.env.PUBLIC_URL +
-                              '/#/framework/' +
-                              item.title.toLowerCase()
-                            }
-                          >
+                          <Link to={`/framework/${item.title.toLowerCase()}`}>
                             <div style={{ height: '170px' }}>
                               <img
                                 src={
@@ -118,7 +97,7 @@ class FrameworksList extends React.Component {
                                 )}
                               </p>
                             </div>
-                          </a>
+                          </Link>
                         </td>
                       );
                     }
@@ -132,11 +111,5 @@ class FrameworksList extends React.Component {
     );
   }
 }
-
-const Frameworks = () => (
-  <Switch>
-    <Route exact path="/" component={FrameworksList} />
-  </Switch>
-);
 
 export default Frameworks;

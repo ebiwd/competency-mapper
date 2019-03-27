@@ -11,8 +11,6 @@ class User extends React.Component {
       roles: '',
       user: ''
     };
-    this.handleLogin = this.handleLogin.bind(this);
-    this.handleLogout = this.handleLogout.bind(this);
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -23,12 +21,15 @@ class User extends React.Component {
 
   componentDidMount() {
     if (localStorage.getItem('roles')) {
-      this.setState({ roles: localStorage.getItem('roles'), user: localStorage.getItem('user') });
+      this.setState({
+        roles: localStorage.getItem('roles'),
+        user: localStorage.getItem('user')
+      });
     }
-    $(this.refs.dropdown).foundation();
+    $(this.refs.nav).foundation();
   }
 
-  handleLogin(e) {
+  handleLogin() {
     let username = this.refs.username.value;
     let password = this.refs.password.value;
     let url =
@@ -59,15 +60,15 @@ class User extends React.Component {
           // console.log(data);
           this.setState({ roles: localStorage.getItem('roles') });
           this.setState({ user: localStorage.getItem('user') });
+          // TODO: remove this
           setTimeout(() => {
             window.location.reload();
           }, 1000);
         }
       });
-    e.preventDefault();
   }
 
-  handleLogout(e) {
+  handleLogout() {
     fetch(
       'https://dev-competency-mapper.pantheonsite.io/user/logout?csrf_token=' +
         localStorage.getItem('csrf_token'),
@@ -90,7 +91,6 @@ class User extends React.Component {
           window.location.reload();
         }, 1000)
       );
-    e.preventDefault();
   }
 
   render() {
@@ -106,11 +106,17 @@ class User extends React.Component {
       }
 
       output = (
-        <div>
-          <ul ref="dropdown" className="dropdown menu" data-dropdown-menu>
+        <nav ref="nav" id="local-nav">
+          <ul
+            className="dropdown menu float-left"
+            data-dropdown-menu
+            data-description="navigational"
+          >
             {localStorage.getItem('roles').includes('framework_manager') ? (
               <li>
-                <a>Manage Competencies</a>
+                <a tabindex="0" className="dropdown-on-dark-background">
+                  Manage Competencies
+                </a>
                 <ul className="menu vertical">
                   <li>
                     <Link to="/framework/bioexcel/manage/competencies">
@@ -118,7 +124,9 @@ class User extends React.Component {
                     </Link>
                   </li>
                   <li>
-                    <Link to="/framework/corbel/manage/competencies">CORBEL</Link>
+                    <Link to="/framework/corbel/manage/competencies">
+                      CORBEL
+                    </Link>
                   </li>
                   <li>
                     <Link to="/framework/iscb/manage/competencies">ISCB</Link>
@@ -138,30 +146,34 @@ class User extends React.Component {
             )}
             {localStorage.getItem('roles').includes('content_manager') ? (
               <li>
-                <Link to="/all-training-resources">Manage Training Resources</Link>
+                <Link to="/all-training-resources">
+                  Manage Training Resources
+                </Link>
               </li>
             ) : (
               ''
             )}
+          </ul>
+          <ul
+            className="dropdown menu float-right"
+            data-dropdown-menu
+            data-description="user tasks"
+          >
             <li>
-              <a>
-                <i className="fas fa-user" /> Hi {this.state.user}{' '}
+              <a tabindex="0" className="dropdown-on-light-background">
+                <i className="fas fa-user" /> Hi {this.state.user}
               </a>
               <ul className="menu vertical">
                 <li>
-                  {' '}
-                  <Link to={'/user/change/password'}>Change password</Link>{' '}
+                  <Link to={'/user/change/password'}>Change password</Link>
                 </li>
                 <li>
-                  {' '}
-                  <Link to={'#'} onClick={this.handleLogout.bind(this)}>
-                    Logout
-                  </Link>{' '}
+                  <a onClick={() => this.handleLogout()}>Logout</a>
                 </li>
               </ul>
             </li>
           </ul>
-        </div>
+        </nav>
       );
     } else {
       output = (
@@ -183,7 +195,7 @@ class User extends React.Component {
                 />
               </div>
               <div className="large-3 columns">
-                <a className='button' onClick={this.handleLogin.bind(this)}>
+                <a className="button" onClick={() => this.handleLogin()}>
                   <i className="fa fa-key" aria-hidden="true" /> Login
                 </a>
               </div>

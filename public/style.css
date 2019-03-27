@@ -1,137 +1,15 @@
 #masthead {
-  background-color: rgb(17, 17, 17);
   background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg');
-  max-width: 2903.7px;
-  margin-top: 0px;
-  bottom: auto;
-  top: 0px;
 }
 
-.Modal {
-  position: fixed;
-  top: 50px;
-  /*left: 50px;*/
-  /*right: 50px;*/
-  bottom: 50px;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  width: 65%;
-  height: 90%;
-  overflow-y: scroll;
-  margin-left: 10%;
-  margin-right: auto;
+.dropdown-on-light-background {
+  color: black !important;
 }
 
-.Overlay {
+.dropdown-on-light-background::after {
+  border-color: black transparent transparent !important;
 }
 
-.ModalForm {
-  position: absolute;
-  top: 30%;
-  left: 40%;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  width: 350px;
-  height: 250px;
-  overflow-y: scroll;
-}
-
-.ModalCompetency {
-  position: absolute;
-  top: 30%;
-  left: 40%;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  min-width: 550px;
-  min-height: 450px;
-  position: absolute;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.ModalCompetencyEdit {
-  position: absolute;
-  top: 40%;
-  left: 30%;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  min-width: 550px;
-  min-height: 150px;
-  position: absolute;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.ModalAttribute {
-  position: absolute;
-  top: 30%;
-  left: 25%;
-  padding: 20px;
-  border-radius: 10px;
-  border: 2px solid #ccc;
-  background-color: #f8f8f8;
-  min-width: 550px;
-  min-height: 450px;
-  position: absolute;
-  overflow-y: auto;
-  z-index: 1000;
-}
-
-.OverlayForm {
-}
-
-/* Tooltip container */
-.tooltip-td {
-  position: relative;
-
-  /*border-bottom: 1px dotted black;  If you want dots under the hoverable text */
-}
-
-/* Tooltip text */
-.tooltip-td .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  padding: 5px 0;
-  border-radius: 6px;
-  display: inline;
-  /* Position the tooltip text - see examples below! */
-  position: absolute;
-  z-index: 1;
-  left: -100px;
-}
-
-/* Show the tooltip text when you mouse over the tooltip container */
-.tooltip-td:hover .tooltiptext {
-  visibility: visible;
-}
-
-.position-icon {
-  cursor: move;
-}
-
-ul#frm li {
-  display: inline;
-  border: 1px solid #fff;
-  left: -20px;
-}
-
-#footer-button {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  height: 100px;
-  background-color: #5c5c5c;
-  text-align: center;
-  padding: 5px;
+.dropdown-on-dark-background {
+  color: white !important;
 }

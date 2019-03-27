@@ -36,7 +36,7 @@ class ManageAttributes extends React.Component {
   }
 
   async componentDidMount() {
-    window.scroll(0,0);
+    window.scroll(0, 0);
     const promise1 = this.fetchCompetency();
     const promise2 = this.fetchFramework();
     await promise1;
@@ -48,7 +48,7 @@ class ManageAttributes extends React.Component {
     const myFlat = array =>
       Array.prototype.flat
         ? array.flat()
-        : array.reduce((prev, curr) => [...prev, ...curr]);
+        : array.reduce((acc, cur) => [...acc, ...cur]);
 
     return myFlat(
       data.map(item =>
