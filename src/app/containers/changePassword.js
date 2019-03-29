@@ -2,7 +2,7 @@ import React from 'react';
 
 import { apiUrl } from '../services/competency/competency';
 
-class changePassword extends React.Component {
+class ChangePassword extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -79,4 +79,4 @@ class changePassword extends React.Component {
   }
 }
 
-export default changePassword;
+export default ChangePassword;

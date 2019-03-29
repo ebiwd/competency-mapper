@@ -2,8 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, Link } from 'react-router-dom';
 
-import User from './User';
 import Roster from './Roster';
+import User from './User';
 import Frameworks from './Frameworks';
 import Competencies from './CompetencyList';
 import ManageCompetencies from './ManageCompetencies';
@@ -13,7 +13,7 @@ import ResourcesList from './ResourcesList';
 import ResourceDetails from './ResourceDetails';
 import ResourceCreate from './ResourceCreate';
 import ResourceEdit from './ResourceEdit';
-import changePassword from './changePassword';
+import ChangePassword from './ChangePassword';
 
 const $ = window.$;
 class Root extends React.Component {
@@ -81,7 +81,7 @@ class Root extends React.Component {
                 <Route path="/roster" component={Roster} />
                 <Route
                   path="/user/change/password"
-                  component={changePassword}
+                  component={ChangePassword}
                 />
                 <Route path="/" component={Frameworks} />
               </Switch>
