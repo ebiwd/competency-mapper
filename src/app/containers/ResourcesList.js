@@ -43,15 +43,14 @@ class ResourcesList extends React.Component {
   }
 
   fetchData() {
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
         this.setState({ csrf: findresponse2 });
       });
 
-    let resourcesURL =
-      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
+    let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=json`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -78,7 +77,7 @@ class ResourcesList extends React.Component {
       archivedStatus = true;
     }
     let token = localStorage.getItem('csrf_token');
-    fetch(`${apiUrl}` + '/node/' + rid + '?_format=hal_json', {
+    fetch(`${apiUrl}/node/` + rid + '?_format=hal_json', {
       credentials: 'include',
       method: 'PATCH',
       cookies: 'x-access-token',
@@ -91,7 +90,7 @@ class ResourcesList extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}` + '/rest/type/node/training_resource'
+            href: `${apiUrl}/rest/type/node/training_resource`
           }
         },
         field_archived: [

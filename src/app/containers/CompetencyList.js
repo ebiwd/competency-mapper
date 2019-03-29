@@ -130,7 +130,7 @@ class CompetencyList extends React.Component {
 
     this.increase();
 
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -139,7 +139,7 @@ class CompetencyList extends React.Component {
 
     let frameworkID = this.state.framework[2];
     let fetchCompetencyList =
-      `${apiUrl}` + '/api/v1/framework/' + frameworkID + '?_format=json';
+      `${apiUrl}/api/v1/framework/` + frameworkID + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -148,7 +148,7 @@ class CompetencyList extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails = `${apiUrl}` + '/api/v1/framework?_format=json';
+    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
@@ -157,8 +157,7 @@ class CompetencyList extends React.Component {
         });
       });
 
-    let resourcesURL =
-      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
+    let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=json`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {

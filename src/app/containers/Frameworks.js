@@ -11,7 +11,7 @@ class Frameworks extends React.Component {
   }
 
   componentDidMount() {
-    fetch(`${apiUrl}` + '/api/frameworks')
+    fetch(`${apiUrl}/api/frameworks`)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({

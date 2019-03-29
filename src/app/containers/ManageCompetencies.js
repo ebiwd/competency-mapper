@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import InlineEdit from 'react-edit-inline';
 
-import { apiUrl} from '../services/competency/competency';
+import { apiUrl } from '../services/competency/competency';
 
 class ManageCompetencies extends React.Component {
   constructor(props) {
@@ -11,7 +11,7 @@ class ManageCompetencies extends React.Component {
     this.state = {
       data: [],
       goToDomainId: props.match.params.cid,
-      framework :  props.match.params.framework,
+      framework: props.match.params.framework,
       path: props.location.pathname.split('/'),
       csrf: '',
       domainID: '',
@@ -41,11 +41,11 @@ class ManageCompetencies extends React.Component {
       console.log('componentDidUpdate');
     }
 
-    if(this.state.goToDomainId){
-        const ref = this.refs[this.state.goToDomainId];
-        if(ref){
-            ref.scrollIntoView();
-        }
+    if (this.state.goToDomainId) {
+      const ref = this.refs[this.state.goToDomainId];
+      if (ref) {
+        ref.scrollIntoView();
+      }
     }
   }
 
@@ -60,9 +60,7 @@ class ManageCompetencies extends React.Component {
   fetchData() {
     let framework = this.state.path[2].toLowerCase();
     let fetchCompetencyList =
-      `${apiUrl}` + '/api/v1/framework/' +
-      framework +
-      '?_format=json';
+      `${apiUrl}/api/v1/framework/` + framework + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -78,91 +76,77 @@ class ManageCompetencies extends React.Component {
     let title = this.refs.title.value;
     let domainUUID = this.refs.domain_ref.value;
 
-    fetch(
-      `${apiUrl}` + '/node?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'POST',
-        headers: {
-          'X-CSRF-Token': token,
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json'
-        },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                `${apiUrl}` + '/rest/type/node/competency'
-            },
-            [`${apiUrl}` + '/rest/relation/node/competency/field_domain']: {
-              href:
-                `${apiUrl}` + '/node/' +
-                domainID +
-                '?_format=hal_json'
-            },
-            [`${apiUrl}` + '/rest/relation/node/competency/uid']: {
-              href:
-                `${apiUrl}` + '/user/1?_format=hal_json'
-            }
+    fetch(`${apiUrl}/node?_format=hal_json`, {
+      credentials: 'include',
+      method: 'POST',
+      headers: {
+        'X-CSRF-Token': token,
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}/rest/type/node/competency`
           },
-          title: [
-            {
-              value: title
-            }
-          ],
-          type: [
-            {
-              target_id: 'competency'
-            }
-          ],
-
-          _embedded: {
-            [`${apiUrl}` + '/rest/relation/node/competency/field_domain']: [
-              {
-                _links: {
-                  self: {
-                    href:
-                      `${apiUrl}` + '/node/' +
-                      domainID +
-                      '?_format=hal_json'
-                  },
-                  type: {
-                    href:
-                      `${apiUrl}` + '/rest/type/node/domain'
-                  }
-                },
-                uuid: [
-                  {
-                    value: domainUUID
-                  }
-                ],
-                lang: 'en'
-              }
-            ],
-            [`${apiUrl}` + '/rest/relation/node/competency/uid']: [
-              {
-                _links: {
-                  self: {
-                    href:
-                      `${apiUrl}` + '/user/1?_format=hal_json'
-                  },
-                  type: {
-                    href:
-                      `${apiUrl}` + '/rest/type/user/user'
-                  }
-                },
-                uuid: [
-                  {
-                    value: 'a6a85d5c-1fd9-4324-ab73-fdc27987d8cc'
-                  }
-                ],
-                lang: 'en'
-              }
-            ]
+          [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
+            href: `${apiUrl}/node/` + domainID + '?_format=hal_json'
+          },
+          [`${apiUrl}/rest/relation/node/competency/uid`]: {
+            href: `${apiUrl}/user/1?_format=hal_json`
           }
-        })
-      }
-    );
+        },
+        title: [
+          {
+            value: title
+          }
+        ],
+        type: [
+          {
+            target_id: 'competency'
+          }
+        ],
+
+        _embedded: {
+          [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+            {
+              _links: {
+                self: {
+                  href: `${apiUrl}/node/` + domainID + '?_format=hal_json'
+                },
+                type: {
+                  href: `${apiUrl}/rest/type/node/domain`
+                }
+              },
+              uuid: [
+                {
+                  value: domainUUID
+                }
+              ],
+              lang: 'en'
+            }
+          ],
+          [`${apiUrl}/rest/relation/node/competency/uid`]: [
+            {
+              _links: {
+                self: {
+                  href: `${apiUrl}/user/1?_format=hal_json`
+                },
+                type: {
+                  href: `${apiUrl}/rest/type/user/user`
+                }
+              },
+              uuid: [
+                {
+                  value: 'a6a85d5c-1fd9-4324-ab73-fdc27987d8cc'
+                }
+              ],
+              lang: 'en'
+            }
+          ]
+        }
+      })
+    });
     this.refs.title.value = '';
 
     this.setState({ updateFlag: true });
@@ -175,40 +159,34 @@ class ManageCompetencies extends React.Component {
     let cid = this.state.selectedCompetency;
     let token = localStorage.getItem('csrf_token');
     //alert(cid);
-    fetch(
-      `${apiUrl}` + '/node/' +
-        cid +
-        '?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': token,
-          Authorization: 'Basic'
+    fetch(`${apiUrl}/node/` + cid + '?_format=hal_json', {
+      credentials: 'include',
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}/rest/type/node/competency`
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                `${apiUrl}` + '/rest/type/node/competency'
-            }
-          },
-          title: [
-            {
-              value: title
-            }
-          ],
-          type: [
-            {
-              target_id: 'competency'
-            }
-          ]
-        })
-      }
-    );
+        title: [
+          {
+            value: title
+          }
+        ],
+        type: [
+          {
+            target_id: 'competency'
+          }
+        ]
+      })
+    });
     this.setState({ updateFlag: true });
   }
 
@@ -225,40 +203,34 @@ class ManageCompetencies extends React.Component {
       archivedStatus = true;
     }
     let token = localStorage.getItem('csrf_token');
-    fetch(
-      `${apiUrl}` + '/node/' +
-        cid +
-        '?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': token,
-          Authorization: 'Basic'
+    fetch(`${apiUrl}/node/` + cid + '?_format=hal_json', {
+      credentials: 'include',
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}/rest/type/node/competency`
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                `${apiUrl}` + '/rest/type/node/competency'
-            }
-          },
-          field_archived: [
-            {
-              value: archivedStatus
-            }
-          ],
-          type: [
-            {
-              target_id: 'competency'
-            }
-          ]
-        })
-      }
-    );
+        field_archived: [
+          {
+            value: archivedStatus
+          }
+        ],
+        type: [
+          {
+            target_id: 'competency'
+          }
+        ]
+      })
+    });
 
     this.setState({ updateFlag: true });
 
@@ -369,7 +341,9 @@ class ManageCompetencies extends React.Component {
               </td>
               <td>
                 <Link
-                 to={`/framework/${framework.toLowerCase()}/manage/competencies/${competency.id}/manage-attributes`}
+                  to={`/framework/${framework.toLowerCase()}/manage/competencies/${
+                    competency.id
+                  }/manage-attributes`}
                 >
                   <i className="fas fa-sitemap" />
                 </Link>

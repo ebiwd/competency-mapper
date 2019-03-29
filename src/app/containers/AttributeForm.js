@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { apiUrl} from '../services/competency/competency';
+import { apiUrl } from '../services/competency/competency';
 
 class AttributeForm extends React.Component {
   constructor(props) {
@@ -125,97 +125,80 @@ class AttributeForm extends React.Component {
     attributes.map((item, i) => {
       attributeTypeID = this.state.valuesTypeID[i];
       attributeTypeUUID = this.state.valuesType[i];
-      fetch(
-        `${apiUrl}` + '/node?_format=hal_json',
-        {
-          method: 'POST',
-          cookies: 'x-access-token',
-          headers: {
-            Accept: 'application/hal+json',
-            'Content-Type': 'application/hal+json',
-            'X-CSRF-Token': 'O1YI90dygefMwzYqQbEavAs7poklc9lLXCL8MwXYdaQ',
-            Authorization: 'Basic'
-          },
-          body: JSON.stringify({
-            _links: {
-              type: {
-                href:
-                  `${apiUrl}` + '/rest/type/node/attribute'
-              },
-              [`${apiUrl}` + '/rest/relation/node/attribute/field_competency']: {
-                href:
-                  `${apiUrl}` + '/node/' +
-                  competencyID +
-                  '?_format=hal_json'
-              },
-              [`${apiUrl}` + '/rest/relation/node/attribute/field_attribute_type']: {
-                href:
-                  `${apiUrl}` + '/node/' +
-                  attributeTypeID +
-                  '?_format=hal_json'
-              }
+      fetch(`${apiUrl}/node?_format=hal_json`, {
+        method: 'POST',
+        cookies: 'x-access-token',
+        headers: {
+          Accept: 'application/hal+json',
+          'Content-Type': 'application/hal+json',
+          'X-CSRF-Token': 'O1YI90dygefMwzYqQbEavAs7poklc9lLXCL8MwXYdaQ',
+          Authorization: 'Basic'
+        },
+        body: JSON.stringify({
+          _links: {
+            type: {
+              href: `${apiUrl}/rest/type/node/attribute`
             },
-            title: [
-              {
-                value: item
-              }
-            ],
-            type: [
-              {
-                target_id: 'attribute'
-              }
-            ],
-
-            _embedded: {
-              [`${apiUrl}` + '/rest/relation/node/attribute/field_competency']: [
-                {
-                  _links: {
-                    self: {
-                      href:
-                        `${apiUrl}` + '/node/' +
-                        competencyID +
-                        '?_format=hal_json'
-                    },
-                    type: {
-                      href:
-                        `${apiUrl}` + '/rest/type/node/competency'
-                    }
-                  },
-                  uuid: [
-                    {
-                      value: competecyUUID //"b20064ef-5cbf-4147-90f8-08e7a6693e17"
-                    }
-                  ],
-                  lang: 'en'
-                }
-              ],
-
-              [`${apiUrl}` + '/rest/relation/node/attribute/field_attribute_type']: [
-                {
-                  _links: {
-                    self: {
-                      href:
-                        `${apiUrl}` + '/node/' +
-                        attributeTypeID +
-                        '?_format=hal_json'
-                    },
-                    type: {
-                      href:
-                        `${apiUrl}` + '/rest/type/node/attribute_type'
-                    }
-                  },
-                  uuid: [
-                    {
-                      value: attributeTypeUUID
-                    }
-                  ],
-                  lang: 'en'
-                }
-              ]
+            [`${apiUrl}/rest/relation/node/attribute/field_competency`]: {
+              href: `${apiUrl}/node/` + competencyID + '?_format=hal_json'
+            },
+            [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
+              href: `${apiUrl}/node/` + attributeTypeID + '?_format=hal_json'
             }
-          })
-        }
-      );
+          },
+          title: [
+            {
+              value: item
+            }
+          ],
+          type: [
+            {
+              target_id: 'attribute'
+            }
+          ],
+
+          _embedded: {
+            [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
+              {
+                _links: {
+                  self: {
+                    href: `${apiUrl}/node/` + competencyID + '?_format=hal_json'
+                  },
+                  type: {
+                    href: `${apiUrl}/rest/type/node/competency`
+                  }
+                },
+                uuid: [
+                  {
+                    value: competecyUUID //"b20064ef-5cbf-4147-90f8-08e7a6693e17"
+                  }
+                ],
+                lang: 'en'
+              }
+            ],
+
+            [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
+              {
+                _links: {
+                  self: {
+                    href:
+                      `${apiUrl}/node/` + attributeTypeID + '?_format=hal_json'
+                  },
+                  type: {
+                    href: `${apiUrl}/rest/type/node/attribute_type`
+                  }
+                },
+                uuid: [
+                  {
+                    value: attributeTypeUUID
+                  }
+                ],
+                lang: 'en'
+              }
+            ]
+          }
+        })
+      });
     });
 
     event.preventDefault();

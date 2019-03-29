@@ -34,7 +34,7 @@ class User extends React.Component {
   handleLogin() {
     let username = this.refs.username.value;
     let password = this.refs.password.value;
-    let url = `${apiUrl}` + '/user/login?_format=json';
+    let url = `${apiUrl}/user/login?_format=json`;
     fetch(url, {
       credentials: 'include',
       method: 'POST',

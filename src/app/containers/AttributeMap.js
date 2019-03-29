@@ -1,7 +1,7 @@
 import React from 'react';
 import 'rc-progress/assets/index.css';
 
-import { apiUrl} from '../services/competency/competency';
+import { apiUrl } from '../services/competency/competency';
 
 const $ = window.$;
 
@@ -36,10 +36,9 @@ class AttributeMap extends React.Component {
       let payload = {
         _links: {
           type: {
-            href:
-              `${apiUrl}` + '/rest/type/node/training_resource'
+            href: `${apiUrl}/rest/type/node/training_resource`
           },
-          [`${apiUrl}` + '/rest/relation/node/training_resource/field_attribute_mapped']: {
+          [`${apiUrl}/rest/relation/node/training_resource/field_attribute_mapped`]: {
             href:
               'http://dev-competency-mapper.pantheonsite.io/node/' +
               attributeIDs[0][1] +
@@ -56,14 +55,10 @@ class AttributeMap extends React.Component {
         embedded_string.push({
           _links: {
             self: {
-              href:
-                `${apiUrl}` + '/node/' +
-                attributeIDs[i][1] +
-                '?_format=hal_json'
+              href: `${apiUrl}/node/` + attributeIDs[i][1] + '?_format=hal_json'
             },
             type: {
-              href:
-                `${apiUrl}` + '/rest/type/node/attribute'
+              href: `${apiUrl}/rest/type/node/attribute`
             }
           },
           uuid: [
@@ -75,26 +70,21 @@ class AttributeMap extends React.Component {
       }
 
       payload._embedded = {
-        [`${apiUrl}` + '/rest/relation/node/training_resource/field_attribute_mapped']: embedded_string
+        [`${apiUrl}/rest/relation/node/training_resource/field_attribute_mapped`]: embedded_string
       };
 
-      fetch(
-        `${apiUrl}` + '/node/' +
-          this.state.resourceID +
-          '?_format=hal_json',
-        {
-          credentials: 'include',
-          method: 'PATCH',
-          cookies: 'x-access-token',
-          headers: {
-            Accept: 'application/hal+json',
-            'Content-Type': 'application/hal+json',
-            'X-CSRF-Token': token,
-            Authorization: 'Basic'
-          },
-          body: JSON.stringify(payload)
-        }
-      );
+      fetch(`${apiUrl}/node/` + this.state.resourceID + '?_format=hal_json', {
+        credentials: 'include',
+        method: 'PATCH',
+        cookies: 'x-access-token',
+        headers: {
+          Accept: 'application/hal+json',
+          'Content-Type': 'application/hal+json',
+          'X-CSRF-Token': token,
+          Authorization: 'Basic'
+        },
+        body: JSON.stringify(payload)
+      });
     }
 
     this.props.handleCloseModal();
@@ -164,8 +154,7 @@ class AttributeMap extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL =
-      `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -173,9 +162,7 @@ class AttributeMap extends React.Component {
       });
 
     let fetchCompetencyList =
-      `${apiUrl}` + '/api/v1/framework/' +
-      this.state.framework +
-      '?_format=json';
+      `${apiUrl}/api/v1/framework/` + this.state.framework + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -184,8 +171,7 @@ class AttributeMap extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails =
-      `${apiUrl}` + '/api/v1/framework?_format=json';
+    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
@@ -194,11 +180,7 @@ class AttributeMap extends React.Component {
         });
       });
 
-    fetch(
-      `${apiUrl}` + '/node/' +
-        this.state.resourceID +
-        '?_format=hal_json'
-    )
+    fetch(`${apiUrl}/node/` + this.state.resourceID + '?_format=hal_json')
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({

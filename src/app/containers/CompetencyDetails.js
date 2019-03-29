@@ -28,7 +28,7 @@ class CompetencyDetails extends React.Component {
   componentDidMount() {
     this.setState({ cid: this.state.path[5] });
 
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -37,7 +37,7 @@ class CompetencyDetails extends React.Component {
 
     let frameworkID = this.state.path[2].toLowerCase();
     let fetchCompetencyList =
-      `${apiUrl}` + '/api/v1/framework/' + frameworkID + '?_format=json';
+      `${apiUrl}/api/v1/framework/` + frameworkID + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -46,7 +46,7 @@ class CompetencyDetails extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails = `${apiUrl}` + '/api/v1/framework?_format=json';
+    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
@@ -55,7 +55,7 @@ class CompetencyDetails extends React.Component {
         });
       });
 
-    fetch(`${apiUrl}` + '/api/v1/training-resources/all?_format=json')
+    fetch(`${apiUrl}/api/v1/training-resources/all?_format=json`)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({ resources: findresponse });

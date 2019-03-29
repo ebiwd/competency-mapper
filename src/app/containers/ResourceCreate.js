@@ -76,7 +76,7 @@ class ResourceCreate extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -106,7 +106,7 @@ class ResourceCreate extends React.Component {
 
     //alert(learning_outcomes);
 
-    fetch(`${apiUrl}` + '/node?_format=hal_json', {
+    fetch(`${apiUrl}/node?_format=hal_json`, {
       credentials: 'include',
       method: 'POST',
       cookies: 'x-access-token',
@@ -119,7 +119,7 @@ class ResourceCreate extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}` + '/rest/type/node/training_resource'
+            href: `${apiUrl}/rest/type/node/training_resource`
           }
         },
         title: [

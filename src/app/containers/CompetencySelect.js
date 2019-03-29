@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import 'rc-progress/assets/index.css';
 
-import { apiUrl} from '../services/competency/competency';
+import { apiUrl } from '../services/competency/competency';
 
 const $ = window.$;
 
@@ -24,8 +24,7 @@ class CompetencySelect extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL =
-      `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -44,10 +43,9 @@ class CompetencySelect extends React.Component {
       let payload = {
         _links: {
           type: {
-            href:
-              `${apiUrl}` + '/rest/type/node/training_resource'
+            href: `${apiUrl}/rest/type/node/training_resource`
           },
-          [`${apiUrl}` + '/rest/relation/node/training_resource/field_competency_mapped']: {
+          [`${apiUrl}/rest/relation/node/training_resource/field_competency_mapped`]: {
             href:
               'http://dev-competency-mapper.pantheonsite.io/node/' +
               competencyIDs[0][1] +
@@ -65,13 +63,10 @@ class CompetencySelect extends React.Component {
           _links: {
             self: {
               href:
-                `${apiUrl}` + '/node/' +
-                competencyIDs[i][1] +
-                '?_format=hal_json'
+                `${apiUrl}/node/` + competencyIDs[i][1] + '?_format=hal_json'
             },
             type: {
-              href:
-                `${apiUrl}` + '/rest/type/node/competency'
+              href: `${apiUrl}/rest/type/node/competency`
             }
           },
           uuid: [
@@ -83,25 +78,20 @@ class CompetencySelect extends React.Component {
       }
 
       payload._embedded = {
-        [`${apiUrl}` + '/rest/relation/node/training_resource/field_competency_mapped']: embedded_string
+        [`${apiUrl}/rest/relation/node/training_resource/field_competency_mapped`]: embedded_string
       };
 
-      fetch(
-        `${apiUrl}` + '/node/' +
-          this.state.resourceID +
-          '?_format=hal_json',
-        {
-          method: 'PATCH',
-          cookies: 'x-access-token',
-          headers: {
-            Accept: 'application/hal+json',
-            'Content-Type': 'application/hal+json',
-            'X-CSRF-Token': this.state.csrf,
-            Authorization: 'Basic'
-          },
-          body: JSON.stringify(payload)
-        }
-      );
+      fetch(`${apiUrl}/node/` + this.state.resourceID + '?_format=hal_json', {
+        method: 'PATCH',
+        cookies: 'x-access-token',
+        headers: {
+          Accept: 'application/hal+json',
+          'Content-Type': 'application/hal+json',
+          'X-CSRF-Token': this.state.csrf,
+          Authorization: 'Basic'
+        },
+        body: JSON.stringify(payload)
+      });
     }
 
     //this.props.handleCloseModal();
@@ -120,8 +110,7 @@ class CompetencySelect extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL =
-      `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -129,9 +118,7 @@ class CompetencySelect extends React.Component {
       });
 
     let fetchCompetencyList =
-      `${apiUrl}` + '/api/v1/framework/' +
-      this.state.framework +
-      '?_format=json';
+      `${apiUrl}/api/v1/framework/` + this.state.framework + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -140,8 +127,7 @@ class CompetencySelect extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails =
-      `${apiUrl}` + '/api/v1/framework?_format=json';
+    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {

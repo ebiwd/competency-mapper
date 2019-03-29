@@ -17,7 +17,7 @@ class changePassword extends React.Component {
     let old = this.refs.old.value;
     let new1 = this.refs.new1.value;
     let uid = localStorage.getItem('userid');
-    fetch(`${apiUrl}` + '/user/' + uid + '/password?_format=json', {
+    fetch(`${apiUrl}/user/` + uid + '/password?_format=json', {
       credentials: 'include',
       method: 'PATCH',
       headers: {
@@ -27,7 +27,7 @@ class changePassword extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}` + '/rest/type/user/user'
+            href: `${apiUrl}/rest/type/user/user`
           }
         },
         old: [

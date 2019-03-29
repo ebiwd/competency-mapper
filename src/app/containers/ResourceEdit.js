@@ -60,7 +60,7 @@ class ResourceEdit extends React.Component {
     this.setState({ nid: this.state.path[3] });
     let nid = this.state.path[3];
 
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -68,8 +68,7 @@ class ResourceEdit extends React.Component {
       });
 
     //let fetchResource = "http://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/"+nid+"?_format=json";
-    let fetchResource =
-      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
+    let fetchResource = `${apiUrl}/api/v1/training-resources/all?_format=json`;
     fetch(fetchResource)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -188,7 +187,7 @@ class EditForm extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -278,7 +277,7 @@ class EditForm extends React.Component {
     let keywords = this.refs.keywords.value;
     let csrf = localStorage.getItem('csrf_token');
 
-    fetch(`${apiUrl}` + '/node/' + nid + '?_format=hal_json', {
+    fetch(`${apiUrl}/node/` + nid + '?_format=hal_json', {
       method: 'PATCH',
       cookies: 'x-access-token',
       headers: {
@@ -290,7 +289,7 @@ class EditForm extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}` + '/rest/type/node/training_resource'
+            href: `${apiUrl}/rest/type/node/training_resource`
           }
         },
         title: [

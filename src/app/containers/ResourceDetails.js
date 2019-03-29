@@ -51,15 +51,14 @@ class ResourceDetails extends React.Component {
 
   fetchData() {
     let resourceID = this.state.resourcePath[2];
-    let csrfURL = `${apiUrl}` + '/rest/session/token';
+    let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
         this.setState({ csrf: findresponse2 });
       });
 
-    let resourcesURL =
-      `${apiUrl}` + '/api/v1/training-resources/all?_format=hal_json';
+    let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=hal_json`;
 
     fetch(resourcesURL)
       .then(Response => Response.json())
@@ -67,7 +66,7 @@ class ResourceDetails extends React.Component {
         this.setState({ resources: findresponse3 });
       });
 
-    fetch(`${apiUrl}` + '/api/v1/framework?_format=json')
+    fetch(`${apiUrl}/api/v1/framework?_format=json`)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({
