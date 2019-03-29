@@ -4,6 +4,8 @@ import ReactModal from 'react-modal';
 import AttributeMap from './AttributeMap.js';
 import Parser from 'html-react-parser';
 
+import { apiUrl } from '../services/competency/competency';
+
 const $ = window.$;
 
 class ResourceDetails extends React.Component {
@@ -49,8 +51,7 @@ class ResourceDetails extends React.Component {
 
   fetchData() {
     let resourceID = this.state.resourcePath[2];
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -58,7 +59,7 @@ class ResourceDetails extends React.Component {
       });
 
     let resourcesURL =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/all?_format=hal_json';
+      `${apiUrl}` + '/api/v1/training-resources/all?_format=hal_json';
 
     fetch(resourcesURL)
       .then(Response => Response.json())
@@ -66,9 +67,7 @@ class ResourceDetails extends React.Component {
         this.setState({ resources: findresponse3 });
       });
 
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework?_format=json'
-    )
+    fetch(`${apiUrl}` + '/api/v1/framework?_format=json')
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({

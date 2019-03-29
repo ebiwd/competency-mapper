@@ -11,6 +11,8 @@ import { CSVLink, CSVDownload } from 'react-csv';
 import 'rc-progress/assets/index.css';
 import Parser from 'html-react-parser';
 
+import { apiUrl } from '../services/competency/competency';
+
 const $ = window.$;
 
 class CompetencyList extends React.Component {
@@ -128,8 +130,7 @@ class CompetencyList extends React.Component {
 
     this.increase();
 
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -138,9 +139,7 @@ class CompetencyList extends React.Component {
 
     let frameworkID = this.state.framework[2];
     let fetchCompetencyList =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework/' +
-      frameworkID +
-      '?_format=json';
+      `${apiUrl}` + '/api/v1/framework/' + frameworkID + '?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -149,8 +148,7 @@ class CompetencyList extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework?_format=json';
+    let fetchFrameworkDetails = `${apiUrl}` + '/api/v1/framework?_format=json';
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
@@ -160,7 +158,7 @@ class CompetencyList extends React.Component {
       });
 
     let resourcesURL =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/all?_format=json';
+      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {

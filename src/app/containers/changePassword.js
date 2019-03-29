@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { apiUrl } from '../services/competency/competency';
+
 class changePassword extends React.Component {
   constructor(props) {
     super(props);
@@ -15,37 +17,31 @@ class changePassword extends React.Component {
     let old = this.refs.old.value;
     let new1 = this.refs.new1.value;
     let uid = localStorage.getItem('userid');
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/user/' +
-        uid +
-        '/password?_format=json',
-      {
-        credentials: 'include',
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'X-CSRF-Token': localStorage.getItem('csrf_token')
+    fetch(`${apiUrl}` + '/user/' + uid + '/password?_format=json', {
+      credentials: 'include',
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': localStorage.getItem('csrf_token')
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}` + '/rest/type/user/user'
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/user/user'
-            }
-          },
-          old: [
-            {
-              value: old
-            }
-          ],
-          new: [
-            {
-              target_id: new1
-            }
-          ]
-        })
-      }
-    )
+        old: [
+          {
+            value: old
+          }
+        ],
+        new: [
+          {
+            target_id: new1
+          }
+        ]
+      })
+    })
       .then(resp => resp)
       .then(data =>
         setTimeout(() => {

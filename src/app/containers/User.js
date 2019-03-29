@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { apiUrl } from '../services/competency/competency';
+
 const $ = window.$;
 
 class User extends React.Component {
@@ -32,8 +34,7 @@ class User extends React.Component {
   handleLogin() {
     let username = this.refs.username.value;
     let password = this.refs.password.value;
-    let url =
-      'https://dev-competency-mapper.pantheonsite.io/user/login?_format=json';
+    let url = `${apiUrl}` + '/user/login?_format=json';
     fetch(url, {
       credentials: 'include',
       method: 'POST',
@@ -70,7 +71,8 @@ class User extends React.Component {
 
   handleLogout() {
     fetch(
-      'https://dev-competency-mapper.pantheonsite.io/user/logout?csrf_token=' +
+      `${apiUrl}` +
+        '/user/logout?csrf_token=' +
         localStorage.getItem('csrf_token'),
       {
         credentials: 'include',

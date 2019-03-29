@@ -3,6 +3,8 @@ import { Switch, Route } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import 'rc-progress/assets/index.css';
 
+import { apiUrl} from '../services/competency/competency';
+
 const $ = window.$;
 
 class CompetencySelect extends React.Component {
@@ -23,7 +25,7 @@ class CompetencySelect extends React.Component {
 
   componentDidMount() {
     let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+      `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -43,9 +45,9 @@ class CompetencySelect extends React.Component {
         _links: {
           type: {
             href:
-              'https://dev-competency-mapper.pantheonsite.io/rest/type/node/training_resource'
+              `${apiUrl}` + '/rest/type/node/training_resource'
           },
-          'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/training_resource/field_competency_mapped': {
+          [`${apiUrl}` + '/rest/relation/node/training_resource/field_competency_mapped']: {
             href:
               'http://dev-competency-mapper.pantheonsite.io/node/' +
               competencyIDs[0][1] +
@@ -63,13 +65,13 @@ class CompetencySelect extends React.Component {
           _links: {
             self: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/node/' +
+                `${apiUrl}` + '/node/' +
                 competencyIDs[i][1] +
                 '?_format=hal_json'
             },
             type: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+                `${apiUrl}` + '/rest/type/node/competency'
             }
           },
           uuid: [
@@ -81,11 +83,11 @@ class CompetencySelect extends React.Component {
       }
 
       payload._embedded = {
-        'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/training_resource/field_competency_mapped': embedded_string
+        [`${apiUrl}` + '/rest/relation/node/training_resource/field_competency_mapped']: embedded_string
       };
 
       fetch(
-        'https://dev-competency-mapper.pantheonsite.io/node/' +
+        `${apiUrl}` + '/node/' +
           this.state.resourceID +
           '?_format=hal_json',
         {
@@ -119,7 +121,7 @@ class CompetencySelect extends React.Component {
 
   componentDidMount() {
     let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+      `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -127,7 +129,7 @@ class CompetencySelect extends React.Component {
       });
 
     let fetchCompetencyList =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework/' +
+      `${apiUrl}` + '/api/v1/framework/' +
       this.state.framework +
       '?_format=json';
     fetch(fetchCompetencyList)
@@ -139,7 +141,7 @@ class CompetencySelect extends React.Component {
       });
 
     let fetchFrameworkDetails =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework?_format=json';
+      `${apiUrl}` + '/api/v1/framework?_format=json';
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {

@@ -4,6 +4,8 @@ import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 
+import { apiUrl } from '../services/competency/competency';
+
 class ResourceEdit extends React.Component {
   constructor(props) {
     super(props);
@@ -58,8 +60,7 @@ class ResourceEdit extends React.Component {
     this.setState({ nid: this.state.path[3] });
     let nid = this.state.path[3];
 
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -68,7 +69,7 @@ class ResourceEdit extends React.Component {
 
     //let fetchResource = "http://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/"+nid+"?_format=json";
     let fetchResource =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/all?_format=json';
+      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
     fetch(fetchResource)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -187,8 +188,7 @@ class EditForm extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -278,99 +278,93 @@ class EditForm extends React.Component {
     let keywords = this.refs.keywords.value;
     let csrf = localStorage.getItem('csrf_token');
 
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
-        nid +
-        '?_format=hal_json',
-      {
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': csrf, //'yoM7eSiML2AI6A3FGH2EKCaX_agiJfmYkRIPL0MdPlI',
-          Authorization: 'Basic'
+    fetch(`${apiUrl}` + '/node/' + nid + '?_format=hal_json', {
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': csrf, //'yoM7eSiML2AI6A3FGH2EKCaX_agiJfmYkRIPL0MdPlI',
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}` + '/rest/type/node/training_resource'
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/training_resource'
-            }
-          },
-          title: [
-            {
-              value: title
-            }
-          ],
-          field_dates: [
-            {
-              value: dates
-            }
-          ],
-          field_end_date: [
-            {
-              value: dates2
-            }
-          ],
-          field_type: [
-            {
-              value: type
-            }
-          ],
-          field_description: [
-            {
-              value: description,
-              format: 'basic_html'
-            }
-          ],
-          field_location: [
-            {
-              value: location
-            }
-          ],
-          field_url: [
-            {
-              value: url
-            }
-          ],
-          field_target_audience: [
-            {
-              value: target_audience,
-              format: 'basic_html'
-            }
-          ],
-          field_learning_outcomes: [
-            {
-              value: learning_outcomes,
-              format: 'basic_html'
-            }
-          ],
-          field_keywords: [
-            {
-              value: keywords
-            }
-          ],
-          field_organisers: [
-            {
-              value: organisers,
-              format: 'basic_html'
-            }
-          ],
-          field_trainers: [
-            {
-              value: trainers,
-              format: 'basic_html'
-            }
-          ],
-          type: [
-            {
-              target_id: 'training_resource'
-            }
-          ]
-        })
-      }
-    );
+        title: [
+          {
+            value: title
+          }
+        ],
+        field_dates: [
+          {
+            value: dates
+          }
+        ],
+        field_end_date: [
+          {
+            value: dates2
+          }
+        ],
+        field_type: [
+          {
+            value: type
+          }
+        ],
+        field_description: [
+          {
+            value: description,
+            format: 'basic_html'
+          }
+        ],
+        field_location: [
+          {
+            value: location
+          }
+        ],
+        field_url: [
+          {
+            value: url
+          }
+        ],
+        field_target_audience: [
+          {
+            value: target_audience,
+            format: 'basic_html'
+          }
+        ],
+        field_learning_outcomes: [
+          {
+            value: learning_outcomes,
+            format: 'basic_html'
+          }
+        ],
+        field_keywords: [
+          {
+            value: keywords
+          }
+        ],
+        field_organisers: [
+          {
+            value: organisers,
+            format: 'basic_html'
+          }
+        ],
+        field_trainers: [
+          {
+            value: trainers,
+            format: 'basic_html'
+          }
+        ],
+        type: [
+          {
+            target_id: 'training_resource'
+          }
+        ]
+      })
+    });
 
     //event.target.reset();
 

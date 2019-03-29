@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 
 import InlineEdit from 'react-edit-inline';
 
+import { apiUrl} from '../services/competency/competency';
+
 class ManageCompetencies extends React.Component {
   constructor(props) {
     super(props);
@@ -58,7 +60,7 @@ class ManageCompetencies extends React.Component {
   fetchData() {
     let framework = this.state.path[2].toLowerCase();
     let fetchCompetencyList =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/framework/' +
+      `${apiUrl}` + '/api/v1/framework/' +
       framework +
       '?_format=json';
     fetch(fetchCompetencyList)
@@ -77,7 +79,7 @@ class ManageCompetencies extends React.Component {
     let domainUUID = this.refs.domain_ref.value;
 
     fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node?_format=hal_json',
+      `${apiUrl}` + '/node?_format=hal_json',
       {
         credentials: 'include',
         method: 'POST',
@@ -90,17 +92,17 @@ class ManageCompetencies extends React.Component {
           _links: {
             type: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+                `${apiUrl}` + '/rest/type/node/competency'
             },
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': {
+            [`${apiUrl}` + '/rest/relation/node/competency/field_domain']: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/node/' +
+                `${apiUrl}` + '/node/' +
                 domainID +
                 '?_format=hal_json'
             },
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/uid': {
+            [`${apiUrl}` + '/rest/relation/node/competency/uid']: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/user/1?_format=hal_json'
+                `${apiUrl}` + '/user/1?_format=hal_json'
             }
           },
           title: [
@@ -115,18 +117,18 @@ class ManageCompetencies extends React.Component {
           ],
 
           _embedded: {
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': [
+            [`${apiUrl}` + '/rest/relation/node/competency/field_domain']: [
               {
                 _links: {
                   self: {
                     href:
-                      'https://dev-competency-mapper.pantheonsite.io/node/' +
+                      `${apiUrl}` + '/node/' +
                       domainID +
                       '?_format=hal_json'
                   },
                   type: {
                     href:
-                      'https://dev-competency-mapper.pantheonsite.io/rest/type/node/domain'
+                      `${apiUrl}` + '/rest/type/node/domain'
                   }
                 },
                 uuid: [
@@ -137,16 +139,16 @@ class ManageCompetencies extends React.Component {
                 lang: 'en'
               }
             ],
-            'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/uid': [
+            [`${apiUrl}` + '/rest/relation/node/competency/uid']: [
               {
                 _links: {
                   self: {
                     href:
-                      'https://dev-competency-mapper.pantheonsite.io/user/1?_format=hal_json'
+                      `${apiUrl}` + '/user/1?_format=hal_json'
                   },
                   type: {
                     href:
-                      'https://dev-competency-mapper.pantheonsite.io/rest/type/user/user'
+                      `${apiUrl}` + '/rest/type/user/user'
                   }
                 },
                 uuid: [
@@ -174,7 +176,7 @@ class ManageCompetencies extends React.Component {
     let token = localStorage.getItem('csrf_token');
     //alert(cid);
     fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
+      `${apiUrl}` + '/node/' +
         cid +
         '?_format=hal_json',
       {
@@ -191,7 +193,7 @@ class ManageCompetencies extends React.Component {
           _links: {
             type: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+                `${apiUrl}` + '/rest/type/node/competency'
             }
           },
           title: [
@@ -224,7 +226,7 @@ class ManageCompetencies extends React.Component {
     }
     let token = localStorage.getItem('csrf_token');
     fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
+      `${apiUrl}` + '/node/' +
         cid +
         '?_format=hal_json',
       {
@@ -241,7 +243,7 @@ class ManageCompetencies extends React.Component {
           _links: {
             type: {
               href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+                `${apiUrl}` + '/rest/type/node/competency'
             }
           },
           field_archived: [

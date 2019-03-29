@@ -2,6 +2,8 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Parser from 'html-react-parser';
 
+import { apiUrl } from '../services/competency/competency';
+
 class Frameworks extends React.Component {
   constructor(props) {
     super(props);
@@ -9,7 +11,7 @@ class Frameworks extends React.Component {
   }
 
   componentDidMount() {
-    fetch('https://dev-competency-mapper.pantheonsite.io/api/frameworks')
+    fetch(`${apiUrl}` + '/api/frameworks')
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({

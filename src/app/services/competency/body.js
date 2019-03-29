@@ -1,4 +1,4 @@
-import { apiUrl } from './compentency';
+import { apiUrl } from './competency';
 
 class Body {
   static createCompetency({

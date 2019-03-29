@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 
+import { apiUrl } from '../services/competency/competency';
+
 class ResourceCreate extends React.Component {
   constructor(props) {
     super(props);
@@ -74,8 +76,7 @@ class ResourceCreate extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -105,99 +106,95 @@ class ResourceCreate extends React.Component {
 
     //alert(learning_outcomes);
 
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'POST',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': token,
-          Authorization: 'Basic'
+    fetch(`${apiUrl}` + '/node?_format=hal_json', {
+      credentials: 'include',
+      method: 'POST',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}` + '/rest/type/node/training_resource'
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/training_resource'
-            }
-          },
-          title: [
-            {
-              value: title
-            }
-          ],
-          field_dates: [
-            {
-              value: dates
-            }
-          ],
-          field_end_date: [
-            {
-              value: dates2
-            }
-          ],
-          field_type: [
-            {
-              value: type
-            }
-          ],
-          field_description: [
-            {
-              value: description,
-              format: 'basic_html'
-            }
-          ],
-          field_location: [
-            {
-              value: location
-            }
-          ],
-          field_url: [
-            {
-              value: url
-            }
-          ],
-          field_target_audience: [
-            {
-              value: target_audience,
-              format: 'basic_html'
-            }
-          ],
-          field_learning_outcomes: [
-            {
-              value: learning_outcomes,
-              format: 'basic_html'
-            }
-          ],
-          field_keywords: [
-            {
-              value: keywords
-            }
-          ],
-          field_organisers: [
-            {
-              value: organisers,
-              format: 'basic_html'
-            }
-          ],
-          field_trainers: [
-            {
-              value: trainers,
-              format: 'basic_html'
-            }
-          ],
+        title: [
+          {
+            value: title
+          }
+        ],
+        field_dates: [
+          {
+            value: dates
+          }
+        ],
+        field_end_date: [
+          {
+            value: dates2
+          }
+        ],
+        field_type: [
+          {
+            value: type
+          }
+        ],
+        field_description: [
+          {
+            value: description,
+            format: 'basic_html'
+          }
+        ],
+        field_location: [
+          {
+            value: location
+          }
+        ],
+        field_url: [
+          {
+            value: url
+          }
+        ],
+        field_target_audience: [
+          {
+            value: target_audience,
+            format: 'basic_html'
+          }
+        ],
+        field_learning_outcomes: [
+          {
+            value: learning_outcomes,
+            format: 'basic_html'
+          }
+        ],
+        field_keywords: [
+          {
+            value: keywords
+          }
+        ],
+        field_organisers: [
+          {
+            value: organisers,
+            format: 'basic_html'
+          }
+        ],
+        field_trainers: [
+          {
+            value: trainers,
+            format: 'basic_html'
+          }
+        ],
 
-          type: [
-            {
-              target_id: 'training_resource'
-            }
-          ]
-        })
-      }
-    );
+        type: [
+          {
+            target_id: 'training_resource'
+          }
+        ]
+      })
+    });
 
     event.target.reset();
     this.setState({ updateFlag: true });

@@ -2,6 +2,8 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Parser from 'html-react-parser';
 
+import { apiUrl } from '../services/competency/competency';
+
 const $ = window.$;
 
 class ResourcesList extends React.Component {
@@ -41,8 +43,7 @@ class ResourcesList extends React.Component {
   }
 
   fetchData() {
-    let csrfURL =
-      'https://dev-competency-mapper.pantheonsite.io/rest/session/token';
+    let csrfURL = `${apiUrl}` + '/rest/session/token';
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -50,7 +51,7 @@ class ResourcesList extends React.Component {
       });
 
     let resourcesURL =
-      'https://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/all?_format=json';
+      `${apiUrl}` + '/api/v1/training-resources/all?_format=json';
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -77,40 +78,34 @@ class ResourcesList extends React.Component {
       archivedStatus = true;
     }
     let token = localStorage.getItem('csrf_token');
-    fetch(
-      'https://dev-competency-mapper.pantheonsite.io/node/' +
-        rid +
-        '?_format=hal_json',
-      {
-        credentials: 'include',
-        method: 'PATCH',
-        cookies: 'x-access-token',
-        headers: {
-          Accept: 'application/hal+json',
-          'Content-Type': 'application/hal+json',
-          'X-CSRF-Token': token,
-          Authorization: 'Basic'
+    fetch(`${apiUrl}` + '/node/' + rid + '?_format=hal_json', {
+      credentials: 'include',
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}` + '/rest/type/node/training_resource'
+          }
         },
-        body: JSON.stringify({
-          _links: {
-            type: {
-              href:
-                'https://dev-competency-mapper.pantheonsite.io/rest/type/node/training_resource'
-            }
-          },
-          field_archived: [
-            {
-              value: archivedStatus
-            }
-          ],
-          type: [
-            {
-              target_id: 'training_resource'
-            }
-          ]
-        })
-      }
-    );
+        field_archived: [
+          {
+            value: archivedStatus
+          }
+        ],
+        type: [
+          {
+            target_id: 'training_resource'
+          }
+        ]
+      })
+    });
 
     this.setState({ updateFlag: true });
 

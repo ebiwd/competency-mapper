@@ -1,6 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { apiUrl} from '../services/competency/competency';
+
 class AttributeForm extends React.Component {
   constructor(props) {
     super(props);
@@ -124,7 +126,7 @@ class AttributeForm extends React.Component {
       attributeTypeID = this.state.valuesTypeID[i];
       attributeTypeUUID = this.state.valuesType[i];
       fetch(
-        'https://dev-competency-mapper.pantheonsite.io/node?_format=hal_json',
+        `${apiUrl}` + '/node?_format=hal_json',
         {
           method: 'POST',
           cookies: 'x-access-token',
@@ -138,17 +140,17 @@ class AttributeForm extends React.Component {
             _links: {
               type: {
                 href:
-                  'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute'
+                  `${apiUrl}` + '/rest/type/node/attribute'
               },
-              'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_competency': {
+              [`${apiUrl}` + '/rest/relation/node/attribute/field_competency']: {
                 href:
-                  'https://dev-competency-mapper.pantheonsite.io/node/' +
+                  `${apiUrl}` + '/node/' +
                   competencyID +
                   '?_format=hal_json'
               },
-              'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_attribute_type': {
+              [`${apiUrl}` + '/rest/relation/node/attribute/field_attribute_type']: {
                 href:
-                  'https://dev-competency-mapper.pantheonsite.io/node/' +
+                  `${apiUrl}` + '/node/' +
                   attributeTypeID +
                   '?_format=hal_json'
               }
@@ -165,18 +167,18 @@ class AttributeForm extends React.Component {
             ],
 
             _embedded: {
-              'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_competency': [
+              [`${apiUrl}` + '/rest/relation/node/attribute/field_competency']: [
                 {
                   _links: {
                     self: {
                       href:
-                        'https://dev-competency-mapper.pantheonsite.io/node/' +
+                        `${apiUrl}` + '/node/' +
                         competencyID +
                         '?_format=hal_json'
                     },
                     type: {
                       href:
-                        'https://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+                        `${apiUrl}` + '/rest/type/node/competency'
                     }
                   },
                   uuid: [
@@ -188,18 +190,18 @@ class AttributeForm extends React.Component {
                 }
               ],
 
-              'https://dev-competency-mapper.pantheonsite.io/rest/relation/node/attribute/field_attribute_type': [
+              [`${apiUrl}` + '/rest/relation/node/attribute/field_attribute_type']: [
                 {
                   _links: {
                     self: {
                       href:
-                        'https://dev-competency-mapper.pantheonsite.io/node/' +
+                        `${apiUrl}` + '/node/' +
                         attributeTypeID +
                         '?_format=hal_json'
                     },
                     type: {
                       href:
-                        'https://dev-competency-mapper.pantheonsite.io/rest/type/node/attribute_type'
+                        `${apiUrl}` + '/rest/type/node/attribute_type'
                     }
                   },
                   uuid: [

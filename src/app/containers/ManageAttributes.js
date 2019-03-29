@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 import InlineEdit from 'react-edit-inline';
 
-import CompetencyService from '../services/competency/compentency';
+import CompetencyService from '../services/competency/competency';
 
 /* TODO:
  *  #. fix `Manage attributes` title in Safari (it is obfuscated by the masthead)
