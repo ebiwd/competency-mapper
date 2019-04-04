@@ -1,4 +1,4 @@
-import HttpService from '../http/http.js';
+import HttpService from '../http/http';
 import Body from './body';
 
 export const apiUrl = process.env.REACT_APP_API_URL;

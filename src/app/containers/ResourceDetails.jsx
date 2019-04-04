@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import ReactModal from 'react-modal';
-import AttributeMap from './AttributeMap.js';
+import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/competency/competency';
