@@ -1,3 +1,19 @@
+@keyframes progress {
+  from {
+    width: 0%;
+  }
+  to {
+    width: 100%;
+  }
+}
+
 .meter {
-  width: 90%;
+  animation-name: progress;
+  animation-duration: 2s;
+  animation-iteration-count: infinite;
+}
+
+.progress {
+  margin-bottom: 0px;
+  height: 4px !important;
 }

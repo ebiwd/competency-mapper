@@ -7,7 +7,7 @@ function ProgressBar({ isActive }) {
   return (
       <React.Fragment>
       { isActive &&
-    <div className="warning progress" role="progressbar">
+    <div className={`warning progress ${styles.progress}`} role="progressbar">
       <div className={`progress-meter ${styles.meter}`}/>
     </div>
     }

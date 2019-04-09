@@ -67,8 +67,8 @@ class Root extends Component {
               </div>
               <User />
             </div>
+            <ProgressBar isActive={isActive} />
           </header>
-          <ProgressBar isActive={isActive} />
         </div>
 
         <section id="main-content-area" className="row" role="main">
