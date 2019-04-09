@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, Link } from 'react-router-dom';
 
@@ -14,15 +14,40 @@ import ResourceDetails from './ResourceDetails';
 import ResourceCreate from './ResourceCreate';
 import ResourceEdit from './ResourceEdit';
 import ChangePassword from './ChangePassword';
+import ProgressBar from '../../shared/components/progress-bar/progress-bar';
+
+import ActiveRequestsService from '../services/active-requests/active-requests';
 
 const $ = window.$;
-class Root extends React.Component {
+class Root extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+        isActive: false
+    }
+
+   this.activeRequests = new ActiveRequestsService();
+  }
+
+  componentWillMount() {
+      this.subcription = this.activeRequests.addEventListener(this.handleActiveRequests);
+  }
+
   componentDidMount() {
     $(document).foundation();
     $(document).foundationExtendEBI();
   }
 
+ componentWillUnmount(){
+    if (this.subcription) {
+        this.activeRequests.removeEventListener(this.subcription);
+    }
+ }
+
+ handleActiveRequests = (hasPendingRequests) => this.setState({isActive: hasPendingRequests});
+
   render() {
+      const {isActive} = this.state;
     return (
       <React.Fragment>
         <div data-sticky-container>
@@ -43,6 +68,7 @@ class Root extends React.Component {
               <User />
             </div>
           </header>
+          <ProgressBar isActive={isActive} />
         </div>
 
         <section id="main-content-area" className="row" role="main">

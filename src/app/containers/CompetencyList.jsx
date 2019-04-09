@@ -8,7 +8,6 @@ import CompetencyEdit from './CompetencyEdit';
 import AttributeForm from './AttributeForm';
 import CompetencyDetails from './CompetencyDetails';
 import { CSVLink, CSVDownload } from 'react-csv';
-import 'rc-progress/assets/index.css';
 import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/competency/competency';

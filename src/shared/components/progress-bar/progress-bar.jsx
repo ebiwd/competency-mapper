@@ -1,21 +1,26 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import styles from './progress-bar.css';
+import styles from './progress-bar.module.css';
 
 function ProgressBar({ isActive }) {
-    return (
-        <div className={styles.base}>
 
-        </div>
-    );
+  return (
+      <React.Fragment>
+      { isActive &&
+    <div className="warning progress" role="progressbar">
+      <div className={`progress-meter ${styles.meter}`}/>
+    </div>
+    }
+      </React.Fragment>
+  );
 }
 
 ProgressBar.defaultProps = {
-    isActive: false
+  isActive: false
 };
 
 ProgressBar.propTypes = {
-    isActive: PropTypes.boolean
+  isActive: PropTypes.bool
 };
 
 export default ProgressBar;

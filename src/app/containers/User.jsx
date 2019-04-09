@@ -116,7 +116,7 @@ class User extends React.Component {
           >
             {localStorage.getItem('roles').includes('framework_manager') ? (
               <li>
-                <a tabindex="0" className="dropdown-on-dark-background">
+                <a tabIndex="0" className="dropdown-on-dark-background">
                   Manage Competencies
                 </a>
                 <ul className="menu vertical">
@@ -162,7 +162,7 @@ class User extends React.Component {
             data-description="user tasks"
           >
             <li>
-              <a tabindex="0" className="dropdown-on-light-background">
+              <a tabIndex="0" className="dropdown-on-light-background">
                 <i className="fas fa-user" /> Hi {this.state.user}
               </a>
               <ul className="menu vertical">

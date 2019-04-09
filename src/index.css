@@ -1,55 +1,15 @@
-body {
-  font: 14px 'Century Gothic', Futura, sans-serif;
-  margin: 20px;
+#masthead {
+  background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg');
 }
 
-ol,
-ul {
-  padding-left: 30px;
+.dropdown-on-light-background {
+  color: black !important;
 }
 
-.board-row:after {
-  clear: both;
-  content: '';
-  display: table;
+.dropdown-on-light-background::after {
+  border-color: black transparent transparent !important;
 }
 
-.status {
-  margin-bottom: 10px;
-}
-
-.square {
-  background: #fff;
-  border: 1px solid #999;
-  float: left;
-  font-size: 24px;
-  font-weight: bold;
-  line-height: 34px;
-  height: 34px;
-  margin-right: -1px;
-  margin-top: -1px;
-  padding: 0;
-  text-align: center;
-  width: 34px;
-}
-
-.square:focus {
-  outline: none;
-}
-
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
-.game {
-  display: flex;
-  flex-direction: row;
-}
-
-.game-info {
-  margin-left: 20px;
-}
-
-.Competency-title {
-  color: #389198;
+.dropdown-on-dark-background {
+  color: white !important;
 }

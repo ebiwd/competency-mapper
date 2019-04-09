@@ -7,7 +7,6 @@ import CompetencyForm from './CompetencyForm';
 import CompetencyEdit from './CompetencyEdit';
 import AttributeForm from './AttributeForm';
 import { Line, Circle } from 'rc-progress';
-import 'rc-progress/assets/index.css';
 
 import { apiUrl } from '../services/competency/competency';
 

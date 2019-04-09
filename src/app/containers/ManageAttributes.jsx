@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 import InlineEdit from 'react-edit-inline';
 
 import CompetencyService from '../services/competency/competency';
+import ActiveRequestsService from '../services/active-requests/active-requests';
 
 /* TODO:
- *  #. fix `Manage attributes` title in Safari (it is obfuscated by the masthead)
  *  #. fix spacing with second column (archive <-> unarchive resizes it)
  */
 
@@ -31,16 +31,20 @@ class ManageAttributes extends React.Component {
       newAttributeTypeUuid: ''
     };
 
+    this.subscrition = null;
+
     this.competencyService = new CompetencyService();
-    this.headers = new Headers();
+    this.activeRequests = new ActiveRequestsService();
   }
 
   async componentDidMount() {
     window.scroll(0, 0);
+    this.activeRequests.startRequest();
     const promise1 = this.fetchCompetency();
     const promise2 = this.fetchFramework();
     await promise1;
     await promise2;
+    this.activeRequests.finishRequest();
   }
 
   filterByCompetencyId(data, id) {
@@ -132,6 +136,7 @@ class ManageAttributes extends React.Component {
       item => item.uuid === attributeTypeUuid
     )[0].id;
 
+    this.activeRequests.startRequest();
     await this.competencyService.createCompetency({
       description,
       attributeTypeId,
@@ -144,21 +149,26 @@ class ManageAttributes extends React.Component {
       newAttribute: '',
       newAttributeTypeUuid: competencyTypes[0].uuid
     });
-    this.fetchCompetency();
+    await this.fetchCompetency();
+    this.activeRequests.finishRequest();
   };
 
   async handleEdit(aId, { message: title }) {
+this.activeRequests.startRequest();
     await this.competencyService.patchAttribute(aId, 'title', title);
-    this.fetchCompetency();
+    await this.fetchCompetency();
+    this.activeRequests.finishRequest();
   }
 
   async toggleArchive(aId, isArchived) {
+this.activeRequests.startRequest();
     await this.competencyService.patchAttribute(
       aId,
       'field_archived',
       isArchived === '1' ? false : true
     );
-    this.fetchCompetency();
+    await this.fetchCompetency();
+    this.activeRequests.finishRequest();
   }
 
   onChange = ({ currentTarget: control, target }) => {

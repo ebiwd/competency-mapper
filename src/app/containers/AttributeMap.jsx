@@ -1,5 +1,4 @@
 import React from 'react';
-import 'rc-progress/assets/index.css';
 
 import { apiUrl } from '../services/competency/competency';
 

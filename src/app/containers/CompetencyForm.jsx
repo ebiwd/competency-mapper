@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CompetencyList from './CompetencyList';
 import { Line, Circle } from 'rc-progress';
-import 'rc-progress/assets/index.css';
 import ReactModal from 'react-modal';
 
 class CompetencyForm extends React.Component {
