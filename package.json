@@ -54,12 +54,13 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,css,md}": [
+    "*.{js,jsx,ts,tsx,json,css,md}": [
       "prettier --write",
       "git add"
     ]
   },
   "prettier": {
-    "singleQuote": true
+    "singleQuote": true,
+    "jsxIgnoreLineBreak": true
   }
 }

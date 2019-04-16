@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import { Switch, Route, Link } from 'react-router-dom';
 
@@ -23,14 +23,16 @@ class Root extends Component {
   constructor(props) {
     super(props);
     this.state = {
-        isActive: false
-    }
+      isActive: false
+    };
 
-   this.activeRequests = new ActiveRequestsService();
+    this.activeRequests = new ActiveRequestsService();
   }
 
   componentWillMount() {
-      this.subcription = this.activeRequests.addEventListener(this.handleActiveRequests);
+    this.subcription = this.activeRequests.addEventListener(
+      this.handleActiveRequests
+    );
   }
 
   componentDidMount() {
@@ -38,16 +40,17 @@ class Root extends Component {
     $(document).foundationExtendEBI();
   }
 
- componentWillUnmount(){
+  componentWillUnmount() {
     if (this.subcription) {
-        this.activeRequests.removeEventListener(this.subcription);
+      this.activeRequests.removeEventListener(this.subcription);
     }
- }
+  }
 
- handleActiveRequests = (hasPendingRequests) => this.setState({isActive: hasPendingRequests});
+  handleActiveRequests = hasPendingRequests =>
+    this.setState({ isActive: hasPendingRequests });
 
   render() {
-      const {isActive} = this.state;
+    const { isActive } = this.state;
     return (
       <React.Fragment>
         <div data-sticky-container>
@@ -72,47 +75,39 @@ class Root extends Component {
         </div>
 
         <section id="main-content-area" className="row" role="main">
-          <div className="small-12 large-12 medium-12 columns">
-            <main>
-              <Switch>
-                <Route
-                  path="/framework/:framework/manage/competencies/:cid/manage-attributes"
-                  component={ManageAttributes}
-                />
-                <Route
-                  path="/framework/:framework/manage/competencies/:cid?"
-                  component={ManageCompetencies}
-                />
-                <Route
-                  path="/framework/:framework/competency/details/:cid"
-                  component={CompetencyDetails}
-                />
-                <Route path="/framework/:framework" component={Competencies} />
-                <Route
-                  path="/training-resource/edit/:nid"
-                  component={ResourceEdit}
-                />
-                <Route
-                  path="/training-resource/create"
-                  component={ResourceCreate}
-                />
-                <Route
-                  path="/training-resources/:id"
-                  component={ResourceDetails}
-                />
-                <Route
-                  path="/all-training-resources"
-                  component={ResourcesList}
-                />
-                <Route path="/roster" component={Roster} />
-                <Route
-                  path="/user/change/password"
-                  component={ChangePassword}
-                />
-                <Route path="/" component={Frameworks} />
-              </Switch>
-            </main>
-          </div>
+          <main className="column">
+            <Switch>
+              <Route
+                path="/framework/:framework/manage/competencies/:cid/manage-attributes"
+                component={ManageAttributes}
+              />
+              <Route
+                path="/framework/:framework/manage/competencies/:cid?"
+                component={ManageCompetencies}
+              />
+              <Route
+                path="/framework/:framework/competency/details/:cid"
+                component={CompetencyDetails}
+              />
+              <Route path="/framework/:framework" component={Competencies} />
+              <Route
+                path="/training-resource/edit/:nid"
+                component={ResourceEdit}
+              />
+              <Route
+                path="/training-resource/create"
+                component={ResourceCreate}
+              />
+              <Route
+                path="/training-resources/:id"
+                component={ResourceDetails}
+              />
+              <Route path="/all-training-resources" component={ResourcesList} />
+              <Route path="/roster" component={Roster} />
+              <Route path="/user/change/password" component={ChangePassword} />
+              <Route path="/" component={Frameworks} />
+            </Switch>
+          </main>
         </section>
       </React.Fragment>
     );

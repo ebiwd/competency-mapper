@@ -1,7 +1,14 @@
 import Headers from './headers';
 
 class HttpService {
+  static instance;
+
   constructor() {
+    if (HttpService.instance) {
+      return HttpService.instance;
+    }
+
+    HttpService.instance = this;
     this.headers = new Headers();
   }
 

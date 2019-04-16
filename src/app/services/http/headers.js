@@ -1,12 +1,12 @@
-class Headers {
+class HeadersService {
   static instance;
 
   constructor() {
-    if (this.instance) {
+    if (HeadersService.instance) {
       return this.instance;
     }
 
-    this.instance = this;
+    HeadersService.instance = this;
   }
 
   get() {
@@ -20,4 +20,4 @@ class Headers {
   }
 }
 
-export default Headers;
+export default HeadersService;

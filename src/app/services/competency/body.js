@@ -1,6 +1,6 @@
 import { apiUrl } from './competency';
 
-class Body {
+class BodyService {
   static createCompetency({
     description,
     attributeTypeId,
@@ -94,4 +94,4 @@ class Body {
   }
 }
 
-export default Body;
+export default BodyService;

@@ -7,11 +7,11 @@ class CompetencyService {
   static instance;
 
   constructor() {
-    if (this.instance) {
+    if (CompetencyService.instance) {
       return this.instance;
     }
 
-    this.instance = this;
+    CompetencyService.instance = this;
     this.http = new HttpService();
   }
 
@@ -26,6 +26,11 @@ class CompetencyService {
     const response = await this.http.get(
       `${apiUrl}/api/v1/framework/?_format=json`
     );
+    return response.json();
+  }
+
+  async getAllFrameworksDetails() {
+    const response = await this.http.get(`${apiUrl}/api/frameworks`);
     return response.json();
   }
 
