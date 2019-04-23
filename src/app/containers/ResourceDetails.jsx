@@ -6,8 +6,6 @@ import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/competency/competency';
 
-const $ = window.$;
-
 class ResourceDetails extends React.Component {
   constructor(props) {
     super(props);
@@ -50,7 +48,6 @@ class ResourceDetails extends React.Component {
   }
 
   fetchData() {
-    let resourceID = this.state.resourcePath[2];
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -85,12 +82,11 @@ class ResourceDetails extends React.Component {
               {this.state.frameworks.map((item, id) => {
                 return (
                   <li style={{ display: 'inline', margin: '5px' }}>
-                    <a
+                    <a // eslint-disable-line jsx-a11y/anchor-is-valid
                       onClick={this.handleOpenModal.bind(
                         this,
                         item.name.toLowerCase()
                       )}
-                      href={'#'}
                     >
                       {' '}
                       <i className="fas fa-tags" /> {item.name}{' '}
@@ -198,57 +194,55 @@ class ResourceDetails extends React.Component {
                   <table className={'hover'}>
                     <tbody>
                       {item.competency_profile.map(profile => {
-                        {
-                          return (
-                            <tr>
-                              {this.state.frameworks.map(framework => {
-                                if (framework.id == profile.id) {
-                                  framework.attribute_types.map(type =>
-                                    attribute_types.push(type.title)
-                                  );
-                                }
-                              })}
-                              <td>
-                                <h4>{profile.title}</h4>
-                              </td>
-                              <td>
-                                {profile.domains.map(domain => (
-                                  <div>
-                                    <h5>{domain.title}</h5>
-                                    <ul>
-                                      {domain.competencies.map(competency => (
-                                        <li>
-                                          <strong> {competency.title}</strong>
-                                          <ul>
-                                            {attribute_types.map(type => (
-                                              <span>
-                                                {competency.attributes.map(
-                                                  attribute => {
-                                                    if (
-                                                      attribute.type === type
-                                                    ) {
-                                                      return (
-                                                        <li>
-                                                          {' '}
-                                                          <em>{type}</em> -{' '}
-                                                          {attribute.title}
-                                                        </li>
-                                                      );
-                                                    }
+                        return (
+                          <tr>
+                            {this.state.frameworks.map(framework => {
+                              if (framework.id === profile.id) {
+                                framework.attribute_types.map(type =>
+                                  attribute_types.push(type.title)
+                                );
+                              }
+                              return null;
+                            })}
+                            <td>
+                              <h4>{profile.title}</h4>
+                            </td>
+                            <td>
+                              {profile.domains.map(domain => (
+                                <div>
+                                  <h5>{domain.title}</h5>
+                                  <ul>
+                                    {domain.competencies.map(competency => (
+                                      <li>
+                                        <strong> {competency.title}</strong>
+                                        <ul>
+                                          {attribute_types.map(type => (
+                                            <span>
+                                              {competency.attributes.map(
+                                                attribute => {
+                                                  if (attribute.type === type) {
+                                                    return (
+                                                      <li>
+                                                        {' '}
+                                                        <em>{type}</em> -{' '}
+                                                        {attribute.title}
+                                                      </li>
+                                                    );
                                                   }
-                                                )}
-                                              </span>
-                                            ))}
-                                          </ul>
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                ))}
-                              </td>
-                            </tr>
-                          );
-                        }
+                                                  return null;
+                                                }
+                                              )}
+                                            </span>
+                                          ))}
+                                        </ul>
+                                      </li>
+                                    ))}
+                                  </ul>
+                                </div>
+                              ))}
+                            </td>
+                          </tr>
+                        );
                       })}
                     </tbody>
                   </table>
@@ -269,6 +263,7 @@ class ResourceDetails extends React.Component {
           </div>
         );
       }
+      return null;
     });
 
     return (

@@ -4,8 +4,6 @@ import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/competency/competency';
 
-const $ = window.$;
-
 class ResourcesList extends React.Component {
   constructor(props) {
     super(props);
@@ -124,7 +122,7 @@ class ResourcesList extends React.Component {
       );
     }
 
-    if (this.state.filterType != 'All') {
+    if (this.state.filterType !== 'All') {
       resources = resources.filter(item =>
         item.type
           .toLocaleLowerCase()
@@ -156,13 +154,17 @@ class ResourcesList extends React.Component {
           </a>
         </td>
         <td>
-          {item.archived == 1 ? (
-            <a href="#" onClick={this.archiveHandle.bind(this, item.id, 1)}>
+          {item.archived === '1' ? (
+            <a // eslint-disable-line jsx-a11y/anchor-is-valid
+              onClick={this.archiveHandle.bind(this, item.id, 1)}
+            >
               {' '}
               <i className="fas fa-toggle-on" /> <span>Archived</span>{' '}
             </a>
           ) : (
-            <a href="#" onClick={this.archiveHandle.bind(this, item.id, 0)}>
+            <a // eslint-disable-line jsx-a11y/anchor-is-valid
+              onClick={this.archiveHandle.bind(this, item.id, 0)}
+            >
               {' '}
               <i className="fas fa-toggle-off" />
             </a>

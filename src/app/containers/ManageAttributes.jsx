@@ -205,7 +205,7 @@ class ManageAttributes extends React.Component {
               />
             </td>
             <td>
-              <a
+              <a // eslint-disable-line jsx-a11y/anchor-is-valid
                 onClick={() =>
                   this.toggleArchive(attribute.id, attribute.archived)
                 }

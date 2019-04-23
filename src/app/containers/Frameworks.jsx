@@ -5,17 +5,13 @@ import CompetencyService from '../services/competency/competency';
 
 import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
 
-import { apiUrl } from '../services/competency/competency';
-
 class Frameworks extends React.Component {
+  competencyService = new CompetencyService();
+  activeRequests = new ActiveRequestsService();
+
   state = {
     frameworks: []
   };
-  competencyService = new CompetencyService();
-  activeRequests = new ActiveRequestsService();
-  constructor(props) {
-    super(props);
-  }
 
   async componentDidMount() {
     this.activeRequests.startRequest();
@@ -33,7 +29,12 @@ class Frameworks extends React.Component {
         <p className="lead">
           Introduction to the idea of competency frameworks and their linkage
           with training resources. Two lines of description should look good and
-          then links can be given to <a className="readmore">read more</a>
+          then links can be given to{' '}
+          <a // eslint-disable-line jsx-a11y/anchor-is-valid
+            className="readmore"
+          >
+            read more
+          </a>
         </p>
 
         <FrameworkButtons frameworks={frameworks} />

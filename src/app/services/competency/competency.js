@@ -5,6 +5,7 @@ export const apiUrl = process.env.REACT_APP_API_URL;
 
 class CompetencyService {
   static instance;
+  http = new HttpService();
 
   constructor() {
     if (CompetencyService.instance) {
@@ -12,7 +13,6 @@ class CompetencyService {
     }
 
     CompetencyService.instance = this;
-    this.http = new HttpService();
   }
 
   async getFramework(framework) {

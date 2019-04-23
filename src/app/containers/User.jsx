@@ -17,7 +17,7 @@ class User extends React.Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     return (
-      this.state.roles != nextState.roles || this.state.user != nextState.user
+      this.state.roles !== nextState.roles || this.state.user !== nextState.user
     );
   }
 
@@ -97,16 +97,7 @@ class User extends React.Component {
 
   render() {
     let output = '';
-    let test = '';
     if (localStorage.getItem('roles')) {
-      if (localStorage.getItem('roles').includes('framework_manager')) {
-        test += 'framework_manager';
-      }
-
-      if (localStorage.getItem('roles').includes('content_manager')) {
-        test += 'content_manager';
-      }
-
       output = (
         <nav ref="nav" id="local-nav">
           <ul
@@ -116,7 +107,10 @@ class User extends React.Component {
           >
             {localStorage.getItem('roles').includes('framework_manager') ? (
               <li>
-                <a tabIndex="0" className="dropdown-on-dark-background">
+                <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                  tabIndex="0"
+                  className="dropdown-on-dark-background"
+                >
                   Manage Competencies
                 </a>
                 <ul className="menu vertical">
@@ -162,7 +156,10 @@ class User extends React.Component {
             data-description="user tasks"
           >
             <li>
-              <a tabIndex="0" className="dropdown-on-light-background">
+              <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                tabIndex="0"
+                className="dropdown-on-light-background"
+              >
                 <i className="fas fa-user" /> Hi {this.state.user}
               </a>
               <ul className="menu vertical">
@@ -170,7 +167,11 @@ class User extends React.Component {
                   <Link to={'/user/change/password'}>Change password</Link>
                 </li>
                 <li>
-                  <a onClick={() => this.handleLogout()}>Logout</a>
+                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                    onClick={() => this.handleLogout()}
+                  >
+                    Logout
+                  </a>
                 </li>
               </ul>
             </li>
@@ -197,9 +198,9 @@ class User extends React.Component {
                 />
               </div>
               <div className="large-3 columns">
-                <a className="button" onClick={() => this.handleLogin()}>
+                <button className="button" onClick={() => this.handleLogin()}>
                   <i className="fa fa-key" aria-hidden="true" /> Login
-                </a>
+                </button>
               </div>
             </div>
           </form>

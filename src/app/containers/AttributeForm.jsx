@@ -1,5 +1,4 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
 
 import { apiUrl } from '../services/competency/competency';
 
@@ -17,7 +16,7 @@ class AttributeForm extends React.Component {
 
   createUI() {
     return this.state.valuesAttribute.map((el, i) => {
-      if (i == 0) {
+      if (i === 0) {
         return (
           <div key={i} className="row">
             <div className="column large-8">
@@ -85,9 +84,9 @@ class AttributeForm extends React.Component {
     valuesType[i] = event.target.value;
     this.setState({ valuesType });
 
-    var index = event.target.selectedIndex;
-    var optionElement = event.target.childNodes[index];
-    var option = optionElement.getAttribute('data-id');
+    let index = event.target.selectedIndex;
+    let optionElement = event.target.childNodes[index];
+    let option = optionElement.getAttribute('data-id');
     this.setState({ valuesTypeID: option });
     //alert(this.state.valuesType);
   }
@@ -110,19 +109,16 @@ class AttributeForm extends React.Component {
   }
 
   handleSubmit(event) {
-    var attributes = [];
-    var attributeTypes = [];
-    var attributes = this.state.valuesAttribute;
-    var attributeTypes = this.state.valuesType;
+    let attributes = this.state.valuesAttribute;
 
-    var competencyID = this.props.selectedCompetencyID;
-    var competecyUUID = this.props.selectedCompetencyUUID;
+    let competencyID = this.props.selectedCompetencyID;
+    let competecyUUID = this.props.selectedCompetencyUUID;
 
     //console.log(attributeTypes);
-    var attributeTypeID = '';
-    var attributeTypeUUID = '';
+    let attributeTypeID = '';
+    let attributeTypeUUID = '';
 
-    attributes.map((item, i) => {
+    attributes.forEach((item, i) => {
       attributeTypeID = this.state.valuesTypeID[i];
       attributeTypeUUID = this.state.valuesType[i];
       fetch(`${apiUrl}/node?_format=hal_json`, {

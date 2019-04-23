@@ -1,6 +1,5 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { Redirect } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 
@@ -58,7 +57,6 @@ class ResourceEdit extends React.Component {
 
   componentDidMount() {
     this.setState({ nid: this.state.path[3] });
-    let nid = this.state.path[3];
 
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
@@ -104,26 +102,23 @@ class ResourceEdit extends React.Component {
     let keywords = '';
     let organisers = '';
     let trainers = '';
-    let temp_date = [];
 
-    this.state.data.map(item => {
-      {
-        if (item.id === this.state.nid) {
-          nid = item.id;
-          title = item.title;
-          //temp_date = item.dates.split("-");
-          dates = item.start_date;
-          dates2 = item.end_date;
-          type = item.type;
-          description = item.description;
-          location = item.location;
-          url = item.url;
-          target_audience = item.target_audience;
-          learning_outcomes = item.learning_outcomes;
-          keywords = item.keywords;
-          organisers = item.organisers;
-          trainers = item.trainers;
-        }
+    this.state.data.forEach(item => {
+      if (item.id === this.state.nid) {
+        nid = item.id;
+        title = item.title;
+        //temp_date = item.dates.split("-");
+        dates = item.start_date;
+        dates2 = item.end_date;
+        type = item.type;
+        description = item.description;
+        location = item.location;
+        url = item.url;
+        target_audience = item.target_audience;
+        learning_outcomes = item.learning_outcomes;
+        keywords = item.keywords;
+        organisers = item.organisers;
+        trainers = item.trainers;
       }
     });
     if (this.state.data.length > 0) {

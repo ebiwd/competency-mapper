@@ -22,6 +22,7 @@ function FrameworkButton({ framework }) {
           src={`http://dev-competency-mapper.pantheonsite.io/${
             framework.field_logo
           }`}
+          alt="competency logo"
         />
         <h5>
           {description}

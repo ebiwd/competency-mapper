@@ -105,7 +105,7 @@ class AttributeMap extends React.Component {
       }
     } else {
       for (let i = 0; i < childItems.length; i++) {
-        if (childItems[i].checked == true) {
+        if (childItems[i].checked === true) {
           childItems[i].checked = false;
           //selectedAttributes.pop(childItems[i].getAttribute('data-id'));
           //let index = array.indexOf(element);
@@ -197,9 +197,7 @@ class AttributeMap extends React.Component {
   render() {
     let frameworkDetails = this.state.frameworkdetails;
     let data = this.state.data;
-    let frameworkName = '';
     let frameworkDefs = [];
-    let frameworkDomains = [];
     let domainsOptions = [];
     let attributeTypeOptions = [];
 
@@ -207,7 +205,6 @@ class AttributeMap extends React.Component {
 
     frameworkDetails.forEach((item, ikey) => {
       if (item.name.toLowerCase() === this.state.framework) {
-        frameworkName = item.name;
         this.state.frameworkUUID = item.uuid;
         item.attribute_types.forEach(attribute_type => {
           frameworkDefs.push(attribute_type.title);
@@ -267,8 +264,9 @@ class AttributeMap extends React.Component {
                             <em>{def}</em>
                           </strong>
                         </div>
-                        {competency.attributes.map(attribute => {
-                          if (attribute.type === def)
+                        {competency.attributes
+                          .filter(attribute => attribute.type === def)
+                          .map(attribute => {
                             return (
                               <li
                                 key={attribute.id}
@@ -295,7 +293,7 @@ class AttributeMap extends React.Component {
                                 {attribute.title}
                               </li>
                             );
-                        })}
+                          })}
                       </div>
                     );
                   })}

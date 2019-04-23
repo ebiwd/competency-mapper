@@ -2,6 +2,7 @@ import Headers from './headers';
 
 class HttpService {
   static instance;
+  headers = new Headers();
 
   constructor() {
     if (HttpService.instance) {
@@ -9,7 +10,6 @@ class HttpService {
     }
 
     HttpService.instance = this;
-    this.headers = new Headers();
   }
 
   get(url) {

@@ -263,21 +263,8 @@ class ManageCompetencies extends React.Component {
     this.checkUser();
     console.log('render');
     let competencies = '';
-    let domainUUID = '';
     let domainsOptions = [];
     let framework = this.state.path[2];
-
-    {
-      this.state.data.map(item =>
-        item.domains.map(domain => {
-          domainsOptions.push(
-            <option key={domain.uuid} data-id={domain.nid} value={domain.uuid}>
-              {domain.title}
-            </option>
-          );
-        })
-      );
-    }
 
     competencies = this.state.data.map(item =>
       item.domains.map((domain, did) => (
@@ -330,11 +317,15 @@ class ManageCompetencies extends React.Component {
               </td>
               <td>
                 {competency.archived === 1 ? (
-                  <a onClick={this.archiveHandle.bind(this, competency.id, 1)}>
+                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                    onClick={this.archiveHandle.bind(this, competency.id, 1)}
+                  >
                     <i className="fas fa-toggle-on" />
                   </a>
                 ) : (
-                  <a onClick={this.archiveHandle.bind(this, competency.id, 0)}>
+                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                    onClick={this.archiveHandle.bind(this, competency.id, 0)}
+                  >
                     <i className="fas fa-toggle-off" />
                   </a>
                 )}

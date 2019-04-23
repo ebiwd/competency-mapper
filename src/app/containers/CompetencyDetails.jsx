@@ -1,16 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
-import ReactModal from 'react-modal';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CompetencyForm from './CompetencyForm';
-import CompetencyEdit from './CompetencyEdit';
-import AttributeForm from './AttributeForm';
-import { Line, Circle } from 'rc-progress';
 
 import { apiUrl } from '../services/competency/competency';
-
-const $ = window.$;
 
 class CompetencyDetails extends React.Component {
   constructor(props) {
@@ -65,8 +56,9 @@ class CompetencyDetails extends React.Component {
     return this.state.resources.map(resource =>
       resource.competency_profile.map(profile =>
         profile.domains.map(domain =>
-          domain.competencies.map(competency => {
-            if (competency.id == this.state.cid) {
+          domain.competencies
+            .filter(competency => competency.id === this.state.cid)
+            .map(competency => {
               return (
                 <li>
                   <a
@@ -81,8 +73,7 @@ class CompetencyDetails extends React.Component {
                   </a>{' '}
                 </li>
               );
-            }
-          })
+            })
         )
       )
     );
@@ -90,29 +81,12 @@ class CompetencyDetails extends React.Component {
 
   render() {
     let frameworkDefs = [];
-    let attributeTypeOptions = [];
-    let framework = '';
-    {
-      this.state.frameworkDetails.map((item, ikey) => {
-        if (item.name.toLowerCase() == this.state.path[2].toLowerCase()) {
-          framework = item.name;
-          this.state.frameworkUUID = item.uuid;
-          item.attribute_types.map(attribute_type => {
-            frameworkDefs.push(attribute_type.title);
-            attributeTypeOptions.push(
-              <option data-id={attribute_type.id} value={attribute_type.uuid}>
-                {attribute_type.title}
-              </option>
-            );
-          });
-        }
-      });
-    }
 
     const competencyDetails = this.state.data.map(item =>
       item.domains.map(domain =>
         domain.competencies.map(competency => {
-          if (competency.id == this.state.cid) {
+          // domain.competencies.filter(competency => competency.id === this.state.cid).map(competency =>{
+          if (competency.id === this.state.cid) {
             return (
               <div>
                 <div className="row">
@@ -137,10 +111,12 @@ class CompetencyDetails extends React.Component {
                               </strong>
                             </div>
                             {competency.attributes.map(attribute => {
-                              if (attribute.type == def)
+                              if (attribute.type === def) {
                                 return (
                                   <li key={attribute.id}>{attribute.title} </li>
                                 );
+                              }
+                              return null;
                             })}
                           </div>
                         );
@@ -161,6 +137,7 @@ class CompetencyDetails extends React.Component {
               </div>
             );
           }
+          return null;
         })
       )
     );
