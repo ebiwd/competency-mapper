@@ -5,36 +5,38 @@ import InlineEdit from 'react-edit-inline';
 
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
+import { safeFlat } from '../services/util/util';
 
 /* TODO:
  *  #. fix spacing with second column (archive <-> unarchive resizes it)
  */
 
 class ManageAttributes extends React.Component {
+  competencyService = new CompetencyService();
+  activeRequests = new ActiveRequestsService();
+
+  state = {
+    framework: '',
+    frameworkName: '',
+
+    domainName: '',
+    domainId: '',
+
+    competencyId: '',
+    competencyName: '',
+    competencyData: [],
+    competencyUuid: '',
+    competencyTypes: [],
+
+    // form properties to create new attributes
+    newAttribute: '',
+    newAttributeTypeUuid: ''
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      framework: props.match.params.framework,
-      frameworkName: '',
-
-      domainName: '',
-      domainId: '',
-
-      competencyId: props.match.params.cid,
-      competencyName: '',
-      competencyData: [],
-      competencyUuid: '',
-      competencyTypes: [],
-
-      // form properties to create new attributes
-      newAttribute: '',
-      newAttributeTypeUuid: ''
-    };
-
-    this.subscrition = null;
-
-    this.competencyService = new CompetencyService();
-    this.activeRequests = new ActiveRequestsService();
+    this.state.framework = props.match.params.framework;
+    this.state.competencyId = props.match.params.cid;
   }
 
   async componentDidMount() {
@@ -48,15 +50,9 @@ class ManageAttributes extends React.Component {
   }
 
   filterByCompetencyId(data, id) {
-    // In modern browser (es2018), instead of `reduce` it is possible to call `flat`
-    const myFlat = array =>
-      Array.prototype.flat
-        ? array.flat()
-        : array.reduce((acc, cur) => [...acc, ...cur]);
-
-    return myFlat(
+    return safeFlat(
       data.map(item =>
-        myFlat(
+        safeFlat(
           item.domains.map(domain =>
             domain.competencies
               .filter(competency => competency.id === id)
@@ -72,9 +68,9 @@ class ManageAttributes extends React.Component {
   }
 
   async fetchCompetency() {
-    const competencyData = await this.competencyService.getFramework(
-      this.state.framework
-    );
+    const { framework } = this.state;
+
+    const competencyData = await this.competencyService.getFramework(framework);
     const competencyMatch = this.filterByCompetencyId(
       competencyData,
       this.state.competencyId
@@ -154,14 +150,14 @@ class ManageAttributes extends React.Component {
   };
 
   async handleEdit(aId, { message: title }) {
-this.activeRequests.startRequest();
+    this.activeRequests.startRequest();
     await this.competencyService.patchAttribute(aId, 'title', title);
     await this.fetchCompetency();
     this.activeRequests.finishRequest();
   }
 
   async toggleArchive(aId, isArchived) {
-this.activeRequests.startRequest();
+    this.activeRequests.startRequest();
     await this.competencyService.patchAttribute(
       aId,
       'field_archived',

@@ -5,18 +5,19 @@
   "private": true,
   "homepage": "https://ebiwd.github.io/competency-mapper/",
   "dependencies": {
+    "html-react-parser": "^0.6.4",
+    "lodash-es": "^4.17.11",
+    "rc-progress": "^2.3.0",
     "react": "^16.8.6",
-    "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8",
-    "react-router-dom": "^5.0.0",
     "react-ckeditor-component": "^1.1.0",
     "react-collapsible": "^2.6.0",
     "react-csv": "^1.1.1",
+    "react-dom": "^16.8.6",
     "react-edit-inline": "^1.0.8",
     "react-modal": "^3.8.1",
-    "react-tabs": "^3.0.0",
-    "rc-progress": "^2.3.0",
-    "html-react-parser": "^0.6.4"
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "react-tabs": "^3.0.0"
   },
   "scripts": {
     "analyze": "source-map-explorer 'build/static/js/*.js'",

@@ -1,11 +1,11 @@
 import React from 'react';
 
-import Html from '../../services/html-tags/html-tag';
+import { removeHtmlTags } from '../../services/util/util';
 
 import { Link } from 'react-router-dom';
 
-function FrameworkButton({ item }) {
-  let description = Html.removeTags(item.field_description);
+function FrameworkButton({ framework }) {
+  let description = removeHtmlTags(framework.field_description);
   if (description.length > 120) {
     description = `${description.slice(0, 120).trim()}...`;
   }
@@ -14,13 +14,13 @@ function FrameworkButton({ item }) {
       <Link
         className="column callout"
         data-equalizer-watch
-        to={`/framework/${item.title.toLowerCase()}`}
+        to={`/framework/${framework.title.toLowerCase()}`}
       >
         <img
           className="float-center margin-bottom-medium"
           style={{ height: '6rem' }}
           src={`http://dev-competency-mapper.pantheonsite.io/${
-            item.field_logo
+            framework.field_logo
           }`}
         />
         <h5>

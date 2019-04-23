@@ -8,22 +8,24 @@ import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
 import { apiUrl } from '../services/competency/competency';
 
 class Frameworks extends React.Component {
+  state = {
+    frameworks: []
+  };
+  competencyService = new CompetencyService();
+  activeRequests = new ActiveRequestsService();
   constructor(props) {
     super(props);
-    this.state = { data: [] };
-    this.competencyService = new CompetencyService();
-    this.activeRequests = new ActiveRequestsService();
   }
 
   async componentDidMount() {
     this.activeRequests.startRequest();
-    const frameworkData = await this.competencyService.getAllFrameworksDetails();
-    this.setState({ data: frameworkData });
+    const frameworks = await this.competencyService.getAllFrameworksDetails();
+    this.setState({ frameworks });
     this.activeRequests.finishRequest();
   }
 
   render() {
-    const { data } = this.state;
+    const { frameworks } = this.state;
 
     return (
       <div className="column">
@@ -34,7 +36,7 @@ class Frameworks extends React.Component {
           then links can be given to <a className="readmore">read more</a>
         </p>
 
-        <FrameworkButtons data={data} />
+        <FrameworkButtons frameworks={frameworks} />
       </div>
     );
   }

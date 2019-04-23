@@ -4,15 +4,17 @@ import FrameworkButton from '../framework-button/FrameworkButton';
 
 const $ = window.$;
 
-function FrameworkButtons({ data }) {
+function FrameworkButtons({ frameworks }) {
   const selfRef = new React.createRef();
 
   const invokeFoundation = () => {
     window.setTimeout(() => $(selfRef.current).foundation());
-    return data.map(item => <FrameworkButton key={item.nid} item={item} />);
+    return frameworks.map(framework => (
+      <FrameworkButton key={framework.nid} framework={framework} />
+    ));
   };
 
-  return data.length < 1 ? null : (
+  return frameworks.length < 1 ? null : (
     <div className="row" data-equalizer ref={selfRef}>
       {invokeFoundation()}
     </div>
