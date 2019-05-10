@@ -16,13 +16,14 @@ class HttpService {
     return this.executeFetch(url);
   }
 
-  post(url, body) {
+  post(url, body, options = {}) {
     return this.executeFetch(url, {
       method: 'POST',
       credentials: 'include',
       cookies: 'x-access-token',
       headers: this.headers.get(),
-      body: body
+      body: body,
+      ...options
     });
   }
 

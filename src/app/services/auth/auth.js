@@ -1,0 +1,34 @@
+import { apiUrl } from '../competency/competency';
+import HttpService from '../http/http';
+
+const http = new HttpService();
+const loginUrl = `${apiUrl}/user/login?_format=json`;
+const logoutUrl = `${apiUrl}/user/logout`;
+
+export function login(username, password) {
+  const credentials = JSON.stringify({ name: username, pass: password });
+  return http
+    .post(loginUrl, credentials)
+    .then(response => response.json())
+    .then(data => {
+      localStorage.setItem('roles', data.current_user.roles);
+      localStorage.setItem('csrf_token', data.csrf_token);
+      localStorage.setItem('logout_token', data.logout_token);
+      localStorage.setItem('user', data.current_user.name);
+      localStorage.setItem('userid', data.current_user.uid);
+      return data;
+    })
+    .catch(error => {
+      logout();
+      throw error;
+    });
+}
+
+export function logout() {
+  localStorage.removeItem('roles');
+  localStorage.removeItem('csrf_token');
+  localStorage.removeItem('logout_token');
+  localStorage.removeItem('userid');
+  localStorage.removeItem('user');
+  return http.post(logoutUrl);
+}

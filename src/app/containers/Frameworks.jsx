@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { Component } from 'react';
 
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 
 import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
 
-class Frameworks extends React.Component {
+class Frameworks extends Component {
   competencyService = new CompetencyService();
   activeRequests = new ActiveRequestsService();
 

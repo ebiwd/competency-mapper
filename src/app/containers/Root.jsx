@@ -1,30 +1,33 @@
 import React, { Component } from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 
-import Roster from './Roster';
-import User from './User';
-import Frameworks from './Frameworks';
-import Competencies from './CompetencyList';
-import ManageCompetencies from './ManageCompetencies';
-import ManageAttributes from './ManageAttributes';
-import CompetencyDetails from './CompetencyDetails';
-import ResourcesList from './ResourcesList';
-import ResourceDetails from './ResourceDetails';
-import ResourceCreate from './ResourceCreate';
-import ResourceEdit from './ResourceEdit';
-import ChangePassword from './ChangePassword';
+import Masthead from '../containers/masthead/Masthead';
 import ProgressBar from '../../shared/components/progress-bar/progress-bar';
+import ManageAttributes from './ManageAttributes';
+import ManageCompetencies from './ManageCompetencies';
+import CompetencyDetails from './CompetencyDetails';
+import Competencies from './CompetencyList';
+import ResourceEdit from './ResourceEdit';
+import ResourceCreate from './ResourceCreate';
+import ResourceDetails from './ResourceDetails';
+import ResourcesList from './ResourcesList';
+import ChangePassword from './ChangePassword';
+import Frameworks from './Frameworks';
 
+import { login, logout } from '../services/auth/auth';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 
 const $ = window.$;
+
 class Root extends Component {
+  state = {
+    isActive: false,
+    roles: localStorage.getItem('roles') || '',
+    user: localStorage.getItem('user') || ''
+  };
+
   constructor(props) {
     super(props);
-    this.state = {
-      isActive: false
-    };
-
     this.activeRequests = new ActiveRequestsService();
   }
 
@@ -48,69 +51,104 @@ class Root extends Component {
   handleActiveRequests = hasPendingRequests =>
     this.setState({ isActive: hasPendingRequests });
 
+  handleLogin = (username, password) => {
+    login(username, password)
+      .then(() => {
+        this.setState({
+          roles: localStorage.getItem('roles'),
+          user: localStorage.getItem('user')
+        });
+      })
+      .catch(error => {
+        window.console.error(error);
+        if (error instanceof Response) {
+          switch (error.status) {
+            case 400:
+              error.json().then(data => window.alert(data.message));
+              return;
+            default:
+          }
+        }
+        window.alert(
+          'Sorry, there was an unknown login problem, please try again.'
+        );
+      });
+  };
+
+  handleLogout = () => {
+    this.setState({ user: '', roles: '' });
+    logout();
+  };
+
   render() {
-    const { isActive } = this.state;
+    const { isActive, roles, user } = this.state;
     return (
-      <React.Fragment>
-        <div data-sticky-container>
-          <header
-            id="masthead"
-            className="masthead"
-            data-sticky
-            data-sticky-on="large"
-            data-top-anchor="main-content-area:top"
-            data-btm-anchor="main-content-area:bottom"
-          >
-            <div className="masthead-inner row">
-              <div className="columns medium-12" id="local-title">
-                <h1>
-                  <Link to="/">Competency Mapper</Link>
-                </h1>
-              </div>
-              <User />
-            </div>
-            <ProgressBar isActive={isActive} />
-          </header>
-        </div>
+      <>
+        <Masthead
+          roles={roles}
+          user={user}
+          onLogin={this.handleLogin}
+          onLogout={this.handleLogout}
+        />
+        <ProgressBar isActive={isActive} />
 
         <section id="main-content-area" className="row" role="main">
           <main className="column">
             <Switch>
-              <Route
-                path="/framework/:framework/manage/competencies/:cid/manage-attributes"
-                component={ManageAttributes}
-              />
-              <Route
-                path="/framework/:framework/manage/competencies/:cid?"
-                component={ManageCompetencies}
-              />
-              <Route
-                path="/framework/:framework/competency/details/:cid"
-                component={CompetencyDetails}
-              />
-              <Route path="/framework/:framework" component={Competencies} />
-              <Route
+              <ProtectedRoute
+                condition={!!user && roles.includes('content_manager')}
                 path="/training-resource/edit/:nid"
                 component={ResourceEdit}
               />
-              <Route
+              <ProtectedRoute
+                condition={!!user && roles.includes('content_manager')}
                 path="/training-resource/create"
                 component={ResourceCreate}
               />
               <Route
+                condition={!!user && roles.includes('framework_manager')}
                 path="/training-resources/:id"
                 component={ResourceDetails}
               />
               <Route path="/all-training-resources" component={ResourcesList} />
-              <Route path="/roster" component={Roster} />
+              <ProtectedRoute
+                condition={!!user && roles.includes('framework_manager')}
+                path="/framework/:framework/manage/competencies/:cid/manage-attributes"
+                component={ManageAttributes}
+              />
+              <ProtectedRoute
+                condition={!!user && roles.includes('framework_manager')}
+                path="/framework/:framework/manage/competencies/:cid?"
+                component={ManageCompetencies}
+              />
+              <ProtectedRoute
+                condition={!!user && roles.includes('framework_manager')}
+                path="/framework/:framework/competency/details/:cid"
+                component={CompetencyDetails}
+              />
+              <Route path="/framework/:framework" component={Competencies} />
               <Route path="/user/change/password" component={ChangePassword} />
               <Route path="/" component={Frameworks} />
             </Switch>
           </main>
         </section>
-      </React.Fragment>
+      </>
     );
   }
 }
 
 export default Root;
+
+class ProtectedRoute extends Component {
+  render() {
+    const { component: Component, condition, ...props } = this.props;
+    return (
+      <Route
+        {...props}
+        render={props =>
+          condition ? <Component {...props} /> : <Redirect to="/" />
+        }
+      />
+    );
+  }
+}
