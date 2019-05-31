@@ -8,16 +8,14 @@ class CompetencyDetails extends React.Component {
     super(props);
     this.state = {
       data: [],
-      path: this.props.location.pathname.split('/'),
-      cid: '',
+      framework: this.props.match.params.framework.toLowerCase(),
+      cid: this.props.match.params.cid,
       frameworkDetails: [],
       resources: []
     };
   }
 
   componentDidMount() {
-    this.setState({ cid: this.state.path[5] });
-
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -25,9 +23,9 @@ class CompetencyDetails extends React.Component {
         this.setState({ csrf: findresponse2 });
       });
 
-    let frameworkID = this.state.path[2].toLowerCase();
-    let fetchCompetencyList =
-      `${apiUrl}/api/v1/framework/` + frameworkID + '?_format=json';
+    const fetchCompetencyList = `${apiUrl}/api/v1/framework/${
+      this.state.framework
+    }?_format=json`;
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -73,67 +71,82 @@ class CompetencyDetails extends React.Component {
   }
 
   render() {
-    let frameworkDefs = [];
+    const { cid, data, frameworkDetails, framework } = this.state;
+    const frameworkDefs = [];
 
-    const competencyDetails = this.state.data.map(item =>
-      item.domains.map(domain =>
-        domain.competencies.map(competency => {
-          // domain.competencies.filter(competency => competency.id === this.state.cid).map(competency =>{
-          if (competency.id === this.state.cid) {
-            return (
-              <div>
-                <div className="row">
-                  <div className="column large-12">
-                    <h4>
-                      {' '}
-                      {item.title} / {domain.title}
-                    </h4>
-                    <h4>{competency.title}</h4>
-                  </div>
-                </div>
-                <div className="row">
-                  <div className="column large-8">
-                    <ul>
-                      {frameworkDefs.map(def => {
-                        return (
-                          <div>
-                            <div>
-                              {' '}
-                              <strong>
-                                <em>{def}</em>
-                              </strong>
-                            </div>
-                            {competency.attributes.map(attribute => {
-                              if (attribute.type === def) {
-                                return (
-                                  <li key={attribute.id}>{attribute.title} </li>
-                                );
-                              }
-                              return null;
-                            })}
-                          </div>
-                        );
-                      })}
-                    </ul>
-                  </div>
-                  <div className="column large-4">
-                    <div className="callout notice industry-background white-color">
-                      <p>Competency derived from:</p>
-                      <p>No data available</p>
-                    </div>
-                    <div className="callout notice training-background white-color">
-                      <p>Training resources mapped to this competency</p>
-                      <ul>{this.resourceBlock()}</ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            );
+    frameworkDetails.forEach(item => {
+      if (item.name.toLowerCase() == framework) {
+        item.attribute_types.map(attribute_type => {
+          frameworkDefs.push(attribute_type.title);
+        });
+      }
+    });
+
+    const competencies = [];
+
+    data.forEach(item =>
+      item.domains.forEach(domain =>
+        domain.competencies.forEach(competency => {
+          if (competency.id === cid) {
+            competencies.push({
+              ...competency,
+              framework: item.title,
+              domain: domain.title
+            });
           }
-          return null;
         })
       )
     );
+
+    console.log(competencies);
+
+    const competencyDetails = competencies.map(competency => (
+      <div key={competency.id}>
+        <div className="row">
+          <div className="column large-12">
+            <h4>
+              {' '}
+              {competency.framework} / {competency.domain}
+            </h4>
+            <h4>{competency.title}</h4>
+          </div>
+        </div>
+        <div className="row">
+          <div className="column large-8">
+            <ul>
+              {frameworkDefs.map(def => {
+                return (
+                  <div>
+                    <div>
+                      {' '}
+                      <strong>
+                        <em>{def}</em>
+                      </strong>
+                    </div>
+                    {competency.attributes.map(attribute => {
+                      if (attribute.type === def) {
+                        return <li key={attribute.id}>{attribute.title} </li>;
+                      }
+                      return null;
+                    })}
+                  </div>
+                );
+              })}
+            </ul>
+          </div>
+          <div className="column large-4">
+            <div className="callout notice industry-background white-color">
+              <p>Competency derived from:</p>
+              <p>No data available</p>
+            </div>
+            <div className="callout notice training-background white-color">
+              <p>Training resources mapped to this competency</p>
+              <ul>{this.resourceBlock()}</ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    ));
 
     return (
       <div className="row">
