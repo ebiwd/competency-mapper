@@ -11,8 +11,7 @@ class ManageCompetencies extends React.Component {
     this.state = {
       data: [],
       goToDomainId: props.match.params.cid,
-      framework: props.match.params.framework,
-      path: props.location.pathname.split('/'),
+      framework: props.match.params.framework.toLowerCase(),
       csrf: '',
       domainID: '',
       domainUUID: '',
@@ -58,9 +57,8 @@ class ManageCompetencies extends React.Component {
   }
 
   fetchData() {
-    let framework = this.state.path[2].toLowerCase();
-    let fetchCompetencyList =
-      `${apiUrl}/api/v1/framework/` + framework + '?_format=json';
+    const { framework } = this.state;
+    const fetchCompetencyList = `${apiUrl}/api/v1/framework/${framework}?_format=json`;
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -264,7 +262,7 @@ class ManageCompetencies extends React.Component {
     console.log('render');
     let competencies = '';
     let domainsOptions = [];
-    let framework = this.state.path[2];
+    const { framework } = this.state;
 
     competencies = this.state.data.map(item =>
       item.domains.map((domain, did) => (
@@ -332,7 +330,7 @@ class ManageCompetencies extends React.Component {
               </td>
               <td>
                 <Link
-                  to={`/framework/${framework.toLowerCase()}/manage/competencies/${
+                  to={`/framework/${framework}/manage/competencies/${
                     competency.id
                   }/manage-attributes`}
                 >
