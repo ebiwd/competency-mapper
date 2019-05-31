@@ -64,11 +64,12 @@ class CompetencyList extends Component {
   }
 
   render() {
-    const { name, description, domains } = this.state;
+    const { name, description, domains, framework } = this.state;
     const domainList = domains.map((domain, index) => (
       <DomainList
         key={domain.nid}
         index={index}
+        framework={framework}
         domain={domain}
         disable={true}
       />

@@ -5,12 +5,13 @@ import CompetencyList from '../competency-list/CompetencyList';
 
 // import styles from './DomainList.css';
 
-function DomainList({ index, domain, disable }) {
+function DomainList({ index, framework, domain, disable }) {
   const competencies = domain.competencies.map((competency, childIndex) => (
     <CompetencyList
       key={competency.id}
       parentIndex={index}
       index={childIndex}
+      framework={framework}
       competency={competency}
       disable={disable}
     />
@@ -37,6 +38,7 @@ DomainList.defaultProps = {
 
 DomainList.propTypes = {
   index: PropTypes.number,
+  framework: PropTypes.string,
   domain: PropTypes.shape({
     title: PropTypes.string,
     competencies: PropTypes.array

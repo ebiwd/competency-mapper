@@ -1,12 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import Collapsible from 'react-collapsible';
+import { Link } from 'react-router-dom';
 
 import { groupBy } from 'lodash-es';
-// import styles from './CompetencyList.css';
+import './CompetencyList.css';
 
-// TODO: add collapsible content.
-
-function CompetencyList({ parentIndex, index, competency, disable }) {
+function CompetencyList({
+  parentIndex,
+  index,
+  framework,
+  competency,
+  disable
+}) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
   const attributesTypes = Object.keys(attributesGrouped);
   const attributes = attributesTypes.map(type => {
@@ -25,12 +31,34 @@ function CompetencyList({ parentIndex, index, competency, disable }) {
     <tr>
       <td>{`${parentIndex + 1}.${index + 1}`}</td>
       <td>
-        {competency.title}
-        {attributesTypes.length > 0 && (
+        <Collapsible
+          trigger={
+            <div className="open-close-title">
+              <span>{competency.title}</span>
+              <span className="icon icon-common icon-plus float-right">
+                <p className="show-for-sr">show more</p>
+              </span>
+            </div>
+          }
+          triggerWhenOpen={
+            <div className="open-close-title">
+              <span>{competency.title}</span>
+              <span className="icon icon-common icon-minus float-right">
+                <p className="show-for-sr">show less</p>
+              </span>
+            </div>
+          }
+        >
           <div className="padding-left-large padding-top-large">
-            {attributes}{' '}
+            <Link to={`${framework}/competency/details/${competency.id}`}>
+              <span className="float-right">
+                <i className="icon icon-spacer icon-common icon-info" />More
+                details
+              </span>
+            </Link>
+            {attributes}
           </div>
-        )}
+        </Collapsible>
       </td>
     </tr>
   );
@@ -39,13 +67,13 @@ function CompetencyList({ parentIndex, index, competency, disable }) {
 CompetencyList.defaultProps = {
   parentIndex: 0,
   index: 0,
-  competency: { title: '', competencies: [] },
   disable: true
 };
 
 CompetencyList.propTypes = {
   parentIndex: PropTypes.number,
   index: PropTypes.number,
+  framework: PropTypes.string,
   competency: PropTypes.shape({
     title: PropTypes.string
   }),
