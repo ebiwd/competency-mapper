@@ -1,6 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Parser from 'html-react-parser';
+import { Link } from 'react-router-dom';
 
 import { apiUrl } from '../services/competency/competency';
 
@@ -137,12 +138,7 @@ class ResourcesList extends React.Component {
           {' '}
           <h4>
             {' '}
-            <a
-              href={process.env.PUBLIC_URL + '/#/training-resources/' + item.id}
-            >
-              {' '}
-              {item.title}{' '}
-            </a>{' '}
+            <Link to={'/training-resources/' + item.id}>{item.title} </Link>
           </h4>
           <p>{item.dates} </p>
           <strong>Learning resource type:</strong> {item.type} <br />
@@ -171,13 +167,9 @@ class ResourcesList extends React.Component {
           )}
         </td>
         <td>
-          <a
-            href={
-              process.env.PUBLIC_URL + '/#/training-resource/edit/' + item.id
-            }
-          >
+          <Link to={`/training-resource/edit/${item.id}`}>
             <i className="fas fa-edit" />{' '}
-          </a>{' '}
+          </Link>
         </td>
       </tr>
     ));
@@ -206,13 +198,12 @@ class ResourcesList extends React.Component {
             </div>
           </div>
           <div className={'column large-2'}>
-            <a
+            <Link
               className={'button float-right'}
-              href={process.env.PUBLIC_URL + '/#/training-resource/create'}
+              to={'/training-resource/create'}
             >
-              {' '}
               <i className="fas fa-plus-circle"> </i> Add new{' '}
-            </a>
+            </Link>
           </div>
         </div>
 

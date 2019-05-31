@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import { apiUrl } from '../services/competency/competency';
 
@@ -61,16 +61,9 @@ class CompetencyDetails extends React.Component {
             .map(competency => {
               return (
                 <li>
-                  <a
-                    href={
-                      process.env.PUBLIC_URL +
-                      '/#/training-resources/' +
-                      resource.id
-                    }
-                  >
-                    {' '}
+                  <Link to={`/training-resources/${resource.id}`}>
                     {resource.title}
-                  </a>{' '}
+                  </Link>
                 </li>
               );
             })
@@ -153,14 +146,4 @@ class CompetencyDetails extends React.Component {
   }
 }
 
-const CompetencyDetailsShow = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:name/competency/details/:id"
-      component={CompetencyDetails}
-    />
-  </Switch>
-);
-
-export default CompetencyDetailsShow;
+export default CompetencyDetails;
