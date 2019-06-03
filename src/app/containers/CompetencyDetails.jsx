@@ -10,7 +10,7 @@ class CompetencyDetails extends React.Component {
       data: [],
       framework: this.props.match.params.framework.toLowerCase(),
       cid: this.props.match.params.cid,
-      frameworkDetails: [],
+      frameworkDefs: [],
       resources: []
     };
   }
@@ -35,11 +35,20 @@ class CompetencyDetails extends React.Component {
       });
 
     let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
+    const { framework } = this.state;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
+        const frameworkDefs = [];
+        findresponse1
+          .filter(item => item.name.toLowerCase() === framework)
+          .forEach(item =>
+            item.attribute_types.forEach(attribute_type =>
+              frameworkDefs.push(attribute_type.title)
+            )
+          );
         this.setState({
-          frameworkDetails: findresponse1
+          frameworkDefs
         });
       });
 
@@ -71,16 +80,7 @@ class CompetencyDetails extends React.Component {
   }
 
   render() {
-    const { cid, data, frameworkDetails, framework } = this.state;
-    const frameworkDefs = [];
-
-    frameworkDetails.forEach(item => {
-      if (item.name.toLowerCase() == framework) {
-        item.attribute_types.map(attribute_type => {
-          frameworkDefs.push(attribute_type.title);
-        });
-      }
-    });
+    const { cid, data, frameworkDefs } = this.state;
 
     const competencies = [];
 
@@ -97,8 +97,6 @@ class CompetencyDetails extends React.Component {
         })
       )
     );
-
-    console.log(competencies);
 
     const competencyDetails = competencies.map(competency => (
       <div key={competency.id}>

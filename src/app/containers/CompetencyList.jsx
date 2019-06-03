@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+
 import CompetencyService from '../services/competency/competency';
+import Courses from './courses/Courses';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 
@@ -23,7 +27,9 @@ class CompetencyList extends Component {
     framework: '',
     name: '',
     description: '',
-    domains: []
+    domains: [],
+    filter: '',
+    filteredDomains: []
   };
 
   constructor(props) {
@@ -31,8 +37,7 @@ class CompetencyList extends Component {
     this.state.framework = props.match.params.framework;
   }
 
-  async componentDidMount() {
-    window.scroll(0, 0);
+  async componentWillMount() {
     this.activeRequests.startRequest();
     const promise1 = this.fetchFramework();
     const promise2 = this.fetchOtherFrameworkDetails();
@@ -41,11 +46,15 @@ class CompetencyList extends Component {
     this.activeRequests.finishRequest();
   }
 
+  componentDidMount() {
+    window.scroll(0, 0);
+  }
+
   async fetchFramework() {
     const { framework } = this.state;
     const frameworkData = await this.competencyService.getFramework(framework);
     const domains = safeFlat(frameworkData.map(item => item.domains));
-    this.setState({ domains });
+    this.setState({ domains, filteredDomains: domains });
   }
 
   async fetchOtherFrameworkDetails() {
@@ -63,22 +72,70 @@ class CompetencyList extends Component {
     }
   }
 
+  onFilter = filter => {
+    const { domains } = this.state;
+    let term;
+    try {
+      term = new RegExp(filter, 'i');
+    } catch (e) {
+      term = /./;
+    }
+    const filteredDomains = domains.map(domain => {
+      const filteredCompetencies = domain.competencies.filter(competency =>
+        term.test(competency.title)
+      );
+      if (filteredCompetencies.length === 0) {
+        return null;
+      }
+      return { ...domain, competencies: filteredCompetencies };
+    });
+    this.setState({ filter, filteredDomains });
+  };
+
   render() {
-    const { name, description, domains, framework } = this.state;
-    const domainList = domains.map((domain, index) => (
-      <DomainList
-        key={domain.nid}
-        index={index}
-        framework={framework}
-        domain={domain}
-        disable={true}
-      />
-    ));
+    const {
+      name,
+      description,
+      filteredDomains,
+      framework,
+      filter
+    } = this.state;
+
+    const domainList = filteredDomains.map((domain, index) =>
+      domain === null ? null : (
+        <DomainList
+          key={domain.nid}
+          index={index}
+          framework={framework}
+          domain={domain}
+          disable={true}
+        />
+      )
+    );
+
     return (
       <>
         <h3>{name}</h3>
         <p>{description}</p>
-        <table>{domainList}</table>
+
+        <Tabs>
+          <TabList>
+            <Tab>Competencies</Tab>
+            <Tab>Training resources</Tab>
+          </TabList>
+
+          <TabPanel>
+            <input
+              type="search"
+              value={filter}
+              onChange={event => this.onFilter(event.target.value)}
+            />
+            <table>{domainList}</table>
+          </TabPanel>
+          <TabPanel>
+            <Courses framework={framework} />
+          </TabPanel>
+        </Tabs>
       </>
     );
   }
