@@ -39,13 +39,6 @@ class ManageCompetencies extends React.Component {
       }, 1000);
       console.log('componentDidUpdate');
     }
-
-    if (this.state.goToDomainId) {
-      const ref = this.refs[this.state.goToDomainId];
-      if (ref) {
-        ref.scrollIntoView();
-      }
-    }
   }
 
   componentDidMount() {
@@ -54,6 +47,14 @@ class ManageCompetencies extends React.Component {
       this.setState({ roles: localStorage.getItem('roles') });
     }
     this.checkUser();
+
+    // TODO: wait for results and execute this on the next cycle
+    if (this.state.goToDomainId) {
+      const ref = this.refs[this.state.goToDomainId];
+      if (ref) {
+        ref.scrollIntoView();
+      }
+    }
   }
 
   fetchData() {
