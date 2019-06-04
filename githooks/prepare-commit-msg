@@ -1,0 +1,13 @@
+#!/bin/sh
+content=$(cat "$1")
+firstline=$(echo "$content" | head -1)
+
+if [[ "$firstline" =~ ^$ ]]; then
+cat <<-EOF > "$1"
+#[feat|fix|docs|style|refactor|perf|test|chore]:-|
+
+#[what/why]
+
+$content
+EOF
+fi

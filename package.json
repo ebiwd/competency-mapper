@@ -15,7 +15,7 @@
     "react-dom": "^16.8.6",
     "react-modal": "^3.8.1",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "2.1.8",
+    "react-scripts": "3.0.1",
     "react-tabs": "^3.0.0"
   },
   "scripts": {
@@ -50,7 +50,8 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "lint-staged"
+      "pre-commit": "lint-staged",
+      "prepare-commit-msg": "githooks/prepare-commit-msg ${HUSKY_GIT_PARAMS}"
     }
   },
   "lint-staged": {
