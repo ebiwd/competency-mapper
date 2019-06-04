@@ -36,7 +36,7 @@ export default class EditInline extends Component<Props, State> {
     document.addEventListener('mousedown', this.toggleActive);
   }
 
-  componentWillUnMount() {
+  componentWillUnmount() {
     document.removeEventListener('mousedown', this.toggleActive);
   }
 
