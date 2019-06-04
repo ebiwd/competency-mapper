@@ -73,7 +73,7 @@ export default class EditInline extends Component<Props, State> {
   };
 
   submit = () => {
-    const { text, change, paramName } = this.props;
+    const { change, paramName } = this.props;
     const { value } = this.state;
     change!({ [paramName!]: value });
     this.setState({ active: false, oriValue: value });
