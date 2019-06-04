@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import InlineEdit from 'react-edit-inline';
+import InlineEdit from '../../shared/components/edit-inline/EditInline';
 
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';

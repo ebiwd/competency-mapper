@@ -126,9 +126,11 @@ class CompetencyList extends Component {
 
           <TabPanel>
             <input
+              // className="clearable" // It doesn't work correctly
               type="search"
               value={filter}
               onChange={event => this.onFilter(event.target.value)}
+              placeholder="filter specific competencies..."
             />
             <table>{domainList}</table>
           </TabPanel>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import InlineEdit from 'react-edit-inline';
+import InlineEdit from '../../shared/components/edit-inline/EditInline';
 
 import { apiUrl } from '../services/competency/competency';
 
@@ -302,7 +302,7 @@ class ManageCompetencies extends React.Component {
                     width: '100%',
                     fontSize: '120%'
                   }}
-                />{' '}
+                />
                 <span
                   style={{
                     float: 'right',

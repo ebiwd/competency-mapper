@@ -1,0 +1,12 @@
+.icon-left-spacer {
+  padding-left: 0.25rem;
+}
+
+.edit-inline-container {
+  position: relative;
+}
+
+.edit-inline-controls {
+  position: absolute;
+  right: 0;
+}

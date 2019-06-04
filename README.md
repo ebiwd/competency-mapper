@@ -1,9 +1,10 @@
 # Competency Mapper
 
 React application to:
-* edit competency frameworks
-* map competencies with courses
-* create user and reference profiles
+
+- edit competency frameworks
+- map competencies with courses
+- create user and reference profiles
 
 The service can be accessed at
 [here](https://ebiwd.github.io/competency-mapper).
@@ -14,7 +15,6 @@ To develop locally run the development server following one of these recipes:
 
 ```
 npm ci
-patch -p0 < react-edit-inline.patch
 npm run start
 ```
 
