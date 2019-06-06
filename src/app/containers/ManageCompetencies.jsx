@@ -1,75 +1,91 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { withSnackbar } from 'notistack';
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
 
 import { apiUrl } from '../services/competency/competency';
 
+import CompetencyService from '../services/competency/competency';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+
 class ManageCompetencies extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      goToDomainId: props.match.params.cid,
-      framework: props.match.params.framework.toLowerCase(),
-      csrf: '',
-      domainID: '',
-      domainUUID: '',
-      selectedDomainID: '',
-      selectDefaultValue: 'Select domain',
-      domainAlert: false,
-      selectedCompetency: '',
-      updateFlag: '',
-      roles: ''
-    };
-    this.dataChanged = this.dataChanged.bind(this);
-    this.onSelectChange = this.onSelectChange.bind(this);
-    this.archiveHandle = this.archiveHandle.bind(this);
+  activeRequests = new ActiveRequestsService();
+  competencyService = new CompetencyService();
+
+  onSelectChange = this.onSelectChange.bind(this);
+
+  state = {
+    framework: this.props.match.params.framework,
+    frameworkName: '',
+    frameworkData: [],
+    loadingError: false,
+
+    domainID: '',
+    domainUUID: '',
+    selectedDomainID: '',
+    selectDefaultValue: 'Select domain',
+    domainAlert: false
+  };
+
+  static getDerivedStateFromProps(props, state) {
+    // Clear out previously-loaded data (so we don't render stale stuff).
+    if (props.match.params.framework !== state.framework) {
+      return {
+        framework: props.match.params.framework,
+        loadingError: false,
+        frameworkData: []
+      };
+    }
+
+    // No state update necessary
+    return null;
   }
 
-  /*shouldComponentUpdate(nextProps, nextState) {
-        return this.state.data != nextState.data;
-    }*/
+  async componentDidMount() {
+    const { framework, domainId } = this.props.match.params;
+    await this.fetchFramework(framework);
+
+    if (domainId) {
+      setTimeout(() => {
+        const ref = this.refs[domainId];
+        if (ref) {
+          ref.scrollIntoView();
+        }
+      }, 0);
+    }
+  }
 
   componentDidUpdate(prevProps, prevState) {
-    if (this.state.updateFlag) {
-      this.fetchData();
-      setTimeout(() => {
-        this.setState({ updateFlag: false });
-      }, 1000);
-      console.log('componentDidUpdate');
+    const { frameworkData, loadingError } = this.state;
+    if (frameworkData.length === 0 && !loadingError) {
+      const { framework } = this.props.match.params;
+      this.fetchFramework(framework);
     }
   }
 
-  componentDidMount() {
-    this.fetchData();
-    if (localStorage.getItem('roles')) {
-      this.setState({ roles: localStorage.getItem('roles') });
-    }
-    this.checkUser();
+  async fetchFramework(framework) {
+    try {
+      this.activeRequests.startRequest();
+      const frameworkData = await this.competencyService.getFramework(
+        framework
+      );
 
-    // TODO: wait for results and execute this on the next cycle
-    if (this.state.goToDomainId) {
-      const ref = this.refs[this.state.goToDomainId];
-      if (ref) {
-        ref.scrollIntoView();
-      }
-    }
-  }
-
-  fetchData() {
-    const { framework } = this.state;
-    const fetchCompetencyList = `${apiUrl}/api/v1/framework/${framework}?_format=json`;
-    fetch(fetchCompetencyList)
-      .then(Response => Response.json())
-      .then(findresponse => {
+      if (frameworkData.length) {
         this.setState({
-          data: findresponse
+          frameworkName: frameworkData[0].title,
+          frameworkData
         });
-      });
+      }
+    } catch (e) {
+      this.setState({ loadingError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     let token = localStorage.getItem('csrf_token');
     let domainID = this.state.selectedDomainID;
     let title = this.refs.title.value;
@@ -147,94 +163,40 @@ class ManageCompetencies extends React.Component {
       })
     });
     this.refs.title.value = '';
-
-    this.setState({ updateFlag: true });
-
-    event.preventDefault();
   }
 
-  dataChanged(e) {
-    let title = e['message'];
-    let cid = this.state.selectedCompetency;
-    let token = localStorage.getItem('csrf_token');
-    //alert(cid);
-    fetch(`${apiUrl}/node/` + cid + '?_format=hal_json', {
-      credentials: 'include',
-      method: 'PATCH',
-      cookies: 'x-access-token',
-      headers: {
-        Accept: 'application/hal+json',
-        'Content-Type': 'application/hal+json',
-        'X-CSRF-Token': token,
-        Authorization: 'Basic'
-      },
-      body: JSON.stringify({
-        _links: {
-          type: {
-            href: `${apiUrl}/rest/type/node/competency`
-          }
-        },
-        title: [
-          {
-            value: title
-          }
-        ],
-        type: [
-          {
-            target_id: 'competency'
-          }
-        ]
-      })
-    });
-    this.setState({ updateFlag: true });
+  async dataChanged(cid, title) {
+    const { framework } = this.state;
+    this.activeRequests.startRequest();
+    // TODO: try
+    await this.competencyService.patchCompetency(cid, 'title', title);
+    await this.fetchFramework(framework);
+    // TODO: catch
+    // TODO: display possible errors on a toast/snackbar
+    // TODO: finally
+    this.activeRequests.finishRequest();
   }
 
-  selectedCompetency(id) {
-    this.setState({ selectedCompetency: id });
-  }
-
-  archiveHandle(cid, status, event) {
-    //alert("competency "+ cid+ "is "+ status);
-    let archivedStatus = '';
-    if (status === 1) {
-      archivedStatus = false;
-    } else {
-      archivedStatus = true;
+  async toggleArchive(cid, isArchived) {
+    const { framework } = this.state;
+    let archive = isArchived ? false : true;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchCompetency(
+        cid,
+        'field_archived',
+        archive
+      );
+      await this.fetchFramework(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
     }
-    let token = localStorage.getItem('csrf_token');
-    fetch(`${apiUrl}/node/` + cid + '?_format=hal_json', {
-      credentials: 'include',
-      method: 'PATCH',
-      cookies: 'x-access-token',
-      headers: {
-        Accept: 'application/hal+json',
-        'Content-Type': 'application/hal+json',
-        'X-CSRF-Token': token,
-        Authorization: 'Basic'
-      },
-      body: JSON.stringify({
-        _links: {
-          type: {
-            href: `${apiUrl}/rest/type/node/competency`
-          }
-        },
-        field_archived: [
-          {
-            value: archivedStatus
-          }
-        ],
-        type: [
-          {
-            target_id: 'competency'
-          }
-        ]
-      })
-    });
-
-    this.setState({ updateFlag: true });
-
-    event.preventDefault();
   }
+
   onSelectChange(e) {
     this.setState({ domainAlert: false });
     let index = e.target.selectedIndex;
@@ -246,55 +208,54 @@ class ManageCompetencies extends React.Component {
     //console.log(this.state.selectDefaultValue);
   }
 
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('framework_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
-    console.log(localStorage.getItem('roles'));
-  }
-
   render() {
-    this.checkUser();
-    console.log('render');
+    const {
+      framework,
+      frameworkName,
+      frameworkData,
+      loadingError
+    } = this.state;
+
+    if (loadingError) {
+      // TODO: display errors on a toast/snackbar
+      return (
+        <div className="margin-top-large callout alert">
+          {' '}
+          Sorry, there was a problem when fetching the data!
+        </div>
+      );
+    }
+
+    if (frameworkData.length === 0) {
+      return null;
+    }
+
     let competencies = '';
     let domainsOptions = [];
-    const { framework } = this.state;
 
-    competencies = this.state.data.map(item =>
-      item.domains.map((domain, did) => (
+    competencies = frameworkData.map(item =>
+      item.domains.map((domain, parentIndex) => (
         <tbody key={domain.nid} ref={domain.nid}>
           <tr className="white-color secondary-background">
-            <td />
-            <td>{did + 1}</td>
+            <td>{parentIndex + 1}</td>
             <td>
               <h4>{domain.title}</h4>
             </td>
-            <td>Archive?</td>
+            <td className="small-1">Archive</td>
             <td>Manage attributes</td>
           </tr>
-          {domain.competencies.map((competency, cid) => (
+          {domain.competencies.map((competency, index) => (
             <tr key={competency.id}>
               <td>
-                <i className="fas fa-arrows-alt position-icon" />{' '}
+                {parentIndex + 1}.{index + 1}
               </td>
               <td>
-                {did + 1}.{cid + 1}
-              </td>
-              <td
-                className="tooltip-td"
-                onClick={this.selectedCompetency.bind(this, competency.id)}
-              >
                 <InlineEdit
                   text={competency.title}
                   data-id="12"
                   staticElement="div"
                   paramName="message"
-                  change={this.dataChanged.bind(this)}
+                  change={data => this.dataChanged(competency.id, data.message)}
                   style={{
                     display: 'inline-block',
                     margin: 0,
@@ -304,30 +265,24 @@ class ManageCompetencies extends React.Component {
                     fontSize: '120%'
                   }}
                 />
-                <span
-                  style={{
-                    float: 'right',
-                    position: 'relative',
-                    fontSize: '12px'
-                  }}
-                >
-                  <strong> {competency.archived ? '[Archived]' : ''}</strong>
-                </span>
               </td>
               <td>
-                {competency.archived === 1 ? (
-                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
-                    onClick={this.archiveHandle.bind(this, competency.id, 1)}
-                  >
-                    <i className="fas fa-toggle-on" />
-                  </a>
-                ) : (
-                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
-                    onClick={this.archiveHandle.bind(this, competency.id, 0)}
-                  >
-                    <i className="fas fa-toggle-off" />
-                  </a>
-                )}
+                <button
+                  className="cursor"
+                  onClick={this.toggleArchive.bind(
+                    this,
+                    competency.id,
+                    competency.archived
+                  )}
+                >
+                  {competency.archived === 1 ? (
+                    <span className="fas fa-toggle-on">
+                      <span>Archived</span>
+                    </span>
+                  ) : (
+                    <span className="fas fa-toggle-off" />
+                  )}
+                </button>
               </td>
               <td>
                 <Link
@@ -345,59 +300,53 @@ class ManageCompetencies extends React.Component {
     );
 
     return (
-      <div>
-        <h2>Manage Framework - {framework.toUpperCase()} </h2>
+      <div className="row">
+        <h2>Manage framework</h2>
 
-        <div className="row">
-          <div className="column large-12 callout">
-            <h4>Create new competency</h4>
-            <form className="form" onSubmit={this.handleSubmit.bind(this)}>
-              <div className="row">
-                <div className="column large-7">
-                  <input
-                    type="text"
-                    ref="title"
-                    required
-                    placeholder="Enter competency description"
-                  />
-                </div>
-                <div className="column large-3">
-                  <select
-                    ref="domain_ref"
-                    id="select_domain"
-                    onChange={this.onSelectChange.bind(this)}
-                  >
-                    {/*<option data-id="null" value="Select domain" disabled>Select domain
-                                                </option>*/}
-                    {domainsOptions}
-                  </select>
-                  {this.state.domainAlert ? (
-                    <div>
-                      <span style={{ color: 'red' }}>
-                        Please select domain{' '}
-                      </span>{' '}
-                      <i className="far fa-frown"> </i>
-                    </div>
-                  ) : (
-                    ''
-                  )}
-                </div>
-                <div className="column large-2">
-                  <input type="submit" className="button" value="Create new" />
-                </div>
+        <h4>{frameworkName}</h4>
+
+        <div className="callout">
+          <h4>Create new competency</h4>
+          <form className="form" onSubmit={this.handleSubmit.bind(this)}>
+            <div className="row">
+              <div className="column large-7">
+                <input
+                  type="text"
+                  ref="title"
+                  required
+                  placeholder="Enter competency description"
+                />
               </div>
-            </form>
-          </div>
+              <div className="column large-3">
+                <select
+                  ref="domain_ref"
+                  id="select_domain"
+                  onChange={this.onSelectChange}
+                >
+                  {/*<option data-id="null" value="Select domain" disabled>Select domain
+                                                </option>*/}
+                  {domainsOptions}
+                </select>
+                {this.state.domainAlert ? (
+                  <div>
+                    <span style={{ color: 'red' }}>Please select domain </span>{' '}
+                    <i className="far fa-frown"> </i>
+                  </div>
+                ) : (
+                  ''
+                )}
+              </div>
+              <div className="column large-2">
+                <input type="submit" className="button" value="Create new" />
+              </div>
+            </div>
+          </form>
         </div>
 
-        <div className="row">
-          <div className="column large-12">
-            <table>{competencies}</table>
-          </div>
-        </div>
+        <table>{competencies}</table>
       </div>
     );
   }
 }
 
-export default ManageCompetencies;
+export default withSnackbar(ManageCompetencies);

@@ -7,13 +7,9 @@ import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat } from '../services/util/util';
 
-/* TODO:
- *  #. fix spacing with second column (archive <-> unarchive resizes it)
- */
-
 class ManageAttributes extends React.Component {
-  competencyService = new CompetencyService();
   activeRequests = new ActiveRequestsService();
+  competencyService = new CompetencyService();
 
   state = {
     framework: '',
@@ -26,7 +22,7 @@ class ManageAttributes extends React.Component {
     competencyName: '',
     competencyData: [],
     competencyUuid: '',
-    competencyTypes: [],
+    attributeTypes: [],
 
     // form properties to create new attributes
     newAttribute: '',
@@ -35,11 +31,11 @@ class ManageAttributes extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state.framework = props.match.params.framework;
+    this.state.framework = props.match.params.framework.toLowerCase();
     this.state.competencyId = props.match.params.cid;
   }
 
-  async componentDidMount() {
+  async componentWillMount() {
     window.scroll(0, 0);
     this.activeRequests.startRequest();
     const promise1 = this.fetchCompetency();
@@ -70,9 +66,9 @@ class ManageAttributes extends React.Component {
   async fetchCompetency() {
     const { framework } = this.state;
 
-    const competencyData = await this.competencyService.getFramework(framework);
+    const frameworkData = await this.competencyService.getFramework(framework);
     const competencyMatch = this.filterByCompetencyId(
-      competencyData,
+      frameworkData,
       this.state.competencyId
     );
 
@@ -88,29 +84,18 @@ class ManageAttributes extends React.Component {
   }
 
   async fetchFramework() {
+    const { framework } = this.state;
     const frameworkData = await this.competencyService.getAllFrameworks();
     const frameworkMatch = frameworkData.filter(
-      item => item.name.toLowerCase() === this.state.framework
+      item => item.name.toLowerCase() === framework
     );
 
     if (frameworkMatch.length) {
       this.setState({
         frameworkName: frameworkMatch[0].name,
-        competencyTypes: frameworkMatch[0].attribute_types,
+        attributeTypes: frameworkMatch[0].attribute_types,
         newAttributeTypeUuid: frameworkMatch[0].attribute_types[0].uuid
       });
-    }
-  }
-
-  // TODO: replace this method for a router guard
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('framework_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
     }
   }
 
@@ -121,14 +106,14 @@ class ManageAttributes extends React.Component {
       newAttribute: description,
       newAttributeTypeUuid: attributeTypeUuid,
       competencyId,
-      competencyTypes,
+      attributeTypes,
       competencyUuid
     } = this.state;
 
     if (description === '' || attributeTypeUuid === '') {
       return;
     }
-    const attributeTypeId = competencyTypes.filter(
+    const attributeTypeId = attributeTypes.filter(
       item => item.uuid === attributeTypeUuid
     )[0].id;
 
@@ -143,23 +128,23 @@ class ManageAttributes extends React.Component {
 
     this.setState({
       newAttribute: '',
-      newAttributeTypeUuid: competencyTypes[0].uuid
+      newAttributeTypeUuid: attributeTypes[0].uuid
     });
     await this.fetchCompetency();
     this.activeRequests.finishRequest();
   };
 
-  async handleEdit(aId, { message: title }) {
+  async handleEdit(attributeId, { message: title }) {
     this.activeRequests.startRequest();
-    await this.competencyService.patchAttribute(aId, 'title', title);
+    await this.competencyService.patchAttribute(attributeId, 'title', title);
     await this.fetchCompetency();
     this.activeRequests.finishRequest();
   }
 
-  async toggleArchive(aId, isArchived) {
+  async toggleArchive(attributeId, isArchived) {
     this.activeRequests.startRequest();
     await this.competencyService.patchAttribute(
-      aId,
+      attributeId,
       'field_archived',
       isArchived === '1' ? false : true
     );
@@ -171,7 +156,7 @@ class ManageAttributes extends React.Component {
     this.setState({ [control.name]: target.value });
   };
 
-  getTableRows(def) {
+  getTableRows(def, parentIndex) {
     const competency = this.state.competencyData;
 
     if (competency.length === 0) {
@@ -180,15 +165,11 @@ class ManageAttributes extends React.Component {
 
     return competency.attributes
       .filter(attribute => attribute.type === def.title)
-      .map(attribute => {
+      .map((attribute, index) => {
         return (
           <tr key={attribute.uuid}>
-            {/*
-                          <td>
-                            <i className="fas fa-arrows-alt position-icon" />{' '}
-                          </td>
-                          */}
-            <td style={{ left: '20px' }} className="tooltip-td">
+            <td>{`${parentIndex}.${index + 1}`}</td>
+            <td>
               <InlineEdit
                 text={attribute.title}
                 staticElement="div"
@@ -205,7 +186,8 @@ class ManageAttributes extends React.Component {
               />
             </td>
             <td>
-              <a // eslint-disable-line jsx-a11y/anchor-is-valid
+              <button
+                className="cursor"
                 onClick={() =>
                   this.toggleArchive(attribute.id, attribute.archived)
                 }
@@ -217,7 +199,7 @@ class ManageAttributes extends React.Component {
                 ) : (
                   <span className="fas fa-toggle-off" />
                 )}
-              </a>
+              </button>
             </td>
           </tr>
         );
@@ -225,101 +207,86 @@ class ManageAttributes extends React.Component {
   }
 
   getAttributeList() {
-    return this.state.competencyTypes.map(def => {
-      return (
-        <tbody key={def.uuid}>
-          <tr className="secondary-background white-color">
-            {/* <td /> */}
-            <td>
-              <strong>
-                <em>{def.title}</em>
-              </strong>
-            </td>
-            <td />
-          </tr>
-          {this.getTableRows(def)}
-        </tbody>
-      );
-    });
+    return this.state.attributeTypes.map((def, index) => (
+      <tbody key={def.uuid}>
+        <tr className="secondary-background white-color">
+          <td>{index + 1}</td>
+          <td>
+            <strong>
+              <em>{def.title}</em>
+            </strong>
+          </td>
+          <td className="small-1">Archive</td>
+        </tr>
+        {this.getTableRows(def, index + 1)}
+      </tbody>
+    ));
   }
 
   render() {
-    this.checkUser();
-
-    const selectOptions = this.state.competencyTypes.map(option => (
-      <option key={option.uuid} value={option.uuid}>
-        {option.title}
-      </option>
-    ));
-
     const {
       framework,
       frameworkName,
       domainName,
       domainId,
       competencyName,
+      attributeTypes,
       newAttribute,
       newAttributeTypeUuid
     } = this.state;
 
+    const selectOptions = attributeTypes.map(option => (
+      <option key={option.uuid} value={option.uuid}>
+        {option.title}
+      </option>
+    ));
+
     return (
-      <React.Fragment>
-        <div className="row">
-          <div className="column large-12">
-            <h3>Manage attributes</h3>
-            <h4>
-              <Link to={`/framework/${framework}/manage/competencies`}>
-                {frameworkName}
-              </Link>
-              {' / '}
-              <Link
-                to={`/framework/${framework}/manage/competencies/${domainId}`}
-              >
-                {domainName}
-              </Link>
-              {' / '}
-              {competencyName}
-            </h4>
-          </div>
-        </div>
+      <div className="row">
+        <h2>Manage attributes</h2>
+        <h4>
+          <Link to={`/framework/${framework}/manage/competencies`}>
+            {frameworkName}
+          </Link>
+          {' / '}
+          <Link to={`/framework/${framework}/manage/competencies/${domainId}`}>
+            {domainName}
+          </Link>
+          {' / '}
+          {competencyName}
+        </h4>
 
-        <div className="row">
-          <div className="column 12 callout">
-            <h4>Create new attribute</h4>
-            <form onSubmit={this.handleSubmit}>
-              <div className="row">
-                <div className="column large-7">
-                  <input
-                    type="text"
-                    placeholder="Attribute description"
-                    name="newAttribute"
-                    value={newAttribute}
-                    onChange={this.onChange}
-                  />
-                </div>
-                <div className="column large-3">
-                  <select
-                    name="newAttributeTypeUuid"
-                    value={newAttributeTypeUuid}
-                    onChange={this.onChange}
-                  >
-                    {selectOptions}
-                  </select>
-                </div>
-                <div className="column large-2">
-                  <input type="submit" className="button" value="Submit" />
-                </div>
+        <div className="callout">
+          <h4>Create new attribute</h4>
+          <form onSubmit={this.handleSubmit}>
+            <div className="row">
+              <div className="column large-7">
+                <input
+                  type="text"
+                  placeholder="Attribute description"
+                  name="newAttribute"
+                  value={newAttribute}
+                  onChange={this.onChange}
+                />
               </div>
-            </form>
-          </div>
+              <div className="column large-3">
+                <select
+                  name="newAttributeTypeUuid"
+                  value={newAttributeTypeUuid}
+                  onChange={this.onChange}
+                >
+                  {selectOptions}
+                </select>
+              </div>
+              <div className="column large-2">
+                <input type="submit" className="button" value="Submit" />
+              </div>
+            </div>
+          </form>
         </div>
 
-        <div className="row">
-          <div className="column large-12">
-            <table>{this.getAttributeList()}</table>
-          </div>
-        </div>
-      </React.Fragment>
+        <table>{this.getAttributeList()}</table>
+      </div>
     );
   }
 }

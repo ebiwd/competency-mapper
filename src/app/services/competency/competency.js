@@ -19,19 +19,19 @@ class CompetencyService {
     const response = await this.http.get(
       `${apiUrl}/api/v1/framework/${framework}?_format=json`
     );
-    return response.json();
+    return response.data;
   }
 
   async getAllFrameworks() {
     const response = await this.http.get(
       `${apiUrl}/api/v1/framework/?_format=json`
     );
-    return response.json();
+    return response.data;
   }
 
   async getAllFrameworksDetails() {
     const response = await this.http.get(`${apiUrl}/api/frameworks`);
-    return response.json();
+    return response.data;
   }
 
   async createCompetency(options) {
@@ -40,16 +40,25 @@ class CompetencyService {
       Body.createCompetency(options)
     );
 
-    return response.json();
+    return response.data;
   }
 
-  async patchAttribute(aId, key, value) {
+  async patchCompetency(competencyId, key, value) {
     const response = await this.http.patch(
-      `${apiUrl}/node/${aId}?_format=hal_json`,
+      `${apiUrl}/node/${competencyId}?_format=hal_json`,
+      Body.mutateCompetency(key, value)
+    );
+
+    return response.data;
+  }
+
+  async patchAttribute(attributeId, key, value) {
+    const response = await this.http.patch(
+      `${apiUrl}/node/${attributeId}?_format=hal_json`,
       Body.mutateAttribute(key, value)
     );
 
-    return response.json();
+    return response.data;
   }
 }
 

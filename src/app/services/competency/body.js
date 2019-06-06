@@ -8,7 +8,7 @@ class BodyService {
     competencyId,
     competencyUuid
   }) {
-    return JSON.stringify({
+    return {
       _links: {
         type: {
           href: `${apiUrl}/rest/type/node/attribute`
@@ -70,14 +70,22 @@ class BodyService {
           }
         ]
       }
-    });
+    };
+  }
+
+  static mutateCompetency(key, value) {
+    return BodyService.mutate(key, value, 'competency');
   }
 
   static mutateAttribute(key, value) {
-    return JSON.stringify({
+    return BodyService.mutate(key, value, 'attribute');
+  }
+
+  static mutate(key, value, target) {
+    return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/attribute`
+          href: `${apiUrl}/rest/type/node/${target}`
         }
       },
       [key]: [
@@ -87,10 +95,10 @@ class BodyService {
       ],
       type: [
         {
-          target_id: 'attribute'
+          target_id: target
         }
       ]
-    });
+    };
   }
 }
 

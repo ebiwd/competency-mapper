@@ -13,3 +13,7 @@
 .dropdown-on-dark-background {
   color: white !important;
 }
+
+.cursor {
+  cursor: pointer;
+}

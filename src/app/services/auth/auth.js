@@ -5,23 +5,21 @@ const http = new HttpService();
 const loginUrl = `${apiUrl}/user/login?_format=json`;
 const logoutUrl = `${apiUrl}/user/logout`;
 
-export function login(username, password) {
-  const credentials = JSON.stringify({ name: username, pass: password });
-  return http
-    .post(loginUrl, credentials)
-    .then(response => response.json())
-    .then(data => {
-      localStorage.setItem('roles', data.current_user.roles);
-      localStorage.setItem('csrf_token', data.csrf_token);
-      localStorage.setItem('logout_token', data.logout_token);
-      localStorage.setItem('user', data.current_user.name);
-      localStorage.setItem('userid', data.current_user.uid);
-      return data;
-    })
-    .catch(error => {
-      logout();
-      throw error;
-    });
+export async function login(username, password) {
+  const credentials = { name: username, pass: password };
+  try {
+    const response = await http.post(loginUrl, credentials);
+    const { data } = response;
+    localStorage.setItem('roles', data.current_user.roles);
+    localStorage.setItem('csrf_token', data.csrf_token);
+    localStorage.setItem('logout_token', data.logout_token);
+    localStorage.setItem('user', data.current_user.name);
+    localStorage.setItem('userid', data.current_user.uid);
+    return data;
+  } catch (error) {
+    logout();
+    throw error;
+  }
 }
 
 export function logout() {

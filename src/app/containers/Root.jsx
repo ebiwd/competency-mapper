@@ -14,6 +14,7 @@ import ResourcesList from './ResourcesList';
 import ChangePassword from './ChangePassword';
 import Frameworks from './Frameworks';
 
+import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 
@@ -51,28 +52,31 @@ class Root extends Component {
   handleActiveRequests = hasPendingRequests =>
     this.setState({ isActive: hasPendingRequests });
 
-  handleLogin = (username, password) => {
-    login(username, password)
-      .then(() => {
-        this.setState({
-          roles: localStorage.getItem('roles'),
-          user: localStorage.getItem('user')
-        });
-      })
-      .catch(error => {
-        window.console.error(error);
-        if (error instanceof Response) {
-          switch (error.status) {
-            case 400:
-              error.json().then(data => window.alert(data.message));
-              return;
-            default:
-          }
+  handleLogin = async (username, password) => {
+    try {
+      await login(username, password);
+      this.setState({
+        roles: localStorage.getItem('roles'),
+        user: localStorage.getItem('user')
+      });
+    } catch (error) {
+      window.console.error(error);
+      debugger;
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            window.alert(error.response.data.message);
+            return;
+          default:
+            window.alert(
+              'Sorry, there was an unknown login problem, please try again.'
+            );
         }
         window.alert(
           'Sorry, there was an unknown login problem, please try again.'
         );
-      });
+      }
+    }
   };
 
   handleLogout = () => {
@@ -84,54 +88,66 @@ class Root extends Component {
     const { isActive, roles, user } = this.state;
     return (
       <>
-        <Masthead
-          roles={roles}
-          user={user}
-          onLogin={this.handleLogin}
-          onLogout={this.handleLogout}
-        />
-        <ProgressBar isActive={isActive} />
+        <SnackbarProvider
+          maxSnack={3}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          preventDuplicate
+        >
+          <Masthead
+            roles={roles}
+            user={user}
+            onLogin={this.handleLogin}
+            onLogout={this.handleLogout}
+          />
+          <ProgressBar isActive={isActive} />
 
-        <section id="main-content-area" className="row" role="main">
-          <main className="column">
-            <Switch>
-              <ProtectedRoute
-                condition={!!user && roles.includes('content_manager')}
-                path="/training-resource/edit/:nid"
-                component={ResourceEdit}
-              />
-              <ProtectedRoute
-                condition={!!user && roles.includes('content_manager')}
-                path="/training-resource/create"
-                component={ResourceCreate}
-              />
-              <Route
-                condition={!!user && roles.includes('framework_manager')}
-                path="/training-resources/:id"
-                component={ResourceDetails}
-              />
-              <Route path="/all-training-resources" component={ResourcesList} />
-              <ProtectedRoute
-                condition={!!user && roles.includes('framework_manager')}
-                path="/framework/:framework/manage/competencies/:cid/manage-attributes"
-                component={ManageAttributes}
-              />
-              <ProtectedRoute
-                condition={!!user && roles.includes('framework_manager')}
-                path="/framework/:framework/manage/competencies/:cid?"
-                component={ManageCompetencies}
-              />
-              <ProtectedRoute
-                condition={!!user && roles.includes('framework_manager')}
-                path="/framework/:framework/competency/details/:cid"
-                component={CompetencyDetails}
-              />
-              <Route path="/framework/:framework" component={Competencies} />
-              <Route path="/user/change/password" component={ChangePassword} />
-              <Route path="/" component={Frameworks} />
-            </Switch>
-          </main>
-        </section>
+          <section id="main-content-area" className="row" role="main">
+            <main className="column">
+              <Switch>
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resource/edit/:nid"
+                  component={ResourceEdit}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resource/create"
+                  component={ResourceCreate}
+                />
+                <Route
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/training-resources/:id"
+                  component={ResourceDetails}
+                />
+                <Route
+                  path="/all-training-resources"
+                  component={ResourcesList}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/manage/competencies/:cid/manage-attributes"
+                  component={ManageAttributes}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/manage/competencies/:domainId?"
+                  component={ManageCompetencies}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/details/:cid"
+                  component={CompetencyDetails}
+                />
+                <Route path="/framework/:framework" component={Competencies} />
+                <Route
+                  path="/user/change/password"
+                  component={ChangePassword}
+                />
+                <Route path="/" component={Frameworks} />
+              </Switch>
+            </main>
+          </section>
+        </SnackbarProvider>
       </>
     );
   }
