@@ -17,12 +17,6 @@ type State = Readonly<typeof defaultState>;
 export default class SimpleForm extends Component<Props, State> {
   readonly state = defaultState;
 
-  selectOptions = this.props.options.map(({ description, uuid }) => (
-    <option key={uuid} value={uuid}>
-      {description}
-    </option>
-  ));
-
   componentDidMount() {
     const { options } = this.props;
     if (options.length) {
@@ -54,8 +48,14 @@ export default class SimpleForm extends Component<Props, State> {
   };
 
   render() {
-    const { title, placeholder } = this.props;
+    const { title, placeholder, options } = this.props;
     const { value, uuid } = this.state;
+
+    const selectOptions = options.map(({ description, uuid }) => (
+      <option key={uuid} value={uuid}>
+        {description}
+      </option>
+    ));
 
     return (
       <form onSubmit={this.onSubmit} className="callout">
@@ -73,7 +73,7 @@ export default class SimpleForm extends Component<Props, State> {
           </div>
           <div className="column large-3">
             <select name="uuid" value={uuid} required onChange={this.onChange}>
-              {this.selectOptions}
+              {selectOptions}
             </select>
           </div>
           <div className="column large-2">
