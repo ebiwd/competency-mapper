@@ -5,11 +5,11 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 
 import CompetencyService from '../services/competency/competency';
-import Courses from './courses/Courses';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 
 import DomainList from '../components/domain-list/DomainList';
+import Courses from './courses/Courses';
 
 class CompetencyList extends Component {
   static propTypes = {
