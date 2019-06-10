@@ -11,8 +11,6 @@ import { safeFlat, removeHtmlTags } from '../services/util/util';
 
 import DomainList from '../components/domain-list/DomainList';
 
-// import styles from './CompetencyList.css';
-
 class CompetencyList extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -24,26 +22,24 @@ class CompetencyList extends Component {
   activeRequests = new ActiveRequestsService();
 
   state = {
-    framework: '',
-    name: '',
+    framework: this.props.match.params.framework,
+    frameworkName: '',
     description: '',
     domains: [],
     filter: '',
-    filteredDomains: []
+    filteredDomains: [],
+    loadingError: false
   };
 
-  constructor(props) {
-    super(props);
-    this.state.framework = props.match.params.framework;
-  }
-
   async componentWillMount() {
-    this.activeRequests.startRequest();
-    const promise1 = this.fetchFramework();
-    const promise2 = this.fetchOtherFrameworkDetails();
-    await promise1;
-    await promise2;
-    this.activeRequests.finishRequest();
+    try {
+      this.activeRequests.startRequest();
+      await Promise.all([this.fetchFramework(), this.fetchAllFrameworks()]);
+    } catch (error) {
+      this.setState({ loadingError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   componentDidMount() {
@@ -57,7 +53,7 @@ class CompetencyList extends Component {
     this.setState({ domains, filteredDomains: domains });
   }
 
-  async fetchOtherFrameworkDetails() {
+  async fetchAllFrameworks() {
     const { framework } = this.state;
     const frameworkData = await this.competencyService.getAllFrameworks();
     const frameworkMatch = frameworkData.filter(
@@ -66,7 +62,7 @@ class CompetencyList extends Component {
 
     if (frameworkMatch.length) {
       this.setState({
-        name: frameworkMatch[0].name,
+        frameworkName: frameworkMatch[0].name,
         description: removeHtmlTags(frameworkMatch[0].description)
       });
     }
@@ -94,12 +90,21 @@ class CompetencyList extends Component {
 
   render() {
     const {
-      name,
+      frameworkName,
       description,
       filteredDomains,
       framework,
-      filter
+      filter,
+      loadingError
     } = this.state;
+
+    if (loadingError) {
+      return (
+        <div className="margin-top-large callout alert">
+          Sorry, there was a problem when fetching the data!
+        </div>
+      );
+    }
 
     const domainList = filteredDomains.map((domain, index) =>
       domain === null ? null : (
@@ -115,7 +120,7 @@ class CompetencyList extends Component {
 
     return (
       <>
-        <h3>{name}</h3>
+        <h3>{frameworkName}</h3>
         <p>{description}</p>
 
         <Tabs>

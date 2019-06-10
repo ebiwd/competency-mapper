@@ -53,7 +53,7 @@ class ManageAttributes extends React.Component {
         this.setState({ attributeTypes });
       }
     } catch (error) {
-      this.setState({ loadinError: true });
+      this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
     }
@@ -82,7 +82,7 @@ class ManageAttributes extends React.Component {
         });
       }
     } catch (error) {
-      this.setState({ loadinError: true });
+      this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
     }

@@ -3,8 +3,6 @@ import PropTypes from 'prop-types';
 
 import CompetencyList from '../competency-list/CompetencyList';
 
-// import styles from './DomainList.css';
-
 function DomainList({ index, framework, domain, disable }) {
   const competencies = domain.competencies.map((competency, childIndex) => (
     <CompetencyList

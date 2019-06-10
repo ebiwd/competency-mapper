@@ -18,7 +18,7 @@ class CoursesService {
     const response = await this.http.get(
       `${apiUrl}/api/v1/training-resources/all?_format=json`
     );
-    return response.json();
+    return response.data;
   }
 }
 
