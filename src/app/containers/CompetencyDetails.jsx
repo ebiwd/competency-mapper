@@ -1,73 +1,77 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { apiUrl } from '../services/competency/competency';
+import CompetencyService from '../services/competency/competency';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+import CoursesService from '../services/courses/courses';
 
 class CompetencyDetails extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      framework: this.props.match.params.framework.toLowerCase(),
-      cid: this.props.match.params.cid,
-      frameworkDefs: [],
-      resources: []
-    };
+  competencyService = new CompetencyService();
+  activeRequests = new ActiveRequestsService();
+  coursesService = new CoursesService();
+
+  state = {
+    framework: this.props.match.params.framework,
+    frameworkData: [],
+    competencyId: this.props.match.params.cid,
+    attributeDefs: [],
+    resources: [],
+    loadingError: false
+  };
+
+  async componentDidMount() {
+    try {
+      this.activeRequests.startRequest();
+      await Promise.all([
+        this.getFramework(),
+        this.getAttributes(),
+        this.getResources()
+      ]);
+    } catch (e) {
+      this.setState({ loadingError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
-  componentDidMount() {
-    let csrfURL = `${apiUrl}/rest/session/token`;
-    fetch(csrfURL)
-      .then(Response => Response)
-      .then(findresponse2 => {
-        this.setState({ csrf: findresponse2 });
-      });
-
-    const fetchCompetencyList = `${apiUrl}/api/v1/framework/${
-      this.state.framework
-    }?_format=json`;
-    fetch(fetchCompetencyList)
-      .then(Response => Response.json())
-      .then(findresponse => {
-        this.setState({
-          data: findresponse
-        });
-      });
-
-    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
+  async getFramework() {
     const { framework } = this.state;
-    fetch(fetchFrameworkDetails)
-      .then(Response => Response.json())
-      .then(findresponse1 => {
-        const frameworkDefs = [];
-        findresponse1
-          .filter(item => item.name.toLowerCase() === framework)
-          .forEach(item =>
-            item.attribute_types.forEach(attribute_type =>
-              frameworkDefs.push(attribute_type.title)
-            )
-          );
-        this.setState({
-          frameworkDefs
-        });
-      });
+    const frameworkData = await this.competencyService.getFramework(framework);
 
-    fetch(`${apiUrl}/api/v1/training-resources/all?_format=json`)
-      .then(Response => Response.json())
-      .then(findresponse => {
-        this.setState({ resources: findresponse });
-      });
+    this.setState({
+      frameworkData
+    });
+  }
+
+  async getAttributes() {
+    const allFrameworks = await this.competencyService.getAllFrameworks();
+    const { framework } = this.state;
+    const frameworkMatch = allFrameworks.filter(
+      item => item.name.toLowerCase() === framework
+    );
+    if (frameworkMatch.length) {
+      const attributeDefs = frameworkMatch[0].attribute_types.map(
+        attribute => attribute.title
+      );
+      this.setState({ attributeDefs });
+    }
+  }
+
+  async getResources() {
+    const resources = await this.coursesService.getCourses();
+    this.setState({ resources });
   }
 
   resourceBlock() {
-    return this.state.resources.map(resource =>
+    const { resources } = this.state;
+    return resources.map(resource =>
       resource.competency_profile.map(profile =>
         profile.domains.map(domain =>
           domain.competencies
-            .filter(competency => competency.id === this.state.cid)
+            .filter(competency => competency.id === this.state.competencyId)
             .map(competency => {
               return (
-                <li>
+                <li key={resource.id}>
                   <Link to={`/training-resources/${resource.id}`}>
                     {resource.title}
                   </Link>
@@ -80,14 +84,14 @@ class CompetencyDetails extends React.Component {
   }
 
   render() {
-    const { cid, data, frameworkDefs } = this.state;
+    const { competencyId, frameworkData, attributeDefs } = this.state;
 
     const competencies = [];
 
-    data.forEach(item =>
+    frameworkData.forEach(item =>
       item.domains.forEach(domain =>
         domain.competencies.forEach(competency => {
-          if (competency.id === cid) {
+          if (competency.id === competencyId) {
             competencies.push({
               ...competency,
               framework: item.title,
@@ -112,10 +116,10 @@ class CompetencyDetails extends React.Component {
         <div className="row">
           <div className="column large-8">
             <ul>
-              {frameworkDefs.map(def => {
+              {attributeDefs.map(def => {
                 return (
-                  <div>
-                    <div>
+                  <div key={def}>
+                    <div className="margin-top-medium">
                       {' '}
                       <strong>
                         <em>{def}</em>
