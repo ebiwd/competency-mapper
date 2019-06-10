@@ -6,7 +6,12 @@
   position: relative;
 }
 
+.inner-input {
+  margin: 0;
+}
+
 .edit-inline-controls {
+  background: white;
   position: absolute;
   right: 0;
 }

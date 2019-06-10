@@ -130,7 +130,7 @@ class CompetencyList extends Component {
               type="search"
               value={filter}
               onChange={event => this.onFilter(event.target.value)}
-              placeholder="filter specific competencies..."
+              placeholder="Filter competencies"
             />
             <table>{domainList}</table>
           </TabPanel>

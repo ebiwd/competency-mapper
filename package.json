@@ -64,7 +64,6 @@
     ]
   },
   "prettier": {
-    "singleQuote": true,
-    "jsxIgnoreLineBreak": true
+    "singleQuote": true
   }
 }

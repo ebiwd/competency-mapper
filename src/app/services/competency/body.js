@@ -1,7 +1,51 @@
 import { apiUrl } from './competency';
 
 class BodyService {
-  static createCompetency({
+  static createCompetency({ description, domainId, domainUuid }) {
+    return {
+      _links: {
+        type: {
+          href: `${apiUrl}/rest/type/node/competency`
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
+          href: `${apiUrl}/node/${domainId}?_format=hal_json`
+        }
+      },
+      title: [
+        {
+          value: description
+        }
+      ],
+      type: [
+        {
+          target_id: 'competency'
+        }
+      ],
+
+      _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${domainId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/domain`
+              }
+            },
+            uuid: [
+              {
+                value: domainUuid
+              }
+            ],
+            lang: 'en'
+          }
+        ]
+      }
+    };
+  }
+
+  static createAttribute({
     description,
     attributeTypeId,
     attributeTypeUuid,
@@ -50,7 +94,6 @@ class BodyService {
             lang: 'en'
           }
         ],
-
         [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
           {
             _links: {

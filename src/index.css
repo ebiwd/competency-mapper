@@ -17,3 +17,7 @@
 .cursor {
   cursor: pointer;
 }
+
+.secondary-background-important {
+  background-color: #555555 !important;
+}

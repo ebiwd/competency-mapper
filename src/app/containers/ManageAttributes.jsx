@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
+import SimpleForm from '../containers/simple-form/SimpleForm';
 
+import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat } from '../services/util/util';
@@ -12,37 +14,78 @@ class ManageAttributes extends React.Component {
   competencyService = new CompetencyService();
 
   state = {
-    framework: '',
+    // framework level
+    framework: this.props.match.params.framework,
     frameworkName: '',
+    attributeTypes: [], // defined at framework level
 
-    domainName: '',
+    // domain level
     domainId: '',
+    domainName: '',
 
-    competencyId: '',
+    // competency level
+    competencyId: this.props.match.params.cid,
+    competencyUuid: '',
     competencyName: '',
     competencyData: [],
-    competencyUuid: '',
-    attributeTypes: [],
 
-    // form properties to create new attributes
-    newAttribute: '',
-    newAttributeTypeUuid: ''
+    loadingError: false
   };
 
-  constructor(props) {
-    super(props);
-    this.state.framework = props.match.params.framework.toLowerCase();
-    this.state.competencyId = props.match.params.cid;
-  }
-
-  async componentWillMount() {
+  async componentDidMount() {
     window.scroll(0, 0);
     this.activeRequests.startRequest();
-    const promise1 = this.fetchCompetency();
-    const promise2 = this.fetchFramework();
-    await promise1;
-    await promise2;
-    this.activeRequests.finishRequest();
+    await Promise.all([this.fetchAllFrameworks(), this.fetchCompetency()]);
+  }
+
+  async fetchAllFrameworks() {
+    const { framework } = this.state;
+    try {
+      const allFrameworks = await this.competencyService.getAllFrameworks();
+      const frameworkMatch = allFrameworks.filter(
+        item => item.name.toLowerCase() === framework
+      );
+
+      if (frameworkMatch.length) {
+        const attributeTypes = frameworkMatch[0].attribute_types.map(
+          attribute => ({ description: attribute.title, uuid: attribute.uuid })
+        );
+        this.setState({ attributeTypes });
+      }
+    } catch (error) {
+      this.setState({ loadinError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  }
+
+  async fetchCompetency() {
+    const { framework } = this.state;
+
+    try {
+      const frameworkData = await this.competencyService.getFramework(
+        framework
+      );
+      const competencyMatch = this.filterByCompetencyId(
+        frameworkData,
+        this.state.competencyId
+      );
+
+      if (competencyMatch.length) {
+        this.setState({
+          frameworkName: frameworkData[0].title,
+          domainName: competencyMatch[0].domainTitle,
+          domainId: competencyMatch[0].domainId,
+          competencyUuid: competencyMatch[0].uuid,
+          competencyName: competencyMatch[0].title,
+          competencyData: competencyMatch[0]
+        });
+      }
+    } catch (error) {
+      this.setState({ loadinError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   filterByCompetencyId(data, id) {
@@ -63,108 +106,69 @@ class ManageAttributes extends React.Component {
     );
   }
 
-  async fetchCompetency() {
-    const { framework } = this.state;
+  createAttribute = async (description, attributeTypeUuid) => {
+    const { competencyId, competencyUuid, attributeTypes } = this.state;
 
-    const frameworkData = await this.competencyService.getFramework(framework);
-    const competencyMatch = this.filterByCompetencyId(
-      frameworkData,
-      this.state.competencyId
-    );
-
-    if (competencyMatch.length) {
-      this.setState({
-        domainName: competencyMatch[0].domainTitle,
-        domainId: competencyMatch[0].domainId,
-        competencyUuid: competencyMatch[0].uuid,
-        competencyName: competencyMatch[0].title,
-        competencyData: competencyMatch[0]
+    try {
+      this.activeRequests.startRequest();
+      const attributeTypeId = attributeTypes.find(
+        attribute => attribute.uuid === attributeTypeUuid
+      ).id;
+      await this.competencyService.createAttribute({
+        description,
+        competencyId,
+        competencyUuid,
+        attributeTypeId,
+        attributeTypeUuid
       });
-    }
-  }
 
-  async fetchFramework() {
-    const { framework } = this.state;
-    const frameworkData = await this.competencyService.getAllFrameworks();
-    const frameworkMatch = frameworkData.filter(
-      item => item.name.toLowerCase() === framework
-    );
-
-    if (frameworkMatch.length) {
-      this.setState({
-        frameworkName: frameworkMatch[0].name,
-        attributeTypes: frameworkMatch[0].attribute_types,
-        newAttributeTypeUuid: frameworkMatch[0].attribute_types[0].uuid
+      this.fetchCompetency();
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
       });
+    } finally {
+      this.activeRequests.finishRequest();
     }
-  }
-
-  handleSubmit = async event => {
-    event.preventDefault();
-
-    const {
-      newAttribute: description,
-      newAttributeTypeUuid: attributeTypeUuid,
-      competencyId,
-      attributeTypes,
-      competencyUuid
-    } = this.state;
-
-    if (description === '' || attributeTypeUuid === '') {
-      return;
-    }
-    const attributeTypeId = attributeTypes.filter(
-      item => item.uuid === attributeTypeUuid
-    )[0].id;
-
-    this.activeRequests.startRequest();
-    await this.competencyService.createCompetency({
-      description,
-      attributeTypeId,
-      attributeTypeUuid,
-      competencyId,
-      competencyUuid
-    });
-
-    this.setState({
-      newAttribute: '',
-      newAttributeTypeUuid: attributeTypes[0].uuid
-    });
-    await this.fetchCompetency();
-    this.activeRequests.finishRequest();
   };
 
-  async handleEdit(attributeId, { message: title }) {
-    this.activeRequests.startRequest();
-    await this.competencyService.patchAttribute(attributeId, 'title', title);
-    await this.fetchCompetency();
-    this.activeRequests.finishRequest();
+  async editAttribute(attributeId, title) {
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchAttribute(attributeId, 'title', title);
+      this.fetchCompetency();
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   async toggleArchive(attributeId, isArchived) {
-    this.activeRequests.startRequest();
-    await this.competencyService.patchAttribute(
-      attributeId,
-      'field_archived',
-      isArchived === '1' ? false : true
-    );
-    await this.fetchCompetency();
-    this.activeRequests.finishRequest();
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchAttribute(
+        attributeId,
+        'field_archived',
+        isArchived === '1' ? false : true
+      );
+      this.fetchCompetency();
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
-  onChange = ({ currentTarget: control, target }) => {
-    this.setState({ [control.name]: target.value });
-  };
+  getAttributeRows(attributeType, parentIndex) {
+    const { competencyData } = this.state;
 
-  getTableRows(def, parentIndex) {
-    const competency = this.state.competencyData;
-
-    if (competency.length === 0) {
-      return null;
-    }
-
-    return competency.attributes
-      .filter(attribute => attribute.type === def.title)
+    return competencyData.attributes
+      .filter(attribute => attribute.type === attributeType.description)
       .map((attribute, index) => {
         return (
           <tr key={attribute.uuid}>
@@ -172,17 +176,7 @@ class ManageAttributes extends React.Component {
             <td>
               <InlineEdit
                 text={attribute.title}
-                staticElement="div"
-                paramName="message"
-                change={e => this.handleEdit(attribute.id, e)}
-                style={{
-                  display: 'inline-block',
-                  margin: 0,
-                  padding: 5,
-                  border: 1,
-                  width: '100%',
-                  fontSize: '110%'
-                }}
+                change={newValue => this.editAttribute(attribute.id, newValue)}
               />
             </td>
             <td>
@@ -207,19 +201,20 @@ class ManageAttributes extends React.Component {
   }
 
   getAttributeList() {
-    return this.state.attributeTypes.map((def, index) => (
-      <tbody key={def.uuid}>
-        <tr className="secondary-background white-color">
+    const { attributeTypes } = this.state;
+    return attributeTypes.map((attributeType, index) => (
+      <React.Fragment key={attributeType.uuid}>
+        <tr className="secondary-background-important white-color">
           <td>{index + 1}</td>
           <td>
             <strong>
-              <em>{def.title}</em>
+              <em>{attributeType.description}</em>
             </strong>
           </td>
           <td className="small-1">Archive</td>
         </tr>
-        {this.getTableRows(def, index + 1)}
-      </tbody>
+        {this.getAttributeRows(attributeType, index + 1)}
+      </React.Fragment>
     ));
   }
 
@@ -227,19 +222,25 @@ class ManageAttributes extends React.Component {
     const {
       framework,
       frameworkName,
-      domainName,
-      domainId,
-      competencyName,
       attributeTypes,
-      newAttribute,
-      newAttributeTypeUuid
+      domainId,
+      domainName,
+      competencyName,
+      competencyData,
+      loadingError
     } = this.state;
 
-    const selectOptions = attributeTypes.map(option => (
-      <option key={option.uuid} value={option.uuid}>
-        {option.title}
-      </option>
-    ));
+    if (loadingError) {
+      return (
+        <div className="margin-top-large callout alert">
+          Sorry, there was a problem when fetching the data!
+        </div>
+      );
+    }
+
+    if (competencyData.length === 0) {
+      return null;
+    }
 
     return (
       <div className="row">
@@ -256,39 +257,19 @@ class ManageAttributes extends React.Component {
           {competencyName}
         </h4>
 
-        <div className="callout">
-          <h4>Create new attribute</h4>
-          <form onSubmit={this.handleSubmit}>
-            <div className="row">
-              <div className="column large-7">
-                <input
-                  type="text"
-                  placeholder="Attribute description"
-                  name="newAttribute"
-                  value={newAttribute}
-                  onChange={this.onChange}
-                />
-              </div>
-              <div className="column large-3">
-                <select
-                  name="newAttributeTypeUuid"
-                  value={newAttributeTypeUuid}
-                  onChange={this.onChange}
-                >
-                  {selectOptions}
-                </select>
-              </div>
-              <div className="column large-2">
-                <input type="submit" className="button" value="Submit" />
-              </div>
-            </div>
-          </form>
-        </div>
+        <SimpleForm
+          title="Create new attribute"
+          placeholder="Attribute description"
+          options={attributeTypes}
+          onCreate={this.createAttribute}
+        />
 
-        <table>{this.getAttributeList()}</table>
+        <table>
+          <tbody>{this.getAttributeList()}</tbody>
+        </table>
       </div>
     );
   }
 }
 
-export default ManageAttributes;
+export default withSnackbar(ManageAttributes);

@@ -116,7 +116,7 @@ class Courses extends Component {
           // className="clearable" // It doesn't work correctly
           value={filter}
           onChange={event => this.onFilter(event.target.value)}
-          placeholder="filter specific resources..."
+          placeholder="Filter resources"
         />
         <table>
           <tbody>{resources}</tbody>

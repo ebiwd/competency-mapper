@@ -34,6 +34,15 @@ class CompetencyService {
     return response.data;
   }
 
+  async createAttribute(options) {
+    const response = await this.http.post(
+      `${apiUrl}/node?_format=hal_json`,
+      Body.createAttribute(options)
+    );
+
+    return response.data;
+  }
+
   async createCompetency(options) {
     const response = await this.http.post(
       `${apiUrl}/node?_format=hal_json`,

@@ -5,13 +5,8 @@ import './EditInline.css';
 const defaultProps = {
   style: {} as Record<string, string | number>,
   text: '',
-  change: (newValue: Record<string, string>) => {},
-  staticElement: 'div',
-  paramName: 'content',
-
-  // Below prop is *not* currently used, but are kept for backward
-  // compatibility with original react-edit-inline element.
-  'data-id': ''
+  change: (newValue: string) => {},
+  staticElement: 'div'
 };
 
 type Props = Partial<typeof defaultProps>;
@@ -27,10 +22,10 @@ type State = Readonly<typeof defaultState>;
 export default class EditInline extends Component<Props, State> {
   static defaultProps = defaultProps; // No idea why the props are marked as optional (see '!' in the code below)
   readonly state: State = defaultState;
-  selfRef = React.createRef<HTMLElement>();
+  selfRef = React.createRef<HTMLDivElement>();
   inputRef = React.createRef<HTMLInputElement>();
 
-  componentWillMount() {
+  componentDidMount() {
     const { text } = this.props;
     this.setState({ value: text!, oriValue: text! });
     document.addEventListener('mousedown', this.toggleActive);
@@ -40,13 +35,19 @@ export default class EditInline extends Component<Props, State> {
     document.removeEventListener('mousedown', this.toggleActive);
   }
 
-  // It doesn't work to focus on the input element.
-  // componentDidUpdate() {
-  //   const { active } = this.state;
-  //   if (active) {
-  //     this.inputRef.current && this.inputRef.current.focus();
-  //   }
-  // }
+  componentDidUpdate(prevProps: Props, prevState: State) {
+    const { active } = this.state;
+    if (active && !prevState.active) {
+      // Unable to focus on the input element.
+      // this.inputRef.current && this.inputRef.current.focus();
+
+      // Dirty: The only way I was able to focus on the input element.
+      setTimeout(
+        () => this.inputRef.current && this.inputRef.current.focus(),
+        0
+      );
+    }
+  }
 
   toggleActive = (event: MouseEvent) => {
     if (
@@ -54,10 +55,6 @@ export default class EditInline extends Component<Props, State> {
       this.selfRef.current.contains(event.target as Node)
     ) {
       this.setState({ active: true });
-      setTimeout(
-        () => this.inputRef.current && this.inputRef.current.focus(),
-        0
-      ); // Dirty: The only way I was able to focus on the input element.
       return;
     }
     this.reset();
@@ -68,14 +65,16 @@ export default class EditInline extends Component<Props, State> {
   }
 
   reset = () => {
-    const { oriValue } = this.state;
-    this.setState({ active: false, value: oriValue });
+    const { oriValue, active } = this.state;
+    if (active) {
+      this.setState({ active: false, value: oriValue });
+    }
   };
 
   submit = () => {
-    const { change, paramName } = this.props;
+    const { change } = this.props;
     const { value } = this.state;
-    change!({ [paramName!]: value });
+    change!(value);
     this.setState({ active: false, oriValue: value });
   };
 
@@ -94,30 +93,38 @@ export default class EditInline extends Component<Props, State> {
     }
 
     return (
-      <span className="edit-inline-container" ref={this.selfRef}>
+      <div className="edit-inline-container" ref={this.selfRef}>
         <input
           type="text"
-          style={style}
+          className="inner-input"
           value={value}
           onChange={event => this.onChange(event.target.value)}
           ref={this.inputRef}
           // autoFocus={true} // It only works when it is rendered after mounting
         />
-        <span className="edit-inline-controls">
-          <button className="button" type="button" onClick={this.submit}>
+        <div className="edit-inline-controls">
+          <button
+            className="button margin-bottom-none"
+            type="button"
+            onClick={this.submit}
+          >
             <i
               className="icon icon-common icon-check"
               aria-label="accept changes"
             />
           </button>
-          <button className="button" type="button" onClick={this.reset}>
+          <button
+            className="button margin-bottom-none"
+            type="button"
+            onClick={this.reset}
+          >
             <i
               className="icon icon-common icon-undo"
               aria-label="undo changes"
             />
           </button>
-        </span>
-      </span>
+        </div>
+      </div>
     );
   };
 }
