@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
+import ProgressBar from '../../../shared/components/progress-bar/progress-bar';
 import Navigation from '../navigation/Navigation';
 import LoginForm from '../login-form/LoginForm';
 
@@ -22,7 +23,7 @@ class Masthead extends Component {
   };
 
   render() {
-    const { roles, user } = this.props;
+    const { roles, user, isActive } = this.props;
 
     return (
       <div data-sticky-container>
@@ -46,6 +47,7 @@ class Masthead extends Component {
               <LoginForm onSubmit={this.onLogin} />
             )}
           </div>
+          <ProgressBar isActive={isActive} />
         </header>
       </div>
     );

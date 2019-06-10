@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Switch, Route, Redirect } from 'react-router-dom';
 
 import Masthead from '../containers/masthead/Masthead';
-import ProgressBar from '../../shared/components/progress-bar/progress-bar';
 import ManageAttributes from './ManageAttributes';
 import ManageCompetencies from './ManageCompetencies';
 import CompetencyDetails from './CompetencyDetails';
@@ -26,21 +25,14 @@ class Root extends Component {
     roles: localStorage.getItem('roles') || '',
     user: localStorage.getItem('user') || ''
   };
-
-  constructor(props) {
-    super(props);
-    this.activeRequests = new ActiveRequestsService();
-  }
-
-  componentWillMount() {
-    this.subcription = this.activeRequests.addEventListener(
-      this.handleActiveRequests
-    );
-  }
+  activeRequests = new ActiveRequestsService();
 
   componentDidMount() {
     $(document).foundation();
     $(document).foundationExtendEBI();
+    this.subcription = this.activeRequests.addEventListener(
+      this.handleActiveRequests
+    );
   }
 
   componentWillUnmount() {
@@ -89,17 +81,17 @@ class Root extends Component {
     return (
       <>
         <SnackbarProvider
-          maxSnack={3}
+          maxSnack={1}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           preventDuplicate
         >
           <Masthead
             roles={roles}
             user={user}
+            isActive={isActive}
             onLogin={this.handleLogin}
             onLogout={this.handleLogout}
           />
-          <ProgressBar isActive={isActive} />
 
           <section id="main-content-area" className="row" role="main">
             <main className="column">
