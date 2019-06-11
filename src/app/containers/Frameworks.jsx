@@ -4,6 +4,7 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 
 import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
+import { Link } from 'react-router-dom';
 
 class Frameworks extends Component {
   competencyService = new CompetencyService();
@@ -27,14 +28,12 @@ class Frameworks extends Component {
       <div className="column">
         <h3>Overview</h3>
         <p className="lead">
-          Introduction to the idea of competency frameworks and their linkage
-          with training resources. Two lines of description should look good and
-          then links can be given to{' '}
-          <a // eslint-disable-line jsx-a11y/anchor-is-valid
-            className="readmore"
-          >
-            read more
-          </a>
+          Competency mapper is a web-based tool to support the creation and
+          management of competency frameworks for professionals working in the
+          biomolecular sciences{' '}
+          <Link to="/about" className="readmore">
+            read more{' '}
+          </Link>
         </p>
 
         <FrameworkButtons frameworks={frameworks} />

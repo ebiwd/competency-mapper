@@ -11,6 +11,7 @@ import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
 import ResourcesList from './ResourcesList';
 import ChangePassword from './ChangePassword';
+import About from '../components/about/About';
 import Frameworks from './Frameworks';
 
 import { SnackbarProvider } from 'notistack';
@@ -150,6 +151,7 @@ class Root extends Component {
                   path="/user/change/password"
                   component={ChangePassword}
                 />
+                <Route path="/about" component={About} />
                 <Route path="/" component={Frameworks} />
               </Switch>
             </main>
