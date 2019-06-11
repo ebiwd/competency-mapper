@@ -33,27 +33,42 @@ class Root extends Component {
     this.subcription = this.activeRequests.addEventListener(
       this.handleActiveRequests
     );
+
+    window.addEventListener('storage', this.detectUserChangesFromOtherTabs);
   }
 
   componentWillUnmount() {
     if (this.subcription) {
       this.activeRequests.removeEventListener(this.subcription);
     }
+    window.removeEventListener('storage', this.detectUserChangesFromOtherTabs);
   }
 
   handleActiveRequests = hasPendingRequests =>
     this.setState({ isActive: hasPendingRequests });
 
+  detectUserChangesFromOtherTabs = ({ key, newValue }) => {
+    if (key === 'user') {
+      if (newValue) {
+        this.setState({
+          user: localStorage.getItem('user'),
+          roles: localStorage.getItem('roles')
+        });
+      } else {
+        this.setState({ user: '', roles: '' });
+      }
+    }
+  };
+
   handleLogin = async (username, password) => {
     try {
       await login(username, password);
       this.setState({
-        roles: localStorage.getItem('roles'),
-        user: localStorage.getItem('user')
+        user: localStorage.getItem('user'),
+        roles: localStorage.getItem('roles')
       });
     } catch (error) {
       window.console.error(error);
-      debugger;
       if (error.response) {
         switch (error.response.status) {
           case 400:
