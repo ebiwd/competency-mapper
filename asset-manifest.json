@@ -1,6 +1,17 @@
 {
-  "main.css": "static/css/main.d41d8cd9.css",
-  "main.css.map": "static/css/main.d41d8cd9.css.map",
-  "main.js": "static/js/main.bf3aa03f.js",
-  "main.js.map": "static/js/main.bf3aa03f.js.map"
+  "files": {
+    "main.css": "/competency-mapper/static/css/main.19244f31.chunk.css",
+    "main.js": "/competency-mapper/static/js/main.8ed5bf10.chunk.js",
+    "main.js.map": "/competency-mapper/static/js/main.8ed5bf10.chunk.js.map",
+    "runtime~main.js": "/competency-mapper/static/js/runtime~main.eaa69347.js",
+    "runtime~main.js.map": "/competency-mapper/static/js/runtime~main.eaa69347.js.map",
+    "static/css/2.5c17b9f1.chunk.css": "/competency-mapper/static/css/2.5c17b9f1.chunk.css",
+    "static/js/2.f14896c3.chunk.js": "/competency-mapper/static/js/2.f14896c3.chunk.js",
+    "static/js/2.f14896c3.chunk.js.map": "/competency-mapper/static/js/2.f14896c3.chunk.js.map",
+    "index.html": "/competency-mapper/index.html",
+    "precache-manifest.d8ffebb8f8dee2b8e2e18f8fd4f82030.js": "/competency-mapper/precache-manifest.d8ffebb8f8dee2b8e2e18f8fd4f82030.js",
+    "service-worker.js": "/competency-mapper/service-worker.js",
+    "static/css/2.5c17b9f1.chunk.css.map": "/competency-mapper/static/css/2.5c17b9f1.chunk.css.map",
+    "static/css/main.19244f31.chunk.css.map": "/competency-mapper/static/css/main.19244f31.chunk.css.map"
+  }
 }
