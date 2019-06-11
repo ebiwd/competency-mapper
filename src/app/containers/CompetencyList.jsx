@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
+import ErrorLoading from '../components/error-loading/ErrorLoading';
 
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -99,11 +100,7 @@ class CompetencyList extends Component {
     } = this.state;
 
     if (loadingError) {
-      return (
-        <div className="margin-top-large callout alert">
-          Sorry, there was a problem when fetching the data!
-        </div>
-      );
+      return <ErrorLoading />;
     }
 
     const domainList = filteredDomains.map((domain, index) =>

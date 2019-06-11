@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Link } from 'react-router-dom';
+import ErrorLoading from '../../components/error-loading/ErrorLoading';
 
 import ActiveRequestsService from '../../services/active-requests/active-requests';
 import CoursesService from '../../services/courses/courses';
@@ -15,7 +16,8 @@ class Courses extends Component {
   state = {
     courses: [],
     filteredCourses: [],
-    filter: ''
+    filter: '',
+    loadingError: false
   };
 
   constructor(props) {
@@ -26,12 +28,17 @@ class Courses extends Component {
   coursesService = new CoursesService();
   activeRequests = new ActiveRequestsService();
 
-  async componentWillMount() {
-    this.activeRequests.startRequest();
-    const allCourses = await this.coursesService.getCourses();
-    const courses = this.filterCourses(allCourses);
-    this.setState({ courses, filteredCourses: courses });
-    this.activeRequests.finishRequest();
+  async componentDidMount() {
+    try {
+      this.activeRequests.startRequest();
+      const allCourses = await this.coursesService.getCourses();
+      const courses = this.filterCourses(allCourses);
+      this.setState({ courses, filteredCourses: courses });
+    } catch (error) {
+      this.setState({ loadingError: true });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   filterCourses(allCourses) {
@@ -85,7 +92,12 @@ class Courses extends Component {
   };
 
   render() {
-    const { filteredCourses, framework, filter } = this.state;
+    const { filteredCourses, framework, filter, loadingError } = this.state;
+
+    if (loadingError) {
+      return <ErrorLoading />;
+    }
+
     const competencyList = competencies =>
       competencies.map(competency => (
         <li key={competency.id}>

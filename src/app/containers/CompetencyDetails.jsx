@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { withSnackbar } from 'notistack';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 import CoursesService from '../services/courses/courses';
@@ -15,8 +16,7 @@ class CompetencyDetails extends React.Component {
     frameworkData: [],
     competencyId: this.props.match.params.cid,
     attributeDefs: [],
-    resources: [],
-    loadingError: false
+    resources: []
   };
 
   async componentDidMount() {
@@ -27,8 +27,6 @@ class CompetencyDetails extends React.Component {
         this.getAttributes(),
         this.getResources()
       ]);
-    } catch (e) {
-      this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
     }
@@ -58,8 +56,14 @@ class CompetencyDetails extends React.Component {
   }
 
   async getResources() {
-    const resources = await this.coursesService.getCourses();
-    this.setState({ resources });
+    try {
+      const resources = await this.coursesService.getCourses();
+      this.setState({ resources });
+    } catch (error) {
+      this.props.enqueueSnackbar('Unable to retrieve training resources', {
+        variant: 'error'
+      });
+    }
   }
 
   resourceBlock() {
@@ -161,4 +165,4 @@ class CompetencyDetails extends React.Component {
   }
 }
 
-export default CompetencyDetails;
+export default withSnackbar(CompetencyDetails);

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
 import SimpleForm from '../containers/simple-form/SimpleForm';
+import ErrorLoading from '../components/error-loading/ErrorLoading';
 
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
@@ -213,11 +214,7 @@ class ManageCompetencies extends React.Component {
     } = this.state;
 
     if (loadingError) {
-      return (
-        <div className="margin-top-large callout alert">
-          Sorry, there was a problem when fetching the data!
-        </div>
-      );
+      return <ErrorLoading />;
     }
 
     if (frameworkData.length === 0) {
