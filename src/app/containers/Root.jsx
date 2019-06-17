@@ -123,7 +123,6 @@ class Root extends Component {
                   component={ResourceCreate}
                 />
                 <Route
-                  condition={!!user && roles.includes('framework_manager')}
                   path="/training-resources/:id"
                   component={ResourceDetails}
                 />
@@ -141,8 +140,7 @@ class Root extends Component {
                   path="/framework/:framework/manage/competencies/:domainId?"
                   component={ManageCompetencies}
                 />
-                <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                <Route
                   path="/framework/:framework/competency/details/:cid"
                   component={CompetencyDetails}
                 />
