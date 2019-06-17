@@ -1,24 +1,32 @@
 import React, { Component } from 'react';
 
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import CompetencyService from '../services/competency/competency';
-
 import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
 import { Link } from 'react-router-dom';
 
+import { withSnackbar } from 'notistack';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+import CompetencyService from '../services/competency/competency';
+
 class Frameworks extends Component {
-  competencyService = new CompetencyService();
   activeRequests = new ActiveRequestsService();
+  competencyService = new CompetencyService();
 
   state = {
     frameworks: []
   };
 
   async componentDidMount() {
-    this.activeRequests.startRequest();
-    const frameworks = await this.competencyService.getAllFrameworksDetails();
-    this.setState({ frameworks });
-    this.activeRequests.finishRequest();
+    try {
+      this.activeRequests.startRequest();
+      const frameworks = await this.competencyService.getAllFrameworksDetails();
+      this.setState({ frameworks });
+    } catch (error) {
+      this.props.enqueueSnackbar('Unable to fetch framework data', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
   }
 
   render() {
@@ -42,4 +50,4 @@ class Frameworks extends Component {
   }
 }
 
-export default Frameworks;
+export default withSnackbar(Frameworks);

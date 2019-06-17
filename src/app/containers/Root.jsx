@@ -31,6 +31,8 @@ class Root extends Component {
   componentDidMount() {
     $(document).foundation();
     $(document).foundationExtendEBI();
+
+    this.setState({ isActive: this.activeRequests.isActive });
     this.subcription = this.activeRequests.addEventListener(
       this.handleActiveRequests
     );
@@ -45,8 +47,10 @@ class Root extends Component {
     window.removeEventListener('storage', this.detectUserChangesFromOtherTabs);
   }
 
-  handleActiveRequests = hasPendingRequests =>
+  handleActiveRequests = hasPendingRequests => {
     this.setState({ isActive: hasPendingRequests });
+    console.log('isActive', hasPendingRequests);
+  };
 
   detectUserChangesFromOtherTabs = ({ key, newValue }) => {
     if (key === 'user') {

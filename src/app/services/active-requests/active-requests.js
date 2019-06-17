@@ -1,5 +1,11 @@
 class ActiveRequestsService {
   static instance;
+  counter = 0;
+  callbacks = [];
+
+  get isActive() {
+    return !!this.counter;
+  }
 
   constructor() {
     if (ActiveRequestsService.instance) {
@@ -7,9 +13,6 @@ class ActiveRequestsService {
     }
 
     ActiveRequestsService.instance = this;
-
-    this.counter = 0;
-    this.callbacks = [];
   }
 
   addEventListener(fn) {

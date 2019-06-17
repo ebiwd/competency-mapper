@@ -33,15 +33,16 @@ class ManageAttributes extends React.Component {
     loadingError: false
   };
 
-  async componentDidMount() {
+  componentDidMount() {
     window.scroll(0, 0);
-    this.activeRequests.startRequest();
-    await Promise.all([this.fetchAllFrameworks(), this.fetchCompetency()]);
+    this.fetchAllFrameworks();
+    this.fetchCompetency();
   }
 
   async fetchAllFrameworks() {
     const { framework } = this.state;
     try {
+      this.activeRequests.startRequest();
       const allFrameworks = await this.competencyService.getAllFrameworks();
       const frameworkMatch = allFrameworks.filter(
         item => item.name.toLowerCase() === framework
@@ -64,6 +65,7 @@ class ManageAttributes extends React.Component {
     const { framework } = this.state;
 
     try {
+      this.activeRequests.startRequest();
       const frameworkData = await this.competencyService.getFramework(
         framework
       );
