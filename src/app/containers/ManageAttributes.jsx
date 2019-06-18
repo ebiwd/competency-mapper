@@ -30,7 +30,8 @@ class ManageAttributes extends React.Component {
     competencyName: '',
     competencyData: [],
 
-    loadingError: false
+    loadingError: false,
+    editable: true
   };
 
   componentDidMount() {
@@ -168,7 +169,7 @@ class ManageAttributes extends React.Component {
   }
 
   getAttributeRows(attributeType, parentIndex) {
-    const { competencyData } = this.state;
+    const { competencyData, editable } = this.state;
 
     return competencyData.attributes
       .filter(attribute => attribute.type === attributeType.description)
@@ -180,31 +181,34 @@ class ManageAttributes extends React.Component {
               <InlineEdit
                 text={attribute.title}
                 change={newValue => this.editAttribute(attribute.id, newValue)}
+                editable={editable}
               />
             </td>
-            <td>
-              <button
-                className="cursor"
-                onClick={() =>
-                  this.toggleArchive(attribute.id, attribute.archived)
-                }
-              >
-                {attribute.archived === '1' ? (
-                  <span className="fas fa-toggle-on">
-                    <span>Archived</span>
-                  </span>
-                ) : (
-                  <span className="fas fa-toggle-off" />
-                )}
-              </button>
-            </td>
+            {editable && (
+              <td>
+                <button
+                  className="cursor"
+                  onClick={() =>
+                    this.toggleArchive(attribute.id, attribute.archived)
+                  }
+                >
+                  {attribute.archived === '1' ? (
+                    <span className="fas fa-toggle-on">
+                      <span>Archived</span>
+                    </span>
+                  ) : (
+                    <span className="fas fa-toggle-off" />
+                  )}
+                </button>
+              </td>
+            )}
           </tr>
         );
       });
   }
 
   getAttributeList() {
-    const { attributeTypes } = this.state;
+    const { attributeTypes, editable } = this.state;
     return attributeTypes.map((attributeType, index) => (
       <React.Fragment key={attributeType.uuid}>
         <tr className="secondary-background-important white-color">
@@ -214,7 +218,7 @@ class ManageAttributes extends React.Component {
               <em>{attributeType.description}</em>
             </strong>
           </td>
-          <td className="small-1">Archive</td>
+          {editable && <td className="small-1">Archive</td>}
         </tr>
         {this.getAttributeRows(attributeType, index + 1)}
       </React.Fragment>
@@ -230,7 +234,8 @@ class ManageAttributes extends React.Component {
       domainName,
       competencyName,
       competencyData,
-      loadingError
+      loadingError,
+      editable
     } = this.state;
 
     if (loadingError) {
@@ -256,12 +261,19 @@ class ManageAttributes extends React.Component {
           {competencyName}
         </h4>
 
-        <SimpleForm
-          title="Create new attribute"
-          placeholder="Attribute description"
-          options={attributeTypes}
-          onCreate={this.createAttribute}
-        />
+        <p>
+          <span className="tag">draft</span>
+          <span className="tag secondary-background">editable</span>
+        </p>
+
+        {editable && (
+          <SimpleForm
+            title="Create new attribute"
+            placeholder="Attribute description"
+            options={attributeTypes}
+            onCreate={this.createAttribute}
+          />
+        )}
 
         <table>
           <tbody>{this.getAttributeList()}</tbody>

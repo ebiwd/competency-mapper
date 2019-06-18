@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
 import SimpleForm from '../containers/simple-form/SimpleForm';
 import ErrorLoading from '../components/error-loading/ErrorLoading';
+import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
 
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
@@ -18,7 +19,8 @@ class ManageCompetencies extends React.Component {
     frameworkName: '',
     frameworkData: [],
     competencyTypes: [],
-    loadingError: false
+    loadingError: false,
+    editable: true
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -142,7 +144,7 @@ class ManageCompetencies extends React.Component {
   }
 
   getCompetencyList() {
-    const { frameworkData } = this.state;
+    const { frameworkData, editable } = this.state;
     return frameworkData[0].domains.map((domain, parentIndex) => (
       <React.Fragment key={domain.nid}>
         <tr
@@ -153,8 +155,8 @@ class ManageCompetencies extends React.Component {
           <td>
             <h4>{domain.title}</h4>
           </td>
-          <td className="small-1">Archive</td>
-          <td>Manage attributes</td>
+          {editable && <td className="small-1">Archive</td>}
+          <td>Attributes</td>
         </tr>
         {this.getCompetencyRows(domain.competencies, parentIndex)}
       </React.Fragment>
@@ -162,7 +164,7 @@ class ManageCompetencies extends React.Component {
   }
 
   getCompetencyRows(competencies, parentIndex) {
-    const { framework } = this.state;
+    const { framework, editable } = this.state;
     return competencies.map((competency, index) => (
       <tr key={competency.id}>
         <td>
@@ -172,26 +174,29 @@ class ManageCompetencies extends React.Component {
           <InlineEdit
             text={competency.title}
             change={newValue => this.editCompetency(competency.id, newValue)}
+            editable={editable}
           />
         </td>
-        <td>
-          <button
-            className="cursor"
-            onClick={this.toggleArchive.bind(
-              this,
-              competency.id,
-              competency.archived
-            )}
-          >
-            {competency.archived === 1 ? (
-              <span className="fas fa-toggle-on">
-                <span>Archived</span>
-              </span>
-            ) : (
-              <span className="fas fa-toggle-off" />
-            )}
-          </button>
-        </td>
+        {editable && (
+          <td>
+            <button
+              className="cursor"
+              onClick={this.toggleArchive.bind(
+                this,
+                competency.id,
+                competency.archived
+              )}
+            >
+              {competency.archived === 1 ? (
+                <span className="fas fa-toggle-on">
+                  <span>Archived</span>
+                </span>
+              ) : (
+                <span className="fas fa-toggle-off" />
+              )}
+            </button>
+          </td>
+        )}
         <td>
           <Link
             to={`/framework/${framework}/manage/competencies/${
@@ -210,7 +215,8 @@ class ManageCompetencies extends React.Component {
       frameworkName,
       frameworkData,
       competencyTypes,
-      loadingError
+      loadingError,
+      editable
     } = this.state;
 
     if (loadingError) {
@@ -226,16 +232,25 @@ class ManageCompetencies extends React.Component {
         <h2>Manage framework</h2>
         <h4>{frameworkName}</h4>
 
-        <SimpleForm
-          title="Create new competency"
-          placeholder="Competency description"
-          options={competencyTypes}
-          onCreate={this.createCompetency}
-        />
+        <p>
+          <span className="tag">draft</span>
+          <span className="tag secondary-background">editable</span>
+        </p>
+
+        {editable && (
+          <SimpleForm
+            title="Create new competency"
+            placeholder="Competency description"
+            options={competencyTypes}
+            onCreate={this.createCompetency}
+          />
+        )}
 
         <table>
           <tbody>{this.getCompetencyList()}</tbody>
         </table>
+
+        <FrameworkVersions />
       </div>
     );
   }

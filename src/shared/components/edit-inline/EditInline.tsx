@@ -6,7 +6,8 @@ const defaultProps = {
   style: {} as Record<string, string | number>,
   text: '',
   change: (newValue: string) => {},
-  staticElement: 'div'
+  staticElement: 'div',
+  editable: true
 };
 
 type Props = Partial<typeof defaultProps>;
@@ -79,8 +80,12 @@ export default class EditInline extends Component<Props, State> {
   };
 
   render = () => {
-    const { style, staticElement } = this.props;
+    const { style, staticElement, editable } = this.props;
     const { value, active } = this.state;
+
+    if (!editable) {
+      return React.createElement(staticElement!, { style }, value);
+    }
 
     if (!active) {
       return React.createElement(staticElement!, { style, ref: this.selfRef }, [
@@ -88,6 +93,7 @@ export default class EditInline extends Component<Props, State> {
         <i
           key="dummy"
           className="icon icon-common icon-edit icon-left-spacer"
+          aria-label="edit"
         />
       ]);
     }
