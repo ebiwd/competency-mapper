@@ -5,6 +5,7 @@ import InlineEdit from '../../shared/components/edit-inline/EditInline';
 import SimpleForm from '../containers/simple-form/SimpleForm';
 import ErrorLoading from '../components/error-loading/ErrorLoading';
 import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
+import VersionControls from '../containers/version-controls/VersionControls';
 
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
@@ -236,6 +237,8 @@ class ManageCompetencies extends React.Component {
           <span className="tag">draft</span>
           <span className="tag secondary-background">editable</span>
         </p>
+
+        <VersionControls />
 
         {editable && (
           <SimpleForm

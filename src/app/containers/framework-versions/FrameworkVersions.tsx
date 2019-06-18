@@ -17,9 +17,8 @@ export default class FrameworkVersions extends Component<{}, State> {
 
     const versionItems = versions.map(version => (
       <li key={version}>
-        <Link to={`/framework/${version}/blah/manage/competencies`}>
-          {version}
-        </Link>
+        <Link to={`/framework/${version}/manage/competencies`}>{version}</Link>
+        <Link to={`/release-notes/${version}`}>(release notes)</Link>
       </li>
     ));
 
