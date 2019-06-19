@@ -56,7 +56,7 @@
   "husky": {
     "hooks": {
       "pre-commit": "lint-staged",
-      "prepare-commit-msg": "githooks/prepare-commit-msg ${HUSKY_GIT_PARAMS}"
+      "prepare-commit-msg": "node githooks/prepare-commit-msg.js ${HUSKY_GIT_PARAMS}"
     }
   },
   "lint-staged": {
