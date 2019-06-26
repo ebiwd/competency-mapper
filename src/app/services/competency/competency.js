@@ -22,6 +22,7 @@ class CompetencyService {
     return response.data;
   }
 
+  // TODO: change name
   async getVersionedFramework(framework, version) {
     const response = await this.http.get(
       `${apiUrl}/api/${framework}/${version}?_format=json`

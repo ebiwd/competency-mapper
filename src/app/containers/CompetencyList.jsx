@@ -33,7 +33,9 @@ class CompetencyList extends Component {
     loadingError: false
   };
 
-  async componentWillMount() {
+  async componentDidMount() {
+    window.scroll(0, 0);
+
     try {
       this.activeRequests.startRequest();
       await Promise.all([this.fetchFramework(), this.fetchAllFrameworks()]);
@@ -44,22 +46,19 @@ class CompetencyList extends Component {
     }
   }
 
-  componentDidMount() {
-    window.scroll(0, 0);
-  }
-
   async fetchFramework() {
     const { framework, frameworkVersion } = this.state;
-    const frameworkData = await this.competencyService.getFramework(framework);
-    if (frameworkVersion) {
-      const frameworkData2 = await this.competencyService.getVersionedFramework(
-        framework,
-        frameworkVersion
-      );
-      console.log(frameworkData2);
-    }
+    const frameworkData = await this.competencyService.getVersionedFramework(
+      framework,
+      frameworkVersion
+    );
     const domains = safeFlat(frameworkData.map(item => item.domains));
-    this.setState({ domains, filteredDomains: domains });
+    this.setState({
+      frameworkName: frameworkData[0].title,
+      frameworkVersion: frameworkData[0].version,
+      domains,
+      filteredDomains: domains
+    });
   }
 
   async fetchAllFrameworks() {
@@ -71,7 +70,6 @@ class CompetencyList extends Component {
 
     if (frameworkMatch.length) {
       this.setState({
-        frameworkName: frameworkMatch[0].name,
         description: removeHtmlTags(frameworkMatch[0].description)
       });
     }
@@ -100,6 +98,7 @@ class CompetencyList extends Component {
   render() {
     const {
       frameworkName,
+      frameworkVersion,
       description,
       filteredDomains,
       framework,
@@ -126,6 +125,10 @@ class CompetencyList extends Component {
     return (
       <>
         <h3>{frameworkName}</h3>
+        <p>
+          <span className="tag">{frameworkVersion}</span>
+          <span className="tag secondary-background">live</span>
+        </p>
         <p>{description}</p>
 
         <Tabs>

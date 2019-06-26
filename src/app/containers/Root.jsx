@@ -144,7 +144,7 @@ class Root extends Component {
                   component={ManageCompetencies}
                 />
                 <Route
-                  path="/framework/:framework/competency/details/:cid"
+                  path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
                 <Route
