@@ -49,7 +49,6 @@ class Root extends Component {
 
   handleActiveRequests = hasPendingRequests => {
     this.setState({ isActive: hasPendingRequests });
-    console.log('isActive', hasPendingRequests);
   };
 
   detectUserChangesFromOtherTabs = ({ key, newValue }) => {
@@ -148,7 +147,10 @@ class Root extends Component {
                   path="/framework/:framework/competency/details/:cid"
                   component={CompetencyDetails}
                 />
-                <Route path="/framework/:framework" component={Competencies} />
+                <Route
+                  path="/framework/:framework/:version"
+                  component={Competencies}
+                />
                 <Route
                   path="/user/change/password"
                   component={ChangePassword}

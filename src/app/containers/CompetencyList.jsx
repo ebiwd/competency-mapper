@@ -24,6 +24,7 @@ class CompetencyList extends Component {
 
   state = {
     framework: this.props.match.params.framework,
+    frameworkVersion: this.props.match.params.version,
     frameworkName: '',
     description: '',
     domains: [],
@@ -48,8 +49,15 @@ class CompetencyList extends Component {
   }
 
   async fetchFramework() {
-    const { framework } = this.state;
+    const { framework, frameworkVersion } = this.state;
     const frameworkData = await this.competencyService.getFramework(framework);
+    if (frameworkVersion) {
+      const frameworkData2 = await this.competencyService.getVersionedFramework(
+        framework,
+        frameworkVersion
+      );
+      console.log(frameworkData2);
+    }
     const domains = safeFlat(frameworkData.map(item => item.domains));
     this.setState({ domains, filteredDomains: domains });
   }

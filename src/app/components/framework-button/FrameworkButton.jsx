@@ -5,23 +5,32 @@ import { removeHtmlTags } from '../../services/util/util';
 import { Link } from 'react-router-dom';
 
 function FrameworkButton({ framework }) {
-  let description = removeHtmlTags(framework.field_description);
+  let description = removeHtmlTags(framework.description);
   if (description.length > 120) {
     description = `${description.slice(0, 120).trim()}...`;
   }
+  const liveVersion = framework.versions.reduce((prevVersion, newVersion) => {
+    if (newVersion.status === 'live') {
+      return newVersion.number;
+    }
+    return prevVersion;
+  }, null);
+
+  if (liveVersion === null) {
+    return null;
+  }
+
   return (
     <div className="column medium-4">
       <Link
         className="column callout"
         data-equalizer-watch
-        to={`/framework/${framework.title.toLowerCase()}`}
+        to={`/framework/${framework.title.toLowerCase()}/${liveVersion}`}
       >
         <img
           className="float-center margin-bottom-medium"
           style={{ height: '6rem' }}
-          src={`http://dev-competency-mapper.pantheonsite.io/${
-            framework.field_logo
-          }`}
+          src={framework.logo[0].url}
           alt="competency logo"
         />
         <h5>
