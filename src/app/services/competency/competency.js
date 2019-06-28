@@ -23,6 +23,15 @@ class CompetencyService {
   }
 
   // TODO: change name
+  async getVersionedDraftFramework(framework, version) {
+    const response = await this.http.get(
+      `${apiUrl}/api/${framework}/edit?_format=json`,
+      'json'
+    );
+    return response.data;
+  }
+
+  // TODO: change name
   async getVersionedFramework(framework, version) {
     const response = await this.http.get(
       `${apiUrl}/api/${framework}/${version}?_format=json`
@@ -32,7 +41,7 @@ class CompetencyService {
 
   async getAllFrameworks() {
     const response = await this.http.get(
-      `${apiUrl}/api/v1/framework/?_format=json`
+      `${apiUrl}/api/v1/framework?_format=json`
     );
     return response.data;
   }
@@ -40,7 +49,7 @@ class CompetencyService {
   // TODO: change name
   async getAllVersionedFrameworks() {
     const response = await this.http.get(
-      `${apiUrl}/api/version_manager/?_format=json`
+      `${apiUrl}/api/version_manager?_format=json`
     );
     return response.data;
   }
@@ -67,6 +76,17 @@ class CompetencyService {
     const response = await this.http.patch(
       `${apiUrl}/node/${competencyId}?_format=hal_json`,
       Body.mutateCompetency(key, value)
+    );
+
+    return response.data;
+  }
+
+  // TODO: change name
+  async toggleArchivingVersionedNode(framework, nodeId) {
+    const response = await this.http.patch(
+      `${apiUrl}/api/${framework}/edit?_format=json`,
+      Body.toggleArchivingVersionedNode(framework, nodeId),
+      'json'
     );
 
     return response.data;

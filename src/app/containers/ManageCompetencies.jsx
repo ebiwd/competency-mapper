@@ -64,7 +64,11 @@ class ManageCompetencies extends React.Component {
   async fetchFramework(framework) {
     try {
       this.activeRequests.startRequest();
-      const frameworkData = await this.competencyService.getFramework(
+      // const frameworkData = await this.competencyService.getFramework(
+      //   framework
+      // );
+
+      const frameworkData = await this.competencyService.getVersionedDraftFramework(
         framework
       );
 
@@ -79,7 +83,7 @@ class ManageCompetencies extends React.Component {
           competencyTypes
         });
       }
-    } catch (e) {
+    } catch (error) {
       this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
@@ -125,15 +129,16 @@ class ManageCompetencies extends React.Component {
   }
 
   async toggleArchive(cid, isArchived) {
+    const { framework } = this.state;
     try {
       this.activeRequests.startRequest();
-      const archive = isArchived ? false : true;
-      await this.competencyService.patchCompetency(
-        cid,
-        'field_archived',
-        archive
-      );
-      const { framework } = this.state;
+      // const archive = isArchived ? false : true;
+      // await this.competencyService.patchCompetency(
+      //   cid,
+      //   'field_archived',
+      //   archive
+      // );
+      await this.competencyService.toggleArchivingVersionedNode(framework, cid);
       this.fetchFramework(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
@@ -204,7 +209,7 @@ class ManageCompetencies extends React.Component {
                 competency.archived
               )}
             >
-              {competency.archived === 1 ? (
+              {competency.archived === '1' ? (
                 <span className="fas fa-toggle-on">
                   <span>Archived</span>
                 </span>

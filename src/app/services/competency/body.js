@@ -193,6 +193,26 @@ class BodyService {
       ]
     };
   }
+
+  static toggleArchivingVersionedNode(framework, nodeId) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ],
+      field_item: [
+        {
+          value: nodeId
+        }
+      ]
+    };
+  }
 }
 
 export default BodyService;

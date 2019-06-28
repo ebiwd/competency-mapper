@@ -13,7 +13,13 @@ class HttpService {
     HttpService.instance = this;
   }
 
-  get(url) {
+  get(url, credentialType = '') {
+    if (credentialType) {
+      return axios.get(url, {
+        headers: this.headers.get(credentialType),
+        withCredentials: true
+      });
+    }
     return axios.get(url);
   }
 
