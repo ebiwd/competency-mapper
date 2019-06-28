@@ -26,7 +26,8 @@ class CompetencyList extends Component {
     framework: this.props.match.params.framework,
     frameworkVersion: this.props.match.params.version,
     frameworkName: '',
-    description: '',
+    frameworkStatus: '',
+    frameworkDescription: '',
     domains: [],
     filter: '',
     filteredDomains: [],
@@ -38,7 +39,7 @@ class CompetencyList extends Component {
 
     try {
       this.activeRequests.startRequest();
-      await Promise.all([this.fetchFramework(), this.fetchAllFrameworks()]);
+      await this.fetchFramework();
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -54,25 +55,13 @@ class CompetencyList extends Component {
     );
     const domains = safeFlat(frameworkData.map(item => item.domains));
     this.setState({
-      frameworkName: frameworkData[0].title,
       frameworkVersion: frameworkData[0].version,
+      frameworkName: frameworkData[0].title,
+      frameworkStatus: frameworkData[0].status,
+      frameworkDescription: removeHtmlTags(frameworkData[0].description),
       domains,
       filteredDomains: domains
     });
-  }
-
-  async fetchAllFrameworks() {
-    const { framework } = this.state;
-    const frameworkData = await this.competencyService.getAllFrameworks();
-    const frameworkMatch = frameworkData.filter(
-      item => item.name.toLowerCase() === framework
-    );
-
-    if (frameworkMatch.length) {
-      this.setState({
-        description: removeHtmlTags(frameworkMatch[0].description)
-      });
-    }
   }
 
   onFilter = filter => {
@@ -99,7 +88,8 @@ class CompetencyList extends Component {
     const {
       frameworkName,
       frameworkVersion,
-      description,
+      frameworkStatus,
+      frameworkDescription,
       filteredDomains,
       framework,
       filter,
@@ -127,9 +117,9 @@ class CompetencyList extends Component {
         <h3>{frameworkName}</h3>
         <p>
           <span className="tag">{frameworkVersion}</span>
-          <span className="tag secondary-background">live</span>
+          <span className="tag secondary-background">{frameworkStatus}</span>
         </p>
-        <p>{description}</p>
+        <p>{frameworkDescription}</p>
 
         <Tabs>
           <TabList>

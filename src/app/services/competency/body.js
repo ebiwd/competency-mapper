@@ -143,6 +143,56 @@ class BodyService {
       ]
     };
   }
+
+  static publishFramework(framework, version, releaseNotes) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      title: [
+        {
+          value: framework
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ],
+      field_release_notes: [
+        {
+          value: releaseNotes
+        }
+      ],
+      field_item: [
+        {
+          value: version
+        }
+      ]
+    };
+  }
+
+  static createDraftFramework(framework) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      title: [
+        {
+          value: 'draft'
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ]
+    };
+  }
 }
 
 export default BodyService;

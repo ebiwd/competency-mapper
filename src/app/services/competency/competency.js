@@ -80,6 +80,24 @@ class CompetencyService {
 
     return response.data;
   }
+
+  async publishFramework(framework, version, releaseNotes) {
+    const response = await this.http.patch(
+      `${apiUrl}/api/version_manager?_format=json`,
+      Body.publishFramework(framework, version, releaseNotes),
+      'json'
+    );
+    return response.data;
+  }
+
+  async createDraftFramework(framework) {
+    const response = await this.http.post(
+      `${apiUrl}/api/version_manager?_format=json`,
+      Body.createDraftFramework(framework),
+      'json'
+    );
+    return response.data;
+  }
 }
 
 export default CompetencyService;

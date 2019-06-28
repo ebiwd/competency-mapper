@@ -144,6 +144,22 @@ class ManageCompetencies extends React.Component {
     }
   }
 
+  releaseNewVersion = async (version, notes) => {
+    const { framework } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.publishFramework(framework, version, notes);
+      await this.competencyService.createDraftFramework(framework);
+      this.props.history.push(`/framework/${framework}/${version}`);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  };
+
   getCompetencyList() {
     const { frameworkData, editable } = this.state;
     return frameworkData[0].domains.map((domain, parentIndex) => (
@@ -238,7 +254,7 @@ class ManageCompetencies extends React.Component {
           <span className="tag secondary-background">editable</span>
         </p>
 
-        <VersionControls />
+        <VersionControls release={this.releaseNewVersion} />
 
         {editable && (
           <SimpleForm
