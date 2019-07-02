@@ -5,7 +5,7 @@ type Props = {
   release(version: string, notes: string): void;
 };
 
-const VersionControls: React.FC<Props> = ({ release }) => {
+export const VersionControls: React.FC<Props> = ({ release }) => {
   const [version, setVersion] = useState('');
   const [notes, setNotes] = useState('');
   const [pressedRelease, setPressedRelease] = useState(false);

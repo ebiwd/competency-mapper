@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
 import SimpleForm from '../containers/simple-form/SimpleForm';
 import ErrorLoading from '../components/error-loading/ErrorLoading';
+import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
 
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
@@ -276,6 +277,8 @@ class ManageAttributes extends React.Component {
         <table>
           <tbody>{this.getAttributeList()}</tbody>
         </table>
+
+        <FrameworkVersions framework={framework} />
       </div>
     );
   }

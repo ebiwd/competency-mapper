@@ -230,6 +230,7 @@ class ManageCompetencies extends React.Component {
 
   render() {
     const {
+      framework,
       frameworkName,
       frameworkData,
       competencyTypes,
@@ -270,7 +271,7 @@ class ManageCompetencies extends React.Component {
           <tbody>{this.getCompetencyList()}</tbody>
         </table>
 
-        <FrameworkVersions />
+        <FrameworkVersions framework={framework} />
       </div>
     );
   }
