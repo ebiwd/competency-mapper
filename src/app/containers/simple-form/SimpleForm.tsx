@@ -79,6 +79,16 @@ export default class SimpleForm extends Component<Props, State> {
           <div className="column large-2">
             <input type="submit" className="button" value="Create" />
           </div>
+
+          <div className="column">
+            <label>
+              Maps to competency/attribute from other framework
+              <input
+                type="text"
+                placeholder="Framework (version), competency or attribute"
+              />
+            </label>
+          </div>
         </div>
       </form>
     );

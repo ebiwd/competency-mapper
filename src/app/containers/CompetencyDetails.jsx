@@ -6,8 +6,6 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 import CoursesService from '../services/courses/courses';
 
-import { flatMap } from '../services/util/util';
-
 class CompetencyDetails extends React.Component {
   activeRequests = new ActiveRequestsService();
   competencyService = new CompetencyService();
