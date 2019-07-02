@@ -6,13 +6,7 @@ import { Link } from 'react-router-dom';
 import { groupBy } from 'lodash-es';
 import './CompetencyList.css';
 
-function CompetencyList({
-  parentIndex,
-  index,
-  framework,
-  competency,
-  disable
-}) {
+function CompetencyList({ index, framework, competency, disable }) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
   const attributesTypes = Object.keys(attributesGrouped);
   const attributes = attributesTypes.map(type => {
@@ -29,7 +23,6 @@ function CompetencyList({
 
   return (
     <tr>
-      <td>{`${parentIndex + 1}.${index + 1}`}</td>
       <td>
         <Collapsible
           trigger={
@@ -52,8 +45,8 @@ function CompetencyList({
           <div className="padding-left-large padding-top-large">
             <Link to={`${framework}/competency/details/${competency.id}`}>
               <span className="float-right">
-                <i className="icon icon-spacer icon-common icon-info" />More
-                details
+                <i className="icon icon-spacer icon-common icon-info" />
+                More details
               </span>
             </Link>
             {attributes}

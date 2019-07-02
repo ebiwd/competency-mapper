@@ -100,11 +100,10 @@ class CompetencyList extends Component {
       return <ErrorLoading />;
     }
 
-    const domainList = filteredDomains.map((domain, index) =>
+    const domainList = filteredDomains.map(domain =>
       domain === null ? null : (
         <DomainList
           key={domain.nid}
-          index={index}
           framework={framework}
           domain={domain}
           disable={true}

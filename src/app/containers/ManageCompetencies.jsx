@@ -167,31 +167,27 @@ class ManageCompetencies extends React.Component {
 
   getCompetencyList() {
     const { frameworkData, editable } = this.state;
-    return frameworkData[0].domains.map((domain, parentIndex) => (
+    return frameworkData[0].domains.map(domain => (
       <React.Fragment key={domain.nid}>
         <tr
           className="secondary-background-important white-color"
           ref={domain.nid}
         >
-          <td>{parentIndex + 1}</td>
           <td>
             <h4>{domain.title}</h4>
           </td>
           {editable && <td className="small-1">Archive</td>}
           <td>Attributes</td>
         </tr>
-        {this.getCompetencyRows(domain.competencies, parentIndex)}
+        {this.getCompetencyRows(domain.competencies)}
       </React.Fragment>
     ));
   }
 
-  getCompetencyRows(competencies, parentIndex) {
+  getCompetencyRows(competencies) {
     const { framework, editable } = this.state;
     return competencies.map((competency, index) => (
       <tr key={competency.id}>
-        <td>
-          {parentIndex + 1}.{index + 1}
-        </td>
         <td>
           <InlineEdit
             text={competency.title}

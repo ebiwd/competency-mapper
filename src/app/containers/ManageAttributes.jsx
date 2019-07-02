@@ -168,7 +168,7 @@ class ManageAttributes extends React.Component {
     }
   }
 
-  getAttributeRows(attributeType, parentIndex) {
+  getAttributeRows(attributeType) {
     const { competencyData, editable } = this.state;
 
     return competencyData.attributes
@@ -176,7 +176,6 @@ class ManageAttributes extends React.Component {
       .map((attribute, index) => {
         return (
           <tr key={attribute.uuid}>
-            <td>{`${parentIndex}.${index + 1}`}</td>
             <td>
               <InlineEdit
                 text={attribute.title}
@@ -209,10 +208,9 @@ class ManageAttributes extends React.Component {
 
   getAttributeList() {
     const { attributeTypes, editable } = this.state;
-    return attributeTypes.map((attributeType, index) => (
+    return attributeTypes.map(attributeType => (
       <React.Fragment key={attributeType.uuid}>
         <tr className="secondary-background-important white-color">
-          <td>{index + 1}</td>
           <td>
             <strong>
               <em>{attributeType.description}</em>
@@ -220,7 +218,7 @@ class ManageAttributes extends React.Component {
           </td>
           {editable && <td className="small-1">Archive</td>}
         </tr>
-        {this.getAttributeRows(attributeType, index + 1)}
+        {this.getAttributeRows(attributeType)}
       </React.Fragment>
     ));
   }
