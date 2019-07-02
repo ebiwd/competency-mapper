@@ -6,6 +6,8 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 import CoursesService from '../services/courses/courses';
 
+import { flatMap } from '../services/util/util';
+
 class CompetencyDetails extends React.Component {
   activeRequests = new ActiveRequestsService();
   competencyService = new CompetencyService();
@@ -57,7 +59,20 @@ class CompetencyDetails extends React.Component {
 
   async getResources() {
     try {
-      const resources = await this.coursesService.getCourses();
+      const allResources = await this.coursesService.getCourses();
+      const resources = allResources.filter(
+        resource =>
+          !!resource.competency_profile.find(
+            profile =>
+              !!profile.domains.find(
+                domain =>
+                  !!domain.competencies.find(
+                    competency => competency.id === this.state.competencyId
+                  )
+              )
+          )
+      );
+
       this.setState({ resources });
     } catch (error) {
       this.props.enqueueSnackbar('Unable to retrieve training resources', {
@@ -68,27 +83,20 @@ class CompetencyDetails extends React.Component {
 
   resourceBlock() {
     const { resources } = this.state;
-    return resources.map(resource =>
-      resource.competency_profile.map(profile =>
-        profile.domains.map(domain =>
-          domain.competencies
-            .filter(competency => competency.id === this.state.competencyId)
-            .map(competency => {
-              return (
-                <li key={resource.id}>
-                  <Link to={`/training-resources/${resource.id}`}>
-                    {resource.title}
-                  </Link>
-                </li>
-              );
-            })
-        )
-      )
-    );
+    return resources.map(resource => (
+      <li key={resource.id}>
+        <Link to={`/training-resources/${resource.id}`}>{resource.title}</Link>
+      </li>
+    ));
   }
 
   render() {
-    const { competencyId, frameworkData, attributeDefs } = this.state;
+    const {
+      competencyId,
+      frameworkData,
+      attributeDefs,
+      resources
+    } = this.state;
 
     const competencies = [];
 
@@ -141,14 +149,20 @@ class CompetencyDetails extends React.Component {
             </ul>
           </div>
           <div className="column large-4">
+            {/*
+            // Removed until we have relations
             <div className="callout notice industry-background white-color">
               <p>Competency derived from:</p>
               <p>No data available</p>
             </div>
-            <div className="callout notice training-background white-color">
-              <p>Training resources mapped to this competency</p>
-              <ul>{this.resourceBlock()}</ul>
-            </div>
+            */}
+
+            {resources.length === 0 ? null : (
+              <div className="callout notice training-background white-color">
+                <p>Training resources mapped to this competency</p>
+                <ul>{this.resourceBlock()}</ul>
+              </div>
+            )}
           </div>
         </div>
       </div>
