@@ -1,7 +1,14 @@
 import { apiUrl } from './competency';
 
 class BodyService {
-  static createCompetency({ description, domainId, domainUuid }) {
+  static createCompetency({
+    description,
+    domainId,
+    domainUuid,
+    mapping = '',
+    draftId,
+    draftUuid
+  }) {
     return {
       _links: {
         type: {
@@ -9,7 +16,12 @@ class BodyService {
         },
         [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
           href: `${apiUrl}/node/${domainId}?_format=hal_json`
-        }
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
+          }
+        ]
       },
       title: [
         {
@@ -21,8 +33,29 @@ class BodyService {
           target_id: 'competency'
         }
       ],
-
+      field_map_other_competency: [
+        {
+          value: mapping
+        }
+      ],
       _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/taxonomy_term/version`
+              }
+            },
+            uuid: [
+              {
+                value: draftUuid
+              }
+            ]
+          }
+        ],
         [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
           {
             _links: {
@@ -50,7 +83,9 @@ class BodyService {
     attributeTypeId,
     attributeTypeUuid,
     competencyId,
-    competencyUuid
+    competencyUuid,
+    draftId,
+    draftUuid
   }) {
     return {
       _links: {
@@ -62,7 +97,12 @@ class BodyService {
         },
         [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
           href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
-        }
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
+          }
+        ]
       },
       title: [
         {
@@ -76,6 +116,23 @@ class BodyService {
       ],
 
       _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/taxonomy_term/version`
+              }
+            },
+            uuid: [
+              {
+                value: draftUuid
+              }
+            ]
+          }
+        ],
         [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
           {
             _links: {

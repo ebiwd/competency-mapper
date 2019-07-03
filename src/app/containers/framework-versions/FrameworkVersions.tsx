@@ -1,12 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 
 import { Link } from 'react-router-dom';
-
-import CompetencyService from '../../services/competency/competency';
-
-type Props = {
-  framework: string;
-};
 
 interface Version {
   id: string;
@@ -14,25 +8,11 @@ interface Version {
   status: string;
 }
 
-const competency = new CompetencyService();
+type Props = {
+  versions: Version[];
+};
 
-export const FrameworkVersion: React.FC<Props> = ({ framework }) => {
-  const [versions, setVersions] = useState<Version[]>([]);
-
-  useEffect(() => {
-    async function fetch() {
-      const allFrameworks = await competency.getAllVersionedFrameworks();
-      const newFramework = allFrameworks.filter(
-        (fw: any) => fw.title.toLowerCase() === framework
-      );
-      if (newFramework.length > 0) {
-        setVersions(newFramework[0].versions.reverse());
-      }
-    }
-
-    fetch();
-  }, [framework]);
-
+export const FrameworkVersion: React.FC<Props> = ({ versions }) => {
   const versionItems = versions.map(version => (
     <li key={version.id}>
       <Link to={`/framework/${version.number}`}>{version.number}</Link>{' '}

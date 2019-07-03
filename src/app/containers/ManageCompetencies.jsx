@@ -20,6 +20,7 @@ class ManageCompetencies extends React.Component {
     frameworkName: '',
     frameworkData: [],
     competencyTypes: [],
+    versions: [],
     loadingError: false,
     editable: true
   };
@@ -40,7 +41,10 @@ class ManageCompetencies extends React.Component {
 
   async componentDidMount() {
     const { framework, domainId } = this.props.match.params;
-    await this.fetchFramework(framework);
+    await Promise.all([
+      this.fetchFramework(framework),
+      this.fetchVersions(framework)
+    ]);
 
     if (domainId) {
       setTimeout(() => {
@@ -90,18 +94,34 @@ class ManageCompetencies extends React.Component {
     }
   }
 
-  createCompetency = async (description, domainUuid) => {
-    const { framework, frameworkData } = this.state;
+  async fetchVersions(framework) {
+    const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+    const currentFramework = allFrameworks.filter(
+      fw => fw.title.toLowerCase() === framework
+    );
+    if (currentFramework.length > 0) {
+      this.setState({ versions: currentFramework[0].versions.reverse() });
+    }
+  }
+
+  createCompetency = async (description, domainUuid, mapping) => {
+    const { framework, frameworkData, versions } = this.state;
+    const draftVersion = versions.filter(version => version.number === 'draft');
 
     try {
       this.activeRequests.startRequest();
       const domainId = frameworkData[0].domains.find(
         domain => domain.uuid === domainUuid
       ).nid;
+      const draftId = draftVersion[0].id;
+      const draftUuid = draftVersion[0].uuid;
       await this.competencyService.createCompetency({
         description,
         domainId,
-        domainUuid
+        domainUuid,
+        mapping,
+        draftId,
+        draftUuid
       });
       this.fetchFramework(framework);
     } catch (e) {
@@ -234,6 +254,7 @@ class ManageCompetencies extends React.Component {
       frameworkName,
       frameworkData,
       competencyTypes,
+      versions,
       loadingError,
       editable
     } = this.state;
@@ -264,6 +285,7 @@ class ManageCompetencies extends React.Component {
             placeholder="Competency description"
             options={competencyTypes}
             onCreate={this.createCompetency}
+            showMappingField={true}
           />
         )}
 
@@ -271,7 +293,7 @@ class ManageCompetencies extends React.Component {
           <tbody>{this.getCompetencyList()}</tbody>
         </table>
 
-        <FrameworkVersions framework={framework} />
+        <FrameworkVersions versions={versions} />
       </div>
     );
   }

@@ -20,6 +20,7 @@ class ManageAttributes extends React.Component {
     framework: this.props.match.params.framework,
     frameworkName: '',
     attributeTypes: [], // defined at framework level
+    versions: [],
 
     // domain level
     domainId: '',
@@ -45,16 +46,18 @@ class ManageAttributes extends React.Component {
     const { framework } = this.state;
     try {
       this.activeRequests.startRequest();
-      const allFrameworks = await this.competencyService.getAllFrameworks();
-      const frameworkMatch = allFrameworks.filter(
-        item => item.name.toLowerCase() === framework
+      const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+      const currentFramework = allFrameworks.filter(
+        fw => fw.title.toLowerCase() === framework
       );
-
-      if (frameworkMatch.length) {
-        const attributeTypes = frameworkMatch[0].attribute_types.map(
+      if (currentFramework.length > 0) {
+        const attributeTypes = currentFramework[0].attribute_types.map(
           attribute => ({ description: attribute.title, uuid: attribute.uuid })
         );
-        this.setState({ attributeTypes });
+        this.setState({
+          versions: currentFramework[0].versions.reverse(),
+          attributeTypes
+        });
       }
     } catch (error) {
       this.setState({ loadingError: true });
@@ -111,20 +114,30 @@ class ManageAttributes extends React.Component {
     );
   }
 
-  createAttribute = async (description, attributeTypeUuid) => {
-    const { competencyId, competencyUuid, attributeTypes } = this.state;
+  createAttribute = async (description, attributeTypeUuid, mapping) => {
+    const {
+      competencyId,
+      competencyUuid,
+      attributeTypes,
+      versions
+    } = this.state;
+    const draftVersion = versions.filter(version => version.number === 'draft');
 
     try {
       this.activeRequests.startRequest();
       const attributeTypeId = attributeTypes.find(
         attribute => attribute.uuid === attributeTypeUuid
       ).id;
+      const draftId = draftVersion[0].id;
+      const draftUuid = draftVersion[0].uuid;
       await this.competencyService.createAttribute({
         description,
         competencyId,
         competencyUuid,
         attributeTypeId,
-        attributeTypeUuid
+        attributeTypeUuid,
+        draftId,
+        draftUuid
       });
 
       this.fetchCompetency();
@@ -229,6 +242,7 @@ class ManageAttributes extends React.Component {
       framework,
       frameworkName,
       attributeTypes,
+      versions,
       domainId,
       domainName,
       competencyName,
@@ -278,7 +292,7 @@ class ManageAttributes extends React.Component {
           <tbody>{this.getAttributeList()}</tbody>
         </table>
 
-        <FrameworkVersions framework={framework} />
+        <FrameworkVersions versions={versions} />
       </div>
     );
   }
