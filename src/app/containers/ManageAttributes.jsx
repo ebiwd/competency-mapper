@@ -177,11 +177,11 @@ class ManageAttributes extends React.Component {
       .map((attribute, index) => {
         return (
           <tr key={attribute.uuid}>
-            <td>
+            <td className={attribute.archived === '1' ? 'strikeout' : ''}>
               <InlineEdit
                 text={attribute.title}
                 change={newValue => this.editAttribute(attribute.id, newValue)}
-                editable={editable}
+                editable={attribute.archived === '1' ? false : true}
               />
             </td>
             {editable && (

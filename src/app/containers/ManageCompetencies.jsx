@@ -188,11 +188,11 @@ class ManageCompetencies extends React.Component {
     const { framework, editable } = this.state;
     return competencies.map((competency, index) => (
       <tr key={competency.id}>
-        <td>
+        <td className={competency.archived === '1' ? 'strikeout' : ''}>
           <InlineEdit
             text={competency.title}
             change={newValue => this.editCompetency(competency.id, newValue)}
-            editable={editable}
+            editable={competency.archived === '1' ? false : true}
           />
         </td>
         {editable && (

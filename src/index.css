@@ -21,3 +21,7 @@
 .secondary-background-important {
   background-color: #555555 !important;
 }
+
+.strikeout {
+  text-decoration: line-through;
+}
