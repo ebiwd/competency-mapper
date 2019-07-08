@@ -14,17 +14,19 @@ type Props = {
 };
 
 export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
-  const versionItems = versions.map(version => (
-    <li key={version.id}>
-      <Link to={`/framework/${framework}/${version.number}`}>
-        {version.number}
-      </Link>{' '}
-      {/* TODO: release notes */}
-      <Link to={`/release-notes/${framework}/${version.number}`}>
-        (release notes)
-      </Link>
-    </li>
-  ));
+  const versionItems = versions
+    .filter(version => version.number !== 'draft')
+    .map(version => (
+      <li key={version.id}>
+        <Link to={`/framework/${framework}/${version.number}`}>
+          {version.number}
+        </Link>{' '}
+        {/* TODO: release notes */}
+        <Link to={`/release-notes/${framework}/${version.number}`}>
+          (release notes)
+        </Link>
+      </li>
+    ));
 
   return (
     <div className="callout">
