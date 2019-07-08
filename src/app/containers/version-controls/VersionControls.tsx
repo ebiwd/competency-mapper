@@ -1,5 +1,7 @@
 import React, { FC, useState } from 'react';
+
 import Modal from 'react-modal';
+import CKEditor from 'react-ckeditor-component';
 
 type Props = {
   release(version: string, notes: string): void;
@@ -38,22 +40,22 @@ export const VersionControls: React.FC<Props> = ({ release }) => {
               onChange={event => setVersion(event.currentTarget.value.trim())}
             />
           </label>
-          <label>
-            Release notes
-            <textarea
-              placeholder="Notes are required"
-              value={notes}
+          <div className="padding-bottom-medium">
+            <CKEditor
+              content={notes}
+              events={{
+                change: (event: any) => setNotes(event.editor.getData())
+              }}
               required
-              onChange={event => setNotes(event.currentTarget.value)}
             />
-          </label>
+          </div>
           <span className="padding-right-small">
-            <button className="button" type="submit">
-              Publish
+            <button className="button" onClick={reset}>
+              Cancel
             </button>
           </span>
-          <button className="button" onClick={reset}>
-            Cancel
+          <button className="button" type="submit">
+            Publish
           </button>
         </form>
       </Modal>
