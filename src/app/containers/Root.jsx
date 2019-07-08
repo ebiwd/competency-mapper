@@ -5,7 +5,7 @@ import Masthead from '../containers/masthead/Masthead';
 import ManageAttributes from './ManageAttributes';
 import ManageCompetencies from './ManageCompetencies';
 import CompetencyDetails from './CompetencyDetails';
-import Competencies from './CompetencyList';
+import CompetencyList from './CompetencyList';
 import ResourceEdit from './ResourceEdit';
 import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
@@ -149,7 +149,7 @@ class Root extends Component {
                 />
                 <Route
                   path="/framework/:framework/:version"
-                  component={Competencies}
+                  component={CompetencyList}
                 />
                 <Route
                   path="/user/change/password"

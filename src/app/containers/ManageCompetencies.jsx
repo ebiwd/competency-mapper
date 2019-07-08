@@ -293,7 +293,7 @@ class ManageCompetencies extends React.Component {
           <tbody>{this.getCompetencyList()}</tbody>
         </table>
 
-        <FrameworkVersions versions={versions} />
+        <FrameworkVersions framework={framework} versions={versions} />
       </div>
     );
   }

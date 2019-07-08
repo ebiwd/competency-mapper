@@ -292,7 +292,7 @@ class ManageAttributes extends React.Component {
           <tbody>{this.getAttributeList()}</tbody>
         </table>
 
-        <FrameworkVersions versions={versions} />
+        <FrameworkVersions framework={framework} versions={versions} />
       </div>
     );
   }

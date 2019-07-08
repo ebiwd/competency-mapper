@@ -5,12 +5,13 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ErrorLoading from '../components/error-loading/ErrorLoading';
 
+import DomainList from '../components/domain-list/DomainList';
+import Courses from './courses/Courses';
+import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
+
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
-
-import DomainList from '../components/domain-list/DomainList';
-import Courses from './courses/Courses';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -23,23 +24,44 @@ class CompetencyList extends Component {
   activeRequests = new ActiveRequestsService();
 
   state = {
-    framework: this.props.match.params.framework,
-    frameworkVersion: this.props.match.params.version,
+    framework: '',
+    frameworkVersion: '',
     frameworkName: '',
     frameworkStatus: '',
     frameworkDescription: '',
+    versions: [],
     domains: [],
     filter: '',
     filteredDomains: [],
     loadingError: false
   };
 
-  async componentDidMount() {
-    window.scroll(0, 0);
+  static getDerivedStateFromProps(props, state) {
+    const { framework, version: frameworkVersion } = props.match.params;
+    if (
+      framework !== state.framework ||
+      frameworkVersion !== state.frameworkVersion
+    ) {
+      return {
+        framework,
+        frameworkVersion,
+        domains: [],
+        loadingError: false
+      };
+    }
 
+    // No state update necessary
+    return null;
+  }
+
+  async componentDidMount() {
+    const { framework, version: frameworkVersion } = this.props.match.params;
     try {
       this.activeRequests.startRequest();
-      await this.fetchFramework();
+      await Promise.all([
+        this.fetchFramework(framework, frameworkVersion),
+        this.fetchVersions(framework)
+      ]);
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -47,21 +69,50 @@ class CompetencyList extends Component {
     }
   }
 
-  async fetchFramework() {
-    const { framework, frameworkVersion } = this.state;
+  async componentDidUpdate(prevProps, prevState) {
+    const { framework, frameworkVersion, domains, loadingError } = this.state;
+    if (
+      framework !== prevState.framework ||
+      frameworkVersion !== prevState.frameworkVersion
+    ) {
+      if (domains.length === 0 && !loadingError) {
+        try {
+          this.activeRequests.startRequest();
+          await this.fetchFramework(framework, frameworkVersion);
+        } catch (error) {
+          this.setState({ loadingError: true });
+        } finally {
+          this.activeRequests.finishRequest();
+        }
+      }
+    }
+  }
+
+  async fetchFramework(framework, frameworkVersion) {
+    window.scroll(0, 0);
     const frameworkData = await this.competencyService.getVersionedFramework(
       framework,
       frameworkVersion
     );
     const domains = safeFlat(frameworkData.map(item => item.domains));
+    const frameworkDescription = removeHtmlTags(frameworkData[0].description);
     this.setState({
-      frameworkVersion: frameworkData[0].version,
       frameworkName: frameworkData[0].title,
       frameworkStatus: frameworkData[0].status,
-      frameworkDescription: removeHtmlTags(frameworkData[0].description),
+      frameworkDescription,
       domains,
       filteredDomains: domains
     });
+  }
+
+  async fetchVersions(framework) {
+    const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+    const currentFramework = allFrameworks.filter(
+      fw => fw.title.toLowerCase() === framework
+    );
+    if (currentFramework.length > 0) {
+      this.setState({ versions: currentFramework[0].versions.reverse() });
+    }
   }
 
   onFilter = filter => {
@@ -86,12 +137,13 @@ class CompetencyList extends Component {
 
   render() {
     const {
-      frameworkName,
+      framework,
       frameworkVersion,
+      frameworkName,
       frameworkStatus,
       frameworkDescription,
       filteredDomains,
-      framework,
+      versions,
       filter,
       loadingError
     } = this.state;
@@ -135,6 +187,7 @@ class CompetencyList extends Component {
               placeholder="Filter competencies"
             />
             <table>{domainList}</table>
+            <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
           <TabPanel>
             <Courses framework={framework} />

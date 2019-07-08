@@ -10,14 +10,19 @@ interface Version {
 
 type Props = {
   versions: Version[];
+  framework: string;
 };
 
-export const FrameworkVersion: React.FC<Props> = ({ versions }) => {
+export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
   const versionItems = versions.map(version => (
     <li key={version.id}>
-      <Link to={`/framework/${version.number}`}>{version.number}</Link>{' '}
+      <Link to={`/framework/${framework}/${version.number}`}>
+        {version.number}
+      </Link>{' '}
       {/* TODO: release notes */}
-      <Link to={`/release-notes/${version.number}`}>(release notes)</Link>
+      <Link to={`/release-notes/${framework}/${version.number}`}>
+        (release notes)
+      </Link>
     </li>
   ));
 
