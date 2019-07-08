@@ -56,11 +56,14 @@ class ManageCompetencies extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     const { framework, frameworkData, loadingError } = this.state;
     if (framework !== prevState.framework) {
       if (frameworkData.length === 0 && !loadingError) {
-        this.fetchFramework(framework);
+        await Promise.all([
+          this.fetchFramework(framework),
+          this.fetchVersions(framework)
+        ]);
       }
     }
   }
@@ -277,7 +280,7 @@ class ManageCompetencies extends React.Component {
           <span className="tag secondary-background">editable</span>
         </p>
 
-        <VersionControls release={this.releaseNewVersion} />
+        <VersionControls versions={versions} release={this.releaseNewVersion} />
 
         {editable && (
           <SimpleForm

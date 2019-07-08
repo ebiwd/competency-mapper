@@ -3,14 +3,23 @@ import React, { FC, useState } from 'react';
 import Modal from 'react-modal';
 import CKEditor from 'react-ckeditor-component';
 
+import { Version } from '../../../models/version';
+
 type Props = {
   release(version: string, notes: string): void;
+  versions: Version[];
 };
 
-export const VersionControls: React.FC<Props> = ({ release }) => {
+export const VersionControls: React.FC<Props> = ({ release, versions }) => {
   const [version, setVersion] = useState('');
   const [notes, setNotes] = useState('');
   const [pressedRelease, setPressedRelease] = useState(false);
+  const liveVersion = versions.reduce((prev, curr) => {
+    if (curr.status === 'live') {
+      return curr.number;
+    }
+    return prev;
+  }, '');
 
   const reset = () => {
     setVersion('');
@@ -31,7 +40,10 @@ export const VersionControls: React.FC<Props> = ({ release }) => {
       <Modal isOpen={pressedRelease}>
         <form onSubmit={publish}>
           <label>
-            Version
+            Version{' '}
+            {liveVersion
+              ? `(live version ${liveVersion})`
+              : '(no live version)'}
             <input
               type="text"
               placeholder="1.0.0"

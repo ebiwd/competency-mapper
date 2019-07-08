@@ -1,12 +1,7 @@
 import React from 'react';
 
 import { Link } from 'react-router-dom';
-
-interface Version {
-  id: string;
-  number: string;
-  status: string;
-}
+import { Version } from '../../../models/version';
 
 type Props = {
   versions: Version[];
