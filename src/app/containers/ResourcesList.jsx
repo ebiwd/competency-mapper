@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { Link } from 'react-router-dom';
 
-import { apiUrl } from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 
 class ResourcesList extends React.Component {
   constructor(props) {

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { apiUrl } from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 
 const $ = window.$;
 

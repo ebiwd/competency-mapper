@@ -1,6 +1,10 @@
 import Headers from './headers';
 import axios from 'axios';
 
+export const apiUrl = process.env.REACT_APP_API_URL;
+
+axios.defaults.baseURL = apiUrl;
+
 class HttpService {
   static instance;
   headers = new Headers();

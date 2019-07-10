@@ -20,6 +20,7 @@ class ManageCompetencies extends React.Component {
     frameworkName: '',
     frameworkData: [],
     frameworkVersion: '',
+    frameworkVersionId: '',
     frameworkStatus: '',
     competencyTypes: [],
     versions: [],
@@ -96,6 +97,7 @@ class ManageCompetencies extends React.Component {
       frameworkData = await this.competencyService.getVersionedDraftFramework(
         framework
       );
+      this.setState({ frameworkVersionId: draftVersion[0].id });
       editable = true;
     } else {
       if (liveVersion.length) {
@@ -125,7 +127,6 @@ class ManageCompetencies extends React.Component {
   createCompetency = async (description, domainUuid, mapping) => {
     const { framework, frameworkData, versions } = this.state;
     const draftVersion = versions.filter(version => version.number === 'draft');
-
     try {
       this.activeRequests.startRequest();
       const domainId = frameworkData[0].domains.find(
@@ -152,10 +153,10 @@ class ManageCompetencies extends React.Component {
   };
 
   async editCompetency(cid, title) {
+    const { framework } = this.state;
     try {
       this.activeRequests.startRequest();
       await this.competencyService.patchCompetency(cid, 'title', title);
-      const { framework } = this.state;
       await this.fetchFramework(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
@@ -186,6 +187,24 @@ class ManageCompetencies extends React.Component {
     try {
       this.activeRequests.startRequest();
       await this.competencyService.publishFramework(framework, version, notes);
+      this.loadData(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  };
+
+  updateNotes = async notes => {
+    const { framework, frameworkVersionId } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.updateReleaseNotes(
+        notes,
+        frameworkVersionId
+      );
       this.loadData(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
@@ -341,6 +360,7 @@ class ManageCompetencies extends React.Component {
           createDraft={this.createDraft}
           versions={versions}
           release={this.releaseNewVersion}
+          updateNotes={this.updateNotes}
         />
 
         {editable && (

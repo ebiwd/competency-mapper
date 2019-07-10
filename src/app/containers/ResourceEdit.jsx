@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 
-import { apiUrl } from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 
 class ResourceEdit extends React.Component {
   constructor(props) {

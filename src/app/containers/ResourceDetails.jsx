@@ -4,7 +4,7 @@ import ReactModal from 'react-modal';
 import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
 
-import { apiUrl } from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 
 class ResourceDetails extends React.Component {
   constructor(props) {

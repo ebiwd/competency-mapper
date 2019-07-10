@@ -1,4 +1,4 @@
-import { apiUrl } from './competency';
+import { apiUrl } from '../http/http';
 
 class BodyService {
   static createCompetency({
@@ -266,6 +266,27 @@ class BodyService {
       field_item: [
         {
           value: nodeId
+        }
+      ]
+    };
+  }
+
+  static updateReleaseNotes(notes) {
+    return {
+      _links: {
+        type: {
+          href:
+            'https://dev-competency-mapper.pantheonsite.io/rest/type/taxonomy_term/version'
+        }
+      },
+      vid: [
+        {
+          value: 'version'
+        }
+      ],
+      field_release_notes: [
+        {
+          value: notes
         }
       ]
     };

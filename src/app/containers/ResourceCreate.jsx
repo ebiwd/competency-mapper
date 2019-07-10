@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 
-import { apiUrl } from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 
 class ResourceCreate extends React.Component {
   constructor(props) {

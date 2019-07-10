@@ -7,6 +7,7 @@ import { Version } from '../../../models/version';
 
 type Props = {
   release(version: string, notes: string): void;
+  updateNotes(notes: string): void;
   createDraft(): void;
   versions: Version[];
   editable: false;
@@ -14,19 +15,29 @@ type Props = {
 
 export const VersionControls: React.FC<Props> = ({
   release,
+  updateNotes,
   createDraft,
   versions,
   editable
 }) => {
-  const [version, setVersion] = useState('');
-  const [notes, setNotes] = useState('');
-  const [pressedRelease, setPressedRelease] = useState(false);
   const liveVersion = versions.reduce((prev, curr) => {
     if (curr.status === 'live') {
       return curr.number;
     }
     return prev;
   }, '');
+
+  const originalNotes = versions.reduce((prev, curr) => {
+    if (curr.number === 'draft') {
+      return curr.release_notes;
+    }
+    return prev;
+  }, '');
+
+  const [version, setVersion] = useState('');
+  const [notes, setNotes] = useState(originalNotes);
+  const [pressedRelease, setPressedRelease] = useState(false);
+  const [pressedNotes, setPressedNotes] = useState(false);
 
   const reset = () => {
     setVersion('');
@@ -45,6 +56,36 @@ export const VersionControls: React.FC<Props> = ({
   if (editable) {
     return (
       <div>
+        <Modal isOpen={pressedNotes}>
+          <CKEditor
+            content={notes}
+            events={{
+              change: (event: any) => setNotes(event.editor.getData())
+            }}
+          />
+          <div className="padding-top-large">
+            <span className="padding-right-small">
+              <button
+                className="button"
+                onClick={() => {
+                  setNotes(originalNotes);
+                  setPressedNotes(false);
+                }}
+              >
+                Dismish
+              </button>
+            </span>
+            <button
+              className="button"
+              onClick={() => {
+                updateNotes(notes);
+                setPressedNotes(false);
+              }}
+            >
+              Save
+            </button>
+          </div>
+        </Modal>
         <Modal isOpen={pressedRelease}>
           <form onSubmit={publish}>
             <label>
@@ -60,23 +101,22 @@ export const VersionControls: React.FC<Props> = ({
                 onChange={event => setVersion(event.currentTarget.value.trim())}
               />
             </label>
-            <div className="padding-bottom-medium">
-              <CKEditor
-                content={notes}
-                events={{
-                  change: (event: any) => setNotes(event.editor.getData())
-                }}
-                required
-              />
-            </div>
-            <span className="padding-right-small">
-              <button className="button" onClick={reset}>
-                Cancel
+            <CKEditor
+              content={notes}
+              events={{
+                change: (event: any) => setNotes(event.editor.getData())
+              }}
+            />
+            <div className="padding-top-large">
+              <span className="padding-right-small">
+                <button className="button" onClick={reset}>
+                  Cancel
+                </button>
+              </span>
+              <button className="button" type="submit">
+                Publish
               </button>
-            </span>
-            <button className="button" type="submit">
-              Publish
-            </button>
+            </div>
           </form>
         </Modal>
         <span className="padding-right-small">
@@ -84,7 +124,9 @@ export const VersionControls: React.FC<Props> = ({
             Release new version
           </button>
         </span>
-        <button className="button">Update release notes</button>
+        <button className="button" onClick={() => setPressedNotes(true)}>
+          Update release notes
+        </button>
       </div>
     );
   }

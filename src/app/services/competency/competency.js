@@ -1,8 +1,6 @@
 import HttpService from '../http/http';
 import Body from './body';
 
-export const apiUrl = process.env.REACT_APP_API_URL;
-
 class CompetencyService {
   static instance;
   http = new HttpService();
@@ -17,7 +15,7 @@ class CompetencyService {
 
   async getFramework(framework) {
     const response = await this.http.get(
-      `${apiUrl}/api/v1/framework/${framework}?_format=json`
+      `/api/v1/framework/${framework}?_format=json`
     );
     return response.data;
   }
@@ -25,7 +23,7 @@ class CompetencyService {
   // TODO: change name
   async getVersionedDraftFramework(framework, version) {
     const response = await this.http.get(
-      `${apiUrl}/api/${framework}/edit?_format=json`,
+      `/api/${framework}/edit?_format=json`,
       'json'
     );
     return response.data;
@@ -34,29 +32,27 @@ class CompetencyService {
   // TODO: change name
   async getVersionedFramework(framework, version) {
     const response = await this.http.get(
-      `${apiUrl}/api/${framework}/${version}?_format=json`
+      `/api/${framework}/${version}?_format=json`
     );
     return response.data;
   }
 
   async getAllFrameworks() {
-    const response = await this.http.get(
-      `${apiUrl}/api/v1/framework?_format=json`
-    );
+    const response = await this.http.get(`/api/v1/framework?_format=json`);
     return response.data;
   }
 
   // TODO: change name
   async getAllVersionedFrameworks() {
     const response = await this.http.get(
-      `${apiUrl}/api/version_manager?_format=json&timestamp=${Date.now()}`
+      `/api/version_manager?_format=json&timestamp=${Date.now()}`
     );
     return response.data;
   }
 
   async createAttribute(options) {
     const response = await this.http.post(
-      `${apiUrl}/node?_format=hal_json`,
+      `/node?_format=hal_json`,
       Body.createAttribute(options)
     );
 
@@ -65,7 +61,7 @@ class CompetencyService {
 
   async createCompetency(options) {
     const response = await this.http.post(
-      `${apiUrl}/node?_format=hal_json`,
+      `/node?_format=hal_json`,
       Body.createCompetency(options)
     );
 
@@ -74,7 +70,7 @@ class CompetencyService {
 
   async patchCompetency(competencyId, key, value) {
     const response = await this.http.patch(
-      `${apiUrl}/node/${competencyId}?_format=hal_json`,
+      `/node/${competencyId}?_format=hal_json`,
       Body.mutateCompetency(key, value)
     );
 
@@ -84,7 +80,7 @@ class CompetencyService {
   // TODO: change name
   async toggleArchivingVersionedNode(framework, nodeId) {
     const response = await this.http.patch(
-      `${apiUrl}/api/${framework}/edit?_format=json`,
+      `/api/${framework}/edit?_format=json`,
       Body.toggleArchivingVersionedNode(framework, nodeId),
       'json'
     );
@@ -94,7 +90,7 @@ class CompetencyService {
 
   async patchAttribute(attributeId, key, value) {
     const response = await this.http.patch(
-      `${apiUrl}/node/${attributeId}?_format=hal_json`,
+      `/node/${attributeId}?_format=hal_json`,
       Body.mutateAttribute(key, value)
     );
 
@@ -103,7 +99,7 @@ class CompetencyService {
 
   async publishFramework(framework, version, releaseNotes) {
     const response = await this.http.patch(
-      `${apiUrl}/api/version_manager?_format=json`,
+      '/api/version_manager?_format=json',
       Body.publishFramework(framework, version, releaseNotes),
       'json'
     );
@@ -112,9 +108,17 @@ class CompetencyService {
 
   async createDraftFramework(framework) {
     const response = await this.http.post(
-      `${apiUrl}/api/version_manager?_format=json`,
+      '/api/version_manager?_format=json',
       Body.createDraftFramework(framework),
       'json'
+    );
+    return response.data;
+  }
+
+  async updateReleaseNotes(notes, versionId) {
+    const response = await this.http.patch(
+      `/taxonomy/term/${versionId}?_format=hal_json`,
+      Body.updateReleaseNotes(notes)
     );
     return response.data;
   }
