@@ -25,3 +25,12 @@
 .strikeout {
   text-decoration: line-through;
 }
+
+.anchor-like {
+  cursor: pointer;
+  color: #222;
+  line-height: initial;
+  border-bottom-width: 1px;
+  border-bottom-style: dotted;
+  border-bottom-color: inherit;
+}
