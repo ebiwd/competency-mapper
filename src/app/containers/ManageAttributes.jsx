@@ -19,6 +19,8 @@ class ManageAttributes extends React.Component {
     // framework level
     framework: this.props.match.params.framework,
     frameworkName: '',
+    frameworkVersion: '',
+    frameworStatus: '',
     attributeTypes: [], // defined at framework level
     versions: [],
 
@@ -33,32 +35,19 @@ class ManageAttributes extends React.Component {
     competencyData: [],
 
     loadingError: false,
-    editable: true
+    editable: false
   };
 
   componentDidMount() {
     window.scroll(0, 0);
-    this.fetchAllFrameworks();
-    this.fetchCompetency();
+    this.loadData();
   }
 
-  async fetchAllFrameworks() {
-    const { framework } = this.state;
+  async loadData(framework) {
     try {
       this.activeRequests.startRequest();
-      const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
-      const currentFramework = allFrameworks.filter(
-        fw => fw.title.toLowerCase() === framework
-      );
-      if (currentFramework.length > 0) {
-        const attributeTypes = currentFramework[0].attribute_types.map(
-          attribute => ({ description: attribute.title, uuid: attribute.uuid })
-        );
-        this.setState({
-          versions: currentFramework[0].versions.reverse(),
-          attributeTypes
-        });
-      }
+      await this.fetchVersions(framework);
+      await this.fetchFramework(framework);
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -66,33 +55,61 @@ class ManageAttributes extends React.Component {
     }
   }
 
-  async fetchCompetency() {
+  async fetchVersions() {
     const { framework } = this.state;
+    const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+    const currentFramework = allFrameworks.filter(
+      fw => fw.title.toLowerCase() === framework
+    );
+    if (currentFramework.length > 0) {
+      const attributeTypes = currentFramework[0].attribute_types.map(
+        attribute => ({ description: attribute.title, uuid: attribute.uuid })
+      );
+      this.setState({
+        versions: currentFramework[0].versions.reverse(),
+        attributeTypes
+      });
+    }
+  }
 
-    try {
-      this.activeRequests.startRequest();
-      const frameworkData = await this.competencyService.getFramework(
+  async fetchFramework() {
+    const { framework, versions, competencyId } = this.state;
+    const liveVersion = versions.filter(version => version.status === 'live');
+    const draftVersion = versions.filter(version => version.status === 'draft');
+    let frameworkData = [];
+    let editable = false;
+
+    if (draftVersion.length) {
+      frameworkData = await this.competencyService.getVersionedDraftFramework(
         framework
       );
-      const competencyMatch = this.filterByCompetencyId(
-        frameworkData,
-        this.state.competencyId
-      );
-
-      if (competencyMatch.length) {
-        this.setState({
-          frameworkName: frameworkData[0].title,
-          domainName: competencyMatch[0].domainTitle,
-          domainId: competencyMatch[0].domainId,
-          competencyUuid: competencyMatch[0].uuid,
-          competencyName: competencyMatch[0].title,
-          competencyData: competencyMatch[0]
-        });
+      editable = true;
+    } else {
+      if (liveVersion.length) {
+        frameworkData = await this.competencyService.getVersionedFramework(
+          framework,
+          liveVersion[0].number
+        );
       }
-    } catch (error) {
-      this.setState({ loadingError: true });
-    } finally {
-      this.activeRequests.finishRequest();
+    }
+
+    const competencyMatch = this.filterByCompetencyId(
+      frameworkData,
+      competencyId
+    );
+
+    if (competencyMatch.length) {
+      this.setState({
+        frameworkName: frameworkData[0].title,
+        frameworkVersion: frameworkData[0].version,
+        frameworkStatus: frameworkData[0].status,
+        domainName: competencyMatch[0].domainTitle,
+        domainId: competencyMatch[0].domainId,
+        competencyUuid: competencyMatch[0].uuid,
+        competencyName: competencyMatch[0].title,
+        competencyData: competencyMatch[0],
+        editable
+      });
     }
   }
 
@@ -140,7 +157,7 @@ class ManageAttributes extends React.Component {
         draftUuid
       });
 
-      this.fetchCompetency();
+      await this.fetchFramework();
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -154,7 +171,7 @@ class ManageAttributes extends React.Component {
     try {
       this.activeRequests.startRequest();
       await this.competencyService.patchAttribute(attributeId, 'title', title);
-      this.fetchCompetency();
+      await this.fetchFramework();
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -172,7 +189,7 @@ class ManageAttributes extends React.Component {
         'field_archived',
         isArchived === '1' ? false : true
       );
-      this.fetchCompetency();
+      await this.fetchFramework();
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -187,17 +204,20 @@ class ManageAttributes extends React.Component {
 
     return competencyData.attributes
       .filter(attribute => attribute.type === attributeType.description)
-      .map((attribute, index) => {
-        return (
-          <tr key={attribute.uuid}>
-            <td className={attribute.archived === '1' ? 'strikeout' : ''}>
-              <InlineEdit
-                text={attribute.title}
-                change={newValue => this.editAttribute(attribute.id, newValue)}
-                editable={attribute.archived === '1' ? false : true}
-              />
-            </td>
-            {editable && (
+      .map(attribute => {
+        if (editable) {
+          return (
+            <tr key={attribute.uuid}>
+              <td className={attribute.archived === '1' ? 'strikeout' : ''}>
+                <InlineEdit
+                  text={attribute.title}
+                  change={newValue =>
+                    this.editAttribute(attribute.id, newValue)
+                  }
+                  editable={attribute.archived === '1' ? false : true}
+                />
+              </td>
+
               <td>
                 <button
                   className="cursor"
@@ -214,7 +234,22 @@ class ManageAttributes extends React.Component {
                   )}
                 </button>
               </td>
-            )}
+            </tr>
+          );
+        }
+
+        if (attribute.archived === '1') {
+          return null;
+        }
+        return (
+          <tr key={attribute.uuid}>
+            <td className={attribute.archived === '1' ? 'strikeout' : ''}>
+              <InlineEdit
+                text={attribute.title}
+                change={newValue => this.editAttribute(attribute.id, newValue)}
+                editable={editable}
+              />
+            </td>
           </tr>
         );
       });
@@ -241,6 +276,8 @@ class ManageAttributes extends React.Component {
     const {
       framework,
       frameworkName,
+      frameworkVersion,
+      frameworkStatus,
       attributeTypes,
       versions,
       domainId,
@@ -275,8 +312,10 @@ class ManageAttributes extends React.Component {
         </h4>
 
         <p>
-          <span className="tag">draft</span>
-          <span className="tag secondary-background">editable</span>
+          <span className="tag">{frameworkVersion}</span>
+          <span className="tag secondary-background">
+            {frameworkStatus === '' ? 'draft' : frameworkStatus}
+          </span>
         </p>
 
         {editable && (

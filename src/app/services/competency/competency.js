@@ -49,7 +49,7 @@ class CompetencyService {
   // TODO: change name
   async getAllVersionedFrameworks() {
     const response = await this.http.get(
-      `${apiUrl}/api/version_manager?_format=json`
+      `${apiUrl}/api/version_manager?_format=json&timestamp=${Date.now()}`
     );
     return response.data;
   }

@@ -21,6 +21,10 @@ function CompetencyList({ index, framework, competency, disable }) {
     );
   });
 
+  if (competency.archived === '1') {
+    return null;
+  }
+
   return (
     <tr>
       <td>

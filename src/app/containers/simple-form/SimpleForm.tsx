@@ -24,11 +24,20 @@ export default class SimpleForm extends Component<Props, State> {
   readonly state = defaultState;
 
   componentDidMount() {
+    this.setDefaultOption();
+  }
+
+  setDefaultOption() {
     const { options } = this.props;
     if (options.length) {
       const { uuid } = options[0];
       this.setState({ uuid });
     }
+  }
+
+  reset() {
+    this.setState(defaultState);
+    this.setDefaultOption();
   }
 
   onChange = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -51,8 +60,10 @@ export default class SimpleForm extends Component<Props, State> {
     event.preventDefault();
     const { onCreate } = this.props;
     const { description, uuid, mapping } = this.state;
+
     if (description.trim() && uuid) {
       onCreate(description, uuid, mapping);
+      this.reset();
     }
   };
 
