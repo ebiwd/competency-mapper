@@ -72,7 +72,7 @@ export const VersionControls: React.FC<Props> = ({
                   setPressedNotes(false);
                 }}
               >
-                Dismish
+                Close
               </button>
             </span>
             <button

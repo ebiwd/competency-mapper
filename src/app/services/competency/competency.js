@@ -23,7 +23,7 @@ class CompetencyService {
   // TODO: change name
   async getVersionedDraftFramework(framework, version) {
     const response = await this.http.get(
-      `/api/${framework}/edit?_format=json`,
+      `/api/${framework}/edit?_format=json&timestamp=${Date.now()}`,
       'json'
     );
     return response.data;
@@ -32,7 +32,7 @@ class CompetencyService {
   // TODO: change name
   async getVersionedFramework(framework, version) {
     const response = await this.http.get(
-      `/api/${framework}/${version}?_format=json`
+      `/api/${framework}/${version}?_format=json&timestamp=${Date.now()}`
     );
     return response.data;
   }
@@ -119,6 +119,45 @@ class CompetencyService {
     const response = await this.http.patch(
       `/taxonomy/term/${versionId}?_format=hal_json`,
       Body.updateReleaseNotes(notes)
+    );
+    return response.data;
+  }
+
+  async changeDomain(competencyId, domainId, domainUuid, mapping) {
+    const response = await this.http.patch(
+      `/node/${competencyId}?_format=hal_json`,
+      Body.changeDomain(competencyId, domainId, domainUuid, mapping)
+    );
+    return response.data;
+  }
+
+  async changeAttributeSettings(
+    attribiuteId,
+    competencyId,
+    competencyUuid,
+    attributeTypeId,
+    attributeTypeUuid
+  ) {
+    const response = await this.http.patch(
+      `/node/${attribiuteId}?_format=hal_json`,
+      Body.changeAttributeSettings(
+        attribiuteId,
+        competencyId,
+        competencyUuid,
+        attributeTypeId,
+        attributeTypeUuid
+      )
+    );
+    return response.data;
+  }
+
+  async demap(resource, items) {
+    const response = await this.http.get(
+      `/api/mapping?_format=hal_json&resource=` +
+        resource +
+        `&items=` +
+        items +
+        `&timestamp=${Date.now()}`
     );
     return response.data;
   }

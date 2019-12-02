@@ -34,3 +34,44 @@
   border-bottom-style: dotted;
   border-bottom-color: inherit;
 }
+
+.archived {
+  color: red;
+  /* display: inline-flex;*/
+  margin-right: 3px;
+}
+
+.archived button {
+  padding-left: 3px;
+  color: red;
+}
+
+/*#checkboxMapping{*/
+input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  border: 10px solid;
+  top: 4px;
+  position: relative;
+}
+
+input[type='checkbox'] + span {
+  font-size: 16px;
+  /*display: contents;*/
+  padding: 3px;
+}
+
+input[type='checkbox']:checked {
+  border: 13px solid;
+  top: 7px;
+  position: relative;
+}
+
+input[type='checkbox']:checked + span {
+  border: 2px solid green;
+  padding: 3px;
+}
+
+/*#checkboxMappingLabel{
+  font-weight: bold;
+}*/

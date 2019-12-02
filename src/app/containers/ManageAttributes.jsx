@@ -34,6 +34,8 @@ class ManageAttributes extends React.Component {
     competencyName: '',
     competencyData: [],
 
+    path: this.props.location.pathname.split('/'),
+
     loadingError: false,
     editable: false
   };
@@ -234,6 +236,15 @@ class ManageAttributes extends React.Component {
                   )}
                 </button>
               </td>
+              <td>
+                <Link
+                  to={`/framework/${this.state.framework}/competency/${
+                    this.state.competencyId
+                  }/attribute/${attribute.id}/settings`}
+                >
+                  <i class="fas fa-cog" />
+                </Link>
+              </td>
             </tr>
           );
         }
@@ -266,6 +277,7 @@ class ManageAttributes extends React.Component {
             </strong>
           </td>
           {editable && <td className="small-1">Archive</td>}
+          {editable && <td className="small-1">Settings</td>}
         </tr>
         {this.getAttributeRows(attributeType)}
       </React.Fragment>

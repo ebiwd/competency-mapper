@@ -243,6 +243,7 @@ class ManageCompetencies extends React.Component {
           </td>
           {editable && <td className="small-1">Archive</td>}
           <td>Attributes</td>
+          {editable && <td className="small-1">Settings</td>}
         </tr>
         {this.getCompetencyRows(domain.competencies)}
       </React.Fragment>
@@ -264,6 +265,7 @@ class ManageCompetencies extends React.Component {
                 editable={competency.archived === '1' ? false : true}
               />
             </td>
+
             <td>
               <button
                 className="cursor"
@@ -289,6 +291,16 @@ class ManageCompetencies extends React.Component {
                 }/manage-attributes`}
               >
                 <i className="fas fa-sitemap" />
+              </Link>
+            </td>
+
+            <td>
+              <Link
+                to={`/framework/${framework}/competency/${
+                  competency.id
+                }/settings`}
+              >
+                <i class="fas fa-cog" />
               </Link>
             </td>
           </tr>

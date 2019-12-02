@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { groupBy } from 'lodash-es';
 import './CompetencyList.css';
 
-function CompetencyList({ index, framework, competency, disable }) {
+function CompetencyList({ index, framework, competency, disable, version }) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
   const attributesTypes = Object.keys(attributesGrouped);
   const attributes = attributesTypes.map(type => {
@@ -47,7 +47,11 @@ function CompetencyList({ index, framework, competency, disable }) {
           }
         >
           <div className="padding-left-large padding-top-large">
-            <Link to={`${framework}/competency/details/${competency.id}`}>
+            <Link
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.id
+              }`}
+            >
               <span className="float-right">
                 <i className="icon icon-spacer icon-common icon-info" />
                 More details

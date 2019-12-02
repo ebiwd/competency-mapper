@@ -14,6 +14,7 @@ export async function login(username, password) {
     localStorage.setItem('logout_token', data.logout_token);
     localStorage.setItem('user', data.current_user.name);
     localStorage.setItem('userid', data.current_user.uid);
+    console.log(localStorage.getItem('roles'));
     return data;
   } catch (error) {
     logout();

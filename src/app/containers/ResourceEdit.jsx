@@ -66,7 +66,8 @@ class ResourceEdit extends React.Component {
       });
 
     //let fetchResource = "http://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/"+nid+"?_format=json";
-    let fetchResource = `${apiUrl}/api/v1/training-resources/all?_format=json`;
+    //let fetchResource = `${apiUrl}/api/v1/training-resources/all?_format=json`;
+    let fetchResource = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
     fetch(fetchResource)
       .then(Response => Response.json())
       .then(findresponse => {

@@ -10,7 +10,9 @@ class ResourcesList extends React.Component {
     super(props);
     this.state = {
       resources: [],
-      filterType: ''
+      filterType: '',
+      filterMapping: '',
+      userid: ''
     };
     this.archiveHandle = this.archiveHandle.bind(this);
   }
@@ -25,6 +27,7 @@ class ResourcesList extends React.Component {
       this.props.history.push('/');
     }
     console.log(localStorage.getItem('roles'));
+    //console.log(localStorage.getItem('userid'));
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -49,7 +52,8 @@ class ResourcesList extends React.Component {
         this.setState({ csrf: findresponse2 });
       });
 
-    let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=json`;
+    //let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=json`;
+    let resourcesURL = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -59,12 +63,30 @@ class ResourcesList extends React.Component {
       });
   }
 
+  checkAuthor(author_id) {
+    let userid = localStorage.getItem('userid');
+    if (userid == author_id) {
+      return true;
+    } else {
+      return false;
+    }
+    //console.log(localStorage.getItem('userid'));
+  }
+
   filter(e) {
     this.setState({ filter: e.target.value });
   }
 
   filterTypeHandle(e) {
     this.setState({ filterType: e.target.value });
+  }
+
+  filterMappingHandle(e) {
+    if (this.state.filterMapping) {
+      this.setState({ filterMapping: 0 });
+    } else {
+      this.setState({ filterMapping: 1 });
+    }
   }
 
   archiveHandle(rid, status, event) {
@@ -131,20 +153,28 @@ class ResourcesList extends React.Component {
       );
     }
 
+    if (this.state.filterMapping) {
+      resources = resources.filter(item =>
+        item.competency_profile.some(
+          profile =>
+            profile.attribute_archived == 'archived' ||
+            profile.competency_archived == 'archived' ||
+            profile.domain == 'archived'
+        )
+      );
+      console.log('filter applied');
+    }
+
     const ListOfResources = resources.map((item, index) => (
       <tr key={index}>
         <td>{index + 1} </td>
         <td>
           {' '}
-          <h4>
-            {' '}
-            <Link to={'/training-resources/' + item.id}>{item.title} </Link>
-          </h4>
-          <p>{item.dates} </p>
-          <strong>Learning resource type:</strong> {item.type} <br />
-          {Parser(item.description.substr(0, 240) + '...')} <br />
-          <br />
-          <strong> URL: </strong>{' '}
+          <Link to={'/training-resources/' + item.id}>{item.title} </Link>
+        </td>
+        <td>{item.dates}</td>
+        <td>{item.type}</td>
+        <td>
           <a href={item.url} target={'_blank'}>
             {item.url}
           </a>
@@ -167,9 +197,13 @@ class ResourcesList extends React.Component {
           )}
         </td>
         <td>
-          <Link to={`/training-resource/edit/${item.id}`}>
-            <i className="fas fa-edit" />{' '}
-          </Link>
+          {this.checkAuthor(item.author) ? (
+            <Link to={`/training-resource/edit/${item.id}`}>
+              <i className="fas fa-edit" />{' '}
+            </Link>
+          ) : (
+            ''
+          )}
         </td>
       </tr>
     ));
@@ -177,7 +211,7 @@ class ResourcesList extends React.Component {
       <div className={'row'}>
         <h3>Training Resources</h3>
         <div className="row">
-          <div className="column large-8">
+          <div className="column large-6">
             <div>
               <input
                 type="text"
@@ -197,7 +231,18 @@ class ResourcesList extends React.Component {
               </select>
             </div>
           </div>
-          <div className={'column large-2'}>
+          <div className="column large-3">
+            <input
+              type="checkbox"
+              id="checkboxMapping"
+              checked={this.state.filterMapping}
+              onChange={this.filterMappingHandle.bind(this)}
+            />
+            <span id="checkboxMappingLabel" for="checkboxMapping">
+              Items with deprecated mapping
+            </span>
+          </div>
+          <div className={'column large-1'}>
             <Link
               className={'button float-right'}
               to={'/training-resource/create'}
@@ -211,7 +256,10 @@ class ResourcesList extends React.Component {
           <thead>
             <tr>
               <th>S. No.</th>
-              <th>Details</th>
+              <th>Title</th>
+              <th>Date(s)</th>
+              <th>Type</th>
+              <th>URL</th>
               <th>Archive</th>
               <th>Edit</th>
             </tr>

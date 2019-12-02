@@ -276,12 +276,13 @@ class BodyService {
       _links: {
         type: {
           href:
-            'https://dev-competency-mapper.pantheonsite.io/rest/type/taxonomy_term/version'
+            //'https://dev-competency-mapper.pantheonsite.io/rest/type/taxonomy_term/version'
+            `${apiUrl}/rest/type/taxonomy_term/version`
         }
       },
       vid: [
         {
-          value: 'version'
+          target_id: 'version'
         }
       ],
       field_release_notes: [
@@ -289,6 +290,117 @@ class BodyService {
           value: notes
         }
       ]
+    };
+  }
+
+  // Change domain service
+
+  static changeDomain(competencyId, domainId, domainUuid, mapping) {
+    return {
+      _links: {
+        self: {
+          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        },
+        type: {
+          href: `${apiUrl}/rest/type/node/competency`
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
+          href: `${apiUrl}/node/${domainId}?_format=hal_json`
+        }
+      },
+      field_map_other_competency: [
+        {
+          value: mapping
+        }
+      ],
+      type: {
+        target_id: 'competency'
+      },
+      _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${domainId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/domain`
+              }
+            },
+            uuid: [
+              {
+                value: domainUuid
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  // Change competency service
+
+  static changeAttributeSettings(
+    attribuiteId,
+    competencyId,
+    competencyUuid,
+    attributeTypeId,
+    attributeTypeUuid
+  ) {
+    return {
+      _links: {
+        self: {
+          href: `${apiUrl}/node/${attribuiteId}?_format=hal_json`
+        },
+        type: {
+          href: `${apiUrl}/rest/type/node/attribute`
+        },
+        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: {
+          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        },
+        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
+          href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+        }
+      },
+      type: {
+        target_id: 'attribute'
+      },
+      _embedded: {
+        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/competency`
+              }
+            },
+            uuid: [
+              {
+                value: competencyUuid
+              }
+            ]
+          }
+        ],
+        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/attribute_type`
+              }
+            },
+            uuid: [
+              {
+                value: attributeTypeUuid
+              }
+            ]
+          }
+        ]
+      }
     };
   }
 }

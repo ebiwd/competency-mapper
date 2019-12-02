@@ -10,9 +10,15 @@ import ResourceEdit from './ResourceEdit';
 import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
 import ResourcesList from './ResourcesList';
+import ResourcesHome from './ResourcesHome';
 import ChangePassword from './ChangePassword';
 import About from '../components/about/About';
 import Frameworks from './Frameworks';
+import ArticleCreate from './ArticleCreate';
+import AttributeMap from './AttributeMap';
+import CompetencySettings from './CompetencySettings';
+import AttributeSettings from './AttributeSettings';
+import AttributeDemap from './AttributeDemap';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -125,14 +131,13 @@ class Root extends Component {
                   path="/training-resource/create"
                   component={ResourceCreate}
                 />
-                <Route
-                  path="/training-resources/:id"
-                  component={ResourceDetails}
+
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:cid/attribute/:aid/settings"
+                  component={AttributeSettings}
                 />
-                <Route
-                  path="/all-training-resources"
-                  component={ResourcesList}
-                />
+
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/manage/competencies/:cid/manage-attributes"
@@ -143,14 +148,49 @@ class Root extends Component {
                   path="/framework/:framework/manage/competencies/:domainId?"
                   component={ManageCompetencies}
                 />
+
                 <Route
                   path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
+
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:id/settings"
+                  component={CompetencySettings}
+                />
+
                 <Route
                   path="/framework/:framework/:version"
                   component={CompetencyList}
                 />
+
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resources/:id/map/:framework"
+                  component={AttributeMap}
+                />
+
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resources/:resource/demap/:attribute"
+                  component={AttributeDemap}
+                />
+
+                <Route
+                  path="/training-resources/:id"
+                  component={ResourceDetails}
+                />
+
+                <Route
+                  path="/all-training-resources"
+                  component={ResourcesList}
+                />
+                <Route
+                  path="/training-resources-home"
+                  component={ResourcesHome}
+                />
+
                 <Route
                   path="/user/change/password"
                   component={ChangePassword}

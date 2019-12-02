@@ -96,13 +96,25 @@ class CompetencyList extends Component {
     );
     const domains = safeFlat(frameworkData.map(item => item.domains));
     const frameworkDescription = removeHtmlTags(frameworkData[0].description);
+
     this.setState({
       frameworkName: frameworkData[0].title,
-      frameworkStatus: frameworkData[0].status,
+      //frameworkStatus: frameworkData[0].status,
       frameworkDescription,
       domains,
       filteredDomains: domains
     });
+
+    const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+    const currentFramework = allFrameworks.filter(
+      fw => fw.title.toLowerCase() === framework
+    );
+    if (currentFramework.length > 0) {
+      const versionStatus = currentFramework[0].versions.filter(
+        vr => vr.number == frameworkVersion
+      );
+      this.setState({ frameworkStatus: versionStatus[0].status });
+    }
   }
 
   async fetchVersions(framework) {
@@ -148,6 +160,10 @@ class CompetencyList extends Component {
       loadingError
     } = this.state;
 
+    /*if(versions.length > 0){
+ console.log(this.state.versions[0].status);  
+}*/
+
     if (loadingError) {
       return <ErrorLoading />;
     }
@@ -159,6 +175,7 @@ class CompetencyList extends Component {
           framework={framework}
           domain={domain}
           disable={true}
+          version={frameworkVersion}
         />
       )
     );
@@ -168,7 +185,7 @@ class CompetencyList extends Component {
         <h3>{frameworkName}</h3>
         <p>
           <span className="tag">{frameworkVersion}</span>
-          <span className="tag secondary-background">{frameworkStatus}</span>
+          <span className="tag secondary-background"> {frameworkStatus}</span>
         </p>
         <p>{frameworkDescription}</p>
 
@@ -190,7 +207,7 @@ class CompetencyList extends Component {
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
           <TabPanel>
-            <Courses framework={framework} />
+            <Courses framework={framework} version={frameworkVersion} />
           </TabPanel>
         </Tabs>
       </>

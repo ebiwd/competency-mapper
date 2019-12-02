@@ -9,11 +9,25 @@ import { Version } from '../../../models/version';
 type Props = {
   versions: Version[];
   framework: string;
+  style: string;
+};
+
+const customStyles = {
+  content: {
+    top: '50%',
+    left: '50%',
+    right: 'auto',
+    bottom: 'auto',
+    marginRight: '-50%',
+    transform: 'translate(-50%, -50%)'
+  }
 };
 
 export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
   const [showNotes, setShowNotes] = useState(false);
   const [notes, setNotes] = useState('');
+
+  let versionNumber = '';
 
   const versionItems = versions
     .filter(version => version.number !== 'draft')
@@ -25,7 +39,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
         <button
           className="anchor-like"
           onClick={() => {
-            setNotes(version.release_notes);
+            setNotes('Version: ' + version.number + version.release_notes);
             setShowNotes(true);
           }}
         >
@@ -36,8 +50,10 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
 
   return (
     <>
-      <Modal isOpen={showNotes}>
+      <Modal isOpen={showNotes} style={customStyles}>
+        <h4>Release notes for {framework} </h4>
         {Parser(notes)}
+        {versionItems}
         <div className="padding-top-large">
           <button
             className="button"
@@ -46,7 +62,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
               setShowNotes(false);
             }}
           >
-            Dismish
+            Close
           </button>
         </div>
       </Modal>

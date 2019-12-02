@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import CompetencyList from '../competency-list/CompetencyList';
 
-function DomainList({ index, framework, domain, disable }) {
+function DomainList({ index, framework, domain, disable, version }) {
   const competencies = domain.competencies.map((competency, childIndex) => (
     <CompetencyList
       key={competency.id}
@@ -11,6 +11,7 @@ function DomainList({ index, framework, domain, disable }) {
       framework={framework}
       competency={competency}
       disable={disable}
+      version={version}
     />
   ));
 

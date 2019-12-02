@@ -1,5 +1,5 @@
 import React from 'react';
-
+import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 
 const $ = window.$;
@@ -9,18 +9,23 @@ class AttributeMap extends React.Component {
     super(props);
     this.state = {
       data: [],
-      framework: this.props.selectedFramework,
-      resourceID: this.props.resourceID,
+      //framework: this.props.selectedFramework,
+      //resourceID: this.props.resourceID,
+      framework: this.props.location.pathname.split('/')[4],
+      resourceID: this.props.location.pathname.split('/')[2],
       frameworkdetails: [],
       csrf: '',
       frameworkUUID: '',
       competencies: [],
       attributes: this.props.selectedAttributes,
-      selectedAttributes: this.props.selectedAttributes,
-      selectedCompetencies: this.props.selectedCompetencies,
-      resourceDetails: []
+      //selectedAttributes: this.props.selectedAttributes,
+      //selectedAttributes: [],
+      //selectedCompetencies: this.props.selectedCompetencies,
+      resourceDetails: '',
+      resourcePath: this.props.location.pathname.split('/')
     };
     this.handleSelect = this.handleSelect.bind(this);
+    //this.loadSelectedAttributes = this.loadSelectedAttributes.bind(this);
   }
 
   handleSelect() {
@@ -153,6 +158,20 @@ class AttributeMap extends React.Component {
   }
 
   componentDidMount() {
+    //fetch(`${apiUrl}/node/` + this.state.resourceID + '?_format=hal_json')
+    fetch(
+      `${apiUrl}` +
+        '/api/resources/?_format=hal_json&id=' +
+        this.state.resourceID
+    )
+      .then(Response => Response.json())
+      .then(findresponse => {
+        this.setState({
+          resourceDetails: findresponse
+        });
+      });
+
+    //console.log(this.state.framework);
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -161,7 +180,9 @@ class AttributeMap extends React.Component {
       });
 
     let fetchCompetencyList =
-      `${apiUrl}/api/v1/framework/` + this.state.framework + '?_format=json';
+      // `${apiUrl}/api/v1/framework/` + this.state.framework + '?_format=json';
+      //'http://local.competency-mapper/api/bioexcel/1.0/?_format=json';
+      `${apiUrl}` + '/api/' + this.state.framework + '/1.0?_format=json';
     fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -170,7 +191,8 @@ class AttributeMap extends React.Component {
         });
       });
 
-    let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
+    //let fetchFrameworkDetails = `${apiUrl}/api/v1/framework?_format=json`;
+    let fetchFrameworkDetails = `${apiUrl}/api/version_manager?_format=json&timestamp=${Date.now()}`;
     fetch(fetchFrameworkDetails)
       .then(Response => Response.json())
       .then(findresponse1 => {
@@ -178,16 +200,7 @@ class AttributeMap extends React.Component {
           frameworkdetails: findresponse1
         });
       });
-
-    fetch(`${apiUrl}/node/` + this.state.resourceID + '?_format=hal_json')
-      .then(Response => Response.json())
-      .then(findresponse => {
-        this.setState({
-          resourceDetails: findresponse
-        });
-      });
-
-    //console.log(this.state.resourceDetails);
+    //this.loadSelectedAttributes();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -195,17 +208,35 @@ class AttributeMap extends React.Component {
   }
 
   render() {
+    console.log(this.state.data);
     let frameworkDetails = this.state.frameworkdetails;
     let data = this.state.data;
     let frameworkDefs = [];
     let domainsOptions = [];
     let attributeTypeOptions = [];
+    let resDetails = this.state.resourceDetails;
+    //let resDetails = this.state.resourceDetails;
+    let selectedAttributesArray = [];
+    let selectedCompetenciesArray = [];
+    if (resDetails) {
+      resDetails.competency_profile.map(profile => {
+        profile.domains.map(domain => {
+          domain.competencies.map(competency => {
+            selectedCompetenciesArray.push(competency.id);
+            competency.attributes.map(attribute => {
+              selectedAttributesArray.push(attribute.id);
+            });
+          });
+        });
+      });
 
-    //console.log(this.state.selectedAttributes);
+      console.log(selectedAttributesArray);
+    }
+    //this.loadSelectedAttributes();
 
     frameworkDetails.forEach((item, ikey) => {
-      if (item.name.toLowerCase() === this.state.framework) {
-        this.state.frameworkUUID = item.uuid;
+      if (item.title.toLowerCase() === this.state.framework) {
+        //this.state.frameworkUUID = item.uuid;
         item.attribute_types.forEach(attribute_type => {
           frameworkDefs.push(attribute_type.title);
           attributeTypeOptions.push(
@@ -223,6 +254,8 @@ class AttributeMap extends React.Component {
         });
       }
     });
+
+    // console.log(data);
 
     const ListOfCompetencies = data.map(item =>
       item.domains.map((domain, did) => (
@@ -242,8 +275,7 @@ class AttributeMap extends React.Component {
                 <input
                   type={'checkbox'}
                   defaultChecked={
-                    -1 !==
-                    this.state.selectedCompetencies.indexOf(competency.id)
+                    -1 !== selectedCompetenciesArray.indexOf(competency.id)
                   }
                   data-test={competency.uuid}
                   id={competency.id}
@@ -276,8 +308,9 @@ class AttributeMap extends React.Component {
                                   type={'checkbox'}
                                   defaultChecked={
                                     -1 !==
-                                    this.state.selectedAttributes.indexOf(
-                                      attribute.uuid + 'id' + attribute.id
+                                    selectedAttributesArray.indexOf(
+                                      //attribute.uuid + 'id' + attribute.id
+                                      attribute.id
                                     )
                                   }
                                   name={competency.id}
@@ -290,7 +323,10 @@ class AttributeMap extends React.Component {
                                     attribute.uuid
                                   )}
                                 />{' '}
-                                {attribute.title}
+                                <span className={attribute.archived}>
+                                  {' '}
+                                  {attribute.title}
+                                </span>
                               </li>
                             );
                           })}
@@ -312,7 +348,10 @@ class AttributeMap extends React.Component {
 
     return (
       <div>
-        {ListOfCompetencies}
+        <h2>{resDetails.title}</h2>
+        <h4>Type: {resDetails.type}</h4>
+        <h4>URL: {resDetails.url}</h4>
+        <table className={'table'}>{ListOfCompetencies}</table>
         <div id={'footer-button'}>
           <button className={'button'} onClick={this.handleSelect.bind(this)}>
             {' '}
@@ -324,4 +363,14 @@ class AttributeMap extends React.Component {
   }
 }
 
-export default AttributeMap;
+const AttrMap = () => (
+  <Switch>
+    <Route
+      exact
+      path="/training-resources/:id/map/:framework"
+      component={AttributeMap}
+    />
+  </Switch>
+);
+
+export default AttrMap;
