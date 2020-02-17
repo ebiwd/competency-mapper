@@ -115,17 +115,23 @@ class Courses extends Component {
     let duplicates = [];
 
     const competencyList = competencies =>
-      competencies.map(competency => (
-        <li key={competency.id}>
-          <Link
-            to={`/framework/${framework}/${version}/competency/details/${
-              competency.competency_id
-            }`}
-          >
-            {competency.competency_label}
-          </Link>
-        </li>
-      ));
+      competencies
+        .filter(
+          (competency, index, all) =>
+            all.findIndex(c => c.competency_id === competency.competency_id) ===
+            index
+        )
+        .map(competency => (
+          <li key={competency.id}>
+            <Link
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.competency_id
+              }`}
+            >
+              {competency.competency_label}
+            </Link>
+          </li>
+        ));
 
     const resources = filteredCourses.map(course => (
       <tr key={course.id}>
@@ -149,6 +155,13 @@ class Courses extends Component {
           placeholder="Filter resources"
         />
         <table>
+          <thead>
+            <tr>
+              <th>Training resource(s)</th>
+              <th>Type</th>
+              <th>Competencies</th>
+            </tr>
+          </thead>
           <tbody>{resources}</tbody>
         </table>
       </>

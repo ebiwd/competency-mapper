@@ -1,0 +1,18 @@
+ 				                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resources/:id/map/:framework"
+                  component={AttributeMap}
+                />
+						
+	
+				<ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:id/change-domain"
+                  component={ChangeDomain}
+                />
+
+ 				<ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:cid/attribute/:aid/change"
+                  component={ChangeCompetency}
+                />  

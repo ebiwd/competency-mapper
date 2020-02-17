@@ -183,6 +183,24 @@ class ManageAttributes extends React.Component {
     }
   }
 
+  async editAttributePosition(attributeId, position) {
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchAttributePosition(
+        attributeId,
+        'field_number',
+        position
+      );
+      await this.fetchFramework();
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  }
+
   async toggleArchive(attributeId, isArchived) {
     try {
       this.activeRequests.startRequest();
@@ -215,6 +233,16 @@ class ManageAttributes extends React.Component {
                   text={attribute.title}
                   change={newValue =>
                     this.editAttribute(attribute.id, newValue)
+                  }
+                  editable={attribute.archived === '1' ? false : true}
+                />
+              </td>
+
+              <td className={attribute.archived === '1' ? 'strikeout' : ''}>
+                <InlineEdit
+                  text={attribute.field_number}
+                  change={newValue =>
+                    this.editAttributePosition(attribute.id, newValue)
                   }
                   editable={attribute.archived === '1' ? false : true}
                 />
@@ -276,6 +304,7 @@ class ManageAttributes extends React.Component {
               <em>{attributeType.description}</em>
             </strong>
           </td>
+          {editable && <td className="small-1">Position</td>}
           {editable && <td className="small-1">Archive</td>}
           {editable && <td className="small-1">Settings</td>}
         </tr>

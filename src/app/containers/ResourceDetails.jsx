@@ -5,6 +5,7 @@ import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
 import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
+import { Link } from 'react-router-dom';
 
 class ResourceDetails extends React.Component {
   constructor(props) {
@@ -157,6 +158,15 @@ class ResourceDetails extends React.Component {
         <div>
           <div className={'row'}>
             <h2>{item.title}</h2>
+            <span className="float-right">
+              {' '}
+              <Link
+                to={'/training-resource/edit/' + this.state.resourcePath[2]}
+              >
+                {' '}
+                <i class="fas fa-edit" /> Edit{' '}
+              </Link>
+            </span>
           </div>
 
           <div className={'row'}>

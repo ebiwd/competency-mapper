@@ -77,6 +77,15 @@ class CompetencyService {
     return response.data;
   }
 
+  async patchCompetencyPosition(competencyId, key, value) {
+    const response = await this.http.patch(
+      `/node/${competencyId}?_format=hal_json`,
+      Body.mutateCompetencyPosition(key, value)
+    );
+
+    return response.data;
+  }
+
   // TODO: change name
   async toggleArchivingVersionedNode(framework, nodeId) {
     const response = await this.http.patch(
@@ -89,6 +98,15 @@ class CompetencyService {
   }
 
   async patchAttribute(attributeId, key, value) {
+    const response = await this.http.patch(
+      `/node/${attributeId}?_format=hal_json`,
+      Body.mutateAttribute(key, value)
+    );
+
+    return response.data;
+  }
+
+  async patchAttributePosition(attributeId, key, value) {
     const response = await this.http.patch(
       `/node/${attributeId}?_format=hal_json`,
       Body.mutateAttribute(key, value)
@@ -131,6 +149,42 @@ class CompetencyService {
     return response.data;
   }
 
+  async editResource(
+    resourceID,
+    title,
+    dates,
+    dates2,
+    type,
+    description,
+    location,
+    url,
+    target_audience,
+    learning_outcomes,
+    keywords,
+    organisers,
+    trainers
+  ) {
+    const response = await this.http.patch(
+      `/node/${resourceID}?_format=hal_json`,
+      Body.editResource(
+        resourceID,
+        title,
+        dates,
+        dates2,
+        type,
+        description,
+        location,
+        url,
+        target_audience,
+        learning_outcomes,
+        keywords,
+        organisers,
+        trainers
+      )
+    );
+    return response.data;
+  }
+
   async changeAttributeSettings(
     attribiuteId,
     competencyId,
@@ -157,6 +211,17 @@ class CompetencyService {
         resource +
         `&items=` +
         items +
+        `&timestamp=${Date.now()}`
+    );
+    return response.data;
+  }
+
+  async attrmap(resource, attributes) {
+    const response = await this.http.get(
+      `/api/mapping?_format=hal_json&resource=` +
+        resource +
+        `&attributes=` +
+        attributes +
         `&timestamp=${Date.now()}`
     );
     return response.data;

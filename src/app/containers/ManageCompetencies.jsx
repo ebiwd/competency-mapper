@@ -167,6 +167,25 @@ class ManageCompetencies extends React.Component {
     }
   }
 
+  async editCompetencyPosition(cid, position) {
+    const { framework } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchCompetencyPosition(
+        cid,
+        'field_number',
+        position
+      );
+      await this.fetchFramework(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  }
+
   async toggleArchive(cid, isArchived) {
     const { framework } = this.state;
     try {
@@ -241,6 +260,7 @@ class ManageCompetencies extends React.Component {
           <td>
             <h4>{domain.title}</h4>
           </td>
+          {editable && <td className="small-1">Position</td>}
           {editable && <td className="small-1">Archive</td>}
           <td>Attributes</td>
           {editable && <td className="small-1">Settings</td>}
@@ -261,6 +281,15 @@ class ManageCompetencies extends React.Component {
                 text={competency.title}
                 change={newValue =>
                   this.editCompetency(competency.id, newValue)
+                }
+                editable={competency.archived === '1' ? false : true}
+              />
+            </td>
+            <td>
+              <InlineEdit
+                text={competency.position}
+                change={newValue =>
+                  this.editCompetencyPosition(competency.id, newValue)
                 }
                 editable={competency.archived === '1' ? false : true}
               />

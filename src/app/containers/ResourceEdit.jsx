@@ -2,8 +2,9 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
-
 import { apiUrl } from '../services/http/http';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+import CompetencyService from '../services/competency/competency';
 
 class ResourceEdit extends React.Component {
   constructor(props) {
@@ -28,6 +29,7 @@ class ResourceEdit extends React.Component {
       organisers: '',
       trainers: ''
     };
+    this.redirectTo = this.redirectTo.bind(this);
   }
 
   changeDescription(evt) {
@@ -88,6 +90,10 @@ class ResourceEdit extends React.Component {
     console.log(localStorage.getItem('roles'));
   }
 
+  redirectTo(event) {
+    this.props.history.push('/training-resources/' + this.state.nid);
+  }
+
   render() {
     this.checkUser();
     let nid = '';
@@ -109,7 +115,7 @@ class ResourceEdit extends React.Component {
         nid = item.id;
         title = item.title;
         //temp_date = item.dates.split("-");
-        dates = item.start_date;
+        dates = item.dates;
         dates2 = item.end_date;
         type = item.type;
         description = item.description;
@@ -139,6 +145,7 @@ class ResourceEdit extends React.Component {
           keywords={keywords}
           organisers={organisers}
           trainers={trainers}
+          redirectTo={this.redirectTo}
         />
       );
     } else {
@@ -148,6 +155,8 @@ class ResourceEdit extends React.Component {
 }
 
 class EditForm extends React.Component {
+  activeRequests = new ActiveRequestsService();
+  competencyService = new CompetencyService();
   constructor(props) {
     super(props);
     this.state = {
@@ -180,6 +189,7 @@ class EditForm extends React.Component {
     this.handleKeywords = this.handleKeywords.bind(this);
     this.handleOrganisers = this.handleOrganisers.bind(this);
     this.handleTrainers = this.handleTrainers.bind(this);
+    //this.redirectTo = this.redirectTo.bind(this);
   }
 
   componentDidMount() {
@@ -213,6 +223,8 @@ class EditForm extends React.Component {
 
   handleDesc(event) {
     this.setState({ description: event.editor.getData() });
+    //this.setState({ description: "test" });
+    //console.log(this.setState({ description: event.editor.getData() }));
   }
   handleLocation(event) {
     this.setState({ location: event.value });
@@ -223,10 +235,12 @@ class EditForm extends React.Component {
 
   handleTargetAudience(event) {
     this.setState({ target_audience: event.editor.getData() });
+    //this.setState({ target_audience: "test" });
   }
 
   handleLearningOutcomes(event) {
     this.setState({ learning_outcomes: event.editor.getData() });
+    //this.setState({ learning_outcomes: "hi" });
   }
 
   handleKeywords(event) {
@@ -235,10 +249,12 @@ class EditForm extends React.Component {
 
   handleOrganisers(event) {
     this.setState({ organisers: event.editor.getData() });
+    //this.setState({ organisers: "test" });
   }
 
   handleTrainers(event) {
     this.setState({ trainers: event.editor.getData() });
+    //this.setState({ trainers: "test" });
   }
 
   setRedirect = () => {
@@ -247,18 +263,16 @@ class EditForm extends React.Component {
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.updateFlag) {
-      setTimeout(() => {
-        this.context.router.history.push(
-          '/training-resources/' + this.state.nid
-        );
-      }, 1000);
-
-      console.log('componentDidUpdate');
+      // setTimeout(() => {
+      //  // this.props.redirectTo()
+      // }, 1000);
+      //await this.handleSubmit();
+      //this.props.redirectTo();
     }
   }
 
-  handleSubmit(event) {
-    let nid = this.state.nid;
+  async handleSubmit(event) {
+    let resourceID = this.state.nid;
     let title = this.refs.title.value;
     let dates = this.refs.dates.value;
     let dates2 = this.refs.dates2.value;
@@ -273,14 +287,15 @@ class EditForm extends React.Component {
     let keywords = this.refs.keywords.value;
     let csrf = localStorage.getItem('csrf_token');
 
-    fetch(`${apiUrl}/node/` + nid + '?_format=hal_json', {
+    fetch(`${apiUrl}/node/` + resourceID + '?_format=hal_json', {
       method: 'PATCH',
+      credentials: 'include',
       cookies: 'x-access-token',
       headers: {
         Accept: 'application/hal+json',
         'Content-Type': 'application/hal+json',
-        'X-CSRF-Token': csrf, //'yoM7eSiML2AI6A3FGH2EKCaX_agiJfmYkRIPL0MdPlI',
-        Authorization: 'Basic'
+        'X-CSRF-Token': csrf
+        //Authorization: 'Basic'
       },
       body: JSON.stringify({
         _links: {
@@ -362,16 +377,20 @@ class EditForm extends React.Component {
     });
 
     //event.target.reset();
-
     event.preventDefault();
-    this.setState({ updateFlag: true });
+    setTimeout(() => {
+      this.props.redirectTo();
+    }, 1000);
+    //this.props.redirectTo();
+
+    //this.setState({ updateFlag: true });
   }
 
   render() {
     return (
       <div>
         <h2>Edit Training Resources</h2>
-
+        {console.log(localStorage.getItem('csrf_token'))}
         <div className="row">
           <div className="column large-12 callout">
             <form
@@ -441,6 +460,7 @@ class EditForm extends React.Component {
                     events={{
                       change: this.handleDesc
                     }}
+                    onChange={this.handleDesc}
                     activeClass="p10"
                     required
                   />

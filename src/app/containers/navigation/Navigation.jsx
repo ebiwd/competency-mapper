@@ -42,6 +42,9 @@ class Navigation extends Component {
           <li>
             <Link to="/framework/nhs/manage/competencies">NHS</Link>
           </li>
+          <li>
+            <Link to="/framework/cineca/manage/competencies">CINECA</Link>
+          </li>
         </ul>
       </li>
     );

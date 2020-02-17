@@ -177,6 +177,10 @@ class BodyService {
     return BodyService.mutate(key, value, 'competency');
   }
 
+  static mutateCompetencyPosition(key, value) {
+    return BodyService.mutate(key, value, 'competency');
+  }
+
   static mutateAttribute(key, value) {
     return BodyService.mutate(key, value, 'attribute');
   }
@@ -401,6 +405,41 @@ class BodyService {
           }
         ]
       }
+    };
+  }
+
+  static editResource(
+    resourceID,
+    title,
+    dates,
+    dates2,
+    type,
+    description,
+    location,
+    url,
+    target_audience,
+    learning_outcomes,
+    keywords,
+    organisers,
+    trainers
+  ) {
+    return {
+      _links: {
+        type: {
+          href: `${apiUrl}/rest/type/node/training_resource`
+        }
+      },
+      title: [
+        {
+          value: title
+        }
+      ],
+
+      type: [
+        {
+          target_id: 'training_resource'
+        }
+      ]
     };
   }
 }

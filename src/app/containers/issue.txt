@@ -1,0 +1,12 @@
+training resources
+the pop up takes you to the draft version of the framework
+
+single attribute api does not return domain archived field
+
+AttribueMap page:
+	Deprecated item will be available in the live framework
+	So how the content manager will remove the mapping from the training resource
+
+	- All items tagged with live version from the database not from the static json
+	- Automatically remove mapping of the deprecated items from the training resources while publishing a new version of the framework
+	- Show live version from the static json and provide a way to remove deprecated mapping from the training resource view interface
