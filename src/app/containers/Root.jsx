@@ -19,6 +19,10 @@ import AttributeMap from './AttributeMap';
 import CompetencySettings from './CompetencySettings';
 import AttributeSettings from './AttributeSettings';
 import AttributeDemap from './AttributeDemap';
+import ProfileCreate from './ProfileCreate';
+import ProfileView from './ProfileView';
+import ProfileEdit from './ProfileEdit';
+import ProfilePreview from './ProfilePreview';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -161,6 +165,26 @@ class Root extends Component {
                 />
 
                 <Route
+                  path="/framework/:framework/:version/profile/create"
+                  component={ProfileCreate}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/view/:id"
+                  component={ProfileView}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/edit/:id"
+                  component={ProfileEdit}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/preview"
+                  component={ProfilePreview}
+                />
+
+                <Route
                   path="/framework/:framework/:version"
                   component={CompetencyList}
                 />
@@ -195,6 +219,9 @@ class Root extends Component {
                   path="/user/change/password"
                   component={ChangePassword}
                 />
+
+                <Route path="/article/create" component={ArticleCreate} />
+
                 <Route path="/about" component={About} />
                 <Route path="/" component={Frameworks} />
               </Switch>

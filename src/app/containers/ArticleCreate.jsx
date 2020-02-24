@@ -8,6 +8,9 @@ import Dropzone from 'react-dropzone';
 class ArticleCreate extends React.Component {
   constructor(props) {
     super(props);
+
+    this.createArticle = this.createArticle.bind(this);
+
     this.state = {
       file: [],
       fid: ''
@@ -26,60 +29,62 @@ class ArticleCreate extends React.Component {
   }
 
   async handleSubmit(event) {
+    event.preventDefault();
     let title = this.refs.title.value;
     let token = localStorage.getItem('csrf_token');
     let fid = '';
-    //let file = this.refs.fileref.value;
-    console.log(this.state.file);
-    //alert(learning_outcomes);
 
-    let fileinfo = await fetch(
-      `${apiUrl}/file/upload/node/article/field_hero_image?_format=json`,
+    console.log(this.state.file);
+
+    let response = await fetch(
+      apiUrl + '/file/upload/node/article/field_image?_format=hal_json',
       {
         credentials: 'include',
         method: 'POST',
         cookies: 'x-access-token',
         headers: {
-          Accept: 'application/octet-stream',
+          accept: 'application/octet-stream',
           'Content-Type': 'application/octet-stream',
           'X-CSRF-Token': token,
-          'Content-Disposition': 'file; filename="filename.jpg"',
-          Authorization: 'Basic'
+          'Content-Disposition': 'file; filename="prakash_file.png"'
         },
-        // body: JSON.stringify({
-        //   _links: {
-        //     type: {
-        //       href: `${apiUrl}/rest/type/node/article`
-        //     }
-        //   },
-        //   title: [
-        //     {
-        //       value: title
-        //     }
-        //   ],
-        //   type: [
-        //     {
-        //       target_id: 'article'
-        //     }
-        //   ]
-        // })
-        data: [
+        body: this.state.file
+      }
+    )
+      .then(resp => resp.json())
+      .then(
+        function(data) {
+          this.setState({ fid: data.fid[0].value }, this.createArticle);
+        }.bind(this)
+      );
+  }
+
+  createArticle() {
+    let token = localStorage.getItem('csrf_token');
+    fetch(`${apiUrl}/node/6771?_format=hal_json`, {
+      credentials: 'include',
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}/rest/type/node/article`
+          }
+        },
+        field_image: [
           {
-            value: this.state.file
+            target_id: this.state.fid,
+            description: 'The most fascinating image ever!'
           }
         ]
-      }
-    );
-    // .then((resp) => resp.json())
-    //   .then(function(data) {
-    //     //console.log(data.fid[0].value);
-    //     return data.fid[0].value;
-    //     //his.setState({fid:data.fid[0].value});
-    // })
-    console.log(fileinfo.json());
-    //event.target.reset();
-    this.setState({ updateFlag: true });
-    event.preventDefault();
+      })
+    });
   }
 
   render() {
@@ -110,8 +115,17 @@ class ArticleCreate extends React.Component {
                         console.log('file reading has failed');
                       reader.onload = () => {
                         // Do whatever you want with the file contents
-                        const binaryStr = reader.result;
-                        this.setState({ file: binaryStr });
+                        //const binaryStr = reader.result;
+                        var stringImage = reader.result;
+                        if (stringImage) {
+                          console.log(' image content =' + stringImage);
+                          var striped = stringImage.toString().split('base64');
+                          if (striped[1]) {
+                            //this.uploadDrupalImage(striped[1]);
+                            this.setState({ newfile: striped[1] });
+                          }
+                        }
+                        this.setState({ file: reader.result });
                         //console.log(binaryStr)
                       };
                       document

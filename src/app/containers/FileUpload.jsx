@@ -29,7 +29,7 @@ class FileUpload extends React.Component {
           <section>
             <div {...getRootProps()}>
               <input {...getInputProps()} />
-              <a href="#">Click to select files</a>
+              <a href="#">Click to upload image</a>
             </div>
           </section>
         )}
