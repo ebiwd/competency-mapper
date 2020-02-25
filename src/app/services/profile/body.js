@@ -10,7 +10,7 @@ class BodyService {
     gender,
     jobTitle,
     qualification,
-    fid
+    fileid
   }) {
     return {
       _links: {
@@ -54,7 +54,7 @@ class BodyService {
       ],
       field_image: [
         {
-          target_id: fid,
+          target_id: fileid,
           description: 'persona picture'
         }
       ],
@@ -94,7 +94,7 @@ class BodyService {
     gender,
     jobTitle,
     qualification,
-    fid
+    fileid
   ) {
     return {
       _links: {
@@ -138,7 +138,7 @@ class BodyService {
       ],
       field_image: [
         {
-          target_id: fid,
+          target_id: fileid,
           description: 'persona picture'
         }
       ],

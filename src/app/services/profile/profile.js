@@ -28,7 +28,7 @@ class ProfileService {
     gender,
     jobTitle,
     qualification,
-    fid
+    fileid
   ) {
     const response = await this.http.patch(
       `/node/${profileId}?_format=hal_json`,
@@ -40,7 +40,7 @@ class ProfileService {
         gender,
         jobTitle,
         qualification,
-        fid
+        fileid
       )
     );
 

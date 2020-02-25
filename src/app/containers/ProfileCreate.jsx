@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-//import CKEditor from 'react-ckeditor-component';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FileUpload from './FileUpload';
@@ -8,7 +7,6 @@ import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
-//import ProfilePreview from './ProfilePreview';
 
 export const ProfileCreate = props => {
   const activeRequests = new ActiveRequestsService();
@@ -28,8 +26,7 @@ export const ProfileCreate = props => {
   const [framework, setFramework] = useState();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
-
-  //const [preview, setPreview] = useState()
+  const [submit, setSubmit] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,49 +38,19 @@ export const ProfileCreate = props => {
           setFramework(findresponse);
         });
     };
-    //console.log(frameworkName + ' ' + frameworkVersion)
+
     fetchData();
-
-    if (!selectedFile) {
-      setImgpreview(undefined);
-      console.log('file not selected');
-      return;
-    }
-    const objectUrl = URL.createObjectURL(selectedFile);
-    setImgpreview(objectUrl);
-
-    // free memory when ever this component is unmounted
-    // return () => URL.revokeObjectURL(objectUrl)
-
-    // const checkFile = async () => {
-    //   let token = localStorage.getItem('csrf_token');
-
-    //   await fetch(apiUrl + '/file/upload/node/profile/field_image?_format=hal_json', {
-    //               credentials: 'include',
-    //               method: 'POST',
-    //               cookies: 'x-access-token',
-    //               headers: {
-    //                    accept: 'application/octet-stream',
-    //                 'Content-Type': 'application/octet-stream',
-    //                 'X-CSRF-Token': token,
-    //                'Content-Disposition': 'file; filename="persona_picture.png"',
-    //               },
-    //               body: selectedFile
-    //             })
-    //               .then((resp) => resp.json())
-    //               .then(function(data) {
-    //                 console.log(data.fid[0].value)
-    //                     setFid(data.fid[0].value)
-    //                });
-    //             };
-    //             checkFile();
   }, [selectedFile]);
 
-  const checkFile = async () => {
+  const handleSubmit = async evt => {
+    evt.preventDefault();
+    let frameworkId = framework[0].nid;
+    let frameworkUuid = framework[0].uuid;
+    var arrayBuffer = '';
+
+    var fileid = null;
     if (selectedFile) {
       let token = localStorage.getItem('csrf_token');
-      console.log(selectedFile);
-
       await fetch(
         apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
         {
@@ -101,20 +68,9 @@ export const ProfileCreate = props => {
       )
         .then(resp => resp.json())
         .then(function(data) {
-          console.log(data.fid[0].value);
-          setFid(data.fid[0].value);
+          fileid = data.fid[0].value;
         });
     }
-  };
-
-  const handleSubmit = async evt => {
-    evt.preventDefault();
-    let frameworkId = framework[0].nid; //9
-    let frameworkUuid = framework[0].uuid; //'b20064ef-5cbf-4147-90f8-08e7a6693e17';
-    var arrayBuffer = '';
-
-    await checkFile();
-    console.log(fid);
 
     let response = await profileService.createProfile({
       title,
@@ -125,13 +81,8 @@ export const ProfileCreate = props => {
       gender,
       jobTitle,
       qualification,
-      fid
+      fileid
     });
-
-    console.log(title + ' ' + selectedFile);
-
-    //console.log(response.path[0].alias);
-    //console.log(response);
 
     props.history.push(
       `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
@@ -139,8 +90,6 @@ export const ProfileCreate = props => {
   };
 
   const setPreview = () => {
-    console.log('redirecting');
-    ////return <Redirect to='/' />
     props.history.push('/framework/bioexcel/2.0/profile/preview', {
       title: title
     });
@@ -150,15 +99,17 @@ export const ProfileCreate = props => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
+    } else {
+      const objectUrl = URL.createObjectURL(e.target.files[0]);
+      setImgpreview(objectUrl);
+      setSelectedFile(e.target.files[0]);
     }
-
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(e.target.files[0]);
   };
 
   const clearimgpreview = e => {
     e.preventDefault();
     setSelectedFile(undefined);
+    setImgpreview(undefined);
     document.getElementById('fileupload').value = '';
   };
 
@@ -250,9 +201,7 @@ export const ProfileCreate = props => {
               <CKEditor
                 editor={ClassicEditor}
                 data={currentRole}
-                onInit={editor => {
-                  console.log('Editor is ready to use!', editor);
-                }}
+                onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setCurrentRole(data);
@@ -267,9 +216,7 @@ export const ProfileCreate = props => {
               <CKEditor
                 editor={ClassicEditor}
                 data={qualification}
-                onInit={editor => {
-                  console.log('Editor is ready to use!', editor);
-                }}
+                onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setQualification(data);
@@ -307,15 +254,3 @@ export const CreateProfile = () => (
 );
 
 export default CreateProfile;
-
-/*checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
-    console.log(localStorage.getItem('roles'));
-  }*/

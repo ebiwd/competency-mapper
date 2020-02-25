@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-//import CKEditor from 'react-ckeditor-component';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FileUpload from './FileUpload';
@@ -8,7 +7,6 @@ import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
-//import ProfilePreview from './ProfilePreview';
 
 export const ProfileEdit = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -33,13 +31,6 @@ export const ProfileEdit = props => {
 
   const [framework, setFramework] = useState();
 
-  const genderOptions = [
-    { label: 'None', value: 'None', isdisabled: 'yes' },
-    { label: 'Male', value: 'Male' },
-    { label: 'Female', value: 'Female' }
-  ];
-  //const [preview, setPreview] = useState()
-
   useEffect(() => {
     const fetchData = async () => {
       await fetch(`${apiUrl}/node/${profileId}?_format=json`)
@@ -49,6 +40,11 @@ export const ProfileEdit = props => {
           setTitle(findresponse.title[0].value);
           setImgpreview(
             findresponse.field_image[0] ? findresponse.field_image[0].url : ''
+          );
+          setFid(
+            findresponse.field_image[0]
+              ? findresponse.field_image[0].target_id
+              : ''
           );
           setJobTitle(
             findresponse.field_job_title[0]
@@ -80,6 +76,30 @@ export const ProfileEdit = props => {
 
   const handleSubmit = async evt => {
     evt.preventDefault();
+    let token = localStorage.getItem('csrf_token');
+    var fileid = fid;
+    if (selectedFile) {
+      await fetch(
+        apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
+        {
+          credentials: 'include',
+          method: 'POST',
+          cookies: 'x-access-token',
+          headers: {
+            accept: 'application/octet-stream',
+            'Content-Type': 'application/octet-stream',
+            'X-CSRF-Token': token,
+            'Content-Disposition': 'file; filename="persona_picture.png"'
+          },
+          body: selectedFile
+        }
+      )
+        .then(resp => resp.json())
+        .then(function(data) {
+          fileid = data.fid[0].value;
+        });
+    }
+
     let response = await profileService.editProfile(
       profileId,
       title,
@@ -88,7 +108,7 @@ export const ProfileEdit = props => {
       gender,
       jobTitle,
       qualification,
-      fid
+      fileid
     );
 
     if (response.nid[0].value) {
@@ -96,11 +116,9 @@ export const ProfileEdit = props => {
         `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
       );
     }
-    console.log(response);
   };
 
   const setPreview = () => {
-    console.log('redirecting');
     props.history.push('/framework/bioexcel/2.0/profile/preview', {
       title: title
     });
@@ -110,15 +128,17 @@ export const ProfileEdit = props => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
+    } else {
+      const objectUrl = URL.createObjectURL(e.target.files[0]);
+      setImgpreview(objectUrl);
+      setSelectedFile(e.target.files[0]);
     }
-
-    // I've kept this example simple by using the first image instead of multiple
-    setSelectedFile(e.target.files[0]);
   };
 
   const clearimgpreview = e => {
     e.preventDefault();
     setImgpreview(undefined);
+    setFid(undefined);
     document.getElementById('fileupload').value = '';
   };
 
@@ -158,7 +178,8 @@ export const ProfileEdit = props => {
                 style={{
                   border: '1px solid #ccc',
                   padding: '5px',
-                  width: '30%'
+                  width: '30%',
+                  minHeight: '150px'
                 }}
               />
               {imgpreview ? (
@@ -201,7 +222,6 @@ export const ProfileEdit = props => {
             <div className="column large-12">
               <strong>Gender</strong>
               <select value={gender} onChange={e => setGender(e.target.value)}>
-                {console.log(gender)}
                 <option value={'None'}>None</option>
                 <option value={'Male'}>Male</option>
                 <option value={'Female'}>Female</option>
@@ -215,9 +235,7 @@ export const ProfileEdit = props => {
               <CKEditor
                 editor={ClassicEditor}
                 data={currentRole}
-                onInit={editor => {
-                  console.log('Editor is ready to use!', editor);
-                }}
+                onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setCurrentRole(data);
@@ -232,9 +250,7 @@ export const ProfileEdit = props => {
               <CKEditor
                 editor={ClassicEditor}
                 data={qualification}
-                onInit={editor => {
-                  console.log('Editor is ready to use!', editor);
-                }}
+                onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setQualification(data);
@@ -245,22 +261,7 @@ export const ProfileEdit = props => {
 
           <p />
           <div className="row">
-            <div className="column medium-2">
-              <a onClick={e => setPreview()} className="button">
-                <i class="fas fa-eye" /> Preview{' '}
-              </a>
-
-              <Link
-                to={{
-                  pathname: '/framework/bioexcel/2.0/profile/preview',
-
-                  state: { title: title }
-                }}
-              >
-                {' '}
-                My Link{' '}
-              </Link>
-            </div>
+            <div className="column medium-2" />
             <div className="column medium-3">
               <input
                 type="submit"
@@ -287,15 +288,3 @@ export const EditProfile = () => (
 );
 
 export default EditProfile;
-
-/*checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
-    console.log(localStorage.getItem('roles'));
-  }*/
