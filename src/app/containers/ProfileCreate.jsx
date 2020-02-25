@@ -47,46 +47,61 @@ export const ProfileCreate = props => {
     let frameworkId = framework[0].nid;
     let frameworkUuid = framework[0].uuid;
     var arrayBuffer = '';
-
     var fileid = null;
-    if (selectedFile) {
-      let token = localStorage.getItem('csrf_token');
-      await fetch(
-        apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
-        {
-          credentials: 'include',
-          method: 'POST',
-          cookies: 'x-access-token',
-          headers: {
-            accept: 'application/octet-stream',
-            'Content-Type': 'application/octet-stream',
-            'X-CSRF-Token': token,
-            'Content-Disposition': 'file; filename="persona_picture.png"'
-          },
-          body: selectedFile
-        }
-      )
-        .then(resp => resp.json())
-        .then(function(data) {
-          fileid = data.fid[0].value;
-        });
+
+    // Check if is Anonymous/Authenticated
+    if (!localStorage.getItem('roles')) {
+      profileService.downloadProfile({
+        title,
+        frameworkId,
+        frameworkUuid,
+        age,
+        currentRole,
+        gender,
+        jobTitle,
+        qualification,
+        fileid
+      });
+    } else if (localStorage.getItem('roles').includes('framework_manager')) {
+      if (selectedFile) {
+        let token = localStorage.getItem('csrf_token');
+        await fetch(
+          apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
+          {
+            credentials: 'include',
+            method: 'POST',
+            cookies: 'x-access-token',
+            headers: {
+              accept: 'application/octet-stream',
+              'Content-Type': 'application/octet-stream',
+              'X-CSRF-Token': token,
+              'Content-Disposition': 'file; filename="persona_picture.png"'
+            },
+            body: selectedFile
+          }
+        )
+          .then(resp => resp.json())
+          .then(function(data) {
+            fileid = data.fid[0].value;
+          });
+      }
+
+      let response = await profileService.createProfile({
+        title,
+        frameworkId,
+        frameworkUuid,
+        age,
+        currentRole,
+        gender,
+        jobTitle,
+        qualification,
+        fileid
+      });
+
+      props.history.push(
+        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
+      );
     }
-
-    let response = await profileService.createProfile({
-      title,
-      frameworkId,
-      frameworkUuid,
-      age,
-      currentRole,
-      gender,
-      jobTitle,
-      qualification,
-      fileid
-    });
-
-    props.history.push(
-      `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
-    );
   };
 
   const setPreview = () => {
@@ -112,6 +127,15 @@ export const ProfileCreate = props => {
     setImgpreview(undefined);
     document.getElementById('fileupload').value = '';
   };
+
+  function ButtonLabel() {
+    let submitButtonLabel = 'Save and continue';
+    if (!localStorage.getItem('roles')) {
+      submitButtonLabel = 'Download';
+    }
+
+    return <input type="submit" className="button" value={submitButtonLabel} />;
+  }
 
   return (
     <div>
@@ -197,21 +221,6 @@ export const ProfileCreate = props => {
 
           <div className="row">
             <div className="column large-12">
-              <strong>Acitivities of current role</strong>
-              <CKEditor
-                editor={ClassicEditor}
-                data={currentRole}
-                onInit={editor => {}}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setCurrentRole(data);
-                }}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="column large-12">
               <strong>Qualification and background</strong>
               <CKEditor
                 editor={ClassicEditor}
@@ -225,15 +234,26 @@ export const ProfileCreate = props => {
             </div>
           </div>
 
+          <div className="row">
+            <div className="column large-12">
+              <strong>Acitivities of current role</strong>
+              <CKEditor
+                editor={ClassicEditor}
+                data={currentRole}
+                onInit={editor => {}}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setCurrentRole(data);
+                }}
+              />
+            </div>
+          </div>
+
           <p />
           <div className="row">
             <div className="column medium-2" />
             <div className="column medium-3">
-              <input
-                type="submit"
-                className="button"
-                value="Save and continue"
-              />
+              <ButtonLabel />
             </div>
             <div className="column medium-7" />
           </div>

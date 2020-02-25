@@ -59,17 +59,17 @@ export const ProfileView = props => {
               </p>
             </div>
             <div className="column large-8">
-              <strong>Acitivities of current role</strong>
-              <p>
-                {profile.field_current_role[0]
-                  ? Parser(profile.field_current_role[0].value)
-                  : ''}
-              </p>
-
-              <strong>Qualification and background</strong>
+              <h4>Qualification and background</h4>
               <p>
                 {profile.field_qualification_background[0]
                   ? Parser(profile.field_qualification_background[0].value)
+                  : ''}
+              </p>
+
+              <h4>Acitivities of current role</h4>
+              <p>
+                {profile.field_current_role[0]
+                  ? Parser(profile.field_current_role[0].value)
                   : ''}
               </p>
             </div>
