@@ -2,6 +2,7 @@ import HttpService from '../http/http';
 import Body from './body';
 import Download from './download';
 import jsPDF from 'jspdf';
+import moment from 'moment';
 
 class ProfileService {
   static instance;
@@ -51,19 +52,38 @@ class ProfileService {
 
   downloadProfile(options) {
     Download.getProfile(options);
-    console.log(options);
+    var currentDate = moment().format('MMMM D, Y');
+    var currentTime = moment().format('hh:mm:ss');
+
+    // console.log(currentDate);
+    // console.log(currentTime);
 
     var doc = new jsPDF('p', 'pt');
 
-    doc.text(20, 20, 'Profile name: ' + options.title);
-    doc.text(20, 40, 'Job title: ' + options.jobTitle);
-    doc.text(20, 60, 'Age: ' + options.age);
-    doc.text(20, 80, 'Gender: ' + options.gender);
-    doc.text(20, 100, 'Qualification: ' + options.age);
-    doc.text(20, 120, 'Current role: ' + options.currentRole);
+    // PROFILE HEADER
+
+    doc.setFontType('bold');
+    doc.text(20, 20, 'EMBL-EBI Competency Profile');
+
+    // PROFILE BODY
+    doc.setFontType('normal');
+    doc.text(20, 60, 'Profile name: ' + options.title);
+    doc.text(20, 80, 'Job title: ' + options.jobTitle);
+    doc.text(20, 100, 'Age: ' + options.age);
+    doc.text(20, 120, 'Gender: ' + options.gender);
+    doc.text(20, 140, 'Qualification: ' + options.age);
+    doc.text(20, 160, 'Activities and current role: ' + options.currentRole);
+
+    doc.setFontSize(10);
+    doc.text(
+      220,
+      260,
+      'Profile created on ' + currentDate + ' at ' + currentTime
+    );
 
     // Save the Data
-    doc.save('Generated.pdf');
+    let jobTitleUnderscored = options.jobTitle.split(' ').join('_');
+    doc.save(jobTitleUnderscored.toLowerCase() + '.pdf');
   }
 }
 

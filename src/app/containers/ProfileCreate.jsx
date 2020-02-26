@@ -26,7 +26,10 @@ export const ProfileCreate = props => {
   const [framework, setFramework] = useState();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
-  const [submit, setSubmit] = useState();
+
+  const [errorMsgTitle, setErrorMsgTitle] = useState();
+  const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
+  let errors = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -49,8 +52,14 @@ export const ProfileCreate = props => {
     var arrayBuffer = '';
     var fileid = null;
 
+    // Do nothing if Form doesn't pass validation criteris above
+    if (!title || !jobTitle || title.length < 2 || jobTitle.length < 3) {
+    }
     // Check if is Anonymous/Authenticated
-    if (!localStorage.getItem('roles')) {
+    else if (!localStorage.getItem('roles')) {
+      setErrorMsgTitle('');
+      setErrorMsgJobTitle('');
+
       profileService.downloadProfile({
         title,
         frameworkId,
@@ -137,29 +146,84 @@ export const ProfileCreate = props => {
     return <input type="submit" className="button" value={submitButtonLabel} />;
   }
 
+  const getWhoCreateProfile = () => {
+    let placeholder = 'a reference';
+    if (!localStorage.getItem('roles')) {
+      placeholder = 'your';
+    }
+    return placeholder;
+  };
+
+  const placeholder = getWhoCreateProfile();
+
+  // Check if Fields are not empty hide Help Text
+  let titleCalloutClass = 'small callout alert';
+  let jobTitleCalloutClass = 'small callout alert';
+  let nameHelp = 'Name is required and must be at least 2 characters long';
+  let jobTitleHelp =
+    'Job Title is required and must be at least 3 characters long';
+  if (title) {
+    if (title.length > 1) {
+      nameHelp = '';
+      titleCalloutClass = '';
+    }
+  }
+
+  if (jobTitle) {
+    if (jobTitle.length > 2) {
+      jobTitleHelp = '';
+      jobTitleCalloutClass = '';
+    }
+  }
+
   return (
     <div>
-      <div>
-        <h2>Create reference profile</h2>
-        <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="column large-12">
-              <strong>Title</strong>
+      <h2>Create {placeholder} profile</h2>
+      <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
+        <div className="row">
+          <div className="column large-4">
+            <span>
+              <strong>Name</strong>
               <input
                 type="text"
                 id="title"
-                placeholder="Title"
+                placeholder="Name"
                 onChange={e => setTitle(e.target.value)}
               />
-            </div>
+              <div className={titleCalloutClass}>
+                <i>{nameHelp}</i>
+              </div>
+            </span>
           </div>
+          <div className="column large-8">
+            <span>
+              <strong>Job title</strong>
+              <input
+                type="text"
+                id="jobTitle"
+                placeholder="Job title"
+                onChange={e => setJobTitle(e.target.value)}
+              />
+              <div className={jobTitleCalloutClass}>
+                <i>{jobTitleHelp}</i>
+              </div>
+            </span>
+          </div>
+        </div>
 
-          <div id="fileupload" className="row">
-            <div className="column large-3">
+        <div className="row">
+          <div className="column large-4">&nbsp;</div>
+          <div className="column large-8" />
+        </div>
+
+        <div className="row">
+          <div className="column large-4">
+            <span>
               <strong>Image</strong>
               <input type="file" id="imagefile" onChange={onSelectFile} />
-            </div>
-            <div className="column large-9">
+            </span>
+
+            <span>
               <img
                 id="imgpreview_image"
                 width="100px"
@@ -178,35 +242,22 @@ export const ProfileCreate = props => {
               ) : (
                 ''
               )}
-            </div>
-          </div>
+            </span>
 
-          <div className="row">
-            <div className="column large-12">
-              <strong>Job title</strong>
-              <input
-                type="text"
-                id="jobTitle"
-                placeholder="Job title"
-                onChange={e => setJobTitle(e.target.value)}
-              />
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="column large-12">
+            <br />
+            <br />
+            <span>
               <strong>Age (in years)</strong>
               <input
                 type="number"
                 id="age"
                 placeholder="Age"
+                width={4}
                 onChange={e => setAge(e.target.value)}
               />
-            </div>
-          </div>
+            </span>
 
-          <div className="row">
-            <div className="column large-12">
+            <span>
               <strong>Gender</strong>
               <select
                 defaultValue="-None-"
@@ -216,11 +267,10 @@ export const ProfileCreate = props => {
                 <option value={'Male'}>Male</option>
                 <option value={'Female'}>Female</option>
               </select>
-            </div>
+            </span>
           </div>
-
-          <div className="row">
-            <div className="column large-12">
+          <div className="column large-8">
+            <span>
               <strong>Qualification and background</strong>
               <CKEditor
                 editor={ClassicEditor}
@@ -231,11 +281,10 @@ export const ProfileCreate = props => {
                   setQualification(data);
                 }}
               />
-            </div>
-          </div>
+            </span>
 
-          <div className="row">
-            <div className="column large-12">
+            <br />
+            <span>
               <strong>Acitivities of current role</strong>
               <CKEditor
                 editor={ClassicEditor}
@@ -246,19 +295,19 @@ export const ProfileCreate = props => {
                   setCurrentRole(data);
                 }}
               />
-            </div>
+            </span>
           </div>
+        </div>
 
-          <p />
-          <div className="row">
-            <div className="column medium-2" />
-            <div className="column medium-3">
-              <ButtonLabel />
-            </div>
-            <div className="column medium-7" />
+        <p />
+        <div className="row">
+          <div className="column medium-2" />
+          <div className="column medium-3">
+            <ButtonLabel />
           </div>
-        </form>
-      </div>
+          <div className="column medium-7" />
+        </div>
+      </form>
     </div>
   );
 };
