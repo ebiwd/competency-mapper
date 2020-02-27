@@ -17,6 +17,7 @@ export const ProfileCreate = props => {
   const [gender, setGender] = useState();
 
   const [selectedFile, setSelectedFile] = useState();
+  const [selectedFileData, setSelectedFileData] = useState([]);
   const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
 
@@ -69,7 +70,8 @@ export const ProfileCreate = props => {
         gender,
         jobTitle,
         qualification,
-        fileid
+        selectedFile,
+        selectedFileData
       });
     } else if (localStorage.getItem('roles').includes('framework_manager')) {
       if (selectedFile) {
@@ -125,7 +127,37 @@ export const ProfileCreate = props => {
       return;
     } else {
       const objectUrl = URL.createObjectURL(e.target.files[0]);
-      setImgpreview(objectUrl);
+
+      // convert image file to base64 string. From https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
+      const reader = new FileReader();
+      reader.addEventListener(
+        'load',
+        function() {
+          // Set Image Preview
+          setImgpreview(reader.result);
+
+          // Set selected image src
+          let img = new Image();
+          img.src = reader.result;
+          img.addEventListener('load', function() {
+            img.width = this.width;
+            img.height = this.height;
+
+            setSelectedFileData([
+              {
+                src: this.src,
+                width: this.width,
+                height: this.height
+              }
+            ]);
+          });
+        },
+        false
+      );
+      if (e.target.files) {
+        reader.readAsDataURL(e.target.files[0]);
+      }
+
       setSelectedFile(e.target.files[0]);
     }
   };
@@ -236,9 +268,11 @@ export const ProfileCreate = props => {
                 }}
               />
               {imgpreview ? (
-                <a href="#" onClick={e => clearimgpreview(e)}>
-                  Clear image x
-                </a>
+                <div>
+                  <a href="#" onClick={e => clearimgpreview(e)}>
+                    Clear image x
+                  </a>
+                </div>
               ) : (
                 ''
               )}

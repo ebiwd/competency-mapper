@@ -52,32 +52,71 @@ class ProfileService {
 
   downloadProfile(options) {
     Download.getProfile(options);
-    var currentDate = moment().format('MMMM D, Y');
-    var currentTime = moment().format('hh:mm:ss');
 
-    // console.log(currentDate);
-    // console.log(currentTime);
+    let doc = new jsPDF('p', 'pt', 'a4');
 
-    var doc = new jsPDF('p', 'pt');
+    let currentDate = moment().format('MMMM D, Y');
+    let currentTime = moment().format('hh:mm:ss');
 
-    // PROFILE HEADER
+    let pdfWidth = doc.internal.pageSize.getWidth();
+    let pdfHeight = doc.internal.pageSize.getHeight();
 
-    doc.setFontType('bold');
-    doc.text(20, 20, 'EMBL-EBI Competency Profile');
+    let marginleft = 20;
+    let col = pdfWidth * 0.07383;
+    let gutter = pdfWidth * 0.01036727272;
+    let fourthCol = col * 4 + gutter * 3;
 
-    // PROFILE BODY
+    let pdfProfileImgWidth = 180;
+    let selectedFileWidth = options.selectedFile
+      ? options.selectedFileData[0].width
+      : 180;
+    let selectedFileHeight = options.selectedFile
+      ? options.selectedFileData[0].height
+      : 150;
+    let ratio = selectedFileWidth / selectedFileHeight;
+    let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
+
+    // PROFILE IMAGE
+    if (options.selectedFile) {
+      let type = options.selectedFile.type === 'image/jpeg' ? 'JPEG' : 'PNG'; // maybe you should add some controls to prevent loading of other file types
+      let imgData = options.selectedFileData[0].src;
+      doc.addImage(
+        imgData,
+        type,
+        marginleft,
+        40,
+        pdfProfileImgWidth,
+        pdfProfileImgHeight,
+        '',
+        'SLOW'
+      ); // Compression options are NONE, FAST, MEDIUM and SLOW
+    }
     doc.setFontType('normal');
-    doc.text(20, 60, 'Profile name: ' + options.title);
-    doc.text(20, 80, 'Job title: ' + options.jobTitle);
-    doc.text(20, 100, 'Age: ' + options.age);
-    doc.text(20, 120, 'Gender: ' + options.gender);
-    doc.text(20, 140, 'Qualification: ' + options.age);
-    doc.text(20, 160, 'Activities and current role: ' + options.currentRole);
-
     doc.setFontSize(10);
     doc.text(
-      220,
-      260,
+      marginleft,
+      pdfProfileImgHeight + 60,
+      options.gender + ', ' + options.age + ' years'
+    );
+
+    // PROFILE HEADER
+    doc.setFontType('bold');
+    doc.setFontSize(20);
+    doc.text(marginleft, 20, 'EMBL-EBI Competency Profile');
+
+    // PROFILE BODY
+    doc.setFontSize(16);
+    doc.text(240, 60, options.title + ' - ' + options.jobTitle);
+
+    doc.setFontType('normal');
+    doc.setFontSize(10);
+    doc.text(240, 90, 'Qualifications & background: ' + options.qualification);
+    doc.text(240, 120, 'Activities and current role: ' + options.currentRole);
+
+    doc.setFontSize(9);
+    doc.text(
+      marginleft,
+      500,
       'Profile created on ' + currentDate + ' at ' + currentTime
     );
 
