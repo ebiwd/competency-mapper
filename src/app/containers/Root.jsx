@@ -170,7 +170,7 @@ class Root extends Component {
                 />
 
                 <Route
-                  path="/framework/:framework/:version/profile/view/:id"
+                  path="/framework/:framework/:version/profile/view/:id/:alias"
                   component={ProfileView}
                 />
 

@@ -47,7 +47,11 @@ const ProfileList = props => {
                       )}
                     </p>
 
-                    <p>{profile.field_job_title[0].value}</p>
+                    <p>
+                      {profile.field_job_title[0]
+                        ? profile.field_job_title[0].value
+                        : 'Job title'}
+                    </p>
 
                     <div className="row">
                       <div className="column medium-6">
@@ -55,7 +59,7 @@ const ProfileList = props => {
                           className="readmore"
                           to={`/framework/bioexel/2.0/profile/view/${
                             profile.nid[0].value
-                          }`}
+                          }${profile.path[0].alias}`}
                         >
                           View profile{' '}
                         </Link>

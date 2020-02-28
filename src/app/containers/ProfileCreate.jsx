@@ -110,7 +110,9 @@ export const ProfileCreate = props => {
       });
 
       props.history.push(
-        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
+        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/${
+          response.path[0].alias
+        }`
       );
     }
   };
@@ -252,7 +254,7 @@ export const ProfileCreate = props => {
           <div className="column large-4">
             <span>
               <strong>Image</strong>
-              <input type="file" id="imagefile" onChange={onSelectFile} />
+              <input type="file" id="fileupload" onChange={onSelectFile} />
             </span>
 
             <span>

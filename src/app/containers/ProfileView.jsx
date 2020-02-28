@@ -14,6 +14,7 @@ export const ProfileView = props => {
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
+  const alias = props.location.pathname.split('/')[7];
 
   const [profile, setProfile] = useState();
   useEffect(() => {
@@ -27,18 +28,27 @@ export const ProfileView = props => {
     fetchData();
   }, [profileId]);
 
-  console.log(profile);
+  const checkAlias = () => {
+    if (profile.path[0].alias.substring(1) != alias) {
+      props.history.push(
+        `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${
+          profile.path[0].alias
+        }`
+      );
+    }
+  };
 
   return (
     <div>
       {profile ? (
         <div>
+          {checkAlias()}
           <Link to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}>
             {' '}
             Edit{' '}
           </Link>
 
-          <h2>
+          <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
             {profile.title[0].value} -{' '}
             {profile.field_job_title[0] ? profile.field_job_title[0].value : ''}
           </h2>
@@ -46,12 +56,12 @@ export const ProfileView = props => {
             <div className="column large-4">
               <p>
                 <img
-                  style={{ display: 'block' }}
+                  style={{ display: 'block', maxWidth: '200px' }}
                   src={profile.field_image[0] ? profile.field_image[0].url : ''}
                 />
               </p>
               <p />
-              <p>
+              <p style={{ textAlign: 'center' }}>
                 {profile.field_gender[0] ? profile.field_gender[0].value : ''}{' '}
                 {profile.field_age[0]
                   ? '| ' + profile.field_age[0].value + ' years'
@@ -59,20 +69,21 @@ export const ProfileView = props => {
               </p>
             </div>
             <div className="column large-8">
-              <h4>Qualification and background</h4>
+              <h3>Qualification and background</h3>
               <p>
                 {profile.field_qualification_background[0]
                   ? Parser(profile.field_qualification_background[0].value)
                   : ''}
               </p>
 
-              <h4>Acitivities of current role</h4>
+              <h3>Acitivities of current role</h3>
               <p>
                 {profile.field_current_role[0]
                   ? Parser(profile.field_current_role[0].value)
                   : ''}
               </p>
             </div>
+            <p />
           </div>
 
           <table class="hover">
@@ -82,7 +93,7 @@ export const ProfileView = props => {
                   <h4> Competencies </h4>
                 </td>
                 <td colspan="5">
-                  <h4> Ratings </h4>
+                  <h4> Level of expertise </h4>
                 </td>
               </tr>
 
@@ -169,7 +180,7 @@ export const ViewProfile = () => (
   <Switch>
     <Route
       exact
-      path="/framework/:framework/:version/profile/view/:id"
+      path="/framework/:framework/:version/profile/view/:id/:alias"
       component={ProfileView}
     />
   </Switch>
