@@ -54,7 +54,7 @@ export const ProfileView = props => {
           </h2>
           <div className="row">
             <div className="column large-4">
-              <p>
+              <p style={{ textAlign: '-webkit-center' }}>
                 <img
                   style={{ display: 'block', maxWidth: '200px' }}
                   src={profile.field_image[0] ? profile.field_image[0].url : ''}
@@ -80,6 +80,12 @@ export const ProfileView = props => {
               <p>
                 {profile.field_current_role[0]
                   ? Parser(profile.field_current_role[0].value)
+                  : ''}
+              </p>
+
+              <p>
+                {profile.field_additional_information[0]
+                  ? Parser(profile.field_additional_information[0].value)
                   : ''}
               </p>
             </div>

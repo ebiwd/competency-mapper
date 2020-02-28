@@ -31,6 +31,7 @@ class ProfileService {
     gender,
     jobTitle,
     qualification,
+    additionalInfo,
     fileid
   ) {
     const response = await this.http.patch(
@@ -43,6 +44,7 @@ class ProfileService {
         gender,
         jobTitle,
         qualification,
+        additionalInfo,
         fileid
       )
     );

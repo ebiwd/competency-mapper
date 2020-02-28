@@ -10,6 +10,7 @@ class BodyService {
     gender,
     jobTitle,
     qualification,
+    additionalInfo,
     fileid
   }) {
     return {
@@ -50,6 +51,11 @@ class BodyService {
       field_qualification_background: [
         {
           value: qualification
+        }
+      ],
+      field_additional_information: [
+        {
+          value: additionalInfo
         }
       ],
       field_image: [
@@ -94,6 +100,7 @@ class BodyService {
     gender,
     jobTitle,
     qualification,
+    additionalInfo,
     fileid
   ) {
     return {
@@ -133,7 +140,14 @@ class BodyService {
       ],
       field_qualification_background: [
         {
-          value: qualification
+          value: qualification,
+          format: 'basic_html'
+        }
+      ],
+      field_additional_information: [
+        {
+          value: additionalInfo,
+          format: 'basic_html'
         }
       ],
       field_image: [

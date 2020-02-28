@@ -28,6 +28,7 @@ export const ProfileEdit = props => {
 
   const [jobTitle, setJobTitle] = useState();
   const [qualification, setQualification] = useState();
+  const [additionalInfo, setAdditionalInfo] = useState();
 
   const [framework, setFramework] = useState();
 
@@ -69,6 +70,11 @@ export const ProfileEdit = props => {
               ? findresponse.field_qualification_background[0].value
               : ''
           );
+          setAdditionalInfo(
+            findresponse.field_additional_information[0]
+              ? findresponse.field_additional_information[0].value
+              : ''
+          );
         });
     };
     fetchData();
@@ -108,15 +114,55 @@ export const ProfileEdit = props => {
       gender,
       jobTitle,
       qualification,
+      additionalInfo,
       fileid
     );
 
     if (response.nid[0].value) {
       props.history.push(
-        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}`
+        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/alias`
       );
     }
   };
+
+  function ButtonLabel() {
+    let submitButtonLabel = 'Save and continue';
+    if (!localStorage.getItem('roles')) {
+      submitButtonLabel = 'Download';
+    }
+
+    return <input type="submit" className="button" value={submitButtonLabel} />;
+  }
+
+  const getWhoCreateProfile = () => {
+    let placeholder = 'a reference';
+    if (!localStorage.getItem('roles')) {
+      placeholder = 'your';
+    }
+    return placeholder;
+  };
+
+  const placeholder = getWhoCreateProfile();
+
+  // Check if Fields are not empty hide Help Text
+  let titleCalloutClass = 'small callout alert';
+  let jobTitleCalloutClass = 'small callout alert';
+  let nameHelp = 'Name is required and must be at least 2 characters long';
+  let jobTitleHelp =
+    'Job Title is required and must be at least 3 characters long';
+  if (title) {
+    if (title.length > 1) {
+      nameHelp = '';
+      titleCalloutClass = '';
+    }
+  }
+
+  if (jobTitle) {
+    if (jobTitle.length > 2) {
+      jobTitleHelp = '';
+      jobTitleCalloutClass = '';
+    }
+  }
 
   const setPreview = () => {
     props.history.push('/framework/bioexcel/2.0/profile/preview', {
@@ -145,117 +191,149 @@ export const ProfileEdit = props => {
   return (
     <div>
       <div>
-        <h2>Edit reference profile</h2>
-        <Link to={`/framework/bioexcel/2.0/profile/view/${profileId}`}>
+        <Link to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}>
           {' '}
           View{' '}
         </Link>
+        <h2>Create {placeholder} profile</h2>
+
         <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
           <div className="row">
-            <div className="column large-12">
-              <strong>Title</strong>
-              <input
-                type="text"
-                id="title"
-                placeholder="Title"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
-              />
+            <div className="column large-4">
+              <span>
+                <strong>Name</strong>
+                <input
+                  type="text"
+                  id="title"
+                  placeholder="Name"
+                  value={title}
+                  onChange={e => setTitle(e.target.value)}
+                />
+                <div className={titleCalloutClass}>
+                  <i>{nameHelp}</i>
+                </div>
+              </span>
             </div>
-          </div>
-
-          <div id="fileupload" className="row">
-            <div className="column large-3">
-              <strong>Image</strong>
-              <input type="file" id="imagefile" onChange={onSelectFile} />
-            </div>
-            <div className="column large-9">
-              <img
-                id="imgpreview_image"
-                width="100px"
-                src={imgpreview}
-                height="100px"
-                style={{
-                  border: '1px solid #ccc',
-                  padding: '5px',
-                  width: '30%',
-                  minHeight: '150px'
-                }}
-              />
-              {imgpreview ? (
-                <a href="#" onClick={e => clearimgpreview(e)}>
-                  Clear image x
-                </a>
-              ) : (
-                ''
-              )}
+            <div className="column large-8">
+              <span>
+                <strong>Job title</strong>
+                <input
+                  type="text"
+                  id="jobTitle"
+                  placeholder="Job title"
+                  value={jobTitle}
+                  onChange={e => setJobTitle(e.target.value)}
+                />
+                <div className={jobTitleCalloutClass}>
+                  <i>{jobTitleHelp}</i>
+                </div>
+              </span>
             </div>
           </div>
 
           <div className="row">
-            <div className="column large-12">
-              <strong>Job title</strong>
-              <input
-                type="text"
-                id="jobTitle"
-                placeholder="Job title"
-                value={jobTitle}
-                onChange={e => setJobTitle(e.target.value)}
-              />
-            </div>
+            <div className="column large-4">&nbsp;</div>
+            <div className="column large-8" />
           </div>
 
           <div className="row">
-            <div className="column large-12">
-              <strong>Age (in years)</strong>
-              <input
-                type="number"
-                id="age"
-                placeholder="Age"
-                value={age}
-                onChange={e => setAge(e.target.value)}
-              />
-            </div>
-          </div>
+            <div className="column large-4">
+              <span>
+                <strong>Image</strong>
+                <input type="file" id="fileupload" onChange={onSelectFile} />
+              </span>
 
-          <div className="row">
-            <div className="column large-12">
-              <strong>Gender</strong>
-              <select value={gender} onChange={e => setGender(e.target.value)}>
-                <option value={'None'}>None</option>
-                <option value={'Male'}>Male</option>
-                <option value={'Female'}>Female</option>
-              </select>
-            </div>
-          </div>
+              <span>
+                <img
+                  id="imgpreview_image"
+                  width="100px"
+                  src={imgpreview}
+                  height="100px"
+                  style={{
+                    border: '1px solid #ccc',
+                    padding: '5px',
+                    width: '30%'
+                  }}
+                />
+                {imgpreview ? (
+                  <div>
+                    <a href="#" onClick={e => clearimgpreview(e)}>
+                      Clear image x
+                    </a>
+                  </div>
+                ) : (
+                  ''
+                )}
+              </span>
 
-          <div className="row">
-            <div className="column large-12">
-              <strong>Acitivities of current role</strong>
-              <CKEditor
-                editor={ClassicEditor}
-                data={currentRole}
-                onInit={editor => {}}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setCurrentRole(data);
-                }}
-              />
-            </div>
-          </div>
+              <br />
+              <br />
+              <span>
+                <strong>Age (in years)</strong>
+                <input
+                  type="number"
+                  id="age"
+                  placeholder="Age"
+                  width={4}
+                  value={age}
+                  onChange={e => setAge(e.target.value)}
+                />
+              </span>
 
-          <div className="row">
-            <div className="column large-12">
-              <strong>Qualification and background</strong>
-              <CKEditor
-                editor={ClassicEditor}
-                data={qualification}
-                onInit={editor => {}}
-                onChange={(event, editor) => {
-                  const data = editor.getData();
-                  setQualification(data);
-                }}
-              />
+              <span>
+                <strong>Gender</strong>
+                <select
+                  value={gender}
+                  defaultValue="-None-"
+                  onChange={e => setGender(e.target.value)}
+                >
+                  <option value={'-None-'}>None</option>
+                  <option value={'Male'}>Male</option>
+                  <option value={'Female'}>Female</option>
+                </select>
+              </span>
+            </div>
+            <div className="column large-8">
+              <span>
+                <strong>Qualification and background</strong>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={qualification}
+                  onInit={editor => {}}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setQualification(data);
+                  }}
+                />
+              </span>
+
+              <br />
+              <span>
+                <strong>Acitivities of current role</strong>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={currentRole}
+                  onInit={editor => {}}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setCurrentRole(data);
+                  }}
+                />
+              </span>
+
+              <br />
+              <span>
+                <strong>Additional information</strong>
+                <CKEditor
+                  editor={ClassicEditor}
+                  data={additionalInfo}
+                  onInit={editor => {}}
+                  onChange={(event, editor) => {
+                    const data = editor.getData();
+                    setAdditionalInfo(data);
+                  }}
+                />
+              </span>
             </div>
           </div>
 
@@ -263,11 +341,7 @@ export const ProfileEdit = props => {
           <div className="row">
             <div className="column medium-2" />
             <div className="column medium-3">
-              <input
-                type="submit"
-                className="button"
-                value="Save and continue"
-              />
+              <ButtonLabel />
             </div>
             <div className="column medium-7" />
           </div>

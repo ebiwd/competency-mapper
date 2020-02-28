@@ -23,6 +23,7 @@ export const ProfileCreate = props => {
 
   const [jobTitle, setJobTitle] = useState();
   const [qualification, setQualification] = useState();
+  const [additionalInfo, setAdditionalInfo] = useState();
 
   const [framework, setFramework] = useState();
   const frameworkName = props.location.pathname.split('/')[2];
@@ -70,6 +71,7 @@ export const ProfileCreate = props => {
         gender,
         jobTitle,
         qualification,
+        additionalInfo,
         selectedFile,
         selectedFileData
       });
@@ -106,6 +108,7 @@ export const ProfileCreate = props => {
         gender,
         jobTitle,
         qualification,
+        additionalInfo,
         fileid
       });
 
@@ -329,6 +332,20 @@ export const ProfileCreate = props => {
                 onChange={(event, editor) => {
                   const data = editor.getData();
                   setCurrentRole(data);
+                }}
+              />
+            </span>
+
+            <br />
+            <span>
+              <strong>Additional information</strong>
+              <CKEditor
+                editor={ClassicEditor}
+                data={additionalInfo}
+                onInit={editor => {}}
+                onChange={(event, editor) => {
+                  const data = editor.getData();
+                  setAdditionalInfo(data);
                 }}
               />
             </span>
