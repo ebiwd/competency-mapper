@@ -22,6 +22,7 @@ import AttributeDemap from './AttributeDemap';
 import ProfileCreate from './ProfileCreate';
 import ProfileView from './ProfileView';
 import ProfileEdit from './ProfileEdit';
+import ProfileMap from './ProfileMap';
 import ProfilePreview from './ProfilePreview';
 
 import { SnackbarProvider } from 'notistack';
@@ -177,6 +178,11 @@ class Root extends Component {
                 <Route
                   path="/framework/:framework/:version/profile/edit/:id"
                   component={ProfileEdit}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/map/:id"
+                  component={ProfileMap}
                 />
 
                 <Route

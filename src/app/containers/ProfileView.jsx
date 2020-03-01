@@ -43,23 +43,36 @@ export const ProfileView = props => {
       {profile ? (
         <div>
           {checkAlias()}
-          <Link to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}>
-            {' '}
-            Edit{' '}
-          </Link>
 
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
             {profile.title[0].value} -{' '}
             {profile.field_job_title[0] ? profile.field_job_title[0].value : ''}
           </h2>
+
+          <div style={{ float: 'right' }}>
+            {localStorage.getItem('roles') ? (
+              <div>
+                <Link to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}>
+                  {' '}
+                  Edit <i class="icon icon-common icon-pencil-alt" />
+                </Link>
+              </div>
+            ) : (
+              <Link to={`/framework/bioexcel/2.0/profile/create`}>
+                {' '}
+                Create your profile <i class="icon icon-common icon-plus" />
+              </Link>
+            )}
+          </div>
+
           <div className="row">
             <div className="column large-4">
-              <p style={{ textAlign: '-webkit-center' }}>
+              <center>
                 <img
                   style={{ display: 'block', maxWidth: '200px' }}
                   src={profile.field_image[0] ? profile.field_image[0].url : ''}
                 />
-              </p>
+              </center>
               <p />
               <p style={{ textAlign: 'center' }}>
                 {profile.field_gender[0] ? profile.field_gender[0].value : ''}{' '}
@@ -91,31 +104,21 @@ export const ProfileView = props => {
             </div>
             <p />
           </div>
-
+          <Link
+            className="button"
+            to={`/framework/bioexcel/2.0/profile/map/${profileId}`}
+          >
+            {' '}
+            Manage competencies <i class="icon icon-common icon-angle-right" />
+          </Link>
           <table class="hover">
             <tbody>
               <tr>
                 <td>
-                  <h4> Competencies </h4>
+                  <h4> Competency profile </h4>
                 </td>
                 <td colspan="5">
                   <h4> Level of expertise </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td />
-                <td>
-                  <strong> Not applicable</strong>{' '}
-                </td>
-                <td>
-                  <strong>Awareness</strong>
-                </td>
-                <td>
-                  <strong>Working knowledge</strong>
-                </td>
-                <td>
-                  <strong>Specialist knowledge</strong>
                 </td>
               </tr>
 
@@ -128,49 +131,104 @@ export const ProfileView = props => {
 
               <tr>
                 <td>
-                  Apply expertise in formal &amp; natural sciences appropriate
-                  to the discipline, and follow best practice in experimental
-                  design{' '}
+                  <h5>
+                    Apply expertise in formal & natural sciences appropriate to
+                    the disciplin
+                  </h5>
+                  <ul>
+                    <li>
+                      Knowledge
+                      <ul>
+                        <li>
+                          Comprehends that a biological theory is not
+                          necessarily true
+                        </li>
+                        <li>
+                          Comprehends that models require experimental
+                          validation
+                        </li>
+                        <li>
+                          Fundamental scientific knowledge (biology, chemistry,
+                          physics, mathematics)
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      Skill
+                      <ul>
+                        <li>Has an interdisciplinary view</li>
+                        <li>
+                          Asks relevant, hypothesis driven, well-defined
+                          biological questions
+                        </li>
+                        <li>
+                          Accurately judges the validity of his/her results
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      Attitude
+                      <ul>
+                        <li>Takes a comprehensive approach to problems</li>
+                        <li>Allows for unexpected results</li>
+                        <li>
+                          Comprehends that results might be difficult to
+                          interpret
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </td>
-                <td />
-                <td />
-                <td />
                 <td>
-                  <i class="fas fa-check" />{' '}
+                  <p>Specialist Knowledge</p>
                 </td>
               </tr>
+
               <tr>
                 <td>
-                  {' '}
-                  -- Skill - Asks relevant, hypothesis driven, well-defined
-                  biological questions <i class="fas fa-check" />
+                  <h5>User-driven service provision and support</h5>
+                  <ul>
+                    <li>
+                      Knowledge
+                      <ul>
+                        <li>
+                          Awareness of customer support practices and training
+                          best practice
+                        </li>
+                        <li>
+                          Knowledge of how own service fits in with broader
+                          service landscape
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      Skill
+                      <ul>
+                        <li>Manages expectations effectively</li>
+                      </ul>
+                    </li>
+                  </ul>
+                  <ul>
+                    <li>
+                      Attitude
+                      <ul>
+                        <li>
+                          Actively facilitates gathering of use cases and user
+                          requirements, anticipates user problems
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-              </tr>
-              <tr>
                 <td>
-                  {' '}
-                  -- Attitude - Comprehends that results might be difficult to
-                  interpret <i class="fas fa-check" />
+                  <p>Awareness</p>
                 </td>
-                <td />
-                <td />
-                <td />
-                <td />
-              </tr>
-              <tr>
-                <td>
-                  {' '}
-                  -- Attitude - Accurately judges the validity of his/her
-                  results <i class="fas fa-check" />
-                </td>
-                <td />
-                <td />
-                <td />
-                <td />
               </tr>
             </tbody>
           </table>

@@ -64,6 +64,11 @@ class BodyService {
           description: 'persona picture'
         }
       ],
+      field_publishing_status: [
+        {
+          value: 'Draft'
+        }
+      ],
       type: [
         {
           target_id: 'profile'
@@ -101,6 +106,7 @@ class BodyService {
     jobTitle,
     qualification,
     additionalInfo,
+    publishStatus,
     fileid
   ) {
     return {
@@ -154,6 +160,11 @@ class BodyService {
         {
           target_id: fileid,
           description: 'persona picture'
+        }
+      ],
+      field_publishing_status: [
+        {
+          value: publishStatus
         }
       ],
       type: [

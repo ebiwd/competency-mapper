@@ -51,8 +51,9 @@ input[type='checkbox'] {
   width: 14px;
   height: 14px;
   border: 10px solid;
-  top: 4px;
+  /*top: 4px;*/
   position: relative;
+  cursor: pointer;
 }
 
 input[type='checkbox'] + span {
@@ -63,7 +64,7 @@ input[type='checkbox'] + span {
 
 input[type='checkbox']:checked {
   border: 13px solid;
-  top: 7px;
+  /*top: 7px;*/
   position: relative;
 }
 
@@ -72,6 +73,78 @@ input[type='checkbox']:checked + span {
   padding: 3px;
 }
 
-/*#checkboxMappingLabel{
-  font-weight: bold;
-}*/
+input[type='checkbox']:checked + div > .attribute_label {
+  border: 2px solid green;
+  padding: 3px;
+}
+
+.submit_fixed {
+  padding: 10px;
+  background: #f1f1f1;
+  text-align: center;
+  bottom: 0px;
+}
+
+.competency_list {
+  border: 1px dashed #ccc;
+  padding: 10px;
+  margin-bottom: 5px;
+  list-style-type: none;
+}
+
+.domain_list {
+  list-style-type: none;
+}
+
+.domain_title {
+  /*font-weight: 600;*/
+  left: 20px;
+  position: relative;
+}
+
+.attribute_title {
+  list-style-type: none;
+}
+
+.attribute_title:checkbox {
+  top: 0;
+}
+
+.attribute_label {
+  font-size: large;
+  list-style-type: none;
+  margin-bottom: 7px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.attribute_type {
+  font-size: large;
+  list-style-type: none;
+  margin-bottom: 7px;
+  font-weight: 600;
+}
+
+.competency_section {
+  /*  border: 1px outset #ccc;
+*/
+  margin-top: 30px;
+  padding: 10px;
+}
+
+.form_intro {
+  font-size: large;
+  font-weight: lighter;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /*left: 40px;*/
+  position: relative;
+}
+
+.icon-custom {
+  margin: 10px;
+}
+
+.button {
+  font-size: larger;
+}

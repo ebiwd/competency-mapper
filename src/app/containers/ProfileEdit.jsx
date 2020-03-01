@@ -29,6 +29,7 @@ export const ProfileEdit = props => {
   const [jobTitle, setJobTitle] = useState();
   const [qualification, setQualification] = useState();
   const [additionalInfo, setAdditionalInfo] = useState();
+  const [publishStatus, setPublishStatus] = useState();
 
   const [framework, setFramework] = useState();
 
@@ -75,6 +76,11 @@ export const ProfileEdit = props => {
               ? findresponse.field_additional_information[0].value
               : ''
           );
+          setPublishStatus(
+            findresponse.field_publishing_status[0]
+              ? findresponse.field_publishing_status[0].value
+              : ''
+          );
         });
     };
     fetchData();
@@ -115,6 +121,7 @@ export const ProfileEdit = props => {
       jobTitle,
       qualification,
       additionalInfo,
+      publishStatus,
       fileid
     );
 
@@ -333,6 +340,18 @@ export const ProfileEdit = props => {
                     setAdditionalInfo(data);
                   }}
                 />
+              </span>
+
+              <span>
+                <strong>Publishing status</strong>
+                <select
+                  value={publishStatus}
+                  defaultValue="-None-"
+                  onChange={e => setPublishStatus(e.target.value)}
+                >
+                  <option value={'Draft'}>Draft</option>
+                  <option value={'Live'}>Live</option>
+                </select>
               </span>
             </div>
           </div>
