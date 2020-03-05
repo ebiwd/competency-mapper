@@ -26,6 +26,7 @@ export const ProfileCreate = props => {
   const [additionalInfo, setAdditionalInfo] = useState();
 
   const [framework, setFramework] = useState();
+  const [frameworkLogoData, setFrameworkLogoData] = useState([]);
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
 
@@ -34,7 +35,7 @@ export const ProfileCreate = props => {
   let errors = [];
 
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchDataOld = async () => {
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
       )
@@ -42,6 +43,64 @@ export const ProfileCreate = props => {
         .then(findresponse => {
           setFramework(findresponse);
         });
+    };
+
+    // Calling multiple APIs, since data Framework are in two different endpoints
+    const fetchData = async () => {
+      try {
+        const [data1, data2] = await Promise.all([
+          fetch(
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+          ).then(response1 => response1.json()),
+          fetch(
+            'https://dev-competency-mapper.pantheonsite.io/api/version_manager?_format=json'
+          ).then(response2 => response2.json())
+        ]);
+        // Get current Framework only
+        let frameworkMoreData = data2.filter(item => {
+          return item.nid === '9';
+        });
+        if (frameworkMoreData[0].logo[0].url) {
+          toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
+            let img = new Image();
+            img.src = myBase64;
+            img.addEventListener('load', function() {
+              img.width = this.width;
+              img.height = this.height;
+              setFrameworkLogoData([
+                {
+                  url: frameworkMoreData[0].logo[0].url,
+                  src: img.src,
+                  width: this.width,
+                  height: this.height
+                }
+              ]);
+            });
+            // console.log(frameworkMoreData[0].logo[0].url)
+          });
+
+          // Set Framework logo Data for Framework Data
+          // getImageData(frameworkMoreData[0].logo[0].url, function(myBase64) {
+          //   let img = new Image();
+          //   img.src = myBase64;
+          //   img.addEventListener('load', function() {
+          //     img.width = this.width;
+          //     img.height = this.height;
+          //     setFrameworkLogoData([
+          //       {
+          //         url: frameworkMoreData[0].logo[0].url,
+          //         src: img.src,
+          //         width: this.width,
+          //         height: this.height
+          //       }
+          //     ]);
+          //   });
+          // });
+        }
+        setFramework(data1);
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     fetchData();
@@ -189,6 +248,42 @@ export const ProfileCreate = props => {
       placeholder = 'your';
     }
     return placeholder;
+  };
+
+  // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
+  const getImageData = (url, callback) => {
+    var xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        return callback(reader.result);
+      };
+      reader.readAsDataURL(xhr.response);
+    };
+    xhr.open('GET', url);
+    xhr.responseType = 'blob';
+    xhr.send();
+  };
+
+  const toDataURL = (src, callback, outputFormat) => {
+    var img = new Image();
+    img.crossOrigin = 'Anonymous';
+    img.onload = function() {
+      var canvas = document.createElement('CANVAS');
+      var ctx = canvas.getContext('2d');
+      var dataURL;
+      canvas.height = this.naturalHeight;
+      canvas.width = this.naturalWidth;
+      ctx.drawImage(this, 0, 0);
+      dataURL = canvas.toDataURL(outputFormat);
+      callback(dataURL);
+    };
+    img.src = src;
+    if (img.complete || img.complete === undefined) {
+      img.src =
+        'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+      img.src = src;
+    }
   };
 
   const placeholder = getWhoCreateProfile();
