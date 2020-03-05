@@ -54,6 +54,15 @@ class ProfileService {
     return response.data;
   }
 
+  async mapProfile(profileId, mapping) {
+    const response = await this.http.patch(
+      `/api/profiles?_format=json`,
+      Body.mapProfile(profileId, mapping),
+      'json'
+    );
+    return response.data;
+  }
+
   downloadProfile(options) {
     Download.getProfile(options);
 

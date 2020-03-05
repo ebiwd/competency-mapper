@@ -8,24 +8,37 @@ import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
 import Parser from 'html-react-parser';
 
+const $ = window.$;
+
 export const ProfileMap = props => {
+  const activeRequests = new ActiveRequestsService();
+  const profileService = new ProfileService();
+
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
 
+  const [ksa, setKsa] = useState();
+  //const [mapping, setMapping] = useState()
+
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
+
   var competencyForm = '';
   var expertise_levels = [];
+  var expertise_not_applicable = '';
   var attribute_types = [];
   var frameworkFullName = '';
   var frameworkLogo = '';
   var frameworkDesc = '';
+  var mapping = [];
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`${apiUrl}/node/${profileId}?_format=json`)
+      await fetch(
+        `${apiUrl}/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setProfile(findresponse);
@@ -48,9 +61,52 @@ export const ProfileMap = props => {
     fetchData();
   }, [profileId]);
 
-  const handleSubmit = e => {
+  const handleSubmit = async e => {
     e.preventDefault();
-    alert('Form processed');
+
+    let response = await profileService.mapProfile(profileId, mapping);
+    props.history.push(
+      `/framework/bioexcel/2.0/profile/view/${profileId}/alias`
+    );
+  };
+
+  const handleMapping = event => {
+    let competency_id = event.target[event.target.selectedIndex].getAttribute(
+      'data-competency'
+    );
+    let expertise_id = event.target[event.target.selectedIndex].getAttribute(
+      'data-expertise'
+    );
+
+    if (expertise_id == expertise_not_applicable) {
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'checked',
+        false
+      );
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'disabled',
+        true
+      );
+    } else {
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'checked',
+        true
+      );
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'disabled',
+        false
+      );
+    }
+
+    if (mapping.find(o => o.competency === competency_id)) {
+      let o = mapping.find(o => o.competency === competency_id);
+      //console.log('already included with expertise '+ o.expertise)
+      o.expertise = expertise_id;
+      console.log('now changed to ' + o.expertise);
+    } else {
+      mapping.push({ competency: competency_id, expertise: expertise_id });
+      //console.log('pushed new entry as competency = '+ competency_id + ' and expertise = '+ expertise_id)
+    }
   };
 
   const generateForm = () => {
@@ -61,7 +117,12 @@ export const ProfileMap = props => {
           frameworkLogo = info.logo[0].url;
           frameworkDesc = info.description;
           info.expertise_levels.map(
-            level => (expertise_levels[level.id] = level.title)
+            level => (
+              (expertise_levels[level.id] = level.title),
+              level.title == 'Not applicable'
+                ? (expertise_not_applicable = level.id)
+                : ''
+            )
           );
         }
       });
@@ -74,7 +135,10 @@ export const ProfileMap = props => {
       });
     }
 
-    console.log(attribute_types);
+    if (profile) {
+      mapping = profile.profile_mapping;
+      console.log(mapping);
+    }
 
     if (framework) {
       competencyForm = framework.map(item =>
@@ -134,6 +198,7 @@ export const ProfileMap = props => {
                                               <input
                                                 type="checkbox"
                                                 id={attribute.id}
+                                                data-competency={competency.id}
                                               />
                                             </div>
                                             <div className="column medium-11">
@@ -156,12 +221,20 @@ export const ProfileMap = props => {
                         </Collapsible>
                       </div>
                       <div className="column medium-3">
-                        <select>
+                        <select
+                          onChange={e => handleMapping(e)}
+                          defaultValue={
+                            mapping.find(o => o.competency == competency.id)
+                              ? mapping.find(o => o.competency == competency.id)
+                                  .expertise
+                              : expertise_not_applicable
+                          }
+                        >
                           {expertise_levels.map((key, value) => (
                             <option
-                              value={key}
-                              data-level-id={value}
-                              data-competency-id={competency.id}
+                              value={value}
+                              data-expertise={value}
+                              data-competency={competency.id}
                             >
                               {key}
                             </option>
@@ -191,15 +264,10 @@ export const ProfileMap = props => {
               <div className="row">
                 <div className="column medium-3">
                   <img
-                    src={
-                      profile.field_image[0]
-                        ? profile.field_image[0].url
-                        : user_icon
-                    }
+                    src={profile.image[0] ? profile.image[0].url : user_icon}
                     width="150px"
                   />
-                  <h5>{profile.title[0].value} </h5>{' '}
-                  <h5>{profile.field_job_title[0].value} </h5>
+                  <h5>{profile.title}</h5> <h5>{profile.job_title} </h5>
                   <Link
                     to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
                   >

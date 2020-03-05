@@ -9,6 +9,7 @@ import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
+import Collapsible from 'react-collapsible';
 
 export const ProfileView = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -17,36 +18,192 @@ export const ProfileView = props => {
   const alias = props.location.pathname.split('/')[7];
 
   const [profile, setProfile] = useState();
+  const [framework, setFramework] = useState();
+  const [frameworkInfo, setFrameworkInfo] = useState();
+
+  var competencyView = '';
+  var expertise_levels = [];
+  var attribute_types = [];
+  var frameworkFullName = '';
+  var frameworkLogo = '';
+  var frameworkDesc = '';
+  var mapping = [];
+
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`${apiUrl}/node/${profileId}?_format=json`)
+      await fetch(
+        `${apiUrl}/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setProfile(findresponse);
+        });
+
+      await fetch(`${apiUrl}/api/version_manager?_format=json`)
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setFrameworkInfo(findresponse);
+        });
+
+      await fetch(
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+      )
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setFramework(findresponse);
         });
     };
     fetchData();
   }, [profileId]);
 
-  const checkAlias = () => {
-    if (profile.path[0].alias.substring(1) != alias) {
-      props.history.push(
-        `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${
-          profile.path[0].alias
-        }`
+  // const checkAlias = () => {
+  //   if (profile.path[0].alias.substring(1) != alias) {
+  //     props.history.push(
+  //       `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${
+  //         profile.path[0].alias
+  //       }`
+  //     );
+  //   }
+  // };
+
+  const getExpertise = competency => {
+    let obj = mapping.find(o => o.competency == competency);
+    if (obj) {
+      if (frameworkInfo) {
+        let expertise = frameworkInfo[0].expertise_levels.find(
+          level => level.id == obj.expertise
+        );
+        return expertise.title;
+      }
+    } else {
+      return '';
+    }
+  };
+
+  const generateProfileView = () => {
+    if (frameworkInfo) {
+      frameworkInfo.map(info => {
+        if (info.title.toLowerCase() === frameworkName) {
+          frameworkFullName = info.title;
+          frameworkLogo = info.logo[0].url;
+          frameworkDesc = info.description;
+          info.expertise_levels.map(
+            level => (expertise_levels[level.id] = level.title)
+          );
+        }
+      });
+      frameworkInfo.map(info => {
+        if (info.title.toLowerCase() === frameworkName) {
+          info.attribute_types.map(
+            attribute => (attribute_types[attribute.id] = attribute.title)
+          );
+        }
+      });
+    }
+
+    if (profile) {
+      mapping = profile.profile_mapping;
+    }
+
+    if (framework) {
+      competencyView = framework.map(item =>
+        item.domains.map((domain, did) => (
+          <ul>
+            <li className="domain_list">
+              <div className="row callout">
+                <div className="column medium-9">
+                  <h4 className="domain_title"> {domain.title}</h4>
+                </div>
+                <div className="column medium-3">
+                  <h4>Levels of expertise</h4>
+                </div>
+              </div>
+              <ul>
+                {domain.competencies.map((competency, cid) => (
+                  <li className="competency_list">
+                    <div className="row">
+                      <div className="column medium-9">
+                        <Collapsible
+                          trigger={
+                            <div className="open-close-title">
+                              <h5>
+                                {competency.title}
+                                <span className="icon icon-common icon-angle-right icon-custom">
+                                  <p className="show-for-sr">show more</p>
+                                </span>
+                              </h5>
+                            </div>
+                          }
+                          triggerWhenOpen={
+                            <div className="open-close-title">
+                              <h5>
+                                {competency.title}
+                                <span className="icon icon-common icon-angle-down icon-custom">
+                                  <p className="show-for-sr">show less</p>
+                                </span>
+                              </h5>
+                            </div>
+                          }
+                        >
+                          <ul>
+                            {attribute_types.map(attribute_type => {
+                              return (
+                                <li className="attribute_type">
+                                  {attribute_type}
+                                  <ul>
+                                    {competency.attributes
+                                      .filter(
+                                        attribute =>
+                                          attribute.type == attribute_type
+                                      )
+                                      .map(attribute => (
+                                        <li className="attribute_title">
+                                          <div className="row">
+                                            <div className="column medium-1" />
+                                            <div className="column medium-11">
+                                              <label
+                                                className="attribute_label"
+                                                for={attribute.id}
+                                              >
+                                                {' '}
+                                                {attribute.title}
+                                              </label>
+                                            </div>
+                                          </div>
+                                        </li>
+                                      ))}
+                                  </ul>
+                                </li>
+                              );
+                            })}
+                          </ul>
+                        </Collapsible>
+                      </div>
+                      <div className="column medium-3">
+                        {getExpertise(competency.id)}
+                      </div>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </li>
+          </ul>
+        ))
       );
     }
   };
 
   return (
     <div>
+      {generateProfileView()}
       {profile ? (
         <div>
-          {checkAlias()}
+          {
+            //checkAlias()
+          }
 
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
-            {profile.title[0].value} -{' '}
-            {profile.field_job_title[0] ? profile.field_job_title[0].value : ''}
+            {profile.title} - {profile.job_title}
           </h2>
 
           <div style={{ float: 'right' }}>
@@ -70,37 +227,27 @@ export const ProfileView = props => {
               <center>
                 <img
                   style={{ display: 'block', maxWidth: '200px' }}
-                  src={profile.field_image[0] ? profile.field_image[0].url : ''}
+                  src={profile.image[0] ? profile.image[0].url : ''}
                 />
               </center>
               <p />
               <p style={{ textAlign: 'center' }}>
-                {profile.field_gender[0] ? profile.field_gender[0].value : ''}{' '}
-                {profile.field_age[0]
-                  ? '| ' + profile.field_age[0].value + ' years'
-                  : ''}
+                {profile.gender ? profile.gender : ''}{' '}
+                {profile.age ? '| ' + profile.age + ' years' : ''}
               </p>
             </div>
             <div className="column large-8">
               <h3>Qualification and background</h3>
               <p>
-                {profile.field_qualification_background[0]
-                  ? Parser(profile.field_qualification_background[0].value)
+                {profile.qualification_background
+                  ? Parser(profile.qualification_background)
                   : ''}
               </p>
 
               <h3>Acitivities of current role</h3>
-              <p>
-                {profile.field_current_role[0]
-                  ? Parser(profile.field_current_role[0].value)
-                  : ''}
-              </p>
+              <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
 
-              <p>
-                {profile.field_additional_information[0]
-                  ? Parser(profile.field_additional_information[0].value)
-                  : ''}
-              </p>
+              <p>Additional information</p>
             </div>
             <p />
           </div>
@@ -111,127 +258,7 @@ export const ProfileView = props => {
             {' '}
             Manage competencies <i class="icon icon-common icon-angle-right" />
           </Link>
-          <table class="hover">
-            <tbody>
-              <tr>
-                <td>
-                  <h4> Competency profile </h4>
-                </td>
-                <td colspan="5">
-                  <h4> Level of expertise </h4>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h5>Scientific competencies</h5>
-                </td>
-                <td colspan="5" />
-              </tr>
-
-              <tr>
-                <td>
-                  <h5>
-                    Apply expertise in formal & natural sciences appropriate to
-                    the disciplin
-                  </h5>
-                  <ul>
-                    <li>
-                      Knowledge
-                      <ul>
-                        <li>
-                          Comprehends that a biological theory is not
-                          necessarily true
-                        </li>
-                        <li>
-                          Comprehends that models require experimental
-                          validation
-                        </li>
-                        <li>
-                          Fundamental scientific knowledge (biology, chemistry,
-                          physics, mathematics)
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      Skill
-                      <ul>
-                        <li>Has an interdisciplinary view</li>
-                        <li>
-                          Asks relevant, hypothesis driven, well-defined
-                          biological questions
-                        </li>
-                        <li>
-                          Accurately judges the validity of his/her results
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      Attitude
-                      <ul>
-                        <li>Takes a comprehensive approach to problems</li>
-                        <li>Allows for unexpected results</li>
-                        <li>
-                          Comprehends that results might be difficult to
-                          interpret
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <p>Specialist Knowledge</p>
-                </td>
-              </tr>
-
-              <tr>
-                <td>
-                  <h5>User-driven service provision and support</h5>
-                  <ul>
-                    <li>
-                      Knowledge
-                      <ul>
-                        <li>
-                          Awareness of customer support practices and training
-                          best practice
-                        </li>
-                        <li>
-                          Knowledge of how own service fits in with broader
-                          service landscape
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      Skill
-                      <ul>
-                        <li>Manages expectations effectively</li>
-                      </ul>
-                    </li>
-                  </ul>
-                  <ul>
-                    <li>
-                      Attitude
-                      <ul>
-                        <li>
-                          Actively facilitates gathering of use cases and user
-                          requirements, anticipates user problems
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
-                </td>
-                <td>
-                  <p>Awareness</p>
-                </td>
-              </tr>
-            </tbody>
-          </table>
+          {competencyView}
         </div>
       ) : (
         'Loaing profile'

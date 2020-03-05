@@ -174,6 +174,32 @@ class BodyService {
       ]
     };
   }
+
+  static mapProfile(profileId, mapping) {
+    let mappingBody = [];
+    mapping.forEach(function(item) {
+      mappingBody.push({
+        competency: item.competency,
+        expertise: item.expertise
+      });
+    });
+
+    //  console.log(mappingBody)
+
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      field_item: [
+        {
+          value: profileId
+        }
+      ],
+      field_profile_mapping: mappingBody
+    };
+  }
 }
 
 export default BodyService;
