@@ -191,42 +191,6 @@ export const ProfileCreate = props => {
     return placeholder;
   };
 
-  // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
-  const getImageData = (url, callback) => {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      var reader = new FileReader();
-      reader.onloadend = function() {
-        return callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-  };
-
-  const toDataURL = (src, callback, outputFormat) => {
-    var img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.onload = function() {
-      var canvas = document.createElement('CANVAS');
-      var ctx = canvas.getContext('2d');
-      var dataURL;
-      canvas.height = this.naturalHeight;
-      canvas.width = this.naturalWidth;
-      ctx.drawImage(this, 0, 0);
-      dataURL = canvas.toDataURL(outputFormat);
-      callback(dataURL);
-    };
-    img.src = src;
-    if (img.complete || img.complete === undefined) {
-      img.src =
-        'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-      img.src = src;
-    }
-  };
-
   const placeholder = getWhoCreateProfile();
 
   // Check if Fields are not empty hide Help Text
