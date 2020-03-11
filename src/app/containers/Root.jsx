@@ -21,6 +21,7 @@ import AttributeSettings from './AttributeSettings';
 import AttributeDemap from './AttributeDemap';
 import ProfileCreate from './ProfileCreate';
 import ProfileView from './ProfileView';
+import ProfileMapDownload from './ProfileMapDownload';
 import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
 import ProfilePreview from './ProfilePreview';
@@ -173,6 +174,11 @@ class Root extends Component {
                 <Route
                   path="/framework/:framework/:version/profile/view/:id/:alias"
                   component={ProfileView}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/map/download"
+                  component={ProfileMapDownload}
                 />
 
                 <Route

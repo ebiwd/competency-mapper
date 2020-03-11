@@ -63,8 +63,14 @@ class ProfileService {
     return response.data;
   }
 
+  mapDownloadProfile(options) {
+    // console.log(options)
+    localStorage.setItem('ProfileDownloadData', JSON.stringify(options));
+  }
+
   downloadProfile(options) {
     // Download.getProfile(options);
+    // console.log(options)
 
     let doc = new jsPDF('p', 'pt', 'a4');
     doc.setFont('helvetica');
@@ -106,22 +112,29 @@ class ProfileService {
     doc.text(marginleft, startHeight, 'EMBL-EBI Competency Profile');
 
     // Framework Logo
-    // if(options.frameworkLogoData){
+    if (options.frameworkLogoData) {
+      let frameworkLogoWidth = options.frameworkLogoData[0]
+        ? options.frameworkLogoData[0].width
+        : 100;
+      let frameworkLogoHeight = options.frameworkLogoData[0]
+        ? options.frameworkLogoData[0].height
+        : 30;
+      let logoRatio = frameworkLogoWidth / frameworkLogoHeight;
+      let pdfLogoHeight = pageLogoWidth / logoRatio;
 
-    //   let frameworkLogoWidth = options.frameworkLogoData[0]
-    //     ? options.frameworkLogoData[0].width
-    //     : 100;
-    //   let frameworkLogoHeight = options.frameworkLogoData[0]
-    //     ? options.frameworkLogoData[0].height
-    //     : 30;
-    //   let logoRatio = frameworkLogoWidth / frameworkLogoHeight;
-    //   let pdfLogoHeight = pageLogoWidth / logoRatio;
-
-    //   let logoData = options.frameworkLogoData[0].src;
-    //   let logoType = 'PNG';
-    //   doc.addImage( logoData, logoType, marginright - 100, 5, pageLogoWidth, pdfLogoHeight, '', 'SLOW' );
-
-    // }
+      let logoData = options.frameworkLogoData[0].src;
+      let logoType = 'PNG';
+      doc.addImage(
+        logoData,
+        logoType,
+        marginright - 100,
+        5,
+        pageLogoWidth,
+        pdfLogoHeight,
+        '',
+        'SLOW'
+      );
+    }
 
     currentYAxis = currentYAxis + 50;
 
@@ -167,7 +180,6 @@ class ProfileService {
       );
     }
 
-    console.log(currentYAxis);
     currentYAxis = currentYAxis + 40;
 
     // PROFILE Qualifications

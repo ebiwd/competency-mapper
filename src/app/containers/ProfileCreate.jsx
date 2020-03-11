@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FileUpload from './FileUpload';
+import HttpService from '../services/http/http';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -34,6 +35,8 @@ export const ProfileCreate = props => {
   const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
   let errors = [];
 
+  const http = new HttpService();
+
   useEffect(() => {
     const fetchDataOld = async () => {
       await fetch(
@@ -48,19 +51,31 @@ export const ProfileCreate = props => {
     // Calling multiple APIs, since data Framework are in two different endpoints
     const fetchData = async () => {
       try {
-        const [data1, data2] = await Promise.all([
-          fetch(
+        const promise1 = http
+          .get(
             `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-          ).then(response1 => response1.json()),
-          fetch(
+          )
+          .then(response1 => response1.data);
+
+        const promise2 = http
+          .get(
             'https://dev-competency-mapper.pantheonsite.io/api/version_manager?_format=json'
-          ).then(response2 => response2.json())
-        ]);
+          )
+          .then(response2 => response2.data);
+
+        const [data1, data2] = await Promise.all([promise1, promise2]);
         // Get current Framework only
         let frameworkMoreData = data2.filter(item => {
           return item.nid === '9';
         });
         if (frameworkMoreData[0].logo[0].url) {
+          // setFrameworkLogoData([
+          //   {
+          //     url: frameworkMoreData[0].logo[0].url,
+          //     src: frameworkMoreData[0].logo[0].url
+          //   }
+          // ]);
+
           toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
             let img = new Image();
             img.src = myBase64;
@@ -76,7 +91,6 @@ export const ProfileCreate = props => {
                 }
               ]);
             });
-            // console.log(frameworkMoreData[0].logo[0].url)
           });
 
           // Set Framework logo Data for Framework Data
@@ -109,6 +123,7 @@ export const ProfileCreate = props => {
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
+    let frameworkName = framework[0].title;
     let frameworkUuid = framework[0].uuid;
     var arrayBuffer = '';
     var fileid = null;
@@ -121,9 +136,11 @@ export const ProfileCreate = props => {
       setErrorMsgTitle('');
       setErrorMsgJobTitle('');
 
-      profileService.downloadProfile({
+      profileService.mapDownloadProfile({
         title,
         frameworkId,
+        frameworkLogoData,
+        frameworkName,
         frameworkUuid,
         age,
         currentRole,
@@ -132,8 +149,27 @@ export const ProfileCreate = props => {
         qualification,
         additionalInfo,
         selectedFile,
-        selectedFileData
+        selectedFileData,
+        mapping: [],
+        mappingAttributes: []
       });
+      props.history.push('/framework/bioexcel/2.0/profile/map/download/');
+
+      // profileService.downloadProfile({
+      //   title,
+      //   frameworkId,
+      //   frameworkLogoData,
+      //   frameworkName,
+      //   frameworkUuid,
+      //   age,
+      //   currentRole,
+      //   gender,
+      //   jobTitle,
+      //   qualification,
+      //   additionalInfo,
+      //   selectedFile,
+      //   selectedFileData
+      // });
     } else if (localStorage.getItem('roles').includes('framework_manager')) {
       if (selectedFile) {
         let token = localStorage.getItem('csrf_token');
@@ -236,7 +272,7 @@ export const ProfileCreate = props => {
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = 'Download';
+      submitButtonLabel = 'Add Competencies';
     }
 
     return <input type="submit" className="button" value={submitButtonLabel} />;
