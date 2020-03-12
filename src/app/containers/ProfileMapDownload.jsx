@@ -191,7 +191,6 @@ export const ProfileMapDownload = props => {
   // Remove current attributes if Competency is deselected
   const removeCompetencyAttributes = competency => {
     let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
-    // let selectedAttributes = new Array();
     let mappingAttributes = storedProfile['mappingAttributes'];
     let attributes = $(
       'input:checkbox[data-competency=' + competency + ']'
@@ -246,14 +245,6 @@ export const ProfileMapDownload = props => {
       );
     }
     setProfileAttributes(storedProfile);
-
-    // setAttributeStyle(event)
-  };
-
-  const setAttributeStyle = event => {
-    let competency_id = event.target.getAttribute('data-competency');
-    let attribute_id = event.target.getAttribute('id');
-    $('input:checkbox[id=' + attribute_id + ']').change(console.log($(this)));
   };
 
   // Set Expertise Level.
@@ -321,7 +312,8 @@ export const ProfileMapDownload = props => {
       top: startHeight,
       bottom: 60,
       left: marginleft,
-      right: marginright
+      right: marginright,
+      width: 490
     };
 
     var source = document.getElementById('profile');
@@ -334,27 +326,33 @@ export const ProfileMapDownload = props => {
     let profileTitle = options.jobTitle.split(' ').join('_');
     doc.fromHTML(
       source,
-      fifthCol,
+      marginleft,
       currentYAxis,
       {
         // y coord
-        width: profileBody, // max width of content on PDF
+        width: margins.width, // max width of content on PDF
         elementHandlers: specialElementHandlers
       },
       function(dispose) {
         // dispose: object with X, Y of the last line add to the PDF
         //          this allow the insertion of new lines after html
         doc.save(profileTitle.toLowerCase() + '.pdf');
-      },
-      margins
+      }
+      // margins
     );
 
     // doc.output("/framework/bioexcel/2.0/profile/map/download/myprofile");
   };
 
+  // Set fielc HTML content + Heading if not empty
+  const setFieldContent = (heading, field) => {
+    let fieldContent = field ? '<h3>' + heading + '</h3>' + field : '';
+    return { __html: fieldContent };
+  };
+
   const generateForm = () => {
-    // console.log('profile')
-    // console.log(profile)
+    // console.log('frameworkInfo')
+    // console.log(frameworkInfo)
     if (frameworkInfo) {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -411,20 +409,20 @@ export const ProfileMapDownload = props => {
                           trigger={
                             <div className="open-close-title">
                               <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-right icon-custom">
+                                <span className="icon icon-common icon-angle-down icon-custom">
                                   <p className="show-for-sr">show more</p>
                                 </span>
+                                {competency.title}
                               </h5>
                             </div>
                           }
                           triggerWhenOpen={
                             <div className="open-close-title">
                               <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-down icon-custom">
+                                <span className="icon icon-common icon-angle-up icon-custom">
                                   <p className="show-for-sr">show less</p>
                                 </span>
+                                {competency.title}
                               </h5>
                             </div>
                           }
@@ -467,7 +465,15 @@ export const ProfileMapDownload = props => {
                                             </div>
                                             <div className="column medium-11">
                                               <label
-                                                className="attribute_label"
+                                                className={
+                                                  mappingAttributes.find(
+                                                    attr =>
+                                                      attr.attribute_id ==
+                                                      attribute.id
+                                                  )
+                                                    ? 'attribute_label checked'
+                                                    : 'attribute_label'
+                                                }
                                                 htmlFor={attribute.id}
                                               >
                                                 {' '}
@@ -529,12 +535,21 @@ export const ProfileMapDownload = props => {
 
             <div id="profile" className="column medium-12">
               <div className="row">
-                <h3>
-                  {profile.title.charAt(0).toUpperCase() +
-                    profile.title.slice(1)}{' '}
-                  - {profile.jobTitle}
-                </h3>
+                <div className="column medium-9">
+                  <h3>
+                    {profile.title.charAt(0).toUpperCase() +
+                      profile.title.slice(1)}{' '}
+                    - {profile.jobTitle}
+                  </h3>
+                </div>
                 <div className="column medium-3">
+                  <img src={frameworkLogo} />
+                  <br />
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="column medium-3 text-center">
                   {profile.selectedFileData[0].src ? (
                     <img
                       src={
@@ -542,32 +557,51 @@ export const ProfileMapDownload = props => {
                           ? profile.selectedFileData[0].src
                           : user_icon
                       }
-                      width="150px"
+                      width="250px"
                     />
                   ) : (
                     ''
                   )}
-                  <div>
+                  <div className="text-center">
+                    <br />
                     {profile.gender}, {profile.age} years
                   </div>
-                  {/* <div>{profile.qualification}</div> */}
-                  <div
-                    dangerouslySetInnerHTML={{ __html: profile.qualification }}
-                  />
-                  <div
-                    dangerouslySetInnerHTML={{ __html: profile.currentRole }}
-                  />
-                  {/* <div>{profile.currentRole}</div> */}
-                  {/* <h5>{profile.title}</h5> */}
-                  {/* <Link
-                    to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
-                  >
-                    {' '}
-                    <i className="icon icon-common icon-angle-left" /> Profile
-                    overview{' '}
-                  </Link> */}
                 </div>
-                <div className="column medium-6 form_intro">
+                <div className="column medium-6">
+                  <div
+                    className="form_intro"
+                    dangerouslySetInnerHTML={setFieldContent(
+                      'Qualifications and background',
+                      profile.qualification
+                    )}
+                  />
+                  {/* <div className="form_intro"
+                    dangerouslySetInnerHTML={{ __html: profile.qualification }}
+                  /> */}
+
+                  <div
+                    className="form_intro"
+                    dangerouslySetInnerHTML={setFieldContent(
+                      'Activities and current role',
+                      profile.currentRole
+                    )}
+                  />
+
+                  <div
+                    className="form_intro"
+                    dangerouslySetInnerHTML={setFieldContent(
+                      'Additional information',
+                      profile.additionalInfo
+                    )}
+                  />
+                </div>
+                <div className="column medium-3" />
+              </div>
+
+              <div className="row">
+                <div className="column medium-9">
+                  <br />
+                  <h3>Your competencies</h3>
                   <p>
                     The form below is listing competencies from{' '}
                     {frameworkFullName} competency framework. A competency is an
@@ -579,7 +613,7 @@ export const ProfileMapDownload = props => {
                   </p>
                   <p>
                     You may assign a level expertise against each competency.
-                    The levels of expertise are:-
+                    The levels of expertise are:
                   </p>
                   <ul>
                     {expertise_levels.map((level, index) => (
@@ -587,13 +621,49 @@ export const ProfileMapDownload = props => {
                     ))}
                   </ul>
                 </div>
-                <div className="column medium-3">
-                  <img src={frameworkLogo} />
-                  <br />
+                <div className="column medium-3" />
+              </div>
+
+              <div className="row">
+                <div className="column medium-12">
+                  <div className="competency_section">
+                    {
+                      <form onSubmit={e => handleSubmit(e)}>
+                        {competencyForm}
+                        <div className="submit_fixed">
+                          <button className="button" type="submit">
+                            Download{' '}
+                            <i className="icon icon-common icon-download" />
+                          </button>
+                        </div>
+                      </form>
+                    }
+                  </div>
                 </div>
               </div>
 
-              <div className="competency_section">
+              <div className="row">
+                <div className="column medium-3">
+                  {/* <div>{profile.qualification}</div> */}
+
+                  {/* <div>{profile.currentRole}</div> */}
+                  {/* <h5>{profile.title}</h5> */}
+                  {/* <Link
+                    to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
+                  >
+                    {' '}
+                    <i className="icon icon-common icon-angle-left" /> Profile
+                    overview{' '}
+                  </Link> */}
+                </div>
+                <div className="column medium-6 form_intro" />
+                <div className="column medium-3">
+                  {/* <img src={frameworkLogo} />
+                  <br /> */}
+                </div>
+              </div>
+
+              {/* <div className="competency_section">
                 {
                   <form onSubmit={e => handleSubmit(e)}>
                     {competencyForm}
@@ -605,7 +675,7 @@ export const ProfileMapDownload = props => {
                     </div>
                   </form>
                 }
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

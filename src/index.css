@@ -116,6 +116,11 @@ input[type='checkbox']:checked + div > .attribute_label {
   margin-bottom: 7px;
   font-weight: normal;
   cursor: pointer;
+  color: #737373;
+}
+
+.attribute_label.checked {
+  color: #0a0a0a;
 }
 
 .attribute_type {
