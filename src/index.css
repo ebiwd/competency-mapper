@@ -104,10 +104,29 @@ input[type='checkbox']:checked + div > .attribute_label {
 
 .attribute_title {
   list-style-type: none;
+  font-weight: normal;
+  color: #777;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
 .attribute_title:checkbox {
   top: 0;
+}
+
+.attribute_selected {
+  color: #000;
+}
+
+.attribute_selected:before {
+  /*content: '\2713';*/
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.attribute_not_selected:before {
+  content: ' ';
+  margin-right: 22px;
 }
 
 .attribute_label {
@@ -116,17 +135,12 @@ input[type='checkbox']:checked + div > .attribute_label {
   margin-bottom: 7px;
   font-weight: normal;
   cursor: pointer;
-  color: #737373;
-}
-
-.attribute_label.checked {
-  color: #0a0a0a;
 }
 
 .attribute_type {
   font-size: large;
   list-style-type: none;
-  margin-bottom: 7px;
+  margin-top: 20px;
   font-weight: 600;
 }
 
@@ -152,4 +166,42 @@ input[type='checkbox']:checked + div > .attribute_label {
 
 .button {
   font-size: larger;
+}
+
+.profile_navigation {
+  display: inline;
+  margin-left: 10px;
+}
+
+.legend {
+  font-size: 20px;
+  margin: 20px;
+  display: table-cell;
+  padding: 20px;
+  text-align: center;
+}
+
+.legend_number {
+  background-color: #cbd0df;
+  border-radius: 50%;
+  padding: 15px;
+  font-weight: 600;
+  width: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legend_container {
+  width: 100%;
+  padding: 20px;
+  border: 2px solid #000;
+  background-color: #f1f1f1;
+  display: table-row;
+  text-align: center;
+}
+
+.Draft {
+  background-image: url('./app/containers/watermark.jpg');
+  background-size: 25%;
 }

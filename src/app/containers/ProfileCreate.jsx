@@ -21,6 +21,8 @@ export const ProfileCreate = props => {
   const [selectedFileData, setSelectedFileData] = useState([]);
   const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
+  const [fileSizeError, setFileSizeError] = useState();
+  const [fileTypeError, setFileTypeError] = useState();
 
   const [jobTitle, setJobTitle] = useState();
   const [qualification, setQualification] = useState();
@@ -58,9 +60,7 @@ export const ProfileCreate = props => {
           .then(response1 => response1.data);
 
         const promise2 = http
-          .get(
-            'https://dev-competency-mapper.pantheonsite.io/api/version_manager?_format=json'
-          )
+          .get(`${apiUrl}/api/version_manager?_format=json`)
           .then(response2 => response2.data);
 
         const [data1, data2] = await Promise.all([promise1, promise2]);
@@ -129,7 +129,14 @@ export const ProfileCreate = props => {
     var fileid = null;
 
     // Do nothing if Form doesn't pass validation criteris above
-    if (!title || !jobTitle || title.length < 2 || jobTitle.length < 3) {
+    if (
+      !title ||
+      !jobTitle ||
+      title.length < 2 ||
+      jobTitle.length < 3 ||
+      fileTypeError ||
+      fileSizeError
+    ) {
     }
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
@@ -228,6 +235,23 @@ export const ProfileCreate = props => {
     } else {
       const objectUrl = URL.createObjectURL(e.target.files[0]);
 
+      if (e.target.files[0].size > 2097152) {
+        setFileSizeError(1);
+      } else {
+        setFileSizeError(undefined);
+      }
+
+      if (
+        e.target.files[0].type != 'image/jpeg' &&
+        e.target.files[0].type != 'image/png'
+      ) {
+        setFileTypeError(1);
+      } else {
+        setFileTypeError(undefined);
+      }
+
+      console.log(e.target.files[0]);
+
       // convert image file to base64 string. From https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
       const reader = new FileReader();
       reader.addEventListener(
@@ -266,6 +290,8 @@ export const ProfileCreate = props => {
     e.preventDefault();
     setSelectedFile(undefined);
     setImgpreview(undefined);
+    setFileTypeError(undefined);
+    setFileSizeError(undefined);
     document.getElementById('fileupload').value = '';
   };
 
@@ -408,6 +434,22 @@ export const ProfileCreate = props => {
                   <a href="#" onClick={e => clearimgpreview(e)}>
                     Clear image x
                   </a>
+                </div>
+              ) : (
+                ''
+              )}
+
+              {fileSizeError ? (
+                <div className="small callout alert">
+                  <em> Image size should not be more than 2 MB </em>{' '}
+                </div>
+              ) : (
+                ''
+              )}
+
+              {fileTypeError ? (
+                <div className="small callout alert">
+                  <em> Only JPG or PNG images are allowed </em>{' '}
                 </div>
               ) : (
                 ''

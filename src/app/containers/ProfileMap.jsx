@@ -7,6 +7,7 @@ import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
 import Parser from 'html-react-parser';
+import ReactTooltip from 'react-tooltip';
 
 const $ = window.$;
 
@@ -19,7 +20,7 @@ export const ProfileMap = props => {
   const [frameworkInfo, setFrameworkInfo] = useState();
 
   const [ksa, setKsa] = useState();
-  //const [mapping, setMapping] = useState()
+  const [mapping, setMapping] = useState();
 
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
@@ -27,12 +28,14 @@ export const ProfileMap = props => {
 
   var competencyForm = '';
   var expertise_levels = [];
+  var expertise_levels_legend = [];
   var expertise_not_applicable = '';
   var attribute_types = [];
   var frameworkFullName = '';
   var frameworkLogo = '';
   var frameworkDesc = '';
-  var mapping = [];
+  //var mapping = [];
+  var checkboxes = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,54 +62,90 @@ export const ProfileMap = props => {
         });
     };
     fetchData();
+
+    if (mapping) {
+      let checkBoxes = $('input:checkbox');
+      checkBoxes.each(function(index, item, arr) {
+        console.log('test ' + item.dataset);
+      });
+    }
   }, [profileId]);
 
   const handleSubmit = async e => {
     e.preventDefault();
 
     let response = await profileService.mapProfile(profileId, mapping);
+    console.log(response);
     props.history.push(
       `/framework/bioexcel/2.0/profile/view/${profileId}/alias`
     );
   };
 
-  const handleMapping = event => {
+  const handleSelect = event => {
     let competency_id = event.target[event.target.selectedIndex].getAttribute(
       'data-competency'
     );
     let expertise_id = event.target[event.target.selectedIndex].getAttribute(
       'data-expertise'
     );
+    let tempMapping = mapping;
+
+    let attributesList = [];
+    let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
 
     if (expertise_id == expertise_not_applicable) {
-      $('input:checkbox[data-competency=' + competency_id + ']').prop(
-        'checked',
-        false
+      checkBoxes.each(function(index, item, arr) {
+        item.checked = false;
+        item.disabled = true;
+      });
+      tempMapping.splice(
+        tempMapping.find(o => o.competency == competency_id),
+        1
       );
-      $('input:checkbox[data-competency=' + competency_id + ']').prop(
-        'disabled',
-        true
-      );
-    } else {
-      $('input:checkbox[data-competency=' + competency_id + ']').prop(
-        'checked',
-        true
-      );
-      $('input:checkbox[data-competency=' + competency_id + ']').prop(
-        'disabled',
-        false
-      );
-    }
+    } else if (tempMapping) {
+      if (tempMapping.find(o => o.competency === competency_id)) {
+        let o = tempMapping.find(o => o.competency === competency_id);
+        o.expertise = expertise_id;
 
-    if (mapping.find(o => o.competency === competency_id)) {
-      let o = mapping.find(o => o.competency === competency_id);
-      //console.log('already included with expertise '+ o.expertise)
-      o.expertise = expertise_id;
-      console.log('now changed to ' + o.expertise);
-    } else {
-      mapping.push({ competency: competency_id, expertise: expertise_id });
-      //console.log('pushed new entry as competency = '+ competency_id + ' and expertise = '+ expertise_id)
+        checkBoxes.each(function(index, item, arr) {
+          attributesList.push(item.id);
+          item.checked = true;
+          item.disabled = false;
+        });
+        o.attributes = attributesList;
+      } else {
+        checkBoxes.each(function(index, item, arr) {
+          attributesList.push(item.id);
+          item.checked = true;
+          item.disabled = false;
+        });
+        tempMapping.push({
+          competency: competency_id,
+          expertise: expertise_id,
+          attributes: attributesList
+        });
+      }
     }
+    setMapping(tempMapping);
+    console.log(mapping);
+  };
+
+  const handleCheckBox = e => {
+    let checkboxStatus = e.target.checked;
+    let competency_id = e.target.dataset.competency;
+    let tempMapping = mapping;
+    if (tempMapping) {
+      if (checkboxStatus == true) {
+        e.target.checked = true;
+        let o = tempMapping.find(o => o.competency == competency_id);
+        o.attributes.push(e.target.id);
+      } else {
+        let o = tempMapping.find(o => o.competency == competency_id);
+        o.attributes.splice(o.attributes.indexOf(e.target.id), 1);
+      }
+      setMapping(tempMapping);
+    }
+    console.log(mapping);
   };
 
   const generateForm = () => {
@@ -135,8 +174,22 @@ export const ProfileMap = props => {
       });
     }
 
+    let index = 0;
+    expertise_levels.map((level, key) => {
+      expertise_levels_legend.push(
+        "<li class='legend'>  <div class='legend_number'> " +
+          index +
+          '</div>' +
+          level +
+          '</li>'
+      );
+      index++;
+    });
+
     if (profile) {
-      mapping = profile.profile_mapping;
+      if (!mapping) {
+        setMapping(profile.profile_mapping);
+      }
       console.log(mapping);
     }
 
@@ -150,7 +203,21 @@ export const ProfileMap = props => {
                   <h4 className="domain_title"> {domain.title}</h4>
                 </div>
                 <div className="column medium-3">
-                  <h4>Levels of expertise</h4>
+                  <h4>
+                    Levels of expertise{' '}
+                    <span
+                      data-tip={
+                        "<ul class='legend_container'>" +
+                        expertise_levels_legend +
+                        '</ul> '
+                      }
+                      data-html={true}
+                      data-type="light"
+                    >
+                      <i class="icon icon-common icon-info" />
+                    </span>
+                  </h4>
+                  <ReactTooltip />
                 </div>
               </div>
               <ul>
@@ -198,6 +265,27 @@ export const ProfileMap = props => {
                                               <input
                                                 type="checkbox"
                                                 id={attribute.id}
+                                                onChange={e =>
+                                                  handleCheckBox(e)
+                                                }
+                                                defaultChecked={
+                                                  mapping.find(o =>
+                                                    o.attributes.find(
+                                                      a => a == attribute.id
+                                                    )
+                                                  )
+                                                    ? true
+                                                    : false
+                                                }
+                                                disabled={
+                                                  mapping.find(
+                                                    o =>
+                                                      o.competency ==
+                                                      competency.id
+                                                  )
+                                                    ? false
+                                                    : true
+                                                }
                                                 data-competency={competency.id}
                                               />
                                             </div>
@@ -222,7 +310,7 @@ export const ProfileMap = props => {
                       </div>
                       <div className="column medium-3">
                         <select
-                          onChange={e => handleMapping(e)}
+                          onChange={e => handleSelect(e)}
                           defaultValue={
                             mapping.find(o => o.competency == competency.id)
                               ? mapping.find(o => o.competency == competency.id)
@@ -254,7 +342,7 @@ export const ProfileMap = props => {
 
   return (
     <div>
-      {generateForm()}
+      {generateForm()} {$('#89').append('<h1>hahahaha</h1>')}
       {profile ? (
         <div>
           <div className="row">
@@ -262,19 +350,25 @@ export const ProfileMap = props => {
 
             <div className="column medium-12">
               <div className="row">
+                <div className="column medium-10" />
+                <div className="column medium-2">
+                  <Link
+                    to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
+                  >
+                    <i class="icon icon-common icon-angle-left" /> Profile
+                    overview
+                  </Link>
+                  <p />
+                </div>
+              </div>
+
+              <div className="row">
                 <div className="column medium-3">
                   <img
                     src={profile.image[0] ? profile.image[0].url : user_icon}
                     width="150px"
                   />
-                  <h5>{profile.title}</h5> <h5>{profile.job_title} </h5>
-                  <Link
-                    to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
-                  >
-                    {' '}
-                    <i class="icon icon-common icon-angle-left" /> Profile
-                    overview{' '}
-                  </Link>
+                  <h4>{profile.title}</h4> <h5>{profile.job_title} </h5>
                 </div>
                 <div className="column medium-6 form_intro">
                   <p>

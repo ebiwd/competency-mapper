@@ -158,8 +158,8 @@ class BodyService {
       ],
       field_image: [
         {
-          target_id: fileid,
-          description: 'persona picture'
+          target_id: fileid ? fileid : null
+          //description: 'persona picture'
         }
       ],
       field_publishing_status: [
@@ -180,7 +180,8 @@ class BodyService {
     mapping.forEach(function(item) {
       mappingBody.push({
         competency: item.competency,
-        expertise: item.expertise
+        expertise: item.expertise,
+        attributes: item.attributes.join()
       });
     });
 

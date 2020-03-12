@@ -10,6 +10,7 @@ import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
+import ReactTooltip from 'react-tooltip';
 
 export const ProfileView = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -23,11 +24,15 @@ export const ProfileView = props => {
 
   var competencyView = '';
   var expertise_levels = [];
+  var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
   var frameworkLogo = '';
   var frameworkDesc = '';
   var mapping = [];
+  var user_roles = localStorage.getItem('roles')
+    ? localStorage.getItem('roles')
+    : '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -56,15 +61,17 @@ export const ProfileView = props => {
     fetchData();
   }, [profileId]);
 
-  // const checkAlias = () => {
-  //   if (profile.path[0].alias.substring(1) != alias) {
-  //     props.history.push(
-  //       `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${
-  //         profile.path[0].alias
-  //       }`
-  //     );
-  //   }
-  // };
+  const checkAlias = () => {
+    if (profile) {
+      let url_alias = profile.url_alias;
+
+      if (profile.url_alias != alias) {
+        props.history.push(
+          `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
+        );
+      }
+    }
+  };
 
   const getExpertise = competency => {
     let obj = mapping.find(o => o.competency == competency);
@@ -77,6 +84,15 @@ export const ProfileView = props => {
       }
     } else {
       return '';
+    }
+  };
+
+  const getAttributeStatus = aid => {
+    if (mapping) {
+      let attribute_check_status = mapping.find(o =>
+        o.attributes.find(a => a == aid)
+      );
+      return attribute_check_status;
     }
   };
 
@@ -101,6 +117,18 @@ export const ProfileView = props => {
       });
     }
 
+    let index = 0;
+    expertise_levels.map((level, key) => {
+      expertise_levels_legend.push(
+        "<li class='legend'>  <div class='legend_number'> " +
+          index +
+          '</div>' +
+          level +
+          '</li>'
+      );
+      index++;
+    });
+
     if (profile) {
       mapping = profile.profile_mapping;
     }
@@ -115,7 +143,21 @@ export const ProfileView = props => {
                   <h4 className="domain_title"> {domain.title}</h4>
                 </div>
                 <div className="column medium-3">
-                  <h4>Levels of expertise</h4>
+                  <h4>
+                    Levels of expertise{' '}
+                    <span
+                      data-tip={
+                        "<ul class='legend_container'>" +
+                        expertise_levels_legend +
+                        '</ul> '
+                      }
+                      data-html={true}
+                      data-type="light"
+                    >
+                      <i class="icon icon-common icon-info" />
+                    </span>
+                  </h4>
+                  <ReactTooltip />
                 </div>
               </div>
               <ul>
@@ -159,15 +201,25 @@ export const ProfileView = props => {
                                       .map(attribute => (
                                         <li className="attribute_title">
                                           <div className="row">
-                                            <div className="column medium-1" />
-                                            <div className="column medium-11">
-                                              <label
-                                                className="attribute_label"
-                                                for={attribute.id}
+                                            <div className="column medium-12">
+                                              <span
+                                                className={
+                                                  getAttributeStatus(
+                                                    attribute.id
+                                                  )
+                                                    ? 'attribute_selected'
+                                                    : 'attribute_not_selected'
+                                                }
                                               >
-                                                {' '}
+                                                {getAttributeStatus(
+                                                  attribute.id
+                                                ) ? (
+                                                  <i class="icon icon-common icon-check" />
+                                                ) : (
+                                                  ''
+                                                )}{' '}
                                                 {attribute.title}
-                                              </label>
+                                              </span>
                                             </div>
                                           </div>
                                         </li>
@@ -180,7 +232,11 @@ export const ProfileView = props => {
                         </Collapsible>
                       </div>
                       <div className="column medium-3">
-                        {getExpertise(competency.id)}
+                        <h5>
+                          {getExpertise(competency.id)
+                            ? getExpertise(competency.id)
+                            : 'Not applicable'}
+                        </h5>
                       </div>
                     </div>
                   </li>
@@ -207,16 +263,25 @@ export const ProfileView = props => {
           </h2>
 
           <div style={{ float: 'right' }}>
-            {localStorage.getItem('roles') ? (
-              <div>
-                <Link to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}>
-                  {' '}
-                  Edit <i class="icon icon-common icon-pencil-alt" />
-                </Link>
-              </div>
+            {user_roles.search('framework_manager') != -1 ? (
+              <ul>
+                <li className="profile_navigation">
+                  <Link
+                    to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}
+                  >
+                    Edit overview
+                    <i class="icon icon-common icon-pencil-alt" />
+                  </Link>
+                </li>
+                <li className="profile_navigation">
+                  <Link to={`/framework/bioexcel/2.0/profile/map/${profileId}`}>
+                    Map competencies <i class="icon icon-common icon-cog" />{' '}
+                    {console.log(localStorage.getItem('roles'))}
+                  </Link>
+                </li>
+              </ul>
             ) : (
               <Link to={`/framework/bioexcel/2.0/profile/create`}>
-                {' '}
                 Create your profile <i class="icon icon-common icon-plus" />
               </Link>
             )}
@@ -247,17 +312,14 @@ export const ProfileView = props => {
               <h3>Acitivities of current role</h3>
               <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
 
-              <p>Additional information</p>
+              <p>
+                {profile.additional_information
+                  ? Parser(profile.additional_information)
+                  : ''}
+              </p>
             </div>
             <p />
           </div>
-          <Link
-            className="button"
-            to={`/framework/bioexcel/2.0/profile/map/${profileId}`}
-          >
-            {' '}
-            Manage competencies <i class="icon icon-common icon-angle-right" />
-          </Link>
           {competencyView}
         </div>
       ) : (

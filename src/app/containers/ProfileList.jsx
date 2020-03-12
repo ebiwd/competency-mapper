@@ -65,7 +65,7 @@ const ProfileList = props => {
                           <div className="column medium-6">
                             <Link
                               className="readmore"
-                              to={`/framework/bioexel/2.0/profile/view/${
+                              to={`/framework/bioexcel/2.0/profile/view/${
                                 profile.nid[0].value
                               }${profile.path[0].alias}`}
                             >
@@ -108,7 +108,7 @@ const ProfileList = props => {
                         <div className="column medium-6">
                           <Link
                             className="readmore"
-                            to={`/framework/bioexel/2.0/profile/view/${
+                            to={`/framework/bioexcel/2.0/profile/view/${
                               profile.nid[0].value
                             }${profile.path[0].alias}`}
                           >

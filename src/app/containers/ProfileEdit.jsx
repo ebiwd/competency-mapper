@@ -25,6 +25,8 @@ export const ProfileEdit = props => {
   const [selectedFile, setSelectedFile] = useState();
   const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
+  const [fileSizeError, setFileSizeError] = useState();
+  const [fileTypeError, setFileTypeError] = useState();
 
   const [jobTitle, setJobTitle] = useState();
   const [qualification, setQualification] = useState();
@@ -88,47 +90,57 @@ export const ProfileEdit = props => {
 
   const handleSubmit = async evt => {
     evt.preventDefault();
-    let token = localStorage.getItem('csrf_token');
-    var fileid = fid;
-    if (selectedFile) {
-      await fetch(
-        apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
-        {
-          credentials: 'include',
-          method: 'POST',
-          cookies: 'x-access-token',
-          headers: {
-            accept: 'application/octet-stream',
-            'Content-Type': 'application/octet-stream',
-            'X-CSRF-Token': token,
-            'Content-Disposition': 'file; filename="persona_picture.png"'
-          },
-          body: selectedFile
-        }
-      )
-        .then(resp => resp.json())
-        .then(function(data) {
-          fileid = data.fid[0].value;
-        });
-    }
+    if (
+      !title ||
+      !jobTitle ||
+      title.length < 2 ||
+      jobTitle.length < 3 ||
+      fileTypeError ||
+      fileSizeError
+    ) {
+    } else {
+      let token = localStorage.getItem('csrf_token');
+      var fileid = fid;
+      if (selectedFile) {
+        await fetch(
+          apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
+          {
+            credentials: 'include',
+            method: 'POST',
+            cookies: 'x-access-token',
+            headers: {
+              accept: 'application/octet-stream',
+              'Content-Type': 'application/octet-stream',
+              'X-CSRF-Token': token,
+              'Content-Disposition': 'file; filename="persona_picture.png"'
+            },
+            body: selectedFile
+          }
+        )
+          .then(resp => resp.json())
+          .then(function(data) {
+            fileid = data.fid[0].value;
+          });
+      }
 
-    let response = await profileService.editProfile(
-      profileId,
-      title,
-      age,
-      currentRole,
-      gender,
-      jobTitle,
-      qualification,
-      additionalInfo,
-      publishStatus,
-      fileid
-    );
-
-    if (response.nid[0].value) {
-      props.history.push(
-        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/alias`
+      let response = await profileService.editProfile(
+        profileId,
+        title,
+        age,
+        currentRole,
+        gender,
+        jobTitle,
+        qualification,
+        additionalInfo,
+        publishStatus,
+        fileid
       );
+
+      if (response.nid[0].value) {
+        props.history.push(
+          `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/alias`
+        );
+      }
     }
   };
 
@@ -183,6 +195,24 @@ export const ProfileEdit = props => {
       return;
     } else {
       const objectUrl = URL.createObjectURL(e.target.files[0]);
+
+      if (e.target.files[0].size > 2097152) {
+        setFileSizeError(1);
+      } else {
+        setFileSizeError(undefined);
+      }
+
+      if (
+        e.target.files[0].type != 'image/jpeg' &&
+        e.target.files[0].type != 'image/png'
+      ) {
+        setFileTypeError(1);
+      } else {
+        setFileTypeError(undefined);
+      }
+
+      console.log(e.target.files[0]);
+
       setImgpreview(objectUrl);
       setSelectedFile(e.target.files[0]);
     }
@@ -192,6 +222,8 @@ export const ProfileEdit = props => {
     e.preventDefault();
     setImgpreview(undefined);
     setFid(undefined);
+    setFileTypeError(undefined);
+    setFileSizeError(undefined);
     document.getElementById('fileupload').value = '';
   };
 
@@ -267,6 +299,22 @@ export const ProfileEdit = props => {
                     <a href="#" onClick={e => clearimgpreview(e)}>
                       Clear image x
                     </a>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {fileSizeError ? (
+                  <div className="small callout alert">
+                    <em> Image size should not be more than 2 MB </em>{' '}
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {fileTypeError ? (
+                  <div className="small callout alert">
+                    <em> Only JPG or PNG images are allowed </em>{' '}
                   </div>
                 ) : (
                   ''
