@@ -12,10 +12,10 @@ import { Link, Redirect } from 'react-router-dom';
 export const ProfileCreate = props => {
   const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
-  const [title, setTitle] = useState();
-  const [age, setAge] = useState();
-  const [currentRole, setCurrentRole] = useState();
-  const [gender, setGender] = useState();
+  const [title, setTitle] = useState('');
+  const [age, setAge] = useState('');
+  const [currentRole, setCurrentRole] = useState('');
+  const [gender, setGender] = useState('');
 
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFileData, setSelectedFileData] = useState([]);
@@ -24,14 +24,16 @@ export const ProfileCreate = props => {
   const [fileSizeError, setFileSizeError] = useState();
   const [fileTypeError, setFileTypeError] = useState();
 
-  const [jobTitle, setJobTitle] = useState();
-  const [qualification, setQualification] = useState();
-  const [additionalInfo, setAdditionalInfo] = useState();
+  const [jobTitle, setJobTitle] = useState('');
+  const [qualification, setQualification] = useState('');
+  const [additionalInfo, setAdditionalInfo] = useState('');
 
   const [framework, setFramework] = useState();
   const [frameworkLogoData, setFrameworkLogoData] = useState([]);
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
+
+  const [profile, setProfile] = useState();
 
   const [errorMsgTitle, setErrorMsgTitle] = useState();
   const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
@@ -40,14 +42,22 @@ export const ProfileCreate = props => {
   const http = new HttpService();
 
   useEffect(() => {
-    const fetchDataOld = async () => {
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setFramework(findresponse);
-        });
+    // Set variables from Local Storage to populate form fields onload
+    const bootstrap = () => {
+      let storedProfile = JSON.parse(
+        localStorage.getItem('ProfileDownloadData')
+      );
+      setProfile(storedProfile);
+
+      if (storedProfile) {
+        setTitle(storedProfile.title);
+        setJobTitle(storedProfile.jobTitle);
+        setAge(storedProfile.age);
+        setGender(storedProfile.gender);
+        setQualification(storedProfile.qualification);
+        setCurrentRole(storedProfile.currentRole);
+        setAdditionalInfo(storedProfile.additionalInfo);
+      }
     };
 
     // Calling multiple APIs, since data Framework are in two different endpoints
@@ -117,6 +127,7 @@ export const ProfileCreate = props => {
       }
     };
 
+    bootstrap();
     fetchData();
   }, [selectedFile]);
 
@@ -383,6 +394,7 @@ export const ProfileCreate = props => {
                 id="title"
                 placeholder="Name"
                 onChange={e => setTitle(e.target.value)}
+                defaultValue={profile ? profile.title : title}
               />
               <div className={titleCalloutClass}>
                 <i>{nameHelp}</i>
@@ -397,6 +409,7 @@ export const ProfileCreate = props => {
                 id="jobTitle"
                 placeholder="Job title"
                 onChange={e => setJobTitle(e.target.value)}
+                defaultValue={profile ? profile.jobTitle : jobTitle}
               />
               <div className={jobTitleCalloutClass}>
                 <i>{jobTitleHelp}</i>
@@ -466,14 +479,15 @@ export const ProfileCreate = props => {
                 placeholder="Age"
                 width={4}
                 onChange={e => setAge(e.target.value)}
+                defaultValue={profile ? profile.age : age}
               />
             </span>
 
             <span>
               <strong>Gender</strong>
               <select
-                defaultValue="-None-"
                 onChange={e => setGender(e.target.value)}
+                defaultValue={profile ? profile.gender : gender}
               >
                 <option value={'-None-'}>None</option>
                 <option value={'Male'}>Male</option>
