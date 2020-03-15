@@ -57,6 +57,10 @@ export const ProfileCreate = props => {
         setQualification(storedProfile.qualification);
         setCurrentRole(storedProfile.currentRole);
         setAdditionalInfo(storedProfile.additionalInfo);
+        if (storedProfile.selectedFileData[0]) {
+          setSelectedFileData(storedProfile.selectedFileData);
+          setImgpreview(storedProfile.selectedFileData[0].src);
+        }
       }
     };
 
@@ -154,6 +158,11 @@ export const ProfileCreate = props => {
       setErrorMsgTitle('');
       setErrorMsgJobTitle('');
 
+      // Retrieve values from Local Storage if exist
+      let storedProfile = JSON.parse(
+        localStorage.getItem('ProfileDownloadData')
+      );
+
       profileService.mapDownloadProfile({
         title,
         frameworkId,
@@ -167,9 +176,10 @@ export const ProfileCreate = props => {
         qualification,
         additionalInfo,
         selectedFile,
+        // selectedFileData: storedProfile ? selectedFileData ? selectedFileData : '' : '',
         selectedFileData,
-        mapping: [],
-        mappingAttributes: []
+        mapping: storedProfile ? storedProfile.mapping : [],
+        mappingAttributes: storedProfile ? storedProfile.mappingAttributes : []
       });
       props.history.push('/framework/bioexcel/2.0/profile/map/download/');
 
@@ -260,8 +270,6 @@ export const ProfileCreate = props => {
       } else {
         setFileTypeError(undefined);
       }
-
-      console.log(e.target.files[0]);
 
       // convert image file to base64 string. From https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
       const reader = new FileReader();
