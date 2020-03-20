@@ -64,7 +64,6 @@ class ProfileService {
   }
 
   mapDownloadProfile(options) {
-    // console.log(options)
     localStorage.setItem('ProfileDownloadData', JSON.stringify(options));
   }
 

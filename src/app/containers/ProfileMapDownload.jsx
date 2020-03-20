@@ -550,7 +550,7 @@ export const ProfileMapDownload = props => {
 
               <div className="row">
                 <div className="column medium-3 text-center">
-                  {profile.selectedFileData[0].src ? (
+                  {profile.selectedFileData[0] ? (
                     <img
                       src={
                         profile.selectedFileData[0].src
