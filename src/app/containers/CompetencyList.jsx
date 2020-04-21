@@ -213,25 +213,6 @@ class CompetencyList extends Component {
             <Courses framework={framework} version={frameworkVersion} />
           </TabPanel>
           <TabPanel>
-            <div className="row">
-              <div className="column medium-12">
-                <span style={{ float: 'right' }}>
-                  {localStorage.getItem('roles') ? (
-                    <Link to={`/framework/bioexcel/2.0/profile/create`}>
-                      {' '}
-                      Create reference profile{' '}
-                      <i class="icon icon-common icon-plus" />
-                    </Link>
-                  ) : (
-                    <Link to={`/framework/bioexcel/2.0/profile/create`}>
-                      {' '}
-                      Create your profile{' '}
-                      <i class="icon icon-common icon-plus" />
-                    </Link>
-                  )}
-                </span>
-              </div>
-            </div>
             <ProfileList />
           </TabPanel>
         </Tabs>

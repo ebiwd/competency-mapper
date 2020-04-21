@@ -310,7 +310,7 @@ export const ProfileView = props => {
       width: 490
     };
     var sourceFull = document.getElementById('profile');
-    var source = sourceFull;
+    var source = sourceFull.childNodes[3].childNodes[0];
 
     //console.log(source[0].attributes)
     // source = doc.splitTextToSize(

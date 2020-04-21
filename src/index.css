@@ -205,3 +205,59 @@ input[type='checkbox']:checked + div > .attribute_label {
   background-image: url('./app/containers/watermark.jpg');
   background-size: 25%;
 }
+
+.profile_legend {
+  display: table-cell;
+  padding: 20px;
+}
+
+#profile1_legend:before {
+  content: ' ';
+  border: 1px solid #ccc;
+  background-color: #1f77b4;
+  padding: 0 5px 0 15px;
+}
+
+#profile2_legend:before {
+  content: ' ';
+  border: 1px solid #ccc;
+  background-color: #ff7f0e;
+  padding: 0 5px 0 15px;
+}
+
+.profileMeta {
+  display: table-row;
+  margin-bottom: 20px;
+}
+
+.profileMeta div {
+  display: table-cell;
+  padding: 10px;
+  margin: 10px;
+}
+
+.legend-inline {
+  list-style-type: none;
+  display: inline-flex;
+  float: right;
+}
+
+.legend-inline li {
+  margin: 10px;
+}
+
+.action-buttons {
+  margin: 5px;
+}
+
+.compare_checkbox {
+  /*padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 5px;*/
+}
+
+.compare_checkbox label {
+  padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 5px;
+}
