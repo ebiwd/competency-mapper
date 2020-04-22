@@ -4,6 +4,8 @@ import Download from './download';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 
+const profileName = process.env.REACT_APP_LOCALSTORAGE_PROFILE;
+
 class ProfileService {
   static instance;
   http = new HttpService();
@@ -13,6 +15,10 @@ class ProfileService {
       return this.instance;
     }
     ProfileService.instance = this;
+  }
+
+  hasProfile() {
+    return !!window.localStorage.getItem(profileName);
   }
 
   async createProfile(options) {
@@ -64,7 +70,7 @@ class ProfileService {
   }
 
   mapDownloadProfile(options) {
-    localStorage.setItem('ProfileDownloadData', JSON.stringify(options));
+    localStorage.setItem(profileName, JSON.stringify(options));
   }
 
   downloadProfile(options) {

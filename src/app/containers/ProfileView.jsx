@@ -397,7 +397,7 @@ export const ProfileView = props => {
                   : ''}
               </p>
 
-              <h3>Acitivities of current role</h3>
+              <h3>Activities of current role</h3>
               <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
 
               <p>

@@ -41,9 +41,10 @@ export const ProfileMapDownload = props => {
   let mappingAttributes = [];
 
   const http = new HttpService();
+  const profileName = process.env.REACT_APP_LOCALSTORAGE_PROFILE;
 
   useEffect(() => {
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
 
     if (storedProfile) {
       // Get Profile from Session
@@ -85,12 +86,12 @@ export const ProfileMapDownload = props => {
     e.preventDefault();
 
     // Download Profile
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
     downloadProfileFromHtml(storedProfile);
   };
 
   const handleMapping = event => {
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
     let competency_id = event.target[event.target.selectedIndex].getAttribute(
       'data-competency'
     );
@@ -129,10 +130,7 @@ export const ProfileMapDownload = props => {
         }
         // Update local Storage mapping
         storedProfile['mapping'] = tempMap;
-        localStorage.setItem(
-          'ProfileDownloadData',
-          JSON.stringify(storedProfile)
-        );
+        localStorage.setItem(profileName, JSON.stringify(storedProfile));
       } else {
         // Add competency that has been selected
         let tempMap = storedProfile['mapping'];
@@ -142,10 +140,7 @@ export const ProfileMapDownload = props => {
           expertise: expertise
         });
         storedProfile['mapping'] = tempMap;
-        localStorage.setItem(
-          'ProfileDownloadData',
-          JSON.stringify(storedProfile)
-        );
+        localStorage.setItem(profileName, JSON.stringify(storedProfile));
       }
 
       $('input:checkbox[data-competency=' + competency_id + ']').prop(
@@ -164,7 +159,7 @@ export const ProfileMapDownload = props => {
 
   // Add all attributes to LocalStorage if Competency is selected
   const addCompetencyAttributes = competency => {
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
     // let selectedAttributes = new Array();
 
     let mappingAttributes = storedProfile['mappingAttributes'];
@@ -184,13 +179,13 @@ export const ProfileMapDownload = props => {
     }, mappingAttributes);
 
     storedProfile['mappingAttributes'] = mappingAttributes;
-    localStorage.setItem('ProfileDownloadData', JSON.stringify(storedProfile));
+    localStorage.setItem(profileName, JSON.stringify(storedProfile));
     setProfileAttributes(storedProfile);
   };
 
   // Remove current attributes if Competency is deselected
   const removeCompetencyAttributes = competency => {
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
     let mappingAttributes = storedProfile['mappingAttributes'];
     let attributes = $(
       'input:checkbox[data-competency=' + competency + ']'
@@ -204,13 +199,13 @@ export const ProfileMapDownload = props => {
 
     // localStorage.setItem('mappingAttributes', JSON.stringify(mappingAttributes));
     storedProfile['mappingAttributes'] = mappingAttributes;
-    localStorage.setItem('ProfileDownloadData', JSON.stringify(storedProfile));
+    localStorage.setItem(profileName, JSON.stringify(storedProfile));
     setProfileAttributes(storedProfile);
   };
 
   // Manage single Attributes check/uncheck event
   const handleCheckboxMapping = event => {
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+    let storedProfile = JSON.parse(localStorage.getItem(profileName));
     let competency_id = event.target.getAttribute('data-competency');
     let attribute_id = event.target.getAttribute('id');
 
@@ -226,10 +221,7 @@ export const ProfileMapDownload = props => {
       mappingAttributes.splice(index, 1);
       // localStorage.setItem('mappingAttributes', JSON.stringify(mappingAttributes));
       storedProfile['mappingAttributes'] = mappingAttributes;
-      localStorage.setItem(
-        'ProfileDownloadData',
-        JSON.stringify(storedProfile)
-      );
+      localStorage.setItem(profileName, JSON.stringify(storedProfile));
     } else {
       // Add attribute to LocalStorage
       attributes.push({
@@ -239,10 +231,7 @@ export const ProfileMapDownload = props => {
       // localStorage.setItem('mappingAttributes', JSON.stringify(attributes));
       storedProfile['mappingAttributes'] = attributes;
       $('input:checkbox[id=' + attribute_id + ']').prop('checked', true);
-      localStorage.setItem(
-        'ProfileDownloadData',
-        JSON.stringify(storedProfile)
-      );
+      localStorage.setItem(profileName, JSON.stringify(storedProfile));
     }
     setProfileAttributes(storedProfile);
   };
@@ -381,9 +370,7 @@ export const ProfileMapDownload = props => {
     if (profile) {
       mapping = profile.mapping;
 
-      let storedProfile = JSON.parse(
-        localStorage.getItem('ProfileDownloadData')
-      );
+      let storedProfile = JSON.parse(localStorage.getItem(profileName));
       mappingAttributes = storedProfile['mappingAttributes'];
     }
 
@@ -531,7 +518,15 @@ export const ProfileMapDownload = props => {
       {profile ? (
         <div>
           <div className="row">
-            <h2>Add competencies to your profile </h2>
+            <h2 className="hide-for-print">
+              Add competencies to your profile{' '}
+            </h2>
+            {/* 
+            TODO: cleanup 
+            <h2 className="show-for-print">{profile.title.charAt(0).toUpperCase() + 
+                      profile.title.slice(1)}{' '}
+                    - {profile.jobTitle}</h2>
+              */}
 
             <div id="profile" className="column medium-12">
               <div className="row">
@@ -627,17 +622,17 @@ export const ProfileMapDownload = props => {
               <div className="row">
                 <div className="column medium-12">
                   <div className="competency_section">
-                    {
-                      <form onSubmit={e => handleSubmit(e)}>
-                        {competencyForm}
-                        <div className="submit_fixed">
-                          <button className="button" type="submit">
-                            Download{' '}
-                            <i className="icon icon-common icon-download" />
-                          </button>
-                        </div>
-                      </form>
-                    }
+                    {competencyForm}
+                    <div className="submit_fixed">
+                      <button
+                        className="button"
+                        type="button"
+                        onClick={() => window.print()}
+                      >
+                        Print / Download{' '}
+                        <i className="icon icon-common icon-download" />
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>

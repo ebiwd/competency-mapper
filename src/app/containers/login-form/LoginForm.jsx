@@ -26,7 +26,7 @@ class LoginForm extends Component {
   render() {
     const { username, password } = this.state;
     return (
-      <nav>
+      <nav className="hide-for-print">
         {/* The wrapping in an `ul.menu.float-left > li` is necessary for the sticky header to work */}
         <ul className="menu float-left small-12">
           <li className="small-12 margin-bottom-large">

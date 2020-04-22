@@ -50,7 +50,7 @@ export const ProfilePreview = props => {
           <p />
         </div>
         <div className="column large-8">
-          <strong>Acitivities of current role</strong>
+          <strong>Activities of current role</strong>
           <p />
 
           <strong>Qualification and background</strong>

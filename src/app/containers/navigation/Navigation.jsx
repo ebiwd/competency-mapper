@@ -79,7 +79,7 @@ class Navigation extends Component {
     );
 
     return (
-      <nav ref={this.navRef}>
+      <nav ref={this.navRef} className="hide-for-print">
         <ul
           className="dropdown menu float-left"
           data-dropdown-menu

@@ -40,13 +40,12 @@ export const ProfileCreate = props => {
   let errors = [];
 
   const http = new HttpService();
+  const profileName = process.env.REACT_APP_LOCALSTORAGE_PROFILE;
 
   useEffect(() => {
     // Set variables from Local Storage to populate form fields onload
     const bootstrap = () => {
-      let storedProfile = JSON.parse(
-        localStorage.getItem('ProfileDownloadData')
-      );
+      let storedProfile = JSON.parse(localStorage.getItem(profileName));
       setProfile(storedProfile);
 
       if (storedProfile) {
@@ -159,9 +158,7 @@ export const ProfileCreate = props => {
       setErrorMsgJobTitle('');
 
       // Retrieve values from Local Storage if exist
-      let storedProfile = JSON.parse(
-        localStorage.getItem('ProfileDownloadData')
-      );
+      let storedProfile = JSON.parse(localStorage.getItem(profileName));
 
       profileService.mapDownloadProfile({
         title,
@@ -317,7 +314,9 @@ export const ProfileCreate = props => {
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = 'Add Competencies';
+      submitButtonLabel = profileService.hasProfile()
+        ? 'Update Competencies'
+        : 'Add Competencies';
     }
 
     return <input type="submit" className="button" value={submitButtonLabel} />;
@@ -519,7 +518,7 @@ export const ProfileCreate = props => {
 
             <br />
             <span>
-              <strong>Acitivities of current role</strong>
+              <strong>Activities of current role</strong>
               <CKEditor
                 editor={ClassicEditor}
                 data={currentRole}
