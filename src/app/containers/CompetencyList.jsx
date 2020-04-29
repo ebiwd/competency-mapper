@@ -13,7 +13,6 @@ import FrameworkVersions from '../containers/framework-versions/FrameworkVersion
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
-import { Link, Redirect } from 'react-router-dom';
 
 class CompetencyList extends Component {
   static propTypes = {
