@@ -1,75 +1,48 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-//import CKEditor from 'react-ckeditor-component';
-import Parser from 'html-react-parser';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
-import { apiUrl } from '../services/http/http';
+
+import { Redirect } from 'react-router-dom';
+import ProfileHeader from './ProfileHeader';
+import { ProfilePrint } from './ProfilePrint';
 import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+import CompentencyService from '../services/competency/competency';
 
-export const ProfilePreview = props => {
-  // const frameworkName = props.location.pathname.split('/')[2];
-  // const frameworkVersion = props.location.pathname.split('/')[3];
-  // const profileId = props.location.pathname.split('/')[6];
+import styles from './ProfilePreview.module.css';
 
-  // const [profile, setProfile] = useState();
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     await fetch(`${apiUrl}/node/${profileId}?_format=json`)
-  //           .then(Response => Response.json())
-  //           .then(findresponse => {
-  //             setProfile(findresponse)
-  //           });
-  //   };
-  //   fetchData();
+const competencyService = new CompentencyService();
+const profileService = new ProfileService();
 
-  // },[profileId]);
-  console.log(props);
+export const ProfilePreview = ({ match }) => {
+  const { framework, version } = match.params;
+  const profile = profileService.getUserProfile();
+
+  useEffect(() => {
+    competencyService.getVersionedFramework(framework, version);
+  }, [framework, version]);
+
+  if (!profile) {
+    return <Redirect to="./create" />;
+  }
 
   return (
-    <div>
-      <Link
-        to={{
-          pathname: '/framework/bioexcel/2.0/profile/create'
-        }}
-      >
-        {' '}
-        Back to editing{' '}
-      </Link>
-      <h2>Profile title: {props.location.state.title}</h2>
-
-      <div className="row">
-        <div className="column large-4">
-          <p>
-            <img style={{ display: 'block' }} src="" />
-          </p>
-          <p />
-          <p />
-        </div>
-        <div className="column large-8">
-          <strong>Activities of current role</strong>
-          <p />
-
-          <strong>Qualification and background</strong>
-          <p />
-        </div>
+    <>
+      <div>
+        <h2 className={styles.mainTitle}>
+          {`${profile.title} - ${profile.jobTitle}`}
+        </h2>
       </div>
-      <p />
-    </div>
+
+      <ProfileHeader
+        image={profile.selectedFileData}
+        current_role={profile.currentRole}
+        additional_information={profile.additionalInfo}
+        {...profile}
+      />
+
+      <div className="submit_fixed">
+        <ProfilePrint />
+      </div>
+    </>
   );
 };
-
-export const PreviewProfile = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:framework/:version/profile/preview"
-      component={ProfilePreview}
-    />
-  </Switch>
-);
 
 export default ProfilePreview;
