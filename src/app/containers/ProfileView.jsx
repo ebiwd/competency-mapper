@@ -1,82 +1,67 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-//import CKEditor from 'react-ckeditor-component';
-import Parser from 'html-react-parser';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
-import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+
+import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
+import { ProfileHeader } from './ProfileHeader';
+import { ProfilePrint } from './ProfilePrint';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+import CompetencyService from '../services/competency/competency';
+import ProfileService from '../services/profile/profile';
 
-import jsPDF from 'jspdf';
-import moment from 'moment';
+const competencyService = new CompetencyService();
+const profileService = new ProfileService();
+const activeRequestsService = new ActiveRequestsService();
 
-const $ = window.$;
-
-export const ProfileView = props => {
-  const frameworkName = props.location.pathname.split('/')[2];
-  const frameworkVersion = props.location.pathname.split('/')[3];
-  const profileId = props.location.pathname.split('/')[6];
-  const alias = props.location.pathname.split('/')[7];
+export const ProfileView = ({ match }) => {
+  const {
+    framework: frameworkName,
+    version: frameworkVersion,
+    id: profileId
+  } = match.params;
 
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
 
-  var competencyView = '';
-  var expertise_levels = [];
-  var expertise_levels_legend = [];
-  var attribute_types = [];
-  var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
-  var mapping = [];
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+  let competencyView = '';
+  let expertise_levels = [];
+  let expertise_levels_legend = [];
+  let attribute_types = [];
+  let mapping = [];
+  let user_roles = localStorage.getItem('roles') || '';
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(
-        `${apiUrl}/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setProfile(findresponse);
-        });
-
-      await fetch(`${apiUrl}/api/version_manager?_format=json`)
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setFrameworkInfo(findresponse);
-        });
-
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setFramework(findresponse);
-        });
+      const [profile, frameworkInfo, framework] = await Promise.all([
+        profileService.getProfile(profileId),
+        competencyService.getAllVersionedFrameworks(),
+        competencyService.getVersionedFramework(frameworkName, frameworkVersion)
+      ]);
+      setProfile(profile);
+      setFrameworkInfo(frameworkInfo);
+      setFramework(framework);
     };
-    fetchData();
-  }, [profileId]);
 
-  const checkAlias = () => {
-    if (profile) {
-      let url_alias = profile.url_alias;
-
-      if (profile.url_alias != alias) {
-        props.history.push(
-          `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
-        );
-      }
+    try {
+      activeRequestsService.startRequest();
+      fetchData();
+    } finally {
+      activeRequestsService.finishRequest();
     }
-  };
+  }, [profileId, frameworkName, frameworkVersion]);
+
+  // const checkAlias = () => {
+  //   if (profile) {
+  //     let url_alias = profile.url_alias;
+
+  //     if (profile.url_alias != alias) {
+  //       props.history.push(
+  //         `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
+  //       );
+  //     }
+  //   }
+  // };
 
   const getExpertise = competency => {
     let obj = mapping.find(o => o.competency == competency);
@@ -105,9 +90,6 @@ export const ProfileView = props => {
     if (frameworkInfo) {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
-          frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
           info.expertise_levels.map(
             level => (expertise_levels[level.id] = level.title)
           );
@@ -254,100 +236,15 @@ export const ProfileView = props => {
     }
   };
 
-  const handleDownload = e => {
-    e.preventDefault();
-
-    // Download Profile
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
-    downloadProfileFromHtml(storedProfile);
-  };
-  const downloadProfileFromHtml = options => {
-    let doc = new jsPDF('p', 'pt', 'a4');
-    doc.setFont('helvetica');
-    const margin = 0.5;
-
-    let currentDate = moment().format('MMMM D, Y');
-    let currentTime = moment().format('hh:mm:ss');
-
-    let pdfWidth = doc.internal.pageSize.getWidth();
-    let pdfHeight = doc.internal.pageSize.getHeight();
-
-    const startHeight = 30;
-    const marginleft = 20;
-    const pdfProfileImgWidth = 180;
-    const pageLogoWidth = 100;
-
-    let marginright = doc.internal.pageSize.getWidth() - 20;
-    let col = pdfWidth * 0.07383;
-    let gutter = pdfWidth * 0.01036727272;
-    let fourthCol = col * 4 + gutter * 3;
-    let fifthCol = col * 5 + gutter * 4;
-
-    const profileBody = pdfWidth - fifthCol - 20;
-
-    let selectedFileWidth = options.selectedFile
-      ? options.selectedFileData[0].width
-      : 180;
-    let selectedFileHeight = options.selectedFile
-      ? options.selectedFileData[0].height
-      : 150;
-    let ratio = selectedFileWidth / selectedFileHeight;
-    let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
-
-    let currentYAxis = startHeight;
-
-    var specialElementHandlers = {
-      '#editor': function(element, renderer) {
-        return true;
-      }
-    };
-
-    let margins = {
-      top: startHeight,
-      bottom: 60,
-      left: marginleft,
-      right: marginright,
-      width: 490
-    };
-    var sourceFull = document.getElementById('profile');
-    var source = sourceFull;
-
-    //console.log(source[0].attributes)
-    // source = doc.splitTextToSize(
-    //   source,
-    //   profileBody
-    // );
-
-    let profileTitle = options.jobTitle.split(' ').join('_');
-    doc.fromHTML(
-      source,
-      marginleft,
-      currentYAxis,
-      {
-        // y coord
-        width: margins.width, // max width of content on PDF
-        elementHandlers: specialElementHandlers
-      },
-      function(dispose) {
-        // dispose: object with X, Y of the last line add to the PDF
-        //          this allow the insertion of new lines after html
-        doc.save(profileTitle.toLowerCase() + '.pdf');
-      }
-      // margins
-    );
-  };
-
   return (
     <div>
       {generateProfileView()}
-      {profile ? (
+      {profile && (
         <div id="profile">
-          {
-            //checkAlias()
-          }
+          {/* checkAlias() */}
 
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
-            {profile.title} - {profile.job_title}
+            {`${profile.title} - ${profile.job_title}`}
           </h2>
 
           <div style={{ float: 'right' }}>
@@ -375,64 +272,17 @@ export const ProfileView = props => {
             )}
           </div>
 
-          <div className="row">
-            <div className="column large-4">
-              <center>
-                <img
-                  style={{ display: 'block', maxWidth: '200px' }}
-                  src={profile.image[0] ? profile.image[0].url : ''}
-                />
-              </center>
-              <p />
-              <p style={{ textAlign: 'center' }}>
-                {profile.gender ? profile.gender : ''}{' '}
-                {profile.age ? '| ' + profile.age + ' years' : ''}
-              </p>
-            </div>
-            <div className="column large-8">
-              <h3>Qualification and background</h3>
-              <p>
-                {profile.qualification_background
-                  ? Parser(profile.qualification_background)
-                  : ''}
-              </p>
+          <ProfileHeader {...profile} />
 
-              <h3>Activities of current role</h3>
-              <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
-
-              <p>
-                {profile.additional_information
-                  ? Parser(profile.additional_information)
-                  : ''}
-              </p>
-            </div>
-            <p />
-          </div>
           {competencyView}
         </div>
-      ) : (
-        'Loaing profile'
       )}
 
-      <form onSubmit={e => handleDownload(e)}>
-        <div className="submit_fixed">
-          <button className="button" type="submit">
-            Download <i className="icon icon-common icon-download" />
-          </button>
-        </div>
-      </form>
+      <div className="submit_fixed">
+        <ProfilePrint />
+      </div>
     </div>
   );
 };
 
-export const ViewProfile = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:framework/:version/profile/view/:id/:alias"
-      component={ProfileView}
-    />
-  </Switch>
-);
-
-export default ViewProfile;
+export default ProfileView;
