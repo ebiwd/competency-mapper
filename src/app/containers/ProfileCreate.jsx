@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
-import HttpService from '../services/http/http';
+import CompetencyService from '../services/competency/competency';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+
+const activeRequests = new ActiveRequestsService();
+const competencyService = new CompetencyService();
+const profileService = new ProfileService();
 
 export const ProfileCreate = props => {
-  const activeRequests = new ActiveRequestsService();
-  const profileService = new ProfileService();
   const [title, setTitle] = useState('');
   const [age, setAge] = useState('');
   const [currentRole, setCurrentRole] = useState('');
@@ -19,7 +18,6 @@ export const ProfileCreate = props => {
 
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFileData, setSelectedFileData] = useState([]);
-  const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
   const [fileSizeError, setFileSizeError] = useState();
   const [fileTypeError, setFileTypeError] = useState();
@@ -35,11 +33,6 @@ export const ProfileCreate = props => {
 
   const [profile, setProfile] = useState();
 
-  const [errorMsgTitle, setErrorMsgTitle] = useState();
-  const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
-  let errors = [];
-
-  const http = new HttpService();
   const profileName = process.env.REACT_APP_LOCALSTORAGE_PROFILE;
 
   useEffect(() => {
@@ -65,82 +58,61 @@ export const ProfileCreate = props => {
 
     // Calling multiple APIs, since data Framework are in two different endpoints
     const fetchData = async () => {
-      try {
-        const promise1 = http
-          .get(
-            `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-          )
-          .then(response1 => response1.data);
+      const [data1, data2] = await Promise.all([
+        competencyService.getVersionedFramework(
+          frameworkName,
+          frameworkVersion
+        ),
+        competencyService.getAllVersionedFrameworks()
+      ]);
+      // Get current Framework only
+      let frameworkMoreData = data2.filter(item => {
+        return item.nid === '9';
+      });
+      if (frameworkMoreData[0].logo[0].url) {
+        // setFrameworkLogoData([
+        //   {
+        //     url: frameworkMoreData[0].logo[0].url,
+        //     src: frameworkMoreData[0].logo[0].url
+        //   }
+        // ]);
 
-        const promise2 = http
-          .get(`${apiUrl}/api/version_manager?_format=json`)
-          .then(response2 => response2.data);
-
-        const [data1, data2] = await Promise.all([promise1, promise2]);
-        // Get current Framework only
-        let frameworkMoreData = data2.filter(item => {
-          return item.nid === '9';
-        });
-        if (frameworkMoreData[0].logo[0].url) {
-          // setFrameworkLogoData([
-          //   {
-          //     url: frameworkMoreData[0].logo[0].url,
-          //     src: frameworkMoreData[0].logo[0].url
-          //   }
-          // ]);
-
-          toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
-            let img = new Image();
-            img.src = myBase64;
-            img.addEventListener('load', function() {
-              img.width = this.width;
-              img.height = this.height;
-              setFrameworkLogoData([
-                {
-                  url: frameworkMoreData[0].logo[0].url,
-                  src: img.src,
-                  width: this.width,
-                  height: this.height
-                }
-              ]);
-            });
+        toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
+          let img = new Image();
+          img.src = myBase64;
+          img.addEventListener('load', function() {
+            img.width = this.width;
+            img.height = this.height;
+            setFrameworkLogoData([
+              {
+                url: frameworkMoreData[0].logo[0].url,
+                src: img.src,
+                width: this.width,
+                height: this.height
+              }
+            ]);
           });
-
-          // Set Framework logo Data for Framework Data
-          // getImageData(frameworkMoreData[0].logo[0].url, function(myBase64) {
-          //   let img = new Image();
-          //   img.src = myBase64;
-          //   img.addEventListener('load', function() {
-          //     img.width = this.width;
-          //     img.height = this.height;
-          //     setFrameworkLogoData([
-          //       {
-          //         url: frameworkMoreData[0].logo[0].url,
-          //         src: img.src,
-          //         width: this.width,
-          //         height: this.height
-          //       }
-          //     ]);
-          //   });
-          // });
-        }
-        setFramework(data1);
-      } catch (err) {
-        console.log(err);
+        });
       }
+      setFramework(data1);
     };
 
     bootstrap();
-    fetchData();
-  }, [selectedFile]);
+
+    try {
+      activeRequests.startRequest();
+      fetchData();
+    } finally {
+      activeRequests.finishRequest();
+    }
+  }, [frameworkName, frameworkVersion, profileName, selectedFile]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
     let frameworkName = framework[0].title;
     let frameworkUuid = framework[0].uuid;
-    var arrayBuffer = '';
-    var fileid = null;
+    let fileid = null;
 
     // Do nothing if Form doesn't pass validation criteris above
     if (
@@ -154,13 +126,10 @@ export const ProfileCreate = props => {
     }
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
-      setErrorMsgTitle('');
-      setErrorMsgJobTitle('');
-
       // Retrieve values from Local Storage if exist
       let storedProfile = JSON.parse(localStorage.getItem(profileName));
 
-      profileService.mapDownloadProfile({
+      profileService.mapUserProfile({
         title,
         frameworkId,
         frameworkLogoData,
@@ -178,23 +147,7 @@ export const ProfileCreate = props => {
         mapping: storedProfile ? storedProfile.mapping : [],
         mappingAttributes: storedProfile ? storedProfile.mappingAttributes : []
       });
-      props.history.push('/framework/bioexcel/2.0/profile/map/download/');
-
-      // profileService.downloadProfile({
-      //   title,
-      //   frameworkId,
-      //   frameworkLogoData,
-      //   frameworkName,
-      //   frameworkUuid,
-      //   age,
-      //   currentRole,
-      //   gender,
-      //   jobTitle,
-      //   qualification,
-      //   additionalInfo,
-      //   selectedFile,
-      //   selectedFileData
-      // });
+      props.history.push('./map');
     } else if (localStorage.getItem('roles').includes('framework_manager')) {
       if (selectedFile) {
         let token = localStorage.getItem('csrf_token');
@@ -241,7 +194,7 @@ export const ProfileCreate = props => {
   };
 
   const setPreview = () => {
-    props.history.push('/framework/bioexcel/2.0/profile/preview', {
+    props.history.push('./preview', {
       title: title
     });
   };
@@ -314,9 +267,9 @@ export const ProfileCreate = props => {
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = profileService.hasProfile()
-        ? 'Update Competencies'
-        : 'Add Competencies';
+      submitButtonLabel = profileService.hasUserProfile()
+        ? 'Update competencies'
+        : 'Add competencies';
     }
 
     return <input type="submit" className="button" value={submitButtonLabel} />;
@@ -332,9 +285,9 @@ export const ProfileCreate = props => {
 
   // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
   const getImageData = (url, callback) => {
-    var xhr = new XMLHttpRequest();
+    let xhr = new XMLHttpRequest();
     xhr.onload = function() {
-      var reader = new FileReader();
+      let reader = new FileReader();
       reader.onloadend = function() {
         return callback(reader.result);
       };
@@ -346,12 +299,12 @@ export const ProfileCreate = props => {
   };
 
   const toDataURL = (src, callback, outputFormat) => {
-    var img = new Image();
+    let img = new Image();
     img.crossOrigin = 'Anonymous';
     img.onload = function() {
-      var canvas = document.createElement('CANVAS');
-      var ctx = canvas.getContext('2d');
-      var dataURL;
+      let canvas = document.createElement('CANVAS');
+      let ctx = canvas.getContext('2d');
+      let dataURL;
       canvas.height = this.naturalHeight;
       canvas.width = this.naturalWidth;
       ctx.drawImage(this, 0, 0);
@@ -560,14 +513,4 @@ export const ProfileCreate = props => {
   );
 };
 
-export const CreateProfile = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:framework/:version/profile/create"
-      component={ProfileCreate}
-    />
-  </Switch>
-);
-
-export default CreateProfile;
+export default ProfileCreate;

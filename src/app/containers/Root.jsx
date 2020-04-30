@@ -22,9 +22,8 @@ import AttributeDemap from './AttributeDemap';
 import ProfileCreate from './ProfileCreate';
 import ProfileView from './ProfileView';
 import ProfilesCompare from './ProfilesCompare';
-import ProfileMapDownload from './ProfileMapDownload';
-import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
+import ProfileEdit from './ProfileEdit';
 import ProfilePreview from './ProfilePreview';
 
 import { SnackbarProvider } from 'notistack';
@@ -173,6 +172,16 @@ class Root extends Component {
                 />
 
                 <Route
+                  path="/framework/:framework/:version/profile/map"
+                  component={ProfileMap}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/preview"
+                  component={ProfilePreview}
+                />
+
+                <Route
                   path="/framework/:framework/:version/profile/view/:id/:alias"
                   component={ProfileView}
                 />
@@ -183,23 +192,8 @@ class Root extends Component {
                 />
 
                 <Route
-                  path="/framework/:framework/:version/profile/map/download"
-                  component={ProfileMapDownload}
-                />
-
-                <Route
                   path="/framework/:framework/:version/profile/edit/:id"
                   component={ProfileEdit}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/map/:id"
-                  component={ProfileMap}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/preview"
-                  component={ProfilePreview}
                 />
 
                 <Route

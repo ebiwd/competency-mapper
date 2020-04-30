@@ -33,22 +33,25 @@ export const ProfileView = ({ match }) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const [profile, frameworkInfo, framework] = await Promise.all([
-        profileService.getProfile(profileId),
-        competencyService.getAllVersionedFrameworks(),
-        competencyService.getVersionedFramework(frameworkName, frameworkVersion)
-      ]);
-      setProfile(profile);
-      setFrameworkInfo(frameworkInfo);
-      setFramework(framework);
+      try {
+        activeRequestsService.startRequest();
+        const [profile, frameworkInfo, framework] = await Promise.all([
+          profileService.getProfile(profileId),
+          competencyService.getAllVersionedFrameworks(),
+          competencyService.getVersionedFramework(
+            frameworkName,
+            frameworkVersion
+          )
+        ]);
+        setProfile(profile);
+        setFrameworkInfo(frameworkInfo);
+        setFramework(framework);
+      } finally {
+        activeRequestsService.finishRequest();
+      }
     };
 
-    try {
-      activeRequestsService.startRequest();
-      fetchData();
-    } finally {
-      activeRequestsService.finishRequest();
-    }
+    fetchData();
   }, [profileId, frameworkName, frameworkVersion]);
 
   // const checkAlias = () => {

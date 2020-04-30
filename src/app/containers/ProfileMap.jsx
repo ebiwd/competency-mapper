@@ -1,154 +1,234 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
+
 import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
-import user_icon from './user_icon.png';
-import Parser from 'html-react-parser';
-import ReactTooltip from 'react-tooltip';
+import { ProfileHeader } from './ProfileHeader';
+import ActiveRequestsService from '../services/active-requests/active-requests';
+import CompetencyService from '../services/competency/competency';
+import ProfileService from '../services/profile/profile';
 
 const $ = window.$;
 
-export const ProfileMap = props => {
-  const activeRequests = new ActiveRequestsService();
-  const profileService = new ProfileService();
+const activeRequests = new ActiveRequestsService();
+const competencyService = new CompetencyService();
+const profileService = new ProfileService();
+
+export const ProfileMap = ({ match }) => {
+  const hasProfile = profileService.hasUserProfile();
 
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
+  const [expertiseLevels, setExpertiseLevels] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
 
-  const [ksa, setKsa] = useState();
-  const [mapping, setMapping] = useState();
+  const [, setProfileAttributes] = useState([]);
 
-  const frameworkName = props.location.pathname.split('/')[2];
-  const frameworkVersion = props.location.pathname.split('/')[3];
-  const profileId = props.location.pathname.split('/')[6];
+  const { framework: frameworkName, version: frameworkVersion } = match.params;
 
-  var competencyForm = '';
-  var expertise_levels = [];
-  var expertise_levels_legend = [];
-  var expertise_not_applicable = '';
-  var attribute_types = [];
-  var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
-  //var mapping = [];
-  var checkboxes = [];
+  let competencyForm = '';
+  let expertise_levels = [];
+  let expertise_not_applicable = '';
+  let attribute_types = [];
+  let frameworkFullName = '';
+  let frameworkDesc = '';
+  let frameworkLogo = '';
+
+  let mapping = [];
+  let mappingAttributes = [];
 
   useEffect(() => {
-    const fetchData = async () => {
-      await fetch(
-        `${apiUrl}/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setProfile(findresponse);
-        });
-
-      await fetch(`${apiUrl}/api/version_manager?_format=json`)
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setFrameworkInfo(findresponse);
-        });
-
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setFramework(findresponse);
-        });
-    };
-    fetchData();
-
-    if (mapping) {
-      let checkBoxes = $('input:checkbox');
-      checkBoxes.each(function(index, item, arr) {
-        console.log('test ' + item.dataset);
-      });
+    if (!hasProfile) {
+      return;
     }
-  }, [profileId]);
+    // Get Profile from Session
+    setProfile(profileService.getUserProfile());
 
-  const handleSubmit = async e => {
-    e.preventDefault();
+    const fetchData = async () => {
+      try {
+        activeRequests.startRequest();
+        const [dataFramework, dataVersion] = await Promise.all([
+          competencyService.getAllVersionedFrameworks(),
+          competencyService.getVersionedFramework(
+            frameworkName,
+            frameworkVersion
+          )
+        ]);
 
-    let response = await profileService.mapProfile(profileId, mapping);
-    console.log(response);
-    props.history.push(
-      `/framework/bioexcel/2.0/profile/view/${profileId}/alias`
-    );
-  };
+        setExpertiseLevels(
+          getExpertiseLevels(dataFramework, dataVersion[0].nid)
+        );
+        setFrameworkInfo(dataFramework);
+        setFramework(dataVersion);
+      } finally {
+        activeRequests.finishRequest();
+      }
+    };
 
-  const handleSelect = event => {
+    fetchData();
+  }, [frameworkName, frameworkVersion, hasProfile]);
+
+  const handleMapping = event => {
+    let storedProfile = profileService.getUserProfile();
     let competency_id = event.target[event.target.selectedIndex].getAttribute(
       'data-competency'
     );
     let expertise_id = event.target[event.target.selectedIndex].getAttribute(
       'data-expertise'
     );
-    let tempMapping = mapping;
-
-    let attributesList = [];
-    let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
+    let expertise = event.target[event.target.selectedIndex].text;
 
     if (expertise_id == expertise_not_applicable) {
-      checkBoxes.each(function(index, item, arr) {
-        item.checked = false;
-        item.disabled = true;
-      });
-      tempMapping.splice(
-        tempMapping.find(o => o.competency == competency_id),
-        1
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'checked',
+        false
       );
-    } else if (tempMapping) {
-      if (tempMapping.find(o => o.competency === competency_id)) {
-        let o = tempMapping.find(o => o.competency === competency_id);
-        o.expertise = expertise_id;
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'disabled',
+        true
+      );
 
-        checkBoxes.each(function(index, item, arr) {
-          attributesList.push(item.id);
-          item.checked = true;
-          item.disabled = false;
-        });
-        o.attributes = attributesList;
+      removeCompetencyAttributes(competency_id);
+    } else {
+      // Create temp mapping
+      let tempMap = storedProfile['mapping'];
+
+      if (tempMap.find(o => o.competency_id === competency_id)) {
+        // Update stored Competencies only if existing levels of expertise is updated
+        if (tempMap.expertise_id != expertise_id) {
+          let index = tempMap.findIndex(
+            item => item.competency_id === competency_id
+          );
+          // replace current stored values with incoming ones
+          tempMap.splice(index, 1, {
+            competency_id: competency_id,
+            expertise_id: expertise_id,
+            expertise: expertise
+          });
+        }
+        // Update local Storage mapping
+        storedProfile['mapping'] = tempMap;
+        profileService.setUserProfile(storedProfile);
       } else {
-        checkBoxes.each(function(index, item, arr) {
-          attributesList.push(item.id);
-          item.checked = true;
-          item.disabled = false;
+        // Add competency that has been selected
+        let tempMap = storedProfile['mapping'];
+        tempMap.push({
+          competency_id: competency_id,
+          expertise_id: expertise_id,
+          expertise: expertise
         });
-        tempMapping.push({
-          competency: competency_id,
-          expertise: expertise_id,
-          attributes: attributesList
-        });
+        storedProfile['mapping'] = tempMap;
+        profileService.setUserProfile(storedProfile);
       }
+
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'checked',
+        true
+      );
+      $('input:checkbox[data-competency=' + competency_id + ']').prop(
+        'disabled',
+        false
+      );
+
+      // Add Competency's selected attributes to LocalStorage
+      addCompetencyAttributes(competency_id);
     }
-    setMapping(tempMapping);
-    console.log(mapping);
   };
 
-  const handleCheckBox = e => {
-    let checkboxStatus = e.target.checked;
-    let competency_id = e.target.dataset.competency;
-    let tempMapping = mapping;
-    if (tempMapping) {
-      if (checkboxStatus == true) {
-        e.target.checked = true;
-        let o = tempMapping.find(o => o.competency == competency_id);
-        o.attributes.push(e.target.id);
+  // Add all attributes to LocalStorage if Competency is selected
+  const addCompetencyAttributes = competency => {
+    let storedProfile = profileService.getUserProfile();
+    // let selectedAttributes = new Array();
+
+    let mappingAttributes = storedProfile['mappingAttributes'];
+    $('input:checkbox[data-competency=' + competency + ']').each(function() {
+      if (
+        mappingAttributes.find(attr => attr.attribute_id === $(this).attr('id'))
+      ) {
+        // Do nothing if attributes are in LocalStorage already
       } else {
-        let o = tempMapping.find(o => o.competency == competency_id);
-        o.attributes.splice(o.attributes.indexOf(e.target.id), 1);
+        mappingAttributes.push({
+          attribute_id: $(this).attr('id'),
+          competency_id: competency
+        });
       }
-      setMapping(tempMapping);
+    }, mappingAttributes);
+
+    storedProfile['mappingAttributes'] = mappingAttributes;
+    profileService.setUserProfile(storedProfile);
+    setProfileAttributes(storedProfile);
+  };
+
+  // Remove current attributes if Competency is deselected
+  const removeCompetencyAttributes = competency => {
+    let storedProfile = profileService.getUserProfile();
+    let mappingAttributes = storedProfile['mappingAttributes'];
+    $('input:checkbox[data-competency=' + competency + ']').each(function() {
+      let index = mappingAttributes.findIndex(
+        item => item.attribute_id === $(this).attr('id')
+      );
+      // Remove current attributes if Competency is deselected
+      mappingAttributes.splice(index, 1);
+    }, mappingAttributes);
+
+    // window.localStorage.setItem('mappingAttributes', JSON.stringify(mappingAttributes));
+    storedProfile['mappingAttributes'] = mappingAttributes;
+    profileService.setUserProfile(storedProfile);
+    setProfileAttributes(storedProfile);
+  };
+
+  // Manage single Attributes check/uncheck event
+  const handleCheckboxMapping = event => {
+    let storedProfile = profileService.getUserProfile();
+    let competency_id = event.target.getAttribute('data-competency');
+    let attribute_id = event.target.getAttribute('id');
+
+    // let mappingAttributes = JSON.parse(localStorage.getItem('mappingAttributes'));
+    let mappingAttributes = storedProfile['mappingAttributes'];
+    let attributes = mappingAttributes;
+
+    if (mappingAttributes.find(attr => attr.attribute_id === attribute_id)) {
+      // Remove current attribute if deselected
+      let index = mappingAttributes.findIndex(
+        item => item.attribute_id === attribute_id
+      );
+      mappingAttributes.splice(index, 1);
+      // window.localStorage.setItem('mappingAttributes', JSON.stringify(mappingAttributes));
+      storedProfile['mappingAttributes'] = mappingAttributes;
+      profileService.setUserProfile(storedProfile);
+    } else {
+      // Add attribute to LocalStorage
+      attributes.push({
+        attribute_id: attribute_id,
+        competency_id: competency_id
+      });
+      // window.localStorage.setItem('mappingAttributes', JSON.stringify(attributes));
+      storedProfile['mappingAttributes'] = attributes;
+      $('input:checkbox[id=' + attribute_id + ']').prop('checked', true);
+      profileService.setUserProfile(storedProfile);
     }
-    console.log(mapping);
+    setProfileAttributes(storedProfile);
+  };
+
+  // Set Expertise Level.
+  // const expertiseLevelsSelect= [
+  //   {id: 1, title: 'Not applicable', data_expertise: '6816'},
+  //   {id: 2, title: 'Awareness', data_expertise: '6817'},
+  //   {id: 3, title: 'Working knowledge', data_expertise: '6818'},
+  //   {id: 4, title: 'Specialist knowledge', data_expertise: '6819'}
+  // ];
+  const getExpertiseLevels = (frameworkInfo, fId) => {
+    return frameworkInfo.find(item => item.nid === fId).expertise_levels;
+  };
+
+  // Set fielc HTML content + Heading if not empty
+  const setFieldContent = (heading, field) => {
+    let fieldContent = field ? '<h3>' + heading + '</h3>' + field : '';
+    return { __html: fieldContent };
   };
 
   const generateForm = () => {
+    // console.log('frameworkInfo')
+    // console.log(frameworkInfo)
     if (frameworkInfo) {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -174,83 +254,57 @@ export const ProfileMap = props => {
       });
     }
 
-    let index = 0;
-    expertise_levels.map((level, key) => {
-      expertise_levels_legend.push(
-        "<li class='legend'>  <div class='legend_number'> " +
-          index +
-          '</div>' +
-          level +
-          '</li>'
-      );
-      index++;
-    });
-
     if (profile) {
-      if (!mapping) {
-        setMapping(profile.profile_mapping);
-      }
-      console.log(mapping);
+      mapping = profile.mapping;
+
+      let storedProfile = profileService.getUserProfile();
+      mappingAttributes = storedProfile['mappingAttributes'];
     }
 
     if (framework) {
-      competencyForm = framework.map(item =>
+      competencyForm = framework.map((item, index) =>
         item.domains.map((domain, did) => (
           <ul>
-            <li className="domain_list">
+            <li key={index} className="domain_list">
               <div className="row callout">
                 <div className="column medium-9">
                   <h4 className="domain_title"> {domain.title}</h4>
                 </div>
                 <div className="column medium-3">
-                  <h4>
-                    Levels of expertise{' '}
-                    <span
-                      data-tip={
-                        "<ul class='legend_container'>" +
-                        expertise_levels_legend +
-                        '</ul> '
-                      }
-                      data-html={true}
-                      data-type="light"
-                    >
-                      <i class="icon icon-common icon-info" />
-                    </span>
-                  </h4>
-                  <ReactTooltip />
+                  <h4>Levels of expertise</h4>
                 </div>
               </div>
               <ul>
                 {domain.competencies.map((competency, cid) => (
-                  <li className="competency_list">
+                  <li key={cid} className="competency_list">
                     <div className="row">
                       <div className="column medium-9">
                         <Collapsible
                           trigger={
                             <div className="open-close-title">
                               <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-right icon-custom">
+                                <span className="icon icon-common icon-angle-down icon-custom">
                                   <p className="show-for-sr">show more</p>
                                 </span>
+                                {competency.title}
                               </h5>
                             </div>
                           }
                           triggerWhenOpen={
                             <div className="open-close-title">
                               <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-down icon-custom">
+                                <span className="icon icon-common icon-angle-up icon-custom">
                                   <p className="show-for-sr">show less</p>
                                 </span>
+                                {competency.title}
                               </h5>
                             </div>
                           }
                         >
                           <ul>
-                            {attribute_types.map(attribute_type => {
+                            {attribute_types.map((attribute_type, index) => {
                               return (
-                                <li className="attribute_type">
+                                <li key={index} className="attribute_type">
                                   {attribute_type}
                                   <ul>
                                     {competency.attributes
@@ -258,41 +312,43 @@ export const ProfileMap = props => {
                                         attribute =>
                                           attribute.type == attribute_type
                                       )
-                                      .map(attribute => (
-                                        <li className="attribute_title">
+                                      .map((attribute, jIndex) => (
+                                        <li
+                                          key={jIndex}
+                                          className="attribute_title"
+                                        >
                                           <div className="row">
                                             <div className="column medium-1">
                                               <input
+                                                onChange={e =>
+                                                  handleCheckboxMapping(e)
+                                                }
                                                 type="checkbox"
                                                 id={attribute.id}
-                                                onChange={e =>
-                                                  handleCheckBox(e)
-                                                }
-                                                defaultChecked={
-                                                  mapping.find(o =>
-                                                    o.attributes.find(
-                                                      a => a == attribute.id
-                                                    )
+                                                data-competency={competency.id}
+                                                checked={
+                                                  mappingAttributes.find(
+                                                    attr =>
+                                                      attr.attribute_id ==
+                                                      attribute.id
                                                   )
                                                     ? true
                                                     : false
                                                 }
-                                                disabled={
-                                                  mapping.find(
-                                                    o =>
-                                                      o.competency ==
-                                                      competency.id
-                                                  )
-                                                    ? false
-                                                    : true
-                                                }
-                                                data-competency={competency.id}
                                               />
                                             </div>
                                             <div className="column medium-11">
                                               <label
-                                                className="attribute_label"
-                                                for={attribute.id}
+                                                className={
+                                                  mappingAttributes.find(
+                                                    attr =>
+                                                      attr.attribute_id ==
+                                                      attribute.id
+                                                  )
+                                                    ? 'attribute_label checked'
+                                                    : 'attribute_label'
+                                                }
+                                                htmlFor={attribute.id}
                                               >
                                                 {' '}
                                                 {attribute.title}
@@ -308,23 +364,26 @@ export const ProfileMap = props => {
                           </ul>
                         </Collapsible>
                       </div>
+
                       <div className="column medium-3">
                         <select
-                          onChange={e => handleSelect(e)}
+                          onChange={e => handleMapping(e)}
                           defaultValue={
-                            mapping.find(o => o.competency == competency.id)
-                              ? mapping.find(o => o.competency == competency.id)
-                                  .expertise
+                            mapping.find(o => o.competency_id == competency.id)
+                              ? mapping.find(
+                                  o => o.competency_id == competency.id
+                                ).expertise_id
                               : expertise_not_applicable
                           }
                         >
-                          {expertise_levels.map((key, value) => (
+                          {expertiseLevels.map((level, key) => (
                             <option
-                              value={value}
-                              data-expertise={value}
+                              key={key}
+                              value={level.id}
+                              data-expertise={level.id}
                               data-competency={competency.id}
                             >
-                              {key}
+                              {level.title}
                             </option>
                           ))}
                         </select>
@@ -340,37 +399,46 @@ export const ProfileMap = props => {
     }
   };
 
+  if (!hasProfile) {
+    return <Redirect to="./create" />;
+  }
+
   return (
     <div>
-      {generateForm()} {$('#89').append('<h1>hahahaha</h1>')}
-      {profile ? (
+      {generateForm()}
+      {profile && (
         <div>
           <div className="row">
-            <h2>Competency mapping: {frameworkFullName} </h2>
+            <h2 className="hide-for-print">
+              Add competencies to your profile{' '}
+            </h2>
 
-            <div className="column medium-12">
+            <div id="profile" className="column medium-12">
               <div className="row">
-                <div className="column medium-10" />
-                <div className="column medium-2">
-                  <Link
-                    to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}
-                  >
-                    <i class="icon icon-common icon-angle-left" /> Profile
-                    overview
-                  </Link>
-                  <p />
+                <div className="column medium-9">
+                  <h3>
+                    {profile.title.charAt(0).toUpperCase() +
+                      profile.title.slice(1)}{' '}
+                    - {profile.jobTitle}
+                  </h3>
+                </div>
+                <div className="column medium-3">
+                  <img src={frameworkLogo} alt="Framework logo" />
+                  <br />
                 </div>
               </div>
 
+              <ProfileHeader
+                image={profile.selectedFileData}
+                current_role={profile.currentRole}
+                additional_information={profile.additionalInfo}
+                {...profile}
+              />
+
               <div className="row">
-                <div className="column medium-3">
-                  <img
-                    src={profile.image[0] ? profile.image[0].url : user_icon}
-                    width="150px"
-                  />
-                  <h4>{profile.title}</h4> <h5>{profile.job_title} </h5>
-                </div>
-                <div className="column medium-6 form_intro">
+                <div className="column medium-9">
+                  <br />
+                  <h3>Your competencies</h3>
                   <p>
                     The form below is listing competencies from{' '}
                     {frameworkFullName} competency framework. A competency is an
@@ -382,50 +450,35 @@ export const ProfileMap = props => {
                   </p>
                   <p>
                     You may assign a level expertise against each competency.
-                    The levels of expertise are:-
-                    <ul>
-                      {expertise_levels.map(level => (
-                        <li>{level}</li>
-                      ))}
-                    </ul>
+                    The levels of expertise are:
                   </p>
+                  <ul>
+                    {expertise_levels.map((level, index) => (
+                      <li key={index}>{level}</li>
+                    ))}
+                  </ul>
                 </div>
-                <div className="column medium-3">
-                  <img src={frameworkLogo} />
-                  <br />
-                </div>
+                <div className="column medium-3" />
               </div>
 
-              <div className="competency_section">
-                {
-                  <form onSubmit={e => handleSubmit(e)}>
+              <div className="row">
+                <div className="column medium-12">
+                  <div className="competency_section">
                     {competencyForm}
                     <div className="submit_fixed">
-                      <button className="button" type="submit">
-                        Save <i class="icon icon-common icon-save" />
-                      </button>
+                      <Link to="./preview" className="button">
+                        Preview{' '}
+                      </Link>
                     </div>
-                  </form>
-                }
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      ) : (
-        'Loading'
       )}
     </div>
   );
 };
 
-export const MapProfile = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:framework/:version/profile/map/:id"
-      component={ProfileMap}
-    />
-  </Switch>
-);
-
-export default MapProfile;
+export default ProfileMap;

@@ -25,6 +25,9 @@ class ProfileService {
       return undefined;
     }
   }
+  setUserProfile(obj) {
+    window.localStorage.setItem(profileName, JSON.stringify(obj));
+  }
 
   mapUserProfile(options) {
     localStorage.setItem(profileName, JSON.stringify(options));
