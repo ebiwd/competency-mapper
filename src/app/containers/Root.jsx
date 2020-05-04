@@ -23,9 +23,9 @@ import ProfileCreate from './ProfileCreate';
 import ProfileView from './ProfileView';
 import ProfilesCompare from './ProfilesCompare';
 import ProfileMapDownload from './ProfileMapDownload';
+import ProfileViewGuest from './ProfileViewGuest';
 import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
-import ProfilePreview from './ProfilePreview';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -173,6 +173,11 @@ class Root extends Component {
                 />
 
                 <Route
+                  path="/framework/:framework/:version/profile/guest"
+                  component={ProfileViewGuest}
+                />
+
+                <Route
                   path="/framework/:framework/:version/profile/view/:id/:alias"
                   component={ProfileView}
                 />
@@ -195,11 +200,6 @@ class Root extends Component {
                 <Route
                   path="/framework/:framework/:version/profile/map/:id"
                   component={ProfileMap}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/preview"
-                  component={ProfilePreview}
                 />
 
                 <Route

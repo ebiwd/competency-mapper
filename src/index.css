@@ -86,10 +86,11 @@ input[type='checkbox']:checked + div > .attribute_label {
 }
 
 .competency_list {
-  border: 1px dashed #ccc;
+  /*border: 1px dashed #ccc;*/
   padding: 10px;
   margin-bottom: 5px;
   list-style-type: none;
+  font-size: 110%;
 }
 
 .domain_list {
@@ -239,15 +240,23 @@ input[type='checkbox']:checked + div > .attribute_label {
 .legend-inline {
   list-style-type: none;
   display: inline-flex;
-  float: right;
+  /*float: right;
+  position: absolute;
+  bottom: 0;*/
 }
 
 .legend-inline li {
   margin: 10px;
 }
 
+.legend-inline-wrapper {
+  border: 1px dashed #ccc;
+  text-align: center;
+}
+
 .action-buttons {
   margin: 5px;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19) !important;
 }
 
 .compare_checkbox {
@@ -258,6 +267,93 @@ input[type='checkbox']:checked + div > .attribute_label {
 
 .compare_checkbox label {
   padding: 5px;
-  background-color: #f0f0f0;
-  border-radius: 5px;
+  width: 150px;
+}
+
+.ChartRow-barLabel {
+  max-width: 300px;
+}
+
+.ButterflyChart {
+  width: 100%;
+}
+
+.butterflyRow {
+  margin-bottom: 15px;
+}
+
+.fillerbg {
+  background-color: #ccc;
+}
+
+.fillerLeft {
+  background-color: rgb(233, 180, 0);
+  width: 50%;
+  margin-left: 50%;
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.fillerRight {
+  background-color: rgb(233, 180, 0);
+  /*width: 50%;*/
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #fff;
+}
+
+@media print {
+  .profile_navigation {
+    /*display: none*/
+  }
+  .submit_fixed {
+    display: none;
+  }
+  nav {
+    display: none;
+  }
+  a {
+    display: none;
+  }
+  .masthead-inner {
+    display: none;
+  }
+
+  #main-content-area {
+    margin-top: 0px;
+  }
+
+  #main-content-area:before {
+    content: 'Competency Mapper';
+    font-size: 40px;
+    position: absolute;
+    top: 50px;
+  }
+
+  .button {
+    display: none;
+  }
+
+  .badge.secondary {
+    background: #777 !important;
+    color: #fefefe !important;
+  }
+
+  /* filters and fills */
+  .fillerbg {
+    background-color: #ccc !important;
+  }
+
+  .fillerRight {
+    background-color: rgb(233, 180, 0) !important;
+  }
+
+  .fillerLeft {
+    background-color: rgb(233, 180, 0) !important;
+  }
 }

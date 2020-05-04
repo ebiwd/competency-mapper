@@ -10,6 +10,7 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
+import Stars from './Stars';
 
 const ProfilesCompareTable = props => {
   const frameworkName = props.frameworkName;
@@ -17,10 +18,6 @@ const ProfilesCompareTable = props => {
   const profile1Id = props.profile1Id;
   const profile2Id = props.profile2Id;
 
-  // const [profile1, setProfile1] = useState();
-  // const [profile2, setProfile2] = useState();
-  // const [framework, setFramework] = useState();
-  // const [frameworkInfo, setFrameworkInfo] = useState();
   const profile1 = props.profile1;
   const profile2 = props.profile2;
   const framework = props.framework;
@@ -39,41 +36,6 @@ const ProfilesCompareTable = props => {
     ? localStorage.getItem('roles')
     : '';
 
-  // useEffect(() => {
-  // const fetchData = async () => {
-  //   await fetch(
-  //     `${apiUrl}/api/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
-  //   )
-  //     .then(Response => Response.json())
-  //     .then(findresponse => {
-  //       setProfile1(findresponse);
-  //     });
-
-  //   await fetch(
-  //     `${apiUrl}/api/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
-  //   )
-  //     .then(Response => Response.json())
-  //     .then(findresponse => {
-  //       setProfile2(findresponse);
-  //     });
-
-  //   await fetch(`${apiUrl}/api/version_manager?_format=json`)
-  //     .then(Response => Response.json())
-  //     .then(findresponse => {
-  //       setFrameworkInfo(findresponse);
-  //     });
-
-  //   await fetch(
-  //     `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
-  //   )
-  //     .then(Response => Response.json())
-  //     .then(findresponse => {
-  //       setFramework(findresponse);
-  //     });
-  // };
-  //   fetchData();
-  // }, []);
-
   const getExpertise = (competency, profileid) => {
     let mapping = '';
     if (profileid == 'profile1') {
@@ -88,10 +50,11 @@ const ProfilesCompareTable = props => {
         let expertise = frameworkInfo[0].expertise_levels.find(
           level => level.id == obj.expertise
         );
-        return expertise.title;
+
+        return expertise.rating_level;
       }
     } else {
-      return null;
+      return 0;
     }
   };
 
@@ -102,12 +65,10 @@ const ProfilesCompareTable = props => {
     } else {
       mapping = profile2.profile_mapping;
     }
-    //console.log(mapping)
     if (mapping) {
       let attribute_check_status = mapping.find(o =>
         o.attributes.find(a => a == attribute)
       );
-      //console.log(attribute_check_status)
       return attribute_check_status ? true : false;
     }
   };
@@ -162,15 +123,22 @@ const ProfilesCompareTable = props => {
                   <li key={cid} className="competency_list">
                     <div className="row">
                       <div className="column medium-8">{competency.title}</div>
+
                       <div className="column medium-2">
-                        {getExpertise(competency.id, 'profile1')
-                          ? getExpertise(competency.id, 'profile1')
-                          : 'Not applicable'}
+                        <img
+                          src={`${
+                            Stars[getExpertise(competency.id, 'profile1')].src
+                          }`}
+                          width="50%"
+                        />
                       </div>
                       <div className="column medium-2">
-                        {getExpertise(competency.id, 'profile1')
-                          ? getExpertise(competency.id, 'profile2')
-                          : 'Not applicable'}
+                        <img
+                          src={`${
+                            Stars[getExpertise(competency.id, 'profile2')].src
+                          }`}
+                          width="50%"
+                        />
                       </div>
                     </div>
                   </li>

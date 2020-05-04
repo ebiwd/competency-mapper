@@ -8,7 +8,9 @@ import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 import ProfilesCompareTable from './ProfilesCompareTable';
 import ProfilesCompareGraph from './ProfilesCompareGraph';
+import ProfilesCompareButterfly from './ProfilesCompareButterfly';
 import user_icon from './user_icon.png';
+import Stars from './Stars';
 
 const $ = window.$;
 
@@ -68,7 +70,7 @@ export const ProfilesCompare = props => {
     frameworkInfo.map(info => {
       if (info.title.toLowerCase() === frameworkName) {
         info.expertise_levels.map(
-          level => (expertise_levels[level.id] = level.title)
+          level => (expertise_levels[level.rating_level] = level.title)
         );
       }
     });
@@ -77,8 +79,8 @@ export const ProfilesCompare = props => {
   let index = 0;
   expertise_levels.map((level, key) => {
     expertise_levels_legend.push(
-      <li>
-        {index} - {level}
+      <li style={{ textAlign: 'center' }}>
+        <span className="badge secondary"> {key} </span> <span> {level}</span>
       </li>
     );
     index++;
@@ -86,6 +88,10 @@ export const ProfilesCompare = props => {
 
   const clickGraphTab = () => {
     setTimeout(formatRadarChart, 2000);
+  };
+
+  const clickButterflyTab = () => {
+    setTimeout(formatButterfly, 100);
   };
 
   // I hate this anti-pattern
@@ -156,70 +162,84 @@ export const ProfilesCompare = props => {
     });
   };
 
+  const formatButterfly = () => {
+    $('.ButterflyChart-right > .ChartRow > .ChartRow-barLabel').remove();
+    $('.ButterflyChart-right > .ChartRow > .u-dottedLine').remove();
+    $('.ButterflyChart').css('width', '100%');
+  };
+
   return (
     <div>
-      <h4>Compare reference profiles</h4>
-      <div className="profileMeta">
-        {profile1 ? (
-          <div>
-            <img
-              src={profile1.image[0] ? profile1.image[0].url : user_icon}
-              width="120px"
-            />
-            <h5>{profile1.title}</h5>
-            {profile1.job_title}
-          </div>
-        ) : (
-          'loading profiles'
-        )}
-        <div>Vs</div>
-        {profile2 ? (
-          <div>
-            <img
-              src={profile2.image[0] ? profile2.image[0].url : user_icon}
-              width="120px"
-            />
-            <h5>{profile2.title}</h5>
-            {profile2.job_title}
-          </div>
-        ) : (
-          ''
-        )}
-      </div>
-      <div>
-        <ul className="legend-inline">{expertise_levels_legend}</ul>
-      </div>
-      <Tabs>
-        <TabList>
-          <Tab>Tabular comparison</Tab>
-          <Tab onClick={e => clickGraphTab(e)}>Graphical comparison</Tab>
-        </TabList>
+      <h3>Compare career profiles</h3>
+      <span className="lead">
+        Compere profile with other reference profiles to help you make career
+        choices based on your competency
+      </span>
 
-        <TabPanel>
-          <ProfilesCompareTable
-            frameworkName={frameworkName}
-            frameworkVersion={frameworkVersion}
-            profile1Id={profile1Id}
-            profile2Id={profile2Id}
-            profile1={profile1}
-            profile2={profile2}
-            framework={framework}
-            frameworkInfo={frameworkInfo}
-          />
-        </TabPanel>
-        <TabPanel>
-          <ProfilesCompareGraph
-            frameworkName={frameworkName}
-            frameworkVersion={frameworkVersion}
-            profile1Id={profile1Id}
-            profile2Id={profile2Id}
-            profile1={profile1}
-            profile2={profile2}
-            framework={framework}
-            frameworkInfo={frameworkInfo}
-          />
-        </TabPanel>
-      </Tabs>
+      <div className="row">
+        <div className="column medium-3">&nbsp;</div>
+        <div className="column medium-3">
+          {profile1 ? (
+            <div className="profile_badge_page">
+              <img
+                src={profile1.image[0] ? profile1.image[0].url : user_icon}
+                width="120px"
+              />
+              <Link
+                to={`/framework/bioexcel/2.0/profile/view/${profile1.id}/alias`}
+              >
+                <h5>{profile1.job_title}</h5>
+              </Link>
+            </div>
+          ) : (
+            'loading profiles'
+          )}
+        </div>
+
+        <div className="column medium-3">
+          {profile2 ? (
+            <div className="profile_badge_page">
+              <img
+                src={profile2.image[0] ? profile2.image[0].url : user_icon}
+                width="120px"
+              />
+              <Link
+                to={`/framework/bioexcel/2.0/profile/view/${profile2.id}/alias`}
+              >
+                <h5>{profile2.job_title}</h5>
+              </Link>
+            </div>
+          ) : (
+            'loading profiles'
+          )}
+        </div>
+        <div className="column medium-3" />
+      </div>
+
+      <div className="row">
+        <div className="column medium-12">
+          <div className="legend-inline-wrapper">
+            <strong>Rating levels </strong>{' '}
+            <ul className="legend-inline">{expertise_levels_legend}</ul>
+          </div>
+        </div>
+      </div>
+      <p />
+
+      {profile1 && profile2 ? (
+        <ProfilesCompareButterfly
+          frameworkName={frameworkName}
+          frameworkVersion={frameworkVersion}
+          profile1Id={profile1Id}
+          profile2Id={profile2Id}
+          profile1={profile1}
+          profile2={profile2}
+          framework={framework}
+          frameworkInfo={frameworkInfo}
+        />
+      ) : (
+        ''
+      )}
     </div>
   );
 };

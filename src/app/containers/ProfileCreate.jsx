@@ -37,6 +37,9 @@ export const ProfileCreate = props => {
 
   const [errorMsgTitle, setErrorMsgTitle] = useState();
   const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
+
+  const [frameworkMoreData, setFrameworkMoreData] = useState();
+
   let errors = [];
 
   const http = new HttpService();
@@ -79,53 +82,32 @@ export const ProfileCreate = props => {
 
         const [data1, data2] = await Promise.all([promise1, promise2]);
         // Get current Framework only
-        let frameworkMoreData = data2.filter(item => {
-          return item.nid === '9';
-        });
-        if (frameworkMoreData[0].logo[0].url) {
-          // setFrameworkLogoData([
-          //   {
-          //     url: frameworkMoreData[0].logo[0].url,
-          //     src: frameworkMoreData[0].logo[0].url
-          //   }
-          // ]);
 
-          toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
-            let img = new Image();
-            img.src = myBase64;
-            img.addEventListener('load', function() {
-              img.width = this.width;
-              img.height = this.height;
-              setFrameworkLogoData([
-                {
-                  url: frameworkMoreData[0].logo[0].url,
-                  src: img.src,
-                  width: this.width,
-                  height: this.height
-                }
-              ]);
-            });
-          });
+        // if (frameworkMoreData[0].logo[0].url) {
 
-          // Set Framework logo Data for Framework Data
-          // getImageData(frameworkMoreData[0].logo[0].url, function(myBase64) {
-          //   let img = new Image();
-          //   img.src = myBase64;
-          //   img.addEventListener('load', function() {
-          //     img.width = this.width;
-          //     img.height = this.height;
-          //     setFrameworkLogoData([
-          //       {
-          //         url: frameworkMoreData[0].logo[0].url,
-          //         src: img.src,
-          //         width: this.width,
-          //         height: this.height
-          //       }
-          //     ]);
-          //   });
-          // });
-        }
+        //   toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
+        //     let img = new Image();
+        //     img.src = myBase64;
+        //     img.addEventListener('load', function() {
+        //       img.width = this.width;
+        //       img.height = this.height;
+        //       setFrameworkLogoData([
+        //         {
+        //           url: frameworkMoreData[0].logo[0].url,
+        //           src: img.src,
+        //           width: this.width,
+        //           height: this.height
+        //         }
+        //       ]);
+        //     });
+        //   });
+        // }
         setFramework(data1);
+        setFrameworkMoreData(
+          data2.filter(item => {
+            return item.title.toLowerCase() === frameworkName;
+          })
+        );
       } catch (err) {
         console.log(err);
       }
@@ -140,6 +122,12 @@ export const ProfileCreate = props => {
     let frameworkId = framework[0].nid;
     let frameworkName = framework[0].title;
     let frameworkUuid = framework[0].uuid;
+    console.log(frameworkMoreData);
+    let liveVersion = frameworkMoreData[0].versions.find(
+      ver => ver.status == 'live'
+    );
+
+    let versionID = liveVersion.id;
     var arrayBuffer = '';
     var fileid = null;
 
@@ -182,22 +170,6 @@ export const ProfileCreate = props => {
         mappingAttributes: storedProfile ? storedProfile.mappingAttributes : []
       });
       props.history.push('/framework/bioexcel/2.0/profile/map/download/');
-
-      // profileService.downloadProfile({
-      //   title,
-      //   frameworkId,
-      //   frameworkLogoData,
-      //   frameworkName,
-      //   frameworkUuid,
-      //   age,
-      //   currentRole,
-      //   gender,
-      //   jobTitle,
-      //   qualification,
-      //   additionalInfo,
-      //   selectedFile,
-      //   selectedFileData
-      // });
     } else if (localStorage.getItem('roles').includes('framework_manager')) {
       if (selectedFile) {
         let token = localStorage.getItem('csrf_token');
@@ -226,6 +198,7 @@ export const ProfileCreate = props => {
         title,
         frameworkId,
         frameworkUuid,
+        versionID,
         age,
         currentRole,
         gender,

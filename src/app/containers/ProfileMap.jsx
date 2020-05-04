@@ -98,10 +98,15 @@ export const ProfileMap = props => {
         item.checked = false;
         item.disabled = true;
       });
-      tempMapping.splice(
-        tempMapping.find(o => o.competency == competency_id),
-        1
-      );
+      //console.log(tempMapping.find(o => o.competency == competency_id))
+      // tempMapping.splice(
+      //   tempMapping.find(o => o.competency == competency_id),
+      //   1
+      // );
+      console.log(tempMapping);
+      // Remove the NA competency from the temp array
+      tempMapping = tempMapping.filter(o => o.competency != competency_id);
+      console.log(tempMapping);
     } else if (tempMapping) {
       if (tempMapping.find(o => o.competency === competency_id)) {
         let o = tempMapping.find(o => o.competency === competency_id);
@@ -127,7 +132,6 @@ export const ProfileMap = props => {
       }
     }
     setMapping(tempMapping);
-    console.log(mapping);
   };
 
   const handleCheckBox = e => {
@@ -177,11 +181,10 @@ export const ProfileMap = props => {
     let index = 0;
     expertise_levels.map((level, key) => {
       expertise_levels_legend.push(
-        "<li class='legend'>  <div class='legend_number'> " +
-          index +
-          '</div>' +
-          level +
-          '</li>'
+        <li style={{ textAlign: 'center' }}>
+          <span className="badge secondary"> {index} </span>{' '}
+          <span> {level}</span>
+        </li>
       );
       index++;
     });
@@ -200,24 +203,7 @@ export const ProfileMap = props => {
             <li className="domain_list">
               <div className="row callout">
                 <div className="column medium-9">
-                  <h4 className="domain_title"> {domain.title}</h4>
-                </div>
-                <div className="column medium-3">
-                  <h4>
-                    Levels of expertise{' '}
-                    <span
-                      data-tip={
-                        "<ul class='legend_container'>" +
-                        expertise_levels_legend +
-                        '</ul> '
-                      }
-                      data-html={true}
-                      data-type="light"
-                    >
-                      <i class="icon icon-common icon-info" />
-                    </span>
-                  </h4>
-                  <ReactTooltip />
+                  <h5 className="domain_title"> {domain.title}</h5>
                 </div>
               </div>
               <ul>
@@ -228,22 +214,18 @@ export const ProfileMap = props => {
                         <Collapsible
                           trigger={
                             <div className="open-close-title">
-                              <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-right icon-custom">
-                                  <p className="show-for-sr">show more</p>
-                                </span>
-                              </h5>
+                              <span className="icon icon-common icon-angle-right icon-custom">
+                                {' '}
+                              </span>
+                              <span>{competency.title}</span>
                             </div>
                           }
                           triggerWhenOpen={
                             <div className="open-close-title">
-                              <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-down icon-custom">
-                                  <p className="show-for-sr">show less</p>
-                                </span>
-                              </h5>
+                              <span className="icon icon-common icon-angle-down icon-custom">
+                                {' '}
+                              </span>
+                              <span>{competency.title}</span>
                             </div>
                           }
                         >
@@ -342,11 +324,14 @@ export const ProfileMap = props => {
 
   return (
     <div>
-      {generateForm()} {$('#89').append('<h1>hahahaha</h1>')}
+      {generateForm()}
       {profile ? (
         <div>
           <div className="row">
-            <h2>Competency mapping: {frameworkFullName} </h2>
+            <h2>
+              Competency mapping: {frameworkFullName} {frameworkVersion} -{' '}
+              {profile.job_title}{' '}
+            </h2>
 
             <div className="column medium-12">
               <div className="row">
@@ -368,9 +353,9 @@ export const ProfileMap = props => {
                     src={profile.image[0] ? profile.image[0].url : user_icon}
                     width="150px"
                   />
-                  <h4>{profile.title}</h4> <h5>{profile.job_title} </h5>
                 </div>
-                <div className="column medium-6 form_intro">
+                <div className="column medium-9 form_intro">
+                  <h3 />
                   <p>
                     The form below is listing competencies from{' '}
                     {frameworkFullName} competency framework. A competency is an
@@ -380,21 +365,22 @@ export const ProfileMap = props => {
                     that an individual might need to fulfil a particular role,
                     or that define specific user groups.
                   </p>
-                  <p>
-                    You may assign a level expertise against each competency.
-                    The levels of expertise are:-
-                    <ul>
-                      {expertise_levels.map(level => (
-                        <li>{level}</li>
-                      ))}
-                    </ul>
-                  </p>
-                </div>
-                <div className="column medium-3">
-                  <img src={frameworkLogo} />
-                  <br />
                 </div>
               </div>
+              <div className="row">
+                <div className="column medium-3">
+                  {' '}
+                  <h5 style={{ marginTop: '25px' }}>
+                    {frameworkFullName} {frameworkVersion} / Competencies
+                  </h5>
+                </div>
+                <div className="column medium-9 ">
+                  <ul className="legend-inline" style={{ float: 'right' }}>
+                    {expertise_levels_legend}
+                  </ul>
+                </div>
+              </div>
+              <hr />
 
               <div className="competency_section">
                 {

@@ -39,6 +39,10 @@ export const ProfileView = props => {
     ? localStorage.getItem('roles')
     : '';
 
+  let profile2Expertise = '';
+  let width2 = '';
+  let floatRight = '';
+
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
@@ -79,16 +83,18 @@ export const ProfileView = props => {
   };
 
   const getExpertise = competency => {
-    let obj = mapping.find(o => o.competency == competency);
-    if (obj) {
-      if (frameworkInfo) {
-        let expertise = frameworkInfo[0].expertise_levels.find(
-          level => level.id == obj.expertise
-        );
-        return expertise.title;
+    if (mapping) {
+      let obj = mapping.find(o => o.competency == competency);
+      if (obj) {
+        if (frameworkInfo) {
+          let expertise = frameworkInfo[0].expertise_levels.find(
+            level => level.id == obj.expertise
+          );
+          return expertise;
+        }
+      } else {
+        return '';
       }
-    } else {
-      return '';
     }
   };
 
@@ -101,15 +107,21 @@ export const ProfileView = props => {
     }
   };
 
+  const getBarWidth = data => {
+    width2 = data ? 100 / (3 / data.rating_level) : 0;
+    return width2;
+  };
+
   const generateProfileView = () => {
     if (frameworkInfo) {
+      console.log(frameworkInfo);
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
           frameworkLogo = info.logo[0].url;
           frameworkDesc = info.description;
           info.expertise_levels.map(
-            level => (expertise_levels[level.id] = level.title)
+            level => (expertise_levels[level.rating_level] = level.title)
           );
         }
       });
@@ -125,130 +137,123 @@ export const ProfileView = props => {
     let index = 0;
     expertise_levels.map((level, key) => {
       expertise_levels_legend.push(
-        "<li class='legend'>  <div class='legend_number'> " +
-          index +
-          '</div>' +
-          level +
-          '</li>'
+        <li style={{ textAlign: 'center' }}>
+          <span className="badge secondary"> {key} </span> <span> {level}</span>
+        </li>
       );
       index++;
     });
 
     if (profile) {
       mapping = profile.profile_mapping;
+      console.log(mapping);
     }
 
     if (framework) {
       competencyView = framework.map(item =>
-        item.domains.map((domain, did) => (
-          <ul>
-            <li className="domain_list">
-              <div className="row callout">
-                <div className="column medium-9">
-                  <h4 className="domain_title"> {domain.title}</h4>
-                </div>
-                <div className="column medium-3">
-                  <h4>
-                    Levels of expertise{' '}
-                    <span
-                      data-tip={
-                        "<ul class='legend_container'>" +
-                        expertise_levels_legend +
-                        '</ul> '
-                      }
-                      data-html={true}
-                      data-type="light"
-                    >
-                      <i class="icon icon-common icon-info" />
-                    </span>
-                  </h4>
-                  <ReactTooltip />
-                </div>
+        item.domains.map(domain => (
+          <div>
+            <div className="row callout">
+              <div className="column medium-12 ">
+                <h5>{domain.title}</h5>{' '}
               </div>
-              <ul>
-                {domain.competencies.map((competency, cid) => (
-                  <li className="competency_list">
-                    <div className="row">
-                      <div className="column medium-9">
-                        <Collapsible
-                          trigger={
-                            <div className="open-close-title">
-                              <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-right icon-custom">
-                                  <p className="show-for-sr">show more</p>
-                                </span>
-                              </h5>
-                            </div>
-                          }
-                          triggerWhenOpen={
-                            <div className="open-close-title">
-                              <h5>
-                                {competency.title}
-                                <span className="icon icon-common icon-angle-down icon-custom">
-                                  <p className="show-for-sr">show less</p>
-                                </span>
-                              </h5>
-                            </div>
-                          }
+            </div>
+            {domain.competencies.map(competency => (
+              <div>
+                <div className="row">
+                  <div className="column medium-8">
+                    <span className="competency_title">
+                      {' '}
+                      {competency.title.length > 150
+                        ? competency.title
+                            .split(' ')
+                            .splice(0, 18)
+                            .join(' ') + ' ..'
+                        : competency.title}
+                    </span>
+                  </div>
+                  <div className="column medium-4">
+                    <div className="fillerbg">
+                      <div
+                        className="fillerRight"
+                        style={{
+                          width: getBarWidth(getExpertise(competency.id)) + '%',
+                          display: 'flow-root'
+                        }}
+                      >
+                        <span
+                          style={{
+                            float:
+                              getBarWidth(getExpertise(competency.id)) == 0
+                                ? 'none'
+                                : 'right'
+                          }}
+                          className="rating_level_number"
                         >
-                          <ul>
-                            {attribute_types.map(attribute_type => {
-                              return (
-                                <li className="attribute_type">
-                                  {attribute_type}
-                                  <ul>
-                                    {competency.attributes
-                                      .filter(
-                                        attribute =>
-                                          attribute.type == attribute_type
-                                      )
-                                      .map(attribute => (
-                                        <li className="attribute_title">
-                                          <div className="row">
-                                            <div className="column medium-12">
-                                              <span
-                                                className={
-                                                  getAttributeStatus(
-                                                    attribute.id
-                                                  )
-                                                    ? 'attribute_selected'
-                                                    : 'attribute_not_selected'
-                                                }
-                                              >
-                                                {getAttributeStatus(
-                                                  attribute.id
-                                                ) ? (
-                                                  <i class="icon icon-common icon-check" />
-                                                ) : (
-                                                  ''
-                                                )}{' '}
-                                                {attribute.title}
-                                              </span>
-                                            </div>
-                                          </div>
-                                        </li>
-                                      ))}
-                                  </ul>
-                                </li>
-                              );
-                            })}
-                          </ul>
-                        </Collapsible>
-                      </div>
-                      <div className="column medium-3">
-                        <h5>
                           {getExpertise(competency.id)
-                            ? getExpertise(competency.id)
-                            : 'Not applicable'}
-                        </h5>
+                            ? getExpertise(competency.id).rating_level
+                            : 0}
+                        </span>
                       </div>
                     </div>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          </ul>
+                  </div>
+                </div>
+                <div className="profile_collapsible">
+                  <Collapsible
+                    trigger={
+                      <div className="open-close-title">
+                        <i className="icon icon-common icon-angle-right icon-custom" />
+                      </div>
+                    }
+                    triggerWhenOpen={
+                      <div className="open-close-title">
+                        <i className="icon icon-common icon-angle-down icon-custom" />
+                      </div>
+                    }
+                  >
+                    {attribute_types.map(attribute_type => {
+                      return (
+                        <div
+                          className="accordion-item is-active"
+                          data-accordion-item
+                        >
+                          <div className="row attribute_align_type">
+                            <div className="column medium-8">
+                              <strong> {attribute_type} </strong>
+                            </div>
+                            <div className="column medium-4" />
+                          </div>
+                          {competency.attributes
+                            .filter(
+                              attribute => attribute.type == attribute_type
+                            )
+                            .map(attribute => {
+                              return (
+                                <div className="row attribute_align">
+                                  <div className="column medium-8">
+                                    {attribute.title}
+                                  </div>
+                                  <div className="column medium-4">
+                                    {getAttributeStatus(
+                                      attribute.id,
+                                      'profile1'
+                                    ) ? (
+                                      <i className="icon icon-common icon-check" />
+                                    ) : (
+                                      '-'
+                                    )}
+                                  </div>
+                                </div>
+                              );
+                            })}
+                        </div>
+                      );
+                    })}
+                  </Collapsible>
+                </div>
+              </div>
+            ))}
+          </div>
         ))
       );
     }
@@ -337,15 +342,16 @@ export const ProfileView = props => {
     );
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       {generateProfileView()}
+
       {profile ? (
         <div id="profile">
-          {
-            //checkAlias()
-          }
-
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
             {profile.title} - {profile.job_title}
           </h2>
@@ -358,25 +364,25 @@ export const ProfileView = props => {
                     to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}
                   >
                     Edit overview
-                    <i class="icon icon-common icon-pencil-alt" />
+                    <i className="icon icon-common icon-pencil-alt" />
                   </Link>
                 </li>
                 <li className="profile_navigation">
                   <Link to={`/framework/bioexcel/2.0/profile/map/${profileId}`}>
-                    Map competencies <i class="icon icon-common icon-cog" />{' '}
+                    Map competencies <i className="icon icon-common icon-cog" />{' '}
                     {console.log(localStorage.getItem('roles'))}
                   </Link>
                 </li>
               </ul>
             ) : (
               <Link to={`/framework/bioexcel/2.0/profile/create`}>
-                Create your profile <i class="icon icon-common icon-plus" />
+                Create your profile <i className="icon icon-common icon-plus" />
               </Link>
             )}
           </div>
 
-          <div className="row">
-            <div className="column large-4">
+          <div className={profile.publishing_status + ' row'}>
+            <div className="column large-3">
               <center>
                 <img
                   style={{ display: 'block', maxWidth: '200px' }}
@@ -389,7 +395,7 @@ export const ProfileView = props => {
                 {profile.age ? '| ' + profile.age + ' years' : ''}
               </p>
             </div>
-            <div className="column large-8">
+            <div className="column large-9">
               <h3>Qualification and background</h3>
               <p>
                 {profile.qualification_background
@@ -408,16 +414,32 @@ export const ProfileView = props => {
             </div>
             <p />
           </div>
+          <p>&nbsp;</p>
+
+          <div className="row">
+            <div className="column medium-3">
+              {' '}
+              <h5 style={{ marginTop: '25px' }}>
+                {frameworkFullName} {frameworkVersion} / Competencies
+              </h5>
+            </div>
+            <div className="column medium-9 ">
+              <ul className="legend-inline" style={{ float: 'right' }}>
+                {expertise_levels_legend}
+              </ul>
+            </div>
+          </div>
+          <hr />
           {competencyView}
         </div>
       ) : (
         'Loaing profile'
       )}
 
-      <form onSubmit={e => handleDownload(e)}>
+      <form onSubmit={e => handlePrint(e)}>
         <div className="submit_fixed">
           <button className="button" type="submit">
-            Download <i className="icon icon-common icon-download" />
+            Print <i className="icon icon-common icon-print" />
           </button>
         </div>
       </form>

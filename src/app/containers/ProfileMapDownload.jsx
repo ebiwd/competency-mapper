@@ -39,6 +39,7 @@ export const ProfileMapDownload = props => {
 
   var mapping = [];
   let mappingAttributes = [];
+  var expertise_levels_legend = [];
 
   const http = new HttpService();
 
@@ -256,6 +257,29 @@ export const ProfileMapDownload = props => {
   // ];
 
   // Get Expertise Level from API.
+  if (frameworkInfo) {
+    frameworkInfo.map(info => {
+      if (info.title.toLowerCase() === frameworkName) {
+        frameworkFullName = info.title;
+        frameworkLogo = info.logo[0].url;
+        frameworkDesc = info.description;
+        info.expertise_levels.map(
+          level => (expertise_levels[level.rating_level] = level.title)
+        );
+      }
+    });
+
+    let index = 0;
+    expertise_levels.map((level, key) => {
+      expertise_levels_legend.push(
+        <li style={{ textAlign: 'center' }}>
+          <span className="badge secondary"> {key} </span> <span> {level}</span>
+        </li>
+      );
+      index++;
+    });
+  }
+
   const getExpertiseLevels = (frameworkInfo, fId) => {
     let fw = frameworkInfo.filter(item => {
       return item.nid === fId;
@@ -525,6 +549,10 @@ export const ProfileMapDownload = props => {
     }
   };
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   return (
     <div>
       {generateForm()}
@@ -535,16 +563,12 @@ export const ProfileMapDownload = props => {
 
             <div id="profile" className="column medium-12">
               <div className="row">
-                <div className="column medium-9">
+                <div className="column medium-12">
                   <h3>
                     {profile.title.charAt(0).toUpperCase() +
                       profile.title.slice(1)}{' '}
                     - {profile.jobTitle}
                   </h3>
-                </div>
-                <div className="column medium-3">
-                  <img src={frameworkLogo} />
-                  <br />
                 </div>
               </div>
 
@@ -567,7 +591,7 @@ export const ProfileMapDownload = props => {
                     {profile.gender}, {profile.age} years
                   </div>
                 </div>
-                <div className="column medium-6">
+                <div className="column medium-9">
                   <div
                     className="form_intro"
                     dangerouslySetInnerHTML={setFieldContent(
@@ -595,11 +619,10 @@ export const ProfileMapDownload = props => {
                     )}
                   />
                 </div>
-                <div className="column medium-3" />
               </div>
 
               <div className="row">
-                <div className="column medium-9">
+                <div className="column medium-12">
                   <br />
                   <h3>Your competencies</h3>
                   <p>
@@ -615,13 +638,11 @@ export const ProfileMapDownload = props => {
                     You may assign a level expertise against each competency.
                     The levels of expertise are:
                   </p>
-                  <ul>
-                    {expertise_levels.map((level, index) => (
-                      <li key={index}>{level}</li>
-                    ))}
-                  </ul>
+                  <div className="legend-inline-wrapper">
+                    <strong>Rating levels </strong>{' '}
+                    <ul className="legend-inline">{expertise_levels_legend}</ul>
+                  </div>
                 </div>
-                <div className="column medium-3" />
               </div>
 
               <div className="row">
@@ -632,8 +653,7 @@ export const ProfileMapDownload = props => {
                         {competencyForm}
                         <div className="submit_fixed">
                           <button className="button" type="submit">
-                            Download{' '}
-                            <i className="icon icon-common icon-download" />
+                            Print <i className="icon icon-common icon-print" />
                           </button>
                         </div>
                       </form>

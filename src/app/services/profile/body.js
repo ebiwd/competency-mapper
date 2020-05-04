@@ -5,6 +5,7 @@ class BodyService {
     title,
     frameworkId,
     frameworkUuid,
+    versionID,
     age,
     currentRole,
     gender,
@@ -25,6 +26,11 @@ class BodyService {
       title: [
         {
           value: title
+        }
+      ],
+      field_versions: [
+        {
+          target_id: versionID
         }
       ],
       field_age: [
