@@ -31,7 +31,7 @@ export const ProfilesCompare = props => {
     const fetchData = async () => {
       try {
         await fetch(
-          `${apiUrl}/api/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
         )
           .then(Response => Response.json())
           .then(findresponse => {
@@ -39,7 +39,7 @@ export const ProfilesCompare = props => {
           });
 
         await fetch(
-          `${apiUrl}/api/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
         )
           .then(Response => Response.json())
           .then(findresponse => {

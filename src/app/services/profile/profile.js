@@ -56,7 +56,7 @@ class ProfileService {
 
   async mapProfile(profileId, mapping) {
     const response = await this.http.patch(
-      `/api/profiles?_format=json`,
+      `/api/bioexcel/2.0/profiles?_format=json`,
       Body.mapProfile(profileId, mapping),
       'json'
     );

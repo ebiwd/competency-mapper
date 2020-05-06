@@ -197,7 +197,8 @@ class Root extends Component {
                   component={ProfileEdit}
                 />
 
-                <Route
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/map/:id"
                   component={ProfileMap}
                 />

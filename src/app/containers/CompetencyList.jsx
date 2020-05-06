@@ -193,10 +193,15 @@ class CompetencyList extends Component {
 
         <Tabs>
           <TabList>
+            <Tab>Career profiles</Tab>
             <Tab>Competencies</Tab>
             <Tab>Training resources</Tab>
-            <Tab>Career profiles</Tab>
           </TabList>
+
+          <TabPanel>
+            <ProfileList framework={framework} version={frameworkVersion} />
+            <FrameworkVersions framework={framework} versions={versions} />
+          </TabPanel>
 
           <TabPanel>
             <input
@@ -211,9 +216,6 @@ class CompetencyList extends Component {
           </TabPanel>
           <TabPanel>
             <Courses framework={framework} version={frameworkVersion} />
-          </TabPanel>
-          <TabPanel>
-            <ProfileList />
           </TabPanel>
         </Tabs>
       </>

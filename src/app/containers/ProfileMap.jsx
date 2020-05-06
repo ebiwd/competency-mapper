@@ -40,7 +40,7 @@ export const ProfileMap = props => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        `${apiUrl}/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
       )
         .then(Response => Response.json())
         .then(findresponse => {

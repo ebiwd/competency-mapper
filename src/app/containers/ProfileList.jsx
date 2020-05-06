@@ -9,6 +9,10 @@ import user_icon from './user_icon.png';
 
 const ProfileList = props => {
   let history = useHistory();
+
+  const frameworkName = props.framework;
+  const frameworkVersion = props.version;
+
   const [profiles, setProfiles] = useState();
   const [framework, setFramework] = useState();
   const [userRole, setUserRole] = useState();
@@ -17,24 +21,23 @@ const ProfileList = props => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(`${apiUrl}/api/list_profiles/?_format=json`)
+      await fetch(
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&timestamp=${Date.now()}`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setProfiles(findresponse);
         });
     };
     fetchData();
-  }, [framework]);
+  }, [framework, frameworkVersion]);
 
   const checkUserAccess = () => {
     if (localStorage.getItem('roles')) {
-      //console.log('roles '+localStorage.getItem('roles'))
       return true;
     } else {
-      //console.log('roles '+localStorage.getItem('roles'))
       return false;
     }
-    //console.log('access called')
   };
 
   const setProfilesToCompare = e => {
@@ -196,7 +199,7 @@ const ProfileList = props => {
           {profiles
             ? profiles.map(profile => {
                 if (!checkUserAccess()) {
-                  if (profile.field_publishing_status[0].value == 'Live') {
+                  if (profile.publishing_status == 'Live') {
                     return (
                       <div className="column medium-4">
                         <div className="profile_badge">
@@ -205,20 +208,16 @@ const ProfileList = props => {
                               <input
                                 type="checkbox"
                                 onClick={e => setProfilesToCompare(e)}
-                                data-profileid={profile.nid[0].value}
+                                data-profileid={profile.id}
                               />
                               Click to compare
                             </label>
                           </span>
                           <p>
-                            {profile.field_image[0] ? (
-                              <div
-                                className={
-                                  profile.field_publishing_status[0].value
-                                }
-                              >
+                            {profile.image[0] ? (
+                              <div className={profile.publishing_status}>
                                 <img
-                                  src={profile.field_image[0].url}
+                                  src={profile.image[0].url}
                                   className="profile_img"
                                 />
                               </div>
@@ -230,15 +229,15 @@ const ProfileList = props => {
                           <div className="row action-buttons-row secondary-background white-color">
                             <div className="column medium-12">
                               <h4>
-                                {profile.field_job_title[0]
-                                  ? profile.field_job_title[0].value
+                                {profile.job_title
+                                  ? profile.job_title
                                   : 'Job title'}
                               </h4>
                               <Link
                                 className="readmore"
                                 to={`/framework/bioexcel/2.0/profile/view/${
-                                  profile.nid[0].value
-                                }${profile.path[0].alias}`}
+                                  profile.id
+                                }${profile.url_alias}`}
                               >
                                 View profile{' '}
                               </Link>
@@ -257,23 +256,17 @@ const ProfileList = props => {
                             <input
                               type="checkbox"
                               onClick={e => setProfilesToCompare(e)}
-                              data-profileid={profile.nid[0].value}
+                              data-profileid={profile.id}
                             />
                             Click to compare
                           </label>
                         </span>
-                        <p>
-                          {profile.field_image[0] ? (
-                            <div
-                              className={
-                                profile.field_publishing_status[0].value
-                              }
-                            >
-                              <img
-                                src={profile.field_image[0].url}
-                                className="profile_img"
-                              />
-                            </div>
+                        <p className={profile.publishing_status}>
+                          {profile.image[0] ? (
+                            <img
+                              src={profile.image[0].url}
+                              className="profile_img"
+                            />
                           ) : (
                             <img src={user_icon} className="profile_img" />
                           )}
@@ -282,15 +275,15 @@ const ProfileList = props => {
                         <div className="row action-buttons-row secondary-background white-color">
                           <div className="column medium-12">
                             <h4>
-                              {profile.field_job_title[0]
-                                ? profile.field_job_title[0].value
+                              {profile.job_title
+                                ? profile.job_title
                                 : 'Job title'}
                             </h4>
                             <Link
                               className="readmore"
                               to={`/framework/bioexcel/2.0/profile/view/${
-                                profile.nid[0].value
-                              }${profile.path[0].alias}`}
+                                profile.id
+                              }${profile.url_alias}`}
                             >
                               View profile{' '}
                             </Link>
