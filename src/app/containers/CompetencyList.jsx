@@ -7,7 +7,7 @@ import ErrorLoading from '../components/error-loading/ErrorLoading';
 
 import DomainList from '../components/domain-list/DomainList';
 import Courses from './courses/Courses';
-import ProfileList from './ProfileList';
+import ProfileList from '../profile/list/ProfileList';
 import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
 
 import CompetencyService from '../services/competency/competency';
@@ -192,10 +192,15 @@ class CompetencyList extends Component {
 
         <Tabs>
           <TabList>
+            <Tab>Career profiles</Tab>
             <Tab>Competencies</Tab>
             <Tab>Training resources</Tab>
-            <Tab>Career profiles</Tab>
           </TabList>
+
+          <TabPanel>
+            <ProfileList framework={framework} version={frameworkVersion} />
+            <FrameworkVersions framework={framework} versions={versions} />
+          </TabPanel>
 
           <TabPanel>
             <input
@@ -208,11 +213,9 @@ class CompetencyList extends Component {
             <table>{domainList}</table>
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
+
           <TabPanel>
             <Courses framework={framework} version={frameworkVersion} />
-          </TabPanel>
-          <TabPanel>
-            <ProfileList />
           </TabPanel>
         </Tabs>
       </>

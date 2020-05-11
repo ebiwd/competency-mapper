@@ -14,22 +14,22 @@ class ProfileService {
     ProfileService.instance = this;
   }
 
-  hasUserProfile() {
+  hasGuestProfile() {
     return !!window.localStorage.getItem(profileName);
   }
 
-  getUserProfile() {
+  getGuestProfile() {
     try {
       return JSON.parse(window.localStorage.getItem(profileName));
     } catch {
       return undefined;
     }
   }
-  setUserProfile(obj) {
+  setGuestProfile(obj) {
     window.localStorage.setItem(profileName, JSON.stringify(obj));
   }
 
-  mapUserProfile(options) {
+  mapGuestProfile(options) {
     localStorage.setItem(profileName, JSON.stringify(options));
   }
 
@@ -84,6 +84,13 @@ class ProfileService {
   async getProfile(profileId) {
     const response = await this.http.get(
       `/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+    );
+    return response.data;
+  }
+
+  async getProfiles(framework, version) {
+    const response = await this.http.get(
+      `/api/${framework}/${version}/profiles/?_format=json&timestamp=${Date.now()}`
     );
     return response.data;
   }

@@ -1,0 +1,97 @@
+.profile_badge {
+  padding: 20px 15px 0px 15px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  min-height: 150px;
+  box-shadow: 0 10px 16px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.profile_badge:hover {
+  border: 1px solid #0086b4;
+}
+
+.profile_img {
+  width: 130px;
+  height: 130px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.action-buttons-row {
+  padding: 30px 10px 30px 10px;
+}
+
+.introduction {
+  padding: 20px;
+}
+
+.introduction .item {
+  padding: 10px;
+}
+
+.wrapper {
+  /*border: 2px dashed #ccc;*/
+  border-radius: 5px;
+  padding: 10px;
+}
+
+.warpperLabel {
+  position: relative;
+  /*top: -24px;
+    background: #f0f0f0;*/
+  width: 250px;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+.attribute_align_type div:first-child {
+  padding-left: 10%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.attribute_align div:first-child {
+  padding-left: 12%;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+
+.competency_title {
+  font-size: 110%;
+  position: relative;
+  left: 20px;
+}
+
+.profile_badge_page {
+  padding: 20px 15px 15px 15px;
+  margin: 10px;
+  border: 1px solid #ccc;
+  text-align: center;
+  min-height: 150px;
+  box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.19) !important;
+  border-radius: 10px;
+}
+
+.profile_collapsible .open-close-title {
+  position: relative;
+  top: -46px;
+  left: -10px;
+}
+
+.profile_collapsible .Collapsible__contentInner {
+  background: #f1f1f1;
+  margin-bottom: 20px;
+}
+
+.rating_level_number {
+  /*color: white;*/
+  padding-left: 0.35em;
+  padding-right: 0.35em;
+  font-weight: bold;
+}
+
+.compare-profile-list {
+  list-style-type: none;
+}

@@ -19,12 +19,7 @@ import AttributeMap from './AttributeMap';
 import CompetencySettings from './CompetencySettings';
 import AttributeSettings from './AttributeSettings';
 import AttributeDemap from './AttributeDemap';
-import ProfileCreate from './ProfileCreate';
-import ProfileView from './ProfileView';
-import ProfilesCompare from './ProfilesCompare';
-import ProfileMap from './ProfileMap';
-import ProfileEdit from './ProfileEdit';
-import ProfilePreview from './ProfilePreview';
+import Profile from '../profile/Profile';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -127,6 +122,16 @@ class Root extends Component {
           <section id="main-content-area" className="row" role="main">
             <main className="column">
               <Switch>
+                {/* Remove trailing slash */}
+                <Route
+                  path="/:url*(/+)"
+                  exact
+                  strict
+                  render={({ location }) => (
+                    <Redirect to={location.pathname.replace(/\/+$/, '')} />
+                  )}
+                />
+
                 <ProtectedRoute
                   condition={!!user && roles.includes('content_manager')}
                   path="/training-resource/edit/:nid"
@@ -137,13 +142,11 @@ class Root extends Component {
                   path="/training-resource/create"
                   component={ResourceCreate}
                 />
-
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/competency/:cid/attribute/:aid/settings"
                   component={AttributeSettings}
                 />
-
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/manage/competencies/:cid/manage-attributes"
@@ -154,70 +157,37 @@ class Root extends Component {
                   path="/framework/:framework/manage/competencies/:domainId?"
                   component={ManageCompetencies}
                 />
-
                 <Route
                   path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
-
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/competency/:id/settings"
                   component={CompetencySettings}
                 />
-
                 <Route
-                  path="/framework/:framework/:version/profile/create"
-                  component={ProfileCreate}
+                  path="/framework/:framework/:version/profile"
+                  component={Profile}
                 />
-
-                <Route
-                  path="/framework/:framework/:version/profile/map"
-                  component={ProfileMap}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/preview"
-                  component={ProfilePreview}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/view/:id/:alias"
-                  component={ProfileView}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profiles/compare/:profile1/:profile2"
-                  component={ProfilesCompare}
-                />
-
-                <Route
-                  path="/framework/:framework/:version/profile/edit/:id"
-                  component={ProfileEdit}
-                />
-
                 <Route
                   path="/framework/:framework/:version"
                   component={CompetencyList}
                 />
-
                 <ProtectedRoute
                   condition={!!user && roles.includes('content_manager')}
                   path="/training-resources/:id/map/:framework"
                   component={AttributeMap}
                 />
-
                 <ProtectedRoute
                   condition={!!user && roles.includes('content_manager')}
                   path="/training-resources/:resource/demap/:attribute"
                   component={AttributeDemap}
                 />
-
                 <Route
                   path="/training-resources/:id"
                   component={ResourceDetails}
                 />
-
                 <Route
                   path="/all-training-resources"
                   component={ResourcesList}
@@ -226,14 +196,11 @@ class Root extends Component {
                   path="/training-resources-home"
                   component={ResourcesHome}
                 />
-
                 <Route
                   path="/user/change/password"
                   component={ChangePassword}
                 />
-
                 <Route path="/article/create" component={ArticleCreate} />
-
                 <Route path="/about" component={About} />
                 <Route path="/" component={Frameworks} />
               </Switch>

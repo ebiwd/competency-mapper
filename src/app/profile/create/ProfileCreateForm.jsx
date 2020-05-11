@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from 'react';
+
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import CompetencyService from '../services/competency/competency';
-import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
+
+import { useRouteMatch } from 'react-router-dom';
+import { apiUrl } from '../../services/http/http';
+import CompetencyService from '../../services/competency/competency';
+import ProfileService from '../../services/profile/profile';
+import ActiveRequestsService from '../../services/active-requests/active-requests';
 
 const activeRequests = new ActiveRequestsService();
 const competencyService = new CompetencyService();
 const profileService = new ProfileService();
 
-export const ProfileCreate = props => {
+export const ProfileCreateForm = props => {
   const [title, setTitle] = useState('');
   const [age, setAge] = useState('');
   const [currentRole, setCurrentRole] = useState('');
@@ -28,17 +31,18 @@ export const ProfileCreate = props => {
 
   const [framework, setFramework] = useState();
   const [frameworkLogoData, setFrameworkLogoData] = useState([]);
-  const frameworkName = props.location.pathname.split('/')[2];
-  const frameworkVersion = props.location.pathname.split('/')[3];
+
+  const match = useRouteMatch();
+  const { framework: frameworkName, version } = match.params;
 
   const [profile, setProfile] = useState();
 
-  const profileName = process.env.REACT_APP_LOCALSTORAGE_PROFILE;
+  const [frameworkMoreData, setFrameworkMoreData] = useState();
 
   useEffect(() => {
     // Set variables from Local Storage to populate form fields onload
     const bootstrap = () => {
-      let storedProfile = JSON.parse(localStorage.getItem(profileName));
+      const storedProfile = profileService.getGuestProfile();
       setProfile(storedProfile);
 
       if (storedProfile) {
@@ -59,17 +63,18 @@ export const ProfileCreate = props => {
     // Calling multiple APIs, since data Framework are in two different endpoints
     const fetchData = async () => {
       const [data1, data2] = await Promise.all([
-        competencyService.getVersionedFramework(
-          frameworkName,
-          frameworkVersion
-        ),
+        competencyService.getVersionedFramework(frameworkName, version),
         competencyService.getAllVersionedFrameworks()
       ]);
-      // Get current Framework only
-      let frameworkMoreData = data2.filter(item => {
-        return item.nid === '9';
-      });
-      if (frameworkMoreData[0].logo[0].url) {
+
+      setFramework(data1);
+      setFrameworkMoreData(
+        data2.filter(item => item.title.toLowerCase() === frameworkName)
+      );
+      /* const tmp = data2.filter(item => item.nid === '9');
+
+      //   if (frameworkMoreData[0].logo[0].url) {
+      if (false) {
         // setFrameworkLogoData([
         //   {
         //     url: frameworkMoreData[0].logo[0].url,
@@ -93,8 +98,7 @@ export const ProfileCreate = props => {
             ]);
           });
         });
-      }
-      setFramework(data1);
+      } */
     };
 
     bootstrap();
@@ -105,13 +109,19 @@ export const ProfileCreate = props => {
     } finally {
       activeRequests.finishRequest();
     }
-  }, [frameworkName, frameworkVersion, profileName, selectedFile]);
+  }, [frameworkName, version]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
     let frameworkName = framework[0].title;
     let frameworkUuid = framework[0].uuid;
+
+    let liveVersion = frameworkMoreData[0].versions.find(
+      ver => ver.status === 'live'
+    );
+
+    let versionID = liveVersion.id;
     let fileid = null;
 
     // Do nothing if Form doesn't pass validation criteris above
@@ -127,9 +137,9 @@ export const ProfileCreate = props => {
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
       // Retrieve values from Local Storage if exist
-      let storedProfile = JSON.parse(localStorage.getItem(profileName));
+      const storedProfile = profileService.getGuestProfile();
 
-      profileService.mapUserProfile({
+      profileService.mapGuestProfile({
         title,
         frameworkId,
         frameworkLogoData,
@@ -176,6 +186,7 @@ export const ProfileCreate = props => {
         title,
         frameworkId,
         frameworkUuid,
+        versionID,
         age,
         currentRole,
         gender,
@@ -186,9 +197,7 @@ export const ProfileCreate = props => {
       });
 
       props.history.push(
-        `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/${
-          response.path[0].alias
-        }`
+        `./view/${response.nid[0].value}/${response.path[0].alias}`
       );
     }
   };
@@ -267,7 +276,7 @@ export const ProfileCreate = props => {
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = profileService.hasUserProfile()
+      submitButtonLabel = profileService.hasGuestProfile()
         ? 'Update competencies'
         : 'Add competencies';
     }
@@ -513,4 +522,4 @@ export const ProfileCreate = props => {
   );
 };
 
-export default ProfileCreate;
+export default ProfileCreateForm;
