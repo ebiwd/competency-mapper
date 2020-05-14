@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Parser from 'html-react-parser';
-import user_icon from './user_icon.png';
+import user_icon from '../../../assets/user_icon.png';
 import styles from './ProfileHeader.module.css';
 
 type Props = {
