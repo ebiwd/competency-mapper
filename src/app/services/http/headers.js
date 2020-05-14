@@ -20,6 +20,15 @@ class HeadersService {
       };
     }
 
+    if (type === 'octet-stream') {
+      return {
+        Accept: 'application/octet-stream',
+        'Content-Type': 'application/octet-stream',
+        'X-CSRF-Token': csfrToken,
+        'Content-Disposition': 'file; filename="uploaded_file"'
+      };
+    }
+
     return {
       Accept: 'application/hal+json',
       'Content-Type': 'application/hal+json',

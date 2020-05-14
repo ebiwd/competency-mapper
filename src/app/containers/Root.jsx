@@ -214,7 +214,7 @@ class Root extends Component {
 
 export default Root;
 
-class ProtectedRoute extends Component {
+export class ProtectedRoute extends Component {
   render() {
     const { component: Component, condition, ...props } = this.props;
     return (

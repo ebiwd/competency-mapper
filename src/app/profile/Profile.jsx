@@ -2,6 +2,7 @@ import React from 'react';
 
 import { Switch, Route } from 'react-router-dom';
 
+import { ProtectedRoute } from '../containers/Root';
 import ProfileCreateGuest from './create/ProfileCreateGuest';
 import ProfileCreate from './create/ProfileCreate';
 
@@ -13,67 +14,49 @@ import ProfileCreate from './create/ProfileCreate';
 // import ProfilePreview from './old/ProfilePreview';
 
 export const Profile = React.memo(() => {
+  const roles = localStorage.getItem('roles') || '';
+  const user = localStorage.getItem('user') || '';
+
   return (
     <Switch>
-      {/* create */}
+      {/* create or edit profile */}
       <Route
         path="/framework/:framework/:version/profile/create/guest"
         component={ProfileCreateGuest}
       />
-      <Route
-        path="/framework/:framework/:version/profile/create"
+
+      <ProtectedRoute
+        condition={!!user && roles.includes('framework_manager')}
+        path="/framework/:framework/:version/profile/create/:profileId?"
         component={ProfileCreate}
       />
+
+      {/* map */}
+
+      {/* <Route
+  path="/framework/:framework/:version/profile/map/guest"
+  component={ProfileMapGuest}
+/> */}
+      {/* <Route
+  path="/framework/:framework/:version/profile/map/:id"
+  component={ProfileMap}
+/> */}
 
       {/* view */}
-      {/*       <Route
-        path="/framework/:framework/:version/profile/create/guest"
-        component={ProfileCreateGuest}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/create"
-        component={ProfileCreate}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/map"
-        component={ProfileMap}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/guest"
+      {/* <Route
+        path="/framework/:framework/:version/profile/view/guest"
         component={ProfileViewGuest}
-      />
-
-      <Route
+      /> */}
+      {/* <Route
         path="/framework/:framework/:version/profile/view/:id/:alias"
         component={ProfileView}
-      />
+      /> */}
 
+      {/* compare */}
+      {/* 
       <Route
-        path="/framework/:framework/:version/profiles/compare/:profile1/:profile2"
+        path="/framework/:framework/:version/profile/compare/:profile1/:profile2"
         component={ProfilesCompare}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/preview"
-        component={ProfilePreview}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/view/:id/:alias"
-        component={ProfileView}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profiles/compare/:profile1/:profile2"
-        component={ProfilesCompare}
-      />
-
-      <Route
-        path="/framework/:framework/:version/profile/edit/:id"
-        component={ProfileEdit}
       />
  */}
     </Switch>

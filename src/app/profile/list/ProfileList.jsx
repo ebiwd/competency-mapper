@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useHistory, useRouteMatch } from 'react-router-dom';
+import { useHistory, useParams, useRouteMatch } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
 import ProfileService from '../../services/profile/profile';
@@ -12,11 +12,10 @@ import user_icon from '../../../assets/user_icon.png';
 const profileService = new ProfileService();
 const activeRequests = new ActiveRequestsService();
 
-const ProfileList = props => {
+const ProfileList = () => {
   const history = useHistory();
   const match = useRouteMatch();
-
-  const { framework, version } = props;
+  const { framework, version } = useParams();
 
   const [profiles, setProfiles] = useState();
 

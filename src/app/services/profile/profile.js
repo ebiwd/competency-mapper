@@ -14,6 +14,8 @@ class ProfileService {
     ProfileService.instance = this;
   }
 
+  // TODO: all the 'Guest' functions should take an additional parameter for the framework version.
+  // The profile should be stored in an object for (1) storing several versions simultaneously and (2) fast retrieval
   hasGuestProfile() {
     return !!window.localStorage.getItem(profileName);
   }
@@ -25,7 +27,8 @@ class ProfileService {
       return undefined;
     }
   }
-  setGuestProfile(obj) {
+
+  editGuestProfile(obj) {
     window.localStorage.setItem(profileName, JSON.stringify(obj));
   }
 
@@ -33,9 +36,17 @@ class ProfileService {
     localStorage.setItem(profileName, JSON.stringify(options));
   }
 
+  async uploadProfilePicture(file) {
+    const response = await this.http.post(
+      '/file/upload/node/profile/field_image?_format=hal_json',
+      file,
+      'octet-stream'
+    );
+  }
+
   async createProfile(options) {
     const response = await this.http.post(
-      `/node?_format=hal_json`,
+      '/node?_format=hal_json',
       Body.createProfile(options)
     );
     return response.data;
@@ -74,16 +85,16 @@ class ProfileService {
 
   async mapProfile(profileId, mapping) {
     const response = await this.http.patch(
-      `/api/profiles?_format=json`,
+      '/api/profiles?_format=json',
       Body.mapProfile(profileId, mapping),
       'json'
     );
     return response.data;
   }
 
-  async getProfile(profileId) {
+  async getProfile(profileId, framework, version) {
     const response = await this.http.get(
-      `/api/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+      `/api/${framework}/${version}/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
     );
     return response.data;
   }

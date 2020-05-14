@@ -7,11 +7,11 @@ class BodyService {
     frameworkUuid,
     versionID,
     age,
-    currentRole,
+    current_role,
     gender,
-    jobTitle,
-    qualification,
-    additionalInfo,
+    job_title,
+    qualification_background,
+    additional_information,
     fileid
   }) {
     return {
@@ -40,7 +40,7 @@ class BodyService {
       ],
       field_current_role: [
         {
-          value: currentRole,
+          value: current_role,
           format: 'basic_html'
         }
       ],
@@ -51,17 +51,17 @@ class BodyService {
       ],
       field_job_title: [
         {
-          value: jobTitle
+          value: job_title
         }
       ],
       field_qualification_background: [
         {
-          value: qualification
+          value: qualification_background
         }
       ],
       field_additional_information: [
         {
-          value: additionalInfo
+          value: additional_information
         }
       ],
       field_image: [
@@ -107,12 +107,12 @@ class BodyService {
     profileId,
     title,
     age,
-    currentRole,
+    current_role,
     gender,
-    jobTitle,
-    qualification,
-    additionalInfo,
-    publishStatus,
+    job_title,
+    qualification_background,
+    additional_information,
+    // publish_status,
     fileid
   ) {
     return {
@@ -136,7 +136,7 @@ class BodyService {
       ],
       field_current_role: [
         {
-          value: currentRole,
+          value: current_role,
           format: 'basic_html'
         }
       ],
@@ -147,18 +147,18 @@ class BodyService {
       ],
       field_job_title: [
         {
-          value: jobTitle
+          value: job_title
         }
       ],
       field_qualification_background: [
         {
-          value: qualification,
+          value: qualification_background,
           format: 'basic_html'
         }
       ],
       field_additional_information: [
         {
-          value: additionalInfo,
+          value: additional_information,
           format: 'basic_html'
         }
       ],
@@ -168,11 +168,11 @@ class BodyService {
           //description: 'persona picture'
         }
       ],
-      field_publishing_status: [
-        {
-          value: publishStatus
-        }
-      ],
+      // field_publishing_status: [
+      //   {
+      //     value: publish_status
+      //   }
+      // ],
       type: [
         {
           target_id: 'profile'
