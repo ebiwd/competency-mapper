@@ -1,17 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { apiUrl } from '../../services/http/http';
-import ProfileService from '../../services/profile/profile';
-import ActiveRequestsService from '../../services/active-requests/active-requests';
+import { apiUrl } from '../../../services/http/http';
+import ProfileService from '../../../services/profile/profile';
+import ActiveRequestsService from '../../../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
-import user_icon from '../../../assets/user_icon.png';
+import user_icon from '../../../../assets/user_icon.png';
 import Parser from 'html-react-parser';
 import ReactTooltip from 'react-tooltip';
 
 const $ = window.$;
 
-export const ProfileMap = props => {
+export const ProfileMap = (props) => {
   const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
 
@@ -42,22 +42,22 @@ export const ProfileMap = props => {
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
       )
-        .then(Response => Response.json())
-        .then(findresponse => {
+        .then((Response) => Response.json())
+        .then((findresponse) => {
           setProfile(findresponse);
         });
 
       await fetch(`${apiUrl}/api/version_manager?_format=json`)
-        .then(Response => Response.json())
-        .then(findresponse => {
+        .then((Response) => Response.json())
+        .then((findresponse) => {
           setFrameworkInfo(findresponse);
         });
 
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
       )
-        .then(Response => Response.json())
-        .then(findresponse => {
+        .then((Response) => Response.json())
+        .then((findresponse) => {
           setFramework(findresponse);
         });
     };
@@ -65,13 +65,13 @@ export const ProfileMap = props => {
 
     if (mapping) {
       let checkBoxes = $('input:checkbox');
-      checkBoxes.each(function(index, item, arr) {
+      checkBoxes.each(function (index, item, arr) {
         console.log('test ' + item.dataset);
       });
     }
   }, [profileId]);
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     let response = await profileService.mapProfile(profileId, mapping);
@@ -81,7 +81,7 @@ export const ProfileMap = props => {
     );
   };
 
-  const handleSelect = event => {
+  const handleSelect = (event) => {
     let competency_id = event.target[event.target.selectedIndex].getAttribute(
       'data-competency'
     );
@@ -94,7 +94,7 @@ export const ProfileMap = props => {
     let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
 
     if (expertise_id == expertise_not_applicable) {
-      checkBoxes.each(function(index, item, arr) {
+      checkBoxes.each(function (index, item, arr) {
         item.checked = false;
         item.disabled = true;
       });
@@ -105,21 +105,21 @@ export const ProfileMap = props => {
       // );
       console.log(tempMapping);
       // Remove the NA competency from the temp array
-      tempMapping = tempMapping.filter(o => o.competency != competency_id);
+      tempMapping = tempMapping.filter((o) => o.competency != competency_id);
       console.log(tempMapping);
     } else if (tempMapping) {
-      if (tempMapping.find(o => o.competency === competency_id)) {
-        let o = tempMapping.find(o => o.competency === competency_id);
+      if (tempMapping.find((o) => o.competency === competency_id)) {
+        let o = tempMapping.find((o) => o.competency === competency_id);
         o.expertise = expertise_id;
 
-        checkBoxes.each(function(index, item, arr) {
+        checkBoxes.each(function (index, item, arr) {
           attributesList.push(item.id);
           item.checked = true;
           item.disabled = false;
         });
         o.attributes = attributesList;
       } else {
-        checkBoxes.each(function(index, item, arr) {
+        checkBoxes.each(function (index, item, arr) {
           attributesList.push(item.id);
           item.checked = true;
           item.disabled = false;
@@ -127,24 +127,24 @@ export const ProfileMap = props => {
         tempMapping.push({
           competency: competency_id,
           expertise: expertise_id,
-          attributes: attributesList
+          attributes: attributesList,
         });
       }
     }
     setMapping(tempMapping);
   };
 
-  const handleCheckBox = e => {
+  const handleCheckBox = (e) => {
     let checkboxStatus = e.target.checked;
     let competency_id = e.target.dataset.competency;
     let tempMapping = mapping;
     if (tempMapping) {
       if (checkboxStatus == true) {
         e.target.checked = true;
-        let o = tempMapping.find(o => o.competency == competency_id);
+        let o = tempMapping.find((o) => o.competency == competency_id);
         o.attributes.push(e.target.id);
       } else {
-        let o = tempMapping.find(o => o.competency == competency_id);
+        let o = tempMapping.find((o) => o.competency == competency_id);
         o.attributes.splice(o.attributes.indexOf(e.target.id), 1);
       }
       setMapping(tempMapping);
@@ -154,13 +154,13 @@ export const ProfileMap = props => {
 
   const generateForm = () => {
     if (frameworkInfo) {
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
           frameworkLogo = info.logo[0].url;
           frameworkDesc = info.description;
           info.expertise_levels.map(
-            level => (
+            (level) => (
               (expertise_levels[level.id] = level.title),
               level.title == 'Not applicable'
                 ? (expertise_not_applicable = level.id)
@@ -169,10 +169,10 @@ export const ProfileMap = props => {
           );
         }
       });
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           info.attribute_types.map(
-            attribute => (attribute_types[attribute.id] = attribute.title)
+            (attribute) => (attribute_types[attribute.id] = attribute.title)
           );
         }
       });
@@ -197,7 +197,7 @@ export const ProfileMap = props => {
     }
 
     if (framework) {
-      competencyForm = framework.map(item =>
+      competencyForm = framework.map((item) =>
         item.domains.map((domain, did) => (
           <ul>
             <li className="domain_list">
@@ -230,30 +230,30 @@ export const ProfileMap = props => {
                           }
                         >
                           <ul>
-                            {attribute_types.map(attribute_type => {
+                            {attribute_types.map((attribute_type) => {
                               return (
                                 <li className="attribute_type">
                                   {attribute_type}
                                   <ul>
                                     {competency.attributes
                                       .filter(
-                                        attribute =>
+                                        (attribute) =>
                                           attribute.type == attribute_type
                                       )
-                                      .map(attribute => (
+                                      .map((attribute) => (
                                         <li className="attribute_title">
                                           <div className="row">
                                             <div className="column medium-1">
                                               <input
                                                 type="checkbox"
                                                 id={attribute.id}
-                                                onChange={e =>
+                                                onChange={(e) =>
                                                   handleCheckBox(e)
                                                 }
                                                 defaultChecked={
-                                                  mapping.find(o =>
+                                                  mapping.find((o) =>
                                                     o.attributes.find(
-                                                      a => a == attribute.id
+                                                      (a) => a == attribute.id
                                                     )
                                                   )
                                                     ? true
@@ -261,7 +261,7 @@ export const ProfileMap = props => {
                                                 }
                                                 disabled={
                                                   mapping.find(
-                                                    o =>
+                                                    (o) =>
                                                       o.competency ==
                                                       competency.id
                                                   )
@@ -292,11 +292,12 @@ export const ProfileMap = props => {
                       </div>
                       <div className="column medium-3">
                         <select
-                          onChange={e => handleSelect(e)}
+                          onChange={(e) => handleSelect(e)}
                           defaultValue={
-                            mapping.find(o => o.competency == competency.id)
-                              ? mapping.find(o => o.competency == competency.id)
-                                  .expertise
+                            mapping.find((o) => o.competency == competency.id)
+                              ? mapping.find(
+                                  (o) => o.competency == competency.id
+                                ).expertise
                               : expertise_not_applicable
                           }
                         >
@@ -384,7 +385,7 @@ export const ProfileMap = props => {
 
               <div className="competency_section">
                 {
-                  <form onSubmit={e => handleSubmit(e)}>
+                  <form onSubmit={(e) => handleSubmit(e)}>
                     {competencyForm}
                     <div className="submit_fixed">
                       <button className="button" type="submit">

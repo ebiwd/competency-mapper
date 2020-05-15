@@ -3,11 +3,11 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
-import { ProfileHeader } from '../map/ProfileHeader';
-import { ProfilePrint } from '../view/ProfilePrint';
-import ActiveRequestsService from '../../services/active-requests/active-requests';
-import CompetencyService from '../../services/competency/competency';
-import ProfileService from '../../services/profile/profile';
+import { ProfileHeader } from '../../map/ProfileHeader';
+import { ProfilePrint } from '../../view/ProfilePrint';
+import ActiveRequestsService from '../../../services/active-requests/active-requests';
+import CompetencyService from '../../../services/competency/competency';
+import ProfileService from '../../../services/profile/profile';
 
 const competencyService = new CompetencyService();
 const profileService = new ProfileService();
@@ -17,7 +17,7 @@ export const ProfileView = ({ match }) => {
   const {
     framework: frameworkName,
     version: frameworkVersion,
-    id: profileId
+    id: profileId,
   } = match.params;
 
   const [profile, setProfile] = useState();
@@ -45,7 +45,7 @@ export const ProfileView = ({ match }) => {
           competencyService.getVersionedFramework(
             frameworkName,
             frameworkVersion
-          )
+          ),
         ]);
         setProfile(profile);
         setFrameworkInfo(frameworkInfo);
@@ -70,13 +70,13 @@ export const ProfileView = ({ match }) => {
   //   }
   // };
 
-  const getExpertise = competency => {
+  const getExpertise = (competency) => {
     if (mapping) {
-      let obj = mapping.find(o => o.competency == competency);
+      let obj = mapping.find((o) => o.competency == competency);
       if (obj) {
         if (frameworkInfo) {
           let expertise = frameworkInfo[0].expertise_levels.find(
-            level => level.id == obj.expertise
+            (level) => level.id == obj.expertise
           );
           return expertise;
         }
@@ -86,16 +86,16 @@ export const ProfileView = ({ match }) => {
     }
   };
 
-  const getAttributeStatus = aid => {
+  const getAttributeStatus = (aid) => {
     if (mapping) {
-      let attribute_check_status = mapping.find(o =>
-        o.attributes.find(a => a == aid)
+      let attribute_check_status = mapping.find((o) =>
+        o.attributes.find((a) => a == aid)
       );
       return attribute_check_status;
     }
   };
 
-  const getBarWidth = data => {
+  const getBarWidth = (data) => {
     width2 = data ? 100 / (3 / data.rating_level) : 0;
     return width2;
   };
@@ -103,17 +103,17 @@ export const ProfileView = ({ match }) => {
   const generateProfileView = () => {
     if (frameworkInfo) {
       console.log(frameworkInfo);
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           info.expertise_levels.map(
-            level => (expertise_levels[level.rating_level] = level.title)
+            (level) => (expertise_levels[level.rating_level] = level.title)
           );
         }
       });
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           info.attribute_types.map(
-            attribute => (attribute_types[attribute.id] = attribute.title)
+            (attribute) => (attribute_types[attribute.id] = attribute.title)
           );
         }
       });
@@ -135,25 +135,23 @@ export const ProfileView = ({ match }) => {
     }
 
     if (framework) {
-      competencyView = framework.map(item =>
-        item.domains.map(domain => (
+      competencyView = framework.map((item) =>
+        item.domains.map((domain) => (
           <div>
             <div className="row callout">
               <div className="column medium-12 ">
                 <h5>{domain.title}</h5>{' '}
               </div>
             </div>
-            {domain.competencies.map(competency => (
+            {domain.competencies.map((competency) => (
               <div>
                 <div className="row">
                   <div className="column medium-8">
                     <span className="competency_title">
                       {' '}
                       {competency.title.length > 150
-                        ? competency.title
-                            .split(' ')
-                            .splice(0, 18)
-                            .join(' ') + ' ..'
+                        ? competency.title.split(' ').splice(0, 18).join(' ') +
+                          ' ..'
                         : competency.title}
                     </span>
                   </div>
@@ -163,7 +161,7 @@ export const ProfileView = ({ match }) => {
                         className="fillerRight"
                         style={{
                           width: getBarWidth(getExpertise(competency.id)) + '%',
-                          display: 'flow-root'
+                          display: 'flow-root',
                         }}
                       >
                         <span
@@ -171,7 +169,7 @@ export const ProfileView = ({ match }) => {
                             float:
                               getBarWidth(getExpertise(competency.id)) == 0
                                 ? 'none'
-                                : 'right'
+                                : 'right',
                           }}
                           className="rating_level_number"
                         >
@@ -196,7 +194,7 @@ export const ProfileView = ({ match }) => {
                       </div>
                     }
                   >
-                    {attribute_types.map(attribute_type => {
+                    {attribute_types.map((attribute_type) => {
                       return (
                         <div
                           className="accordion-item is-active"
@@ -210,9 +208,9 @@ export const ProfileView = ({ match }) => {
                           </div>
                           {competency.attributes
                             .filter(
-                              attribute => attribute.type == attribute_type
+                              (attribute) => attribute.type == attribute_type
                             )
-                            .map(attribute => {
+                            .map((attribute) => {
                               return (
                                 <div className="row attribute_align">
                                   <div className="column medium-8">

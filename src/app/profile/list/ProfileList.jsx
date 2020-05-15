@@ -43,7 +43,7 @@ const ProfileList = () => {
     }
   };
 
-  const setProfilesToCompare = e => {
+  const setProfilesToCompare = (e) => {
     if (profilesToCompare.length > 2) {
       alert('You have to select two profiles to compare.');
       return;
@@ -52,22 +52,24 @@ const ProfileList = () => {
     if (e.target.checked) {
       profilesToCompare.push(e.target.getAttribute('data-profileid'));
     } else {
-      profilesToCompare = profilesToCompare.filter(function(value, index, arr) {
+      profilesToCompare = profilesToCompare.filter(function (
+        value,
+        index,
+        arr
+      ) {
         return value != e.target.getAttribute('data-profileid');
       });
     }
   };
 
-  const redirectToCompare = e => {
+  const redirectToCompare = (e) => {
     e.preventDefault();
     if (profilesToCompare.length != 2) {
       alert('You have to select two profiles to compare.');
       return;
     } else {
       history.push(
-        `${match.url}/profile/compare/${profilesToCompare[0]}/${
-          profilesToCompare[1]
-        }`
+        `${match.url}/profile/compare/${profilesToCompare[0]}/${profilesToCompare[1]}`
       );
     }
   };
@@ -129,18 +131,16 @@ const ProfileList = () => {
                 <span>
                   <Link
                     className="button secondary small action-buttons"
-                    to={`${match.url}/profile/create/`}
+                    to={`${match.url}/profile/edit/`}
                   >
                     {' '}
                     Create reference profile{' '}
                     <i className="icon icon-common icon-user-plus" />
                   </Link>
                   <Link
-                    onClick={e => redirectToCompare(e)}
+                    onClick={(e) => redirectToCompare(e)}
                     className="button secondary small action-buttons"
-                    to={`${match.url}/profile/compare/${profilesToCompare[0]}/${
-                      profilesToCompare[1]
-                    }`}
+                    to={`${match.url}/profile/compare/${profilesToCompare[0]}/${profilesToCompare[1]}`}
                   >
                     {' '}
                     Compare selected profiles{' '}
@@ -150,11 +150,9 @@ const ProfileList = () => {
               ) : (
                 <span>
                   <Link
-                    onClick={e => redirectToCompare(e)}
+                    onClick={(e) => redirectToCompare(e)}
                     className="button secondary small action-buttons"
-                    to={`${match.url}/profile/compare/${profilesToCompare[0]}/${
-                      profilesToCompare[1]
-                    }`}
+                    to={`${match.url}/profile/compare/${profilesToCompare[0]}/${profilesToCompare[1]}`}
                   >
                     {' '}
                     Compare selected profiles{' '}
@@ -174,7 +172,7 @@ const ProfileList = () => {
                   <input
                     type="checkbox"
                     disabled="disabled"
-                    onClick={e => setProfilesToCompare(e)}
+                    onClick={(e) => setProfilesToCompare(e)}
                     data-profileid="guest"
                   />
                   Click to compare
@@ -190,7 +188,7 @@ const ProfileList = () => {
                   <h4>Your profile</h4>
                   <Link
                     className="readmore"
-                    to={`${match.url}/profile/create/guest`}
+                    to={`${match.url}/profile/edit/guest`}
                   >
                     <i className="icon icon-common icon-user-plus" /> Create
                     your profile
@@ -200,7 +198,7 @@ const ProfileList = () => {
             </div>
           </div>
           {profiles
-            ? profiles.map(profile => {
+            ? profiles.map((profile) => {
                 if (!checkUserAccess()) {
                   if (profile.publishing_status == 'Live') {
                     return (
@@ -210,7 +208,7 @@ const ProfileList = () => {
                             <label>
                               <input
                                 type="checkbox"
-                                onClick={e => setProfilesToCompare(e)}
+                                onClick={(e) => setProfilesToCompare(e)}
                                 data-profileid={profile.id}
                               />
                               Click to compare
@@ -238,9 +236,7 @@ const ProfileList = () => {
                               </h4>
                               <Link
                                 className="readmore"
-                                to={`${match.url}/profile/view/${profile.id}${
-                                  profile.url_alias
-                                }`}
+                                to={`${match.url}/profile/view/${profile.id}${profile.url_alias}`}
                               >
                                 View profile{' '}
                               </Link>
@@ -258,7 +254,7 @@ const ProfileList = () => {
                           <label>
                             <input
                               type="checkbox"
-                              onClick={e => setProfilesToCompare(e)}
+                              onClick={(e) => setProfilesToCompare(e)}
                               data-profileid={profile.id}
                             />
                             Click to compare
@@ -284,9 +280,7 @@ const ProfileList = () => {
                             </h4>
                             <Link
                               className="readmore"
-                              to={`${match.url}/profile/view/${profile.id}${
-                                profile.url_alias
-                              }`}
+                              to={`${match.url}/profile/view/${profile.id}${profile.url_alias}`}
                             >
                               View profile{' '}
                             </Link>

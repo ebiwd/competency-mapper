@@ -1,24 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 
-import { apiUrl } from '../../services/http/http';
+import { apiUrl } from '../../../services/http/http';
 
-import { Link, Redirect } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-// import ProfilesCompareTable from './ProfilesCompareTable';
-// import ProfilesCompareGraph from './ProfilesCompareGraph';
 import ProfilesCompareButterfly from './ProfilesCompareButterfly';
-import user_icon from '../../../assets/user_icon.png';
-//import Stars from './Stars';
+import user_icon from '../../../../assets/user_icon.png';
 
 const $ = window.$;
 
-export const ProfilesCompare = props => {
-  const frameworkName = props.location.pathname.split('/')[2];
-  const frameworkVersion = props.location.pathname.split('/')[3];
-  const profile1Id = props.location.pathname.split('/')[6];
-  const profile2Id = props.location.pathname.split('/')[7];
+export const ProfilesCompare = (props) => {
+  const {
+    framework: frameworkName,
+    version: frameworkVersion,
+    profile1Id,
+    profile2Id,
+  } = useParams();
   var expertise_levels = [];
   var expertise_levels_legend = [];
 
@@ -30,33 +29,34 @@ export const ProfilesCompare = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        // TODO: these could be easy replaced with calls from the service
         await fetch(
-          `${apiUrl}/api/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
         )
-          .then(Response => Response.json())
-          .then(findresponse => {
+          .then((Response) => Response.json())
+          .then((findresponse) => {
             setProfile1(findresponse);
           });
 
         await fetch(
-          `${apiUrl}/api/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
         )
-          .then(Response => Response.json())
-          .then(findresponse => {
+          .then((Response) => Response.json())
+          .then((findresponse) => {
             setProfile2(findresponse);
           });
 
         await fetch(`${apiUrl}/api/version_manager?_format=json`)
-          .then(Response => Response.json())
-          .then(findresponse => {
+          .then((Response) => Response.json())
+          .then((findresponse) => {
             setFrameworkInfo(findresponse);
           });
 
         await fetch(
           `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
         )
-          .then(Response => Response.json())
-          .then(findresponse => {
+          .then((Response) => Response.json())
+          .then((findresponse) => {
             setFramework(findresponse);
           });
       } catch (err) {
@@ -67,10 +67,10 @@ export const ProfilesCompare = props => {
   }, []);
 
   if (frameworkInfo) {
-    frameworkInfo.map(info => {
+    frameworkInfo.map((info) => {
       if (info.title.toLowerCase() === frameworkName) {
         info.expertise_levels.map(
-          level => (expertise_levels[level.rating_level] = level.title)
+          (level) => (expertise_levels[level.rating_level] = level.title)
         );
       }
     });
@@ -98,9 +98,7 @@ export const ProfilesCompare = props => {
 
   const formatRadarChart = () => {
     $('svg').css('width', '50%');
-    $('svg')
-      .parent()
-      .css('text-align', 'center');
+    $('svg').parent().css('text-align', 'center');
     $('svg > g > g > g:first-child > text')
       .eq(0)
       .text('Specialist Knowledge')
@@ -114,7 +112,7 @@ export const ProfilesCompare = props => {
       .text('Awareness')
       .css('font-weight', 'bold');
 
-    $('text').each(function(key, value) {
+    $('text').each(function (key, value) {
       var x = $(this).attr('x');
       var sign = Math.sign(x);
       var dx = sign ? (sign == 1 ? '100' : '-100') : '0';
@@ -244,14 +242,4 @@ export const ProfilesCompare = props => {
   );
 };
 
-export const sendRoute = () => (
-  <Switch>
-    <Route
-      exact
-      path="/framework/:framework/:version/profiles/compare/:profile1/:profile2"
-      component={ProfilesCompare}
-    />
-  </Switch>
-);
-
-export default sendRoute;
+export default ProfilesCompare;

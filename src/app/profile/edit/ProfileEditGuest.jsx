@@ -1,22 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { useHistory } from 'react-router-dom';
 import ProfileService from '../../services/profile/profile';
 
-import ProfileCreateForm from './ProfileCreateForm';
+import ProfileCreateForm from './ProfileEditForm';
 
 const profileService = new ProfileService();
 
-export const ProfileCreateGuest = () => {
+export const ProfileEditGuest = () => {
   const profile = profileService.getGuestProfile();
   const history = useHistory();
+  const [clearPicture, setClearPicture] = useState(false);
 
   // Convert image file to base64 string: https://developer.mozilla.org/en-US/docs/Web/API/FileReader/readAsDataURL
   const convertToBase64 = (file, data) => {
     const reader = new FileReader();
     reader.addEventListener(
       'load',
-      function() {
+      function () {
         const image = [{ src: reader.result }];
         save({ image, ...data });
       },
@@ -35,17 +36,22 @@ export const ProfileCreateGuest = () => {
     save(data);
   };
 
-  const save = data => {
+  const save = (data) => {
     // TODO:
     //  1. add uuid for the framework version
     //  2. logo for the framework? (I don't recommend it)
-    profileService.editGuestProfile({ ...profile, ...data });
-    history.push('../../map/guest');
-  };
-
-  const clearPicture = () => {
-    const { image, ...data } = profile;
-    profileService.editGuestProfile(data);
+    let { image, ...restProfile } = profile;
+    if (clearPicture) {
+      image = undefined;
+    }
+    profileService.editGuestProfile({
+      mapping: [],
+      mappingAttributes: [],
+      image,
+      ...restProfile,
+      ...data,
+    });
+    history.push('../map/guest');
   };
 
   return (
@@ -55,10 +61,10 @@ export const ProfileCreateGuest = () => {
       <ProfileCreateForm
         profile={profile}
         onSubmit={handleSubmit}
-        clearPicture={clearPicture}
+        clearPicture={() => setClearPicture(true)}
       />
     </>
   );
 };
 
-export default ProfileCreateGuest;
+export default ProfileEditGuest;

@@ -5,10 +5,10 @@ import user_icon from '../../../assets/user_icon.png';
 import styles from './ProfileHeader.module.css';
 
 type Props = {
-  image: Array<{ src?: string; url?: string }>;
+  image?: Array<{ src?: string; url?: string }>;
   age?: string;
   gender?: string;
-  qualification?: string;
+  qualification_background?: string;
   current_role?: string;
   additional_information?: string;
 };
@@ -16,23 +16,19 @@ export const ProfileHeader = ({
   image,
   gender,
   age,
-  qualification,
+  qualification_background,
   current_role,
-  additional_information
+  additional_information,
 }: Props) => {
+  const photo = image?.[0];
+
   return (
     <div className="row">
       <div className="column large-4 text-center">
-        {image[0] && (
+        {photo && (
           <img
             className={styles.picture}
-            src={
-              image[0].src
-                ? image[0].src
-                : image[0].url
-                ? image[0].url
-                : user_icon
-            }
+            src={photo?.src ?? photo?.url ?? user_icon}
             alt="Your profile"
           />
         )}
@@ -45,10 +41,10 @@ export const ProfileHeader = ({
       </div>
 
       <div className="column large-8">
-        {qualification && (
+        {qualification_background && (
           <>
             <h3>Qualification and background</h3>
-            <p>{Parser(qualification)}</p>
+            <p>{Parser(qualification_background)}</p>
           </>
         )}
 

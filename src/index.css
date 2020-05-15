@@ -1,17 +1,3 @@
-@media print {
-  html > canvas {
-    display: none;
-  }
-  .sticky-container {
-    height: auto !important;
-  }
-
-  #masthead.masthead.sticky.is-stuck {
-    position: initial;
-    margin-top: 0px !important;
-  }
-}
-
 #masthead {
   background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg');
 }
@@ -322,6 +308,10 @@ table tbody tr:nth-child(even) {
 }
 
 @media print {
+  html > canvas {
+    display: none;
+  }
+
   .profile_navigation {
     /*display: none*/
   }

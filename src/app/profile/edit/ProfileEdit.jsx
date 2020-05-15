@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory } from 'react-router-dom';
 import CompetencyService from '../../services/competency/competency';
 
-import ProfileCreateForm from './ProfileCreateForm';
+import ProfileCreateForm from './ProfileEditForm';
 
 import ProfileService from '../../services/profile/profile';
 import ActiveRequestsService from '../../services/active-requests/active-requests';
@@ -11,7 +11,7 @@ const activeRequests = new ActiveRequestsService();
 const competencyService = new CompetencyService();
 const profileService = new ProfileService();
 
-export const ProfileCreate = () => {
+export const ProfileEdit = () => {
   const { framework: frameworkName, version, profileId } = useParams();
   const history = useHistory();
 
@@ -27,14 +27,14 @@ export const ProfileCreate = () => {
         competencyService.getAllVersionedFrameworks(),
         profileId
           ? profileService.getProfile(profileId, frameworkName, version)
-          : Promise.resolve(undefined)
+          : Promise.resolve(undefined),
       ]);
       setFramework(framework);
-      setVersionID(moreData[0].versions.find(ver => ver.status === 'live')?.id);
-      setProfile(profile);
-      setPictureId(
-        profile?.field_image[0] ? profile?.field_image[0].target_id : null
+      setVersionID(
+        moreData[0].versions.find((ver) => ver.status === 'live')?.id
       );
+      setProfile(profile);
+      setPictureId(profile?.image?.[0]?.target_id ?? null);
     };
 
     try {
@@ -66,11 +66,11 @@ export const ProfileCreate = () => {
         frameworkUuid,
         versionID,
         fileid,
-        ...data
+        ...data,
       });
     }
 
-    history.push(`./map/${response.nid[0].value}`);
+    history.push(`../map/${response.nid[0].value}`);
   };
 
   const clearPicture = () => {
@@ -90,4 +90,4 @@ export const ProfileCreate = () => {
   );
 };
 
-export default ProfileCreate;
+export default ProfileEdit;

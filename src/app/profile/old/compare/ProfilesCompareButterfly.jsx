@@ -1,15 +1,9 @@
-import React, { usecompetency_title, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { apiUrl } from '../../services/http/http';
-import ProfileService from '../../services/profile/profile';
-import ActiveRequestsService from '../../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
-import RadarChart from 'react-svg-radar-chart';
-import 'react-svg-radar-chart/build/css/index.css';
-//import user_icon from './user_icon.png';
-import Collapsible from 'react-collapsible';
+import React from 'react';
 
-export const ProfilesCompareButterfly = props => {
+import Collapsible from 'react-collapsible';
+import ProfilePrint from '../../view/ProfilePrint';
+
+export const ProfilesCompareButterfly = (props) => {
   const frameworkName = props.frameworkName;
   const frameworkVersion = props.frameworkVersion;
   const profile1Id = props.profile1Id;
@@ -48,11 +42,11 @@ export const ProfilesCompareButterfly = props => {
       mapping = mapping2;
     }
 
-    let obj = mapping.find(o => o.competency == competency);
+    let obj = mapping.find((o) => o.competency == competency);
     if (obj) {
       if (frameworkInfo) {
         let expertise = frameworkInfo[0].expertise_levels.find(
-          level => level.id == obj.expertise
+          (level) => level.id == obj.expertise
         );
         return expertise;
       }
@@ -70,21 +64,21 @@ export const ProfilesCompareButterfly = props => {
     }
     //console.log(mapping)
     if (mapping) {
-      let attribute_check_status = mapping.find(o =>
-        o.attributes.find(a => a == attribute)
+      let attribute_check_status = mapping.find((o) =>
+        o.attributes.find((a) => a == attribute)
       );
       //console.log(attribute_check_status)
       return attribute_check_status ? true : false;
     }
   };
 
-  const getAttributeRows = competency => {
+  const getAttributeRows = (competency) => {
     console.log('hi ' + competency);
   };
 
   const generateProfileView = () => {
     if (frameworkInfo) {
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
           frameworkLogo = info.logo[0].url;
@@ -94,10 +88,10 @@ export const ProfilesCompareButterfly = props => {
           );
         }
       });
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info) => {
         if (info.title.toLowerCase() === frameworkName) {
           info.attribute_types.map(
-            attribute => (attribute_types[attribute.id] = attribute.title)
+            (attribute) => (attribute_types[attribute.id] = attribute.title)
           );
         }
       });
@@ -124,7 +118,7 @@ export const ProfilesCompareButterfly = props => {
     }
 
     if (frameworkInfo) {
-      frameworkInfo.map(framework => {
+      frameworkInfo.map((framework) => {
         if (framework.title == 'BioExcel') {
           framework.expertise_levels.map((level, key) => {
             expertise_array[key] = level.id;
@@ -134,9 +128,9 @@ export const ProfilesCompareButterfly = props => {
     }
 
     if (framework) {
-      competencyView = framework.map(item =>
-        item.domains.map(domain =>
-          domain.competencies.map(competency => {
+      competencyView = framework.map((item) =>
+        item.domains.map((domain) =>
+          domain.competencies.map((competency) => {
             let profile1Expertise = getExpertise(competency.id, 'profile1');
             let profile2Expertise = getExpertise(competency.id, 'profile2');
             let width1 = profile1Expertise
@@ -157,10 +151,8 @@ export const ProfilesCompareButterfly = props => {
                     <span className="competency_title">
                       {' '}
                       {competency.title.length > 150
-                        ? competency.title
-                            .split(' ')
-                            .splice(0, 18)
-                            .join(' ') + ' ..'
+                        ? competency.title.split(' ').splice(0, 18).join(' ') +
+                          ' ..'
                         : competency.title}
                     </span>
                   </div>
@@ -170,7 +162,7 @@ export const ProfilesCompareButterfly = props => {
                         className="fillerLeft"
                         style={{
                           width: width1 + '%',
-                          marginLeft: margin1 + '%'
+                          marginLeft: margin1 + '%',
                         }}
                       >
                         <span
@@ -215,7 +207,7 @@ export const ProfilesCompareButterfly = props => {
                       </div>
                     }
                   >
-                    {attribute_types.map(attribute_type => {
+                    {attribute_types.map((attribute_type) => {
                       return (
                         <div
                           className="accordion-item is-active"
@@ -230,9 +222,9 @@ export const ProfilesCompareButterfly = props => {
                           </div>
                           {competency.attributes
                             .filter(
-                              attribute => attribute.type == attribute_type
+                              (attribute) => attribute.type == attribute_type
                             )
-                            .map(attribute => {
+                            .map((attribute) => {
                               return (
                                 <div className="row attribute_align">
                                   <div className="column medium-6">
@@ -276,18 +268,18 @@ export const ProfilesCompareButterfly = props => {
   if (profile1) {
     chart_props[0] = {
       key: profile1.id,
-      label: profile1.title
+      label: profile1.title,
     };
   }
 
   if (profile2) {
     chart_props[1] = {
       key: profile2.id,
-      label: profile2.title
+      label: profile2.title,
     };
   }
 
-  const handlePrint = e => {
+  const handlePrint = (e) => {
     e.preventDefault();
     window.print();
   };
@@ -322,14 +314,8 @@ export const ProfilesCompareButterfly = props => {
       </div>
 
       <div>{competencyView}</div>
-      <div className="row">
-        <div className="column medium-4">&nbsp;</div>
-        <div className="column medium-4" style={{ textAling: 'center' }}>
-          <a href="#" className="button" onClick={e => handlePrint(e)}>
-            Print <i className="icon icon-common icon-print" />
-          </a>
-        </div>
-        <div className="column medium-4" />
+      <div className="submit_fixed">
+        <ProfilePrint />
       </div>
     </div>
   );
