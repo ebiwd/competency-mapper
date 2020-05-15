@@ -26,7 +26,7 @@
     "react-hook-form": "^5.7.1",
     "react-modal": "^3.11.2",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "^3.3.0",
+    "react-scripts": "^3.4.1",
     "react-svg-radar-chart": "^1.2.0",
     "react-tabs": "^3.1.0",
     "react-tooltip": "^4.2.6",
@@ -54,7 +54,7 @@
     "husky": "^2.7.0",
     "lint-staged": "^8.2.1",
     "npm-check-updates": "^3.2.2",
-    "prettier": "1.16.4",
+    "prettier": "2.0.5",
     "source-map-explorer": "^2.4.2",
     "typescript": "^3.8.3"
   },
