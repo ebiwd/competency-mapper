@@ -8,7 +8,7 @@ import ProfileCreateForm from './ProfileEditForm';
 const profileService = new ProfileService();
 
 export const ProfileEditGuest = () => {
-  const profile = profileService.getGuestProfile();
+  const profile = profileService.getGuestProfile() ?? {};
   const history = useHistory();
   const [clearPicture, setClearPicture] = useState(false);
 

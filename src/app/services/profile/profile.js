@@ -21,11 +21,7 @@ class ProfileService {
   }
 
   getGuestProfile() {
-    try {
-      return JSON.parse(window.localStorage.getItem(profileName));
-    } catch {
-      return undefined;
-    }
+    return JSON.parse(window.localStorage.getItem(profileName));
   }
 
   editGuestProfile(obj) {

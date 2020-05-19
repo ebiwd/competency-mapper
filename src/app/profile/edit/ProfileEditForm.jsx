@@ -32,7 +32,8 @@ export const ProfileEditForm = React.memo(
     const clearUploads = () => {
       setValue('uploads', null);
       setPhoto(undefined);
-      clearPicture();
+      // eslint-disable-next-line no-unused-expressions
+      clearPicture?.();
     };
 
     const onSelectFile = ({ target }) => {
