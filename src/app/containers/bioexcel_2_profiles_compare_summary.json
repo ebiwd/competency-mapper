@@ -1,0 +1,84 @@
+[
+  {
+    "id": "5659",
+    "resources": [
+      {
+        "resourceName": "Molecular Machines: Integrative Structural and Molecular Biology",
+        "resourceLink": "http://www.embl.de/training/events/2016/HYB16-01",
+        "resourceType": "face-to-face",
+        "resourceTypeDetail": "Conference"
+      },
+      {
+        "resourceName": "ChEMBL: Exploring bioactive drug-like molecules",
+        "resourceLink": "https://www.ebi.ac.uk/training/online/course/chembl-exploring-bioactive-drug-molecules",
+        "resourceType": "online",
+        "resourceTypeDetail": "Distance Learning"
+      },
+      {
+        "resourceName": "PDBeChem: Searching for small molecules and small molecule fragments",
+        "resourceLink": "https://www.ebi.ac.uk/training/online/course/pdbechem-searching-small-molecules-and-small-molec",
+        "resourceType": "online",
+        "resourceTypeDetail": "Distance Learning"
+      },
+      {
+        "resourceName": "In Silico Systems Biology",
+        "resourceLink": "https://www.ebi.ac.uk/training/events/2018/silico-systems-biology-1/",
+        "resourceType": "face-to-face",
+        "resourceTypeDetail": "Lectures and practical sessions"
+      },
+      {
+        "resourceName": "Data Science Specialization",
+        "resourceLink": "https://www.coursera.org/specializations/jhu-data-science",
+        "resourceType": "online",
+        "resourceTypeDetail": "Project based Course"
+      },
+      {
+        "resourceName": "Furthering our understanding of Antibody Structure space: the Pistoia Alliance AbVance project",
+        "resourceLink": "https://bioexcel.eu/furthering-our-understanding-of-antibody-structure-space-the-pistoia-alliance-abvance-project-2018-06-13/",
+        "resourceType": "online",
+        "resourceTypeDetail": "Webinar"
+      }
+    ]
+  },
+  {
+    "id": "5660",
+    "resources": [
+      {
+        "resourceName": "User Experience: Research & Prototyping",
+        "resourceLink": "https://www.coursera.org/learn/user-research",
+        "resourceType": "online",
+        "resourceTypeDetail": "Course with case studies"
+      },
+      {
+        "resourceName": "Product Design - Validation and UX through Design Sprints",
+        "resourceLink": "https://www.udacity.com/course/product-design--ud509",
+        "resourceType": "online",
+        "resourceTypeDetail": "Course"
+      },
+      {
+        "resourceName": "FitSM Advanced Training in Service Planning and Delivery",
+        "resourceLink": "https://www.egi.eu/services/fitsm-training/calendar/",
+        "resourceType": "face-to-face",
+        "resourceTypeDetail": "Training"
+      },
+      {
+        "resourceName": "FitSM Foundation Training",
+        "resourceLink": "https://www.egi.eu/services/fitsm-training/calendar/",
+        "resourceType": "face-to-face",
+        "resourceTypeDetail": "Training"
+      },
+      {
+        "resourceName": "FitSM Advanced Training in Service Operation and Control",
+        "resourceLink": "https://www.egi.eu/services/fitsm-training/calendar/",
+        "resourceType": "face-to-face",
+        "resourceTypeDetail": "Training"
+      },
+      {
+        "resourceName": "UX Toolkit for Life Sciences",
+        "resourceLink": "https://uxls.org/",
+        "resourceType": "online",
+        "resourceTypeDetail": "Resources and case studies"
+      }
+    ]
+  }
+]

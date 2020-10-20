@@ -127,7 +127,7 @@ class ResourceDetails extends React.Component {
     let attributes = [];
     let selectedCompetencies = [];
     let attribute_types = [];
-    let framework_repeat = [];
+    //let framework_repeat = [];
     //console.log(this.state.resource);
     let item = this.state.resource;
     let frameworkLiveVersion = '';
@@ -257,13 +257,14 @@ class ResourceDetails extends React.Component {
                                       <li>
                                         <span
                                           className={
-                                            competency.archived == 'archived'
+                                            competency.archived === 'archived'
                                               ? 'archived'
                                               : ''
                                           }
                                         >
                                           {competency.title}
-                                          {competency.archived == 'archived' ? (
+                                          {competency.archived ===
+                                          'archived' ? (
                                             <ItemVersions
                                               framework="bioexcel"
                                               versions={link}
@@ -284,14 +285,14 @@ class ResourceDetails extends React.Component {
                                                         <em>{type}</em> -{' '}
                                                         <span
                                                           className={
-                                                            attribute.archived ==
+                                                            attribute.archived ===
                                                             'archived'
                                                               ? 'archived'
                                                               : ''
                                                           }
                                                         >
                                                           {attribute.title}
-                                                          {attribute.archived ==
+                                                          {attribute.archived ===
                                                           'archived' ? (
                                                             <ItemVersions
                                                               framework={
@@ -304,7 +305,7 @@ class ResourceDetails extends React.Component {
                                                           ) : (
                                                             ''
                                                           )}
-                                                          {attribute.archived ==
+                                                          {attribute.archived ===
                                                           'archived' ? (
                                                             <a
                                                               href={

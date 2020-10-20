@@ -4,6 +4,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import Masthead from '../containers/masthead/Masthead';
 import ManageAttributes from './ManageAttributes';
 import ManageCompetencies from './ManageCompetencies';
+import ManageData from './ManageData';
 import CompetencyDetails from './CompetencyDetails';
 import CompetencyList from './CompetencyList';
 import ResourceEdit from './ResourceEdit';
@@ -12,6 +13,7 @@ import ResourceDetails from './ResourceDetails';
 import ResourcesList from './ResourcesList';
 import ResourcesHome from './ResourcesHome';
 import ChangePassword from './ChangePassword';
+import UserView from './UserView';
 import About from '../components/about/About';
 import Frameworks from './Frameworks';
 import ArticleCreate from './ArticleCreate';
@@ -20,12 +22,15 @@ import CompetencySettings from './CompetencySettings';
 import AttributeSettings from './AttributeSettings';
 import AttributeDemap from './AttributeDemap';
 import ProfileCreate from './ProfileCreate';
+import ProfileCreateGuest from './ProfileCreateGuest';
 import ProfileView from './ProfileView';
 import ProfilesCompare from './ProfilesCompare';
 import ProfileMapDownload from './ProfileMapDownload';
 import ProfileViewGuest from './ProfileViewGuest';
+import ProfileMapGuest from './ProfileMapGuest';
 import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
+import ProfilesCompareSummary from './ProfilesCompareSummary';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -156,6 +161,12 @@ class Root extends Component {
                   component={ManageCompetencies}
                 />
 
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/manage/data/:domainId?"
+                  component={ManageData}
+                />
+
                 <Route
                   path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
@@ -168,18 +179,34 @@ class Root extends Component {
                 />
 
                 <Route
+                  path="/framework/:framework/:version/profile/create/guest"
+                  component={ProfileCreateGuest}
+                />
+
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/create"
                   component={ProfileCreate}
                 />
 
                 <Route
-                  path="/framework/:framework/:version/profile/guest"
+                  path="/framework/:framework/:version/profile/view/guest"
                   component={ProfileViewGuest}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profile/map/guest"
+                  component={ProfileMapGuest}
                 />
 
                 <Route
                   path="/framework/:framework/:version/profile/view/:id/:alias"
                   component={ProfileView}
+                />
+
+                <Route
+                  path="/framework/:framework/:version/profiles/compare/guest/summary"
+                  component={ProfilesCompareSummary}
                 />
 
                 <Route
@@ -192,7 +219,8 @@ class Root extends Component {
                   component={ProfileMapDownload}
                 />
 
-                <Route
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/edit/:id"
                   component={ProfileEdit}
                 />
@@ -234,9 +262,16 @@ class Root extends Component {
                   component={ResourcesHome}
                 />
 
-                <Route
+                <ProtectedRoute
+                  condition={!!user}
                   path="/user/change/password"
                   component={ChangePassword}
+                />
+
+                <ProtectedRoute
+                  condition={!!user}
+                  path="/user/view"
+                  component={UserView}
                 />
 
                 <Route path="/article/create" component={ArticleCreate} />

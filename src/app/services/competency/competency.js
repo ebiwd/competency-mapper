@@ -77,6 +77,15 @@ class CompetencyService {
     return response.data;
   }
 
+  async patchDomain(domainId, key, value) {
+    const response = await this.http.patch(
+      `/node/${domainId}?_format=hal_json`,
+      Body.mutateDomain(key, value)
+    );
+
+    return response.data;
+  }
+
   async patchCompetencyPosition(competencyId, key, value) {
     const response = await this.http.patch(
       `/node/${competencyId}?_format=hal_json`,
@@ -223,6 +232,24 @@ class CompetencyService {
         `&attributes=` +
         attributes +
         `&timestamp=${Date.now()}`
+    );
+    return response.data;
+  }
+
+  async createBulkData(parentID, versionID, newData, type, addtional) {
+    const response = await this.http.post(
+      '/api/data_manager?_format=json',
+      Body.createBulkData(parentID, versionID, newData, type, addtional),
+      'json'
+    );
+    return response.data;
+  }
+
+  async saveSorting(items) {
+    const response = await this.http.patch(
+      '/api/data_manager?_format=json',
+      Body.saveSorting(items),
+      'json'
     );
     return response.data;
   }

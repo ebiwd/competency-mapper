@@ -6,11 +6,12 @@ import { apiUrl } from '../services/http/http';
 import { Link, Redirect } from 'react-router-dom';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-import ProfilesCompareTable from './ProfilesCompareTable';
-import ProfilesCompareGraph from './ProfilesCompareGraph';
+//import ProfilesCompareTable from './ProfilesCompareTable';
+//import ProfilesCompareGraph from './ProfilesCompareGraph';
 import ProfilesCompareButterfly from './ProfilesCompareButterfly';
 import user_icon from './user_icon.png';
 import Stars from './Stars';
+import ReactTooltip from 'react-tooltip';
 
 const $ = window.$;
 
@@ -25,26 +26,51 @@ export const ProfilesCompare = props => {
   const [profile1, setProfile1] = useState();
   const [profile2, setProfile2] = useState();
   const [framework, setFramework] = useState();
+  const [isGuestProfile, setIsGuestProfile] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
+  const [link1, setLink1] = useState();
+  const [link2, setLink2] = useState();
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        await fetch(
-          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
-        )
-          .then(Response => Response.json())
-          .then(findresponse => {
-            setProfile1(findresponse);
-          });
+        if (profile1Id == 'guest') {
+          await setProfile1(JSON.parse(localStorage.getItem('guestProfile')));
+          setIsGuestProfile(1);
+          setLink1(
+            `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest`
+          );
+        } else {
+          setLink1(
+            `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profile1Id}/alias`
+          );
+          await fetch(
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
+          )
+            .then(Response => Response.json())
+            .then(findresponse => {
+              setProfile1(findresponse);
+            });
+        }
 
-        await fetch(
-          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
-        )
-          .then(Response => Response.json())
-          .then(findresponse => {
-            setProfile2(findresponse);
-          });
+        if (profile2Id == 'guest') {
+          await setProfile2(JSON.parse(localStorage.getItem('guestProfile')));
+          setIsGuestProfile(1);
+          setLink2(
+            `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest`
+          );
+        } else {
+          setLink2(
+            `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profile2Id}/alias`
+          );
+          await fetch(
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
+          )
+            .then(Response => Response.json())
+            .then(findresponse => {
+              setProfile2(findresponse);
+            });
+        }
 
         await fetch(`${apiUrl}/api/version_manager?_format=json`)
           .then(Response => Response.json())
@@ -69,104 +95,25 @@ export const ProfilesCompare = props => {
   if (frameworkInfo) {
     frameworkInfo.map(info => {
       if (info.title.toLowerCase() === frameworkName) {
-        info.expertise_levels.map(
-          level => (expertise_levels[level.rating_level] = level.title)
+        info.expertise_levels.map(level =>
+          expertise_levels_legend.push(
+            <li style={{ textAlign: 'center' }}>
+              <div
+                data-tip={level.description ? level.description : 'NA'}
+                data-html={true}
+                data-type="info"
+                data-multiline={true}
+              >
+                <span className="badge secondary"> {level.rating_level} </span>{' '}
+                <span> {level.title}</span>
+              </div>
+              <ReactTooltip class="tooltip-custom" />
+            </li>
+          )
         );
       }
     });
   }
-
-  let index = 0;
-  expertise_levels.map((level, key) => {
-    expertise_levels_legend.push(
-      <li style={{ textAlign: 'center' }}>
-        <span className="badge secondary"> {key} </span> <span> {level}</span>
-      </li>
-    );
-    index++;
-  });
-
-  const clickGraphTab = () => {
-    setTimeout(formatRadarChart, 2000);
-  };
-
-  const clickButterflyTab = () => {
-    setTimeout(formatButterfly, 100);
-  };
-
-  // I hate this anti-pattern
-
-  const formatRadarChart = () => {
-    $('svg').css('width', '50%');
-    $('svg')
-      .parent()
-      .css('text-align', 'center');
-    $('svg > g > g > g:first-child > text')
-      .eq(0)
-      .text('Specialist Knowledge')
-      .css('font-weight', 'bold');
-    $('svg > g > g > g:first-child > text')
-      .eq(1)
-      .text('Working Knowledge')
-      .css('font-weight', 'bold');
-    $('svg > g > g > g:first-child > text')
-      .eq(2)
-      .text('Awareness')
-      .css('font-weight', 'bold');
-
-    $('text').each(function(key, value) {
-      var x = $(this).attr('x');
-      var sign = Math.sign(x);
-      var dx = sign ? (sign == 1 ? '100' : '-100') : '0';
-      var y = $(this).attr('y');
-      var item = $(this).text();
-      var choppedItem1 = '';
-      var choppedItem2 = '';
-
-      if (item.length > 60) {
-        choppedItem1 = item.substring(0, 60);
-        choppedItem2 = item.substring(60, 120);
-        $(this).html(
-          '<tspan x=' +
-            x +
-            ' y=' +
-            y +
-            ' dx=' +
-            dx +
-            ' >' +
-            choppedItem1 +
-            '</tspan>' +
-            '<tspan x=' +
-            x +
-            ' y=' +
-            y +
-            ' dy="15" dx=' +
-            dx +
-            ' >' +
-            choppedItem2 +
-            '... </tspan>'
-        );
-      } else {
-        $(this).html(
-          '<tspan x=' +
-            x +
-            ' y=' +
-            y +
-            ' dx=' +
-            dx +
-            ' dy="15" >' +
-            item +
-            '</tspan>'
-        );
-      }
-    });
-  };
-
-  const formatButterfly = () => {
-    $('.ButterflyChart-right > .ChartRow > .ChartRow-barLabel').remove();
-    $('.ButterflyChart-right > .ChartRow > .u-dottedLine').remove();
-    $('.ButterflyChart').css('width', '100%');
-  };
 
   return (
     <div>
@@ -174,6 +121,7 @@ export const ProfilesCompare = props => {
       <span className="lead">
         Compere profile with other reference profiles to help you make career
         choices based on your competency
+        {console.log(isGuestProfile)}
       </span>
 
       <div className="row">
@@ -185,9 +133,7 @@ export const ProfilesCompare = props => {
                 src={profile1.image[0] ? profile1.image[0].url : user_icon}
                 width="120px"
               />
-              <Link
-                to={`/framework/bioexcel/2.0/profile/view/${profile1.id}/alias`}
-              >
+              <Link to={link1}>
                 <h5>{profile1.job_title}</h5>
               </Link>
             </div>
@@ -203,9 +149,7 @@ export const ProfilesCompare = props => {
                 src={profile2.image[0] ? profile2.image[0].url : user_icon}
                 width="120px"
               />
-              <Link
-                to={`/framework/bioexcel/2.0/profile/view/${profile2.id}/alias`}
-              >
+              <Link to={link2}>
                 <h5>{profile2.job_title}</h5>
               </Link>
             </div>
@@ -236,6 +180,7 @@ export const ProfilesCompare = props => {
           profile2={profile2}
           framework={framework}
           frameworkInfo={frameworkInfo}
+          isGuestProfile={isGuestProfile}
         />
       ) : (
         ''

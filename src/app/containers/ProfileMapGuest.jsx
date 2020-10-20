@@ -11,7 +11,7 @@ import ReactTooltip from 'react-tooltip';
 
 const $ = window.$;
 
-export const ProfileMap = props => {
+export const ProfileMapGuest = props => {
   const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
 
@@ -24,7 +24,7 @@ export const ProfileMap = props => {
 
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
-  const profileId = props.location.pathname.split('/')[6];
+  //const profileId = props.location.pathname.split('/')[6];
 
   var competencyForm = '';
   var expertise_levels = [];
@@ -37,15 +37,15 @@ export const ProfileMap = props => {
   //var mapping = [];
   var checkboxes = [];
 
+  var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
+
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setProfile(findresponse);
-        });
+      await setProfile(storedProfile);
+
+      await setMapping(
+        storedProfile.profile_mapping ? storedProfile.profile_mapping : []
+      );
 
       await fetch(`${apiUrl}/api/version_manager?_format=json`)
         .then(Response => Response.json())
@@ -69,15 +69,15 @@ export const ProfileMap = props => {
         console.log('test ' + item.dataset);
       });
     }
-  }, [profileId]);
+  }, []);
 
   const handleSubmit = async e => {
     e.preventDefault();
 
-    let response = await profileService.mapProfile(profileId, mapping);
+    let response = await profileService.mapProfileGuest(mapping);
     console.log(response);
     props.history.push(
-      `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`
+      `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest`
     );
   };
 
@@ -152,6 +152,13 @@ export const ProfileMap = props => {
     console.log(mapping);
   };
 
+  // if (profile) {
+  //   if (!mapping) {
+  //     setMapping(storedProfile.mapping);
+  //   }
+  //     console.log(mapping);
+  // }
+
   const generateForm = () => {
     if (frameworkInfo) {
       frameworkInfo.map(info => {
@@ -205,13 +212,6 @@ export const ProfileMap = props => {
     //   );
     //   index++;
     // });
-
-    if (profile) {
-      if (!mapping) {
-        setMapping(profile.profile_mapping);
-      }
-      console.log(mapping);
-    }
 
     if (framework) {
       competencyForm = framework.map(item =>
@@ -268,21 +268,25 @@ export const ProfileMap = props => {
                                                   handleCheckBox(e)
                                                 }
                                                 defaultChecked={
-                                                  mapping.find(o =>
-                                                    o.attributes.find(
-                                                      a => a == attribute.id
-                                                    )
-                                                  )
-                                                    ? true
+                                                  mapping
+                                                    ? mapping.find(o =>
+                                                        o.attributes.find(
+                                                          a => a == attribute.id
+                                                        )
+                                                      )
+                                                      ? true
+                                                      : false
                                                     : false
                                                 }
                                                 disabled={
-                                                  mapping.find(
-                                                    o =>
-                                                      o.competency ==
-                                                      competency.id
-                                                  )
-                                                    ? false
+                                                  mapping
+                                                    ? mapping.find(
+                                                        o =>
+                                                          o.competency ==
+                                                          competency.id
+                                                      )
+                                                      ? false
+                                                      : true
                                                     : true
                                                 }
                                                 data-competency={competency.id}
@@ -311,9 +315,12 @@ export const ProfileMap = props => {
                         <select
                           onChange={e => handleSelect(e)}
                           defaultValue={
-                            mapping.find(o => o.competency == competency.id)
+                            mapping
                               ? mapping.find(o => o.competency == competency.id)
-                                  .expertise
+                                ? mapping.find(
+                                    o => o.competency == competency.id
+                                  ).expertise
+                                : expertise_not_applicable
                               : expertise_not_applicable
                           }
                         >
@@ -355,7 +362,7 @@ export const ProfileMap = props => {
                 <div className="column medium-10" />
                 <div className="column medium-2">
                   <Link
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`}
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/guest`}
                   >
                     <i class="icon icon-common icon-angle-left" /> Profile
                     overview
@@ -374,7 +381,7 @@ export const ProfileMap = props => {
                 <div className="column medium-9 form_intro">
                   <h3 />
                   <p>
-                    The form below is listing competencies from{' '}
+                    Hi Guest. The form below is listing competencies from{' '}
                     {frameworkFullName} competency framework. A competency is an
                     observable ability of any professional, integrating multiple
                     components such as knowledge, skills and behaviours. A
@@ -421,14 +428,14 @@ export const ProfileMap = props => {
   );
 };
 
-export const MapProfile = () => (
+export const path = () => (
   <Switch>
     <Route
       exact
-      path="/framework/:framework/:version/profile/map/:id"
-      component={ProfileMap}
+      path="/framework/:framework/:version/profile/map/guest"
+      component={ProfileMapGuest}
     />
   </Switch>
 );
 
-export default MapProfile;
+export default path;

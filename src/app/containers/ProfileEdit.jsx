@@ -138,7 +138,9 @@ export const ProfileEdit = props => {
 
       if (response.nid[0].value) {
         props.history.push(
-          `/framework/bioexcel/2.0/profile/view/${response.nid[0].value}/alias`
+          `/framework/${frameworkName}/${frameworkVersion}/profile/view/${
+            response.nid[0].value
+          }/alias`
         );
       }
     }
@@ -184,9 +186,12 @@ export const ProfileEdit = props => {
   }
 
   const setPreview = () => {
-    props.history.push('/framework/bioexcel/2.0/profile/preview', {
-      title: title
-    });
+    props.history.push(
+      `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
+      {
+        title: title
+      }
+    );
   };
 
   const onSelectFile = e => {
@@ -230,7 +235,9 @@ export const ProfileEdit = props => {
   return (
     <div>
       <div>
-        <Link to={`/framework/bioexcel/2.0/profile/view/${profileId}/alias`}>
+        <Link
+          to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`}
+        >
           {' '}
           View{' '}
         </Link>

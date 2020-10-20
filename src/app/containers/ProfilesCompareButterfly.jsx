@@ -1,19 +1,21 @@
-import React, { usecompetency_title, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
-import RadarChart from 'react-svg-radar-chart';
+import React from 'react';
+import { useHistory } from 'react-router-dom';
+//import { apiUrl } from '../services/http/http';
+//import ProfileService from '../services/profile/profile';
+//import ActiveRequestsService from '../services/active-requests/active-requests';
+//import { Link, Redirect } from 'react-router-dom';
+//import RadarChart from 'react-svg-radar-chart';
 import 'react-svg-radar-chart/build/css/index.css';
-import user_icon from './user_icon.png';
+//import user_icon from './user_icon.png';
 import Collapsible from 'react-collapsible';
 
 export const ProfilesCompareButterfly = props => {
+  let history = useHistory();
   const frameworkName = props.frameworkName;
   const frameworkVersion = props.frameworkVersion;
-  const profile1Id = props.profile1Id;
-  const profile2Id = props.profile2Id;
+  //const profile1Id = props.profile1Id;
+  //const profile2Id = props.profile2Id;
+  const isGuestProfile = props.isGuestProfile;
 
   const profile1 = props.profile1;
   const profile2 = props.profile2;
@@ -25,8 +27,8 @@ export const ProfilesCompareButterfly = props => {
   var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
+  //var frameworkLogo = '';
+  //var frameworkDesc = '';
   var mapping1 = [];
   var mapping2 = [];
   var user_roles = localStorage.getItem('roles')
@@ -40,8 +42,10 @@ export const ProfilesCompareButterfly = props => {
   var leftData = [];
   var rightData = [];
 
+  var includeSummary = [];
+
   const getExpertise = (competency, profileid) => {
-    let mapping = '';
+    let mapping = [];
     if (profileid == 'profile1') {
       mapping = mapping1;
     } else {
@@ -87,8 +91,8 @@ export const ProfilesCompareButterfly = props => {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
           info.expertise_levels.map(
             (level, key) => (expertise_array[key] = level.id) //(expertise_levels[level.id] = level.title)
           );
@@ -125,7 +129,7 @@ export const ProfilesCompareButterfly = props => {
 
     if (frameworkInfo) {
       frameworkInfo.map(framework => {
-        if (framework.title == 'BioExcel') {
+        if (framework.title == frameworkName) {
           framework.expertise_levels.map((level, key) => {
             expertise_array[key] = level.id;
           });
@@ -139,6 +143,19 @@ export const ProfilesCompareButterfly = props => {
           domain.competencies.map(competency => {
             let profile1Expertise = getExpertise(competency.id, 'profile1');
             let profile2Expertise = getExpertise(competency.id, 'profile2');
+
+            if (profile1Expertise && profile2Expertise) {
+              includeSummary.push(
+                profile1Expertise.rating_level < profile2Expertise.rating_level
+                  ? competency.id
+                  : null
+              );
+            } else if (!profile1Expertise && !profile2Expertise) {
+              includeSummary.push(null);
+            } else if (!profile1Expertise && profile2Expertise) {
+              includeSummary.push(competency.id);
+            }
+
             let width1 = profile1Expertise
               ? 100 / (3 / profile1Expertise.rating_level)
               : 0;
@@ -151,7 +168,7 @@ export const ProfilesCompareButterfly = props => {
             let floatRight = width2 == 0 ? 'none' : 'right';
 
             return (
-              <>
+              <div>
                 <div className="row">
                   <div className="column medium-6">
                     <span className="competency_title">
@@ -266,7 +283,7 @@ export const ProfilesCompareButterfly = props => {
                     })}
                   </Collapsible>
                 </div>
-              </>
+              </div>
             );
           })
         )
@@ -292,9 +309,21 @@ export const ProfilesCompareButterfly = props => {
     window.print();
   };
 
+  const handleSummary = e => {
+    e.preventDefault();
+    history.push({
+      pathname: `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/guest/summary`,
+      state: {
+        profileJobTitle: profile1.job_title,
+        includeSummary: includeSummary
+      }
+    });
+  };
+
   return (
     <div id="">
       {generateProfileView()}
+
       <p>&nbsp; </p>
       <div className="row">
         <div className="column medium-6">
@@ -323,13 +352,22 @@ export const ProfilesCompareButterfly = props => {
 
       <div>{competencyView}</div>
       <div className="row">
-        <div className="column medium-4">&nbsp;</div>
+        <div className="column medium-2">&nbsp;</div>
+        <div className="column medium-4" style={{ textAling: 'center' }}>
+          {isGuestProfile ? (
+            <a to={'#'} className="button" onClick={e => handleSummary(e)}>
+              Summary <i className="icon-common icon-list" />
+            </a>
+          ) : (
+            ''
+          )}
+        </div>
         <div className="column medium-4" style={{ textAling: 'center' }}>
           <a href="#" className="button" onClick={e => handlePrint(e)}>
             Print <i className="icon icon-common icon-print" />
           </a>
         </div>
-        <div className="column medium-4" />
+        <div className="column medium-2" />
       </div>
     </div>
   );

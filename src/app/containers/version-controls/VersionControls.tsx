@@ -120,12 +120,18 @@ export const VersionControls: React.FC<Props> = ({
           </form>
         </Modal>
         <span className="padding-right-small">
-          <button className="button" onClick={() => setPressedRelease(true)}>
-            Release new version
+          <button
+            className="button secondary"
+            onClick={() => setPressedRelease(true)}
+          >
+            Release new version <i className="icon icon-common icon-send" />
           </button>
         </span>
-        <button className="button" onClick={() => setPressedNotes(true)}>
-          Update release notes
+        <button
+          className="button secondary"
+          onClick={() => setPressedNotes(true)}
+        >
+          Update release notes <i className="icon icon-common icon-edit" />
         </button>
       </div>
     );

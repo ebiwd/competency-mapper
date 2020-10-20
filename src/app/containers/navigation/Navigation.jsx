@@ -1,13 +1,36 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { apiUrl } from '../../services/http/http';
+import HttpService from '../../services/http/http';
+
+const http = new HttpService();
 
 const $ = window.$;
 
 class Navigation extends Component {
   navRef = React.createRef();
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      user: this.props.user,
+      frameworks: []
+    };
+  }
+
   componentDidMount() {
     $(this.navRef.current).foundation();
+    fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
+      method: 'GET',
+      credentials: 'include'
+    })
+      .then(Response => Response.json())
+      .then(findresponse => {
+        this.setState({
+          frameworks: findresponse
+        });
+        //console.log(findresponse)
+      });
   }
 
   logout = () => {
@@ -17,9 +40,8 @@ class Navigation extends Component {
 
   render() {
     const { roles, user } = this.props;
-
     const frameworkResources = (
-      <li>
+      <li key="navigation">
         <a // eslint-disable-line jsx-a11y/anchor-is-valid
           tabIndex="0"
           className="dropdown-on-dark-background"
@@ -27,36 +49,37 @@ class Navigation extends Component {
           Manage Competencies
         </a>
         <ul className="menu vertical">
-          <li>
-            <Link to="/framework/bioexcel/manage/competencies">BioExcel</Link>
-          </li>
-          <li>
-            <Link to="/framework/corbel/manage/competencies">CORBEL</Link>
-          </li>
-          <li>
-            <Link to="/framework/iscb/manage/competencies">ISCB</Link>
-          </li>
-          <li>
-            <Link to="/framework/ritrain/manage/competencies">RITrain</Link>
-          </li>
-          <li>
-            <Link to="/framework/nhs/manage/competencies">NHS</Link>
-          </li>
-          <li>
-            <Link to="/framework/cineca/manage/competencies">CINECA</Link>
-          </li>
+          {this.state.frameworks ? (
+            this.state.frameworks.map(framework => {
+              return (
+                <li key={framework}>
+                  <Link
+                    to={`/framework/${framework
+                      .toLowerCase()
+                      .replace(/\s+/g, '')}/manage/data`}
+                  >
+                    {framework}
+                  </Link>
+                </li>
+              );
+            })
+          ) : (
+            <li style={{ color: '#000' }}>
+              No Framework assigned to this user.
+            </li>
+          )}
         </ul>
       </li>
     );
 
     const trainingResources = (
-      <li>
+      <li key="resources">
         <Link to="/all-training-resources">Manage Training Resources</Link>
       </li>
     );
 
     const userDropdown = (
-      <li>
+      <li key="dropdown-on-light-background">
         <a // eslint-disable-line jsx-a11y/anchor-is-valid
           tabIndex="0"
           className="dropdown-on-light-background"
@@ -64,7 +87,10 @@ class Navigation extends Component {
           <i className="fas fa-user" /> Hi {user}
         </a>
         <ul className="menu vertical">
-          <li>
+          <li key="myaccount">
+            <Link to={'/user/view'}>My account</Link>
+          </li>
+          <li key="changepwd">
             <Link to={'/user/change/password'}>Change password</Link>
           </li>
           <li>

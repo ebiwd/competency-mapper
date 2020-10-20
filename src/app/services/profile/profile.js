@@ -63,6 +63,54 @@ class ProfileService {
     return response.data;
   }
 
+  async createGuestProfile(
+    frameworkName,
+    frameworkId,
+    versionNumber,
+    title,
+    age,
+    current_role,
+    gender,
+    job_title,
+    qualification_background,
+    additional_information,
+    image
+  ) {
+    let mapping = [];
+
+    let existingGuestProfile = JSON.parse(localStorage.getItem('guestProfile'));
+    if (existingGuestProfile) {
+      if (existingGuestProfile.profile_mapping) {
+        mapping = existingGuestProfile.profile_mapping;
+      }
+    }
+
+    let guestProfile = {
+      frameworkName,
+      frameworkId,
+      versionNumber,
+      title,
+      age,
+      current_role,
+      gender,
+      job_title,
+      qualification_background,
+      additional_information,
+      image
+    };
+
+    guestProfile['profile_mapping'] = mapping;
+
+    localStorage.setItem('guestProfile', JSON.stringify(guestProfile));
+    console.log('Profile service called for Guest user');
+  }
+
+  async mapProfileGuest(mapping) {
+    let guestProfile = JSON.parse(localStorage.getItem('guestProfile'));
+    guestProfile['profile_mapping'] = mapping;
+    localStorage.setItem('guestProfile', JSON.stringify(guestProfile));
+  }
+
   mapDownloadProfile(options) {
     localStorage.setItem('ProfileDownloadData', JSON.stringify(options));
   }

@@ -6,7 +6,4 @@ const Stars = [
   { id: 3, src: process.env.PUBLIC_URL + '/rating_stars/3.png' }
 ];
 
-console.log('windows url ' + window.location.origin);
-console.log('process url ' + process.env.PUBLIC_URL);
-
 export default Stars;

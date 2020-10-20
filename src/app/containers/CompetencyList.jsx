@@ -11,9 +11,9 @@ import ProfileList from './ProfileList';
 import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
 
 import CompetencyService from '../services/competency/competency';
+import { apiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
-import { Link, Redirect } from 'react-router-dom';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -35,7 +35,8 @@ class CompetencyList extends Component {
     domains: [],
     filter: '',
     filteredDomains: [],
-    loadingError: false
+    loadingError: false,
+    profileCount: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -64,6 +65,18 @@ class CompetencyList extends Component {
         this.fetchFramework(framework, frameworkVersion),
         this.fetchVersions(framework)
       ]);
+
+      fetch(
+        `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json&timestamp=${Date.now()}`
+      )
+        .then(Response => Response.json())
+        .then(findResponse => {
+          this.setState({
+            profileCount: findResponse.filter(
+              item => item.publishing_status === 'Live'
+            ).length
+          });
+        });
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -113,7 +126,7 @@ class CompetencyList extends Component {
     );
     if (currentFramework.length > 0) {
       const versionStatus = currentFramework[0].versions.filter(
-        vr => vr.number == frameworkVersion
+        vr => vr.number === frameworkVersion
       );
       this.setState({ frameworkStatus: versionStatus[0].status });
     }
@@ -165,6 +178,7 @@ class CompetencyList extends Component {
     /*if(versions.length > 0){
  console.log(this.state.versions[0].status);  
 }*/
+    console.log(this.state.profileCount);
 
     if (loadingError) {
       return <ErrorLoading />;
@@ -193,15 +207,31 @@ class CompetencyList extends Component {
 
         <Tabs>
           <TabList>
-            <Tab>Career profiles</Tab>
+            {localStorage.getItem('roles') ? (
+              <Tab>Career profiles</Tab>
+            ) : this.state.profileCount > 0 ? (
+              <Tab>Career profiles</Tab>
+            ) : (
+              ''
+            )}
+
             <Tab>Competencies</Tab>
             <Tab>Training resources</Tab>
           </TabList>
 
-          <TabPanel>
-            <ProfileList framework={framework} version={frameworkVersion} />
-            <FrameworkVersions framework={framework} versions={versions} />
-          </TabPanel>
+          {localStorage.getItem('roles') ? (
+            <TabPanel>
+              <ProfileList framework={framework} version={frameworkVersion} />
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
+          ) : this.state.profileCount > 0 ? (
+            <TabPanel>
+              <ProfileList framework={framework} version={frameworkVersion} />
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
+          ) : (
+            ''
+          )}
 
           <TabPanel>
             <input

@@ -25,7 +25,8 @@ class ManageCompetencies extends React.Component {
     competencyTypes: [],
     versions: [],
     loadingError: false,
-    editable: false
+    editable: false,
+    allowedFrms: []
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -54,6 +55,15 @@ class ManageCompetencies extends React.Component {
         }
       }, 100);
     }
+
+    // fetch(`https://dev-competency-mapper.pantheonsite.io/api/authorisation/cath?_format=json`,{
+    //   method: 'GET',
+    //   credentials: 'include'
+    // })
+    // .then(Response => Response.json())
+    // .then(findResponse =>
+    //   this.setState({allowedFrms: findResponse})
+    // );
   }
 
   async componentDidUpdate(prevProps, prevState) {
@@ -364,6 +374,12 @@ class ManageCompetencies extends React.Component {
   }
 
   render() {
+    // if(this.state.allowedFrms.length > 0){
+    //   if(this.state.allowedFrms.indexOf(this.state.framework) == -1){
+    //     return(<h4 className="callout warning"> <i class="icon icon-common icon-exclamation-triangle"></i> You are not authorised to manage this framework </h4> );
+    //   }
+    // }
+
     const {
       framework,
       frameworkName,

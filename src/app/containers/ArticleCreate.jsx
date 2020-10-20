@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
-import FileUpload from './FileUpload';
+//import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
 import Dropzone from 'react-dropzone';
 

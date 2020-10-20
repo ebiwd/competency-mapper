@@ -59,9 +59,10 @@
 }
 
 .competency_title {
-  font-size: 110%;
+  font-size: 20px;
   position: relative;
   left: 20px;
+  list-style-type: none;
 }
 
 .profile_badge_page {

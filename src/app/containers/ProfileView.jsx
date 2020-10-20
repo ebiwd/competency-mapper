@@ -121,7 +121,25 @@ export const ProfileView = props => {
           frameworkLogo = info.logo[0].url;
           frameworkDesc = info.description;
           info.expertise_levels.map(
-            level => (expertise_levels[level.rating_level] = level.title)
+            //level => (expertise_levels[level.rating_level] = level.title)
+            level =>
+              expertise_levels_legend.push(
+                <li style={{ textAlign: 'center' }}>
+                  <div
+                    data-tip={level.description ? level.description : 'NA'}
+                    data-html={true}
+                    data-type="info"
+                    data-multiline={true}
+                  >
+                    <span className="badge secondary">
+                      {' '}
+                      {level.rating_level}{' '}
+                    </span>{' '}
+                    <span> {level.title}</span>
+                  </div>
+                  <ReactTooltip class="tooltip-custom" />
+                </li>
+              )
           );
         }
       });
@@ -134,15 +152,15 @@ export const ProfileView = props => {
       });
     }
 
-    let index = 0;
-    expertise_levels.map((level, key) => {
-      expertise_levels_legend.push(
-        <li style={{ textAlign: 'center' }}>
-          <span className="badge secondary"> {key} </span> <span> {level}</span>
-        </li>
-      );
-      index++;
-    });
+    // let index = 0;
+    // expertise_levels.map((level, key) => {
+    //   expertise_levels_legend.push(
+    //     <li style={{ textAlign: 'center' }}>
+    //       <span className="badge secondary"> {key} </span> <span> {level}</span>
+    //     </li>
+    //   );
+    //   index++;
+    // });
 
     if (profile) {
       mapping = profile.profile_mapping;
@@ -361,21 +379,25 @@ export const ProfileView = props => {
               <ul>
                 <li className="profile_navigation">
                   <Link
-                    to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/edit/${profileId}`}
                   >
                     Edit overview
                     <i className="icon icon-common icon-pencil-alt" />
                   </Link>
                 </li>
                 <li className="profile_navigation">
-                  <Link to={`/framework/bioexcel/2.0/profile/map/${profileId}`}>
+                  <Link
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/${profileId}`}
+                  >
                     Map competencies <i className="icon icon-common icon-cog" />{' '}
                     {console.log(localStorage.getItem('roles'))}
                   </Link>
                 </li>
               </ul>
             ) : (
-              <Link to={`/framework/bioexcel/2.0/profile/create`}>
+              <Link
+                to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
+              >
                 Create your profile <i className="icon icon-common icon-plus" />
               </Link>
             )}
@@ -403,7 +425,7 @@ export const ProfileView = props => {
                   : ''}
               </p>
 
-              <h3>Acitivities of current role</h3>
+              <h3>Activities of current role</h3>
               <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
 
               <p>

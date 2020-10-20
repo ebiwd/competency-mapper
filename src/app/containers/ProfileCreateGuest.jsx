@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import FileUpload from './FileUpload';
@@ -8,8 +8,10 @@ import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link, Redirect } from 'react-router-dom';
+import GuestHelp from './GuestHelp';
 
-export const ProfileCreate = props => {
+export const ProfileCreateGuest = props => {
+  const history = useHistory();
   const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
   const [title, setTitle] = useState('');
@@ -40,29 +42,30 @@ export const ProfileCreate = props => {
 
   const [frameworkMoreData, setFrameworkMoreData] = useState();
 
+  const [modalOpen, setModelOpen] = useState(0);
+
   let errors = [];
+
+  var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
   const http = new HttpService();
 
   useEffect(() => {
     // Set variables from Local Storage to populate form fields onload
-    const bootstrap = () => {
-      let storedProfile = JSON.parse(
-        localStorage.getItem('ProfileDownloadData')
-      );
-      setProfile(storedProfile);
+    let bootstrap = async () => {
+      await setProfile(storedProfile);
 
       if (storedProfile) {
         setTitle(storedProfile.title);
-        setJobTitle(storedProfile.jobTitle);
-        setAge(storedProfile.age);
+        setJobTitle(storedProfile.job_title);
+        setAge(parseInt(storedProfile.age));
         setGender(storedProfile.gender);
-        setQualification(storedProfile.qualification);
-        setCurrentRole(storedProfile.currentRole);
-        setAdditionalInfo(storedProfile.additionalInfo);
-        if (storedProfile.selectedFileData[0]) {
-          setSelectedFileData(storedProfile.selectedFileData);
-          setImgpreview(storedProfile.selectedFileData[0].src);
+        setQualification(storedProfile.qualification_background);
+        setCurrentRole(storedProfile.current_role);
+        setAdditionalInfo(storedProfile.additional_information);
+        if (storedProfile.image[0]) {
+          setSelectedFileData(storedProfile.image);
+          setImgpreview(storedProfile.image[0].url);
         }
       }
     };
@@ -81,27 +84,6 @@ export const ProfileCreate = props => {
           .then(response2 => response2.data);
 
         const [data1, data2] = await Promise.all([promise1, promise2]);
-        // Get current Framework only
-
-        // if (frameworkMoreData[0].logo[0].url) {
-
-        //   toDataURL(frameworkMoreData[0].logo[0].url, function(myBase64) {
-        //     let img = new Image();
-        //     img.src = myBase64;
-        //     img.addEventListener('load', function() {
-        //       img.width = this.width;
-        //       img.height = this.height;
-        //       setFrameworkLogoData([
-        //         {
-        //           url: frameworkMoreData[0].logo[0].url,
-        //           src: img.src,
-        //           width: this.width,
-        //           height: this.height
-        //         }
-        //       ]);
-        //     });
-        //   });
-        // }
         setFramework(data1);
         setFrameworkMoreData(
           data2.filter(item => {
@@ -120,14 +102,15 @@ export const ProfileCreate = props => {
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
-    let frameworkName = framework[0].title;
+    //let frameworkName = framework[0].title;
     let frameworkUuid = framework[0].uuid;
-    console.log(frameworkMoreData);
+    //console.log(frameworkMoreData);
     let liveVersion = frameworkMoreData[0].versions.find(
       ver => ver.status == 'live'
     );
 
     let versionID = liveVersion.id;
+    let versionNumber = liveVersion.number;
     var arrayBuffer = '';
     var fileid = null;
 
@@ -140,6 +123,7 @@ export const ProfileCreate = props => {
       fileTypeError ||
       fileSizeError
     ) {
+      return 0;
     }
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
@@ -151,67 +135,27 @@ export const ProfileCreate = props => {
         localStorage.getItem('ProfileDownloadData')
       );
 
-      profileService.mapDownloadProfile({
-        title,
-        frameworkId,
-        frameworkLogoData,
+      let current_role = currentRole ? currentRole : '';
+      let job_title = jobTitle ? jobTitle : '';
+      let qualification_background = qualification ? qualification : '';
+      let additional_information = additionalInfo ? additionalInfo : '';
+      let image = selectedFileData ? selectedFileData : '';
+
+      profileService.createGuestProfile(
         frameworkName,
-        frameworkUuid,
-        age,
-        currentRole,
-        gender,
-        jobTitle,
-        qualification,
-        additionalInfo,
-        selectedFile,
-        // selectedFileData: storedProfile ? selectedFileData ? selectedFileData : '' : '',
-        selectedFileData,
-        mapping: storedProfile ? storedProfile.mapping : [],
-        mappingAttributes: storedProfile ? storedProfile.mappingAttributes : []
-      });
-      //props.history.push('/framework/bioexcel/2.0/profile/map/download/');
-    } else if (localStorage.getItem('roles').includes('framework_manager')) {
-      if (selectedFile) {
-        let token = localStorage.getItem('csrf_token');
-        await fetch(
-          apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
-          {
-            credentials: 'include',
-            method: 'POST',
-            cookies: 'x-access-token',
-            headers: {
-              accept: 'application/octet-stream',
-              'Content-Type': 'application/octet-stream',
-              'X-CSRF-Token': token,
-              'Content-Disposition': 'file; filename="persona_picture.png"'
-            },
-            body: selectedFile
-          }
-        )
-          .then(resp => resp.json())
-          .then(function(data) {
-            fileid = data.fid[0].value;
-          });
-      }
-
-      let response = await profileService.createProfile({
-        title,
         frameworkId,
-        frameworkUuid,
-        versionID,
+        versionNumber,
+        title,
         age,
-        currentRole,
+        current_role,
         gender,
-        jobTitle,
-        qualification,
-        additionalInfo,
-        fileid
-      });
-
-      props.history.push(
-        `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/view/${
-          response.nid[0].value
-        }/${response.path[0].alias}`
+        job_title,
+        qualification_background,
+        additional_information,
+        image
+      );
+      history.push(
+        `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest/`
       );
     }
   };
@@ -264,9 +208,7 @@ export const ProfileCreate = props => {
 
             setSelectedFileData([
               {
-                src: this.src,
-                width: this.width,
-                height: this.height
+                url: this.src
               }
             ]);
           });
@@ -287,13 +229,14 @@ export const ProfileCreate = props => {
     setImgpreview(undefined);
     setFileTypeError(undefined);
     setFileSizeError(undefined);
+    setSelectedFileData(undefined);
     document.getElementById('fileupload').value = '';
   };
 
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = 'Add Competencies';
+      submitButtonLabel = 'Save and Map Competencies';
     }
 
     return <input type="submit" className="button" value={submitButtonLabel} />;
@@ -365,9 +308,29 @@ export const ProfileCreate = props => {
     }
   }
 
+  const openModal = e => {
+    e.preventDefault();
+    setModelOpen(true);
+  };
+
+  const closeModal = () => {
+    //e.preventDefault();
+    setModelOpen(false);
+  };
+
   return (
     <div>
-      <h2>Create {placeholder} profile</h2>
+      <h2>Create / Edit {placeholder} profile</h2>
+      <div className="callout warning">
+        <i class="icon icon-common icon-exclamation-triangle" /> Your profile
+        will be saved in your browser. Click{' '}
+        <a href="#" onClick={e => openModal(e)}>
+          {' '}
+          here{' '}
+        </a>{' '}
+        for help.
+        <GuestHelp modalOpen={modalOpen} closeModal={closeModal} />
+      </div>
       <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
         <div className="row">
           <div className="column large-4">
@@ -378,7 +341,7 @@ export const ProfileCreate = props => {
                 id="title"
                 placeholder="Name"
                 onChange={e => setTitle(e.target.value)}
-                defaultValue={profile ? profile.title : title}
+                defaultValue={profile ? profile.title : ''}
               />
               <div className={titleCalloutClass}>
                 <i>{nameHelp}</i>
@@ -393,7 +356,7 @@ export const ProfileCreate = props => {
                 id="jobTitle"
                 placeholder="Job title"
                 onChange={e => setJobTitle(e.target.value)}
-                defaultValue={profile ? profile.jobTitle : jobTitle}
+                defaultValue={profile ? profile.job_title : ''}
               />
               <div className={jobTitleCalloutClass}>
                 <i>{jobTitleHelp}</i>
@@ -463,7 +426,7 @@ export const ProfileCreate = props => {
                 placeholder="Age"
                 width={4}
                 onChange={e => setAge(e.target.value)}
-                defaultValue={profile ? profile.age : age}
+                defaultValue={profile ? profile.age : ''}
               />
             </span>
 
@@ -471,7 +434,8 @@ export const ProfileCreate = props => {
               <strong>Gender</strong>
               <select
                 onChange={e => setGender(e.target.value)}
-                defaultValue={profile ? profile.gender : gender}
+                //defaultValue={gender?gender:'-None-'}
+                value={gender ? gender : '-None-'}
               >
                 <option value={'-None-'}>None</option>
                 <option value={'Male'}>Male</option>
@@ -484,7 +448,9 @@ export const ProfileCreate = props => {
               <strong>Qualification and background</strong>
               <CKEditor
                 editor={ClassicEditor}
-                data={qualification}
+                data={
+                  storedProfile ? storedProfile.qualification_background : ''
+                }
                 onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -498,7 +464,7 @@ export const ProfileCreate = props => {
               <strong>Acitivities of current role</strong>
               <CKEditor
                 editor={ClassicEditor}
-                data={currentRole}
+                data={storedProfile ? storedProfile.current_role : ''}
                 onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -512,7 +478,7 @@ export const ProfileCreate = props => {
               <strong>Additional information</strong>
               <CKEditor
                 editor={ClassicEditor}
-                data={additionalInfo}
+                data={storedProfile ? storedProfile.additional_information : ''}
                 onInit={editor => {}}
                 onChange={(event, editor) => {
                   const data = editor.getData();
@@ -537,14 +503,14 @@ export const ProfileCreate = props => {
   );
 };
 
-export const CreateProfile = () => (
+export const Path = () => (
   <Switch>
     <Route
       exact
-      path="/framework/:framework/:version/profile/create"
-      component={ProfileCreate}
+      path="/framework/:framework/:version/profile/create/guest"
+      component={ProfileCreateGuest}
     />
   </Switch>
 );
 
-export default CreateProfile;
+export default Path;

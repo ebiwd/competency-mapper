@@ -17,7 +17,7 @@ class ChangePassword extends React.Component {
     let old = this.refs.old.value;
     let new1 = this.refs.new1.value;
     let uid = localStorage.getItem('userid');
-    fetch(`${apiUrl}/user/` + uid + '/password?_format=json', {
+    fetch(`${apiUrl}/user/` + uid + '?_format=json', {
       credentials: 'include',
       method: 'PATCH',
       headers: {
@@ -25,19 +25,10 @@ class ChangePassword extends React.Component {
         'X-CSRF-Token': localStorage.getItem('csrf_token')
       },
       body: JSON.stringify({
-        _links: {
-          type: {
-            href: `${apiUrl}/rest/type/user/user`
-          }
-        },
-        old: [
+        pass: [
           {
-            value: old
-          }
-        ],
-        new: [
-          {
-            target_id: new1
+            existing: old,
+            value: new1
           }
         ]
       })

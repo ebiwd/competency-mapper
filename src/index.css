@@ -1,3 +1,15 @@
+h2 {
+  font-size: 1.5rem;
+}
+
+h3 {
+  font-size: 1rem;
+}
+
+h4 {
+  font-size: 0.9rem;
+}
+
 #masthead {
   background-image: url('https://www.ebi.ac.uk/web_guidelines/EBI-Framework/v1.1/images/backgrounds/training-yellow-5.jpg');
 }
@@ -24,6 +36,12 @@
 
 .strikeout {
   text-decoration: line-through;
+  color: #999;
+}
+
+.strikeout .column {
+  text-decoration: line-through;
+  color: #999;
 }
 
 .anchor-like {
@@ -63,8 +81,6 @@ input[type='checkbox'] + span {
 }
 
 input[type='checkbox']:checked {
-  border: 13px solid;
-  /*top: 7px;*/
   position: relative;
 }
 
@@ -98,15 +114,13 @@ input[type='checkbox']:checked + div > .attribute_label {
 }
 
 .domain_title {
-  /*font-weight: 600;*/
-  left: 20px;
   position: relative;
+  list-style-type: none;
 }
 
 .attribute_title {
   list-style-type: none;
   font-weight: normal;
-  color: #777;
   margin-top: 5px;
   margin-bottom: 5px;
 }
@@ -131,7 +145,7 @@ input[type='checkbox']:checked + div > .attribute_label {
 }
 
 .attribute_label {
-  font-size: large;
+  /* font-size: large; */
   list-style-type: none;
   margin-bottom: 7px;
   font-weight: normal;
@@ -139,10 +153,18 @@ input[type='checkbox']:checked + div > .attribute_label {
 }
 
 .attribute_type {
-  font-size: large;
+  /* font-size: large; */
   list-style-type: none;
   margin-top: 20px;
   font-weight: 600;
+}
+
+.attribute_section {
+  margin-left: 5%;
+}
+
+.attribute_type li {
+  font-weight: normal;
 }
 
 .competency_section {
@@ -150,6 +172,10 @@ input[type='checkbox']:checked + div > .attribute_label {
 */
   margin-top: 30px;
   padding: 10px;
+}
+
+.edit-inline-controls {
+  font-size: 12px;
 }
 
 .form_intro {
@@ -260,13 +286,11 @@ input[type='checkbox']:checked + div > .attribute_label {
 }
 
 .compare_checkbox {
-  /*padding: 5px;
-  background-color: #f0f0f0;
-  border-radius: 5px;*/
+  display: flex;
 }
 
 .compare_checkbox label {
-  padding: 5px;
+  /*padding: 5px;*/
   width: 150px;
 }
 
@@ -356,4 +380,94 @@ table tbody tr:nth-child(even) {
   .fillerLeft {
     background-color: rgb(233, 180, 0) !important;
   }
+}
+
+.tooltip-custom {
+  font-size: 18px !important ;
+}
+
+.my-profile-card {
+  background-color: #f1f1f1;
+  color: #333;
+}
+
+.ref-profile-card {
+  background-color: #ccc;
+}
+
+.cm_badge {
+  background-color: #fab700;
+  padding: 5px;
+  color: #333;
+  left: 25%;
+  position: relative;
+}
+
+.userprofile-table {
+  font-size: 20px;
+}
+
+.userprofile-table tr td {
+  padding: 5px;
+  margin: 5px;
+}
+
+.customOverlay {
+  background: rgba(36, 123, 160, 0.7);
+}
+.customModal {
+  background: #b2dbbf;
+  max-width: 500px;
+  width: 100%;
+}
+
+.domain-row {
+  border-bottom: 1px solid #ccc !important;
+  border-top: 1px solid #ccc;
+}
+
+.addButton {
+  color: #193f90;
+  font-weight: normal;
+  font-size: 18px;
+  margin: 5px;
+  cursor: pointer;
+}
+
+.addButton:visited {
+  color: #193f90;
+}
+
+.edit-indicator {
+  display: none;
+  color: #193f90;
+  font-size: 16px;
+}
+
+.edit-indicator button {
+  color: #193f90;
+  /*  margin-left: 10px;*/
+}
+
+.domain_title:hover > .column .edit-indicator {
+  display: inline;
+}
+
+.competency_title:hover > h3 .edit-indicator {
+  display: inline;
+}
+
+.attribute_title:hover .edit-indicator {
+  display: inline;
+}
+
+.domain_title {
+  margin-bottom: 25px;
+}
+
+.collapsible-arrows {
+  position: relative;
+  left: -40px;
+  top: -40px;
+  display: inline;
 }

@@ -90,11 +90,14 @@ export default class EditInline extends Component<Props, State> {
     if (!active) {
       return React.createElement(staticElement!, { style, ref: this.selfRef }, [
         value,
-        <i
-          key="dummy"
-          className="icon icon-common icon-edit icon-left-spacer"
-          aria-label="edit"
-        />
+        <>
+          <i
+            key="dummy"
+            className="icon icon-common icon-edit icon-left-spacer edit-indicator cursor"
+            aria-label="edit"
+          />
+          <span className="edit-indicator cursor">Edit</span>
+        </>
       ]);
     }
 

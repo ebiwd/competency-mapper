@@ -9,6 +9,7 @@ export async function login(username, password) {
   try {
     const response = await http.post(loginUrl, credentials);
     const { data } = response;
+    console.log(response);
     localStorage.setItem('roles', data.current_user.roles);
     localStorage.setItem('csrf_token', data.csrf_token);
     localStorage.setItem('logout_token', data.logout_token);

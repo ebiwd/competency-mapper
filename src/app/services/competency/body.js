@@ -185,6 +185,10 @@ class BodyService {
     return BodyService.mutate(key, value, 'attribute');
   }
 
+  static mutateDomain(key, value) {
+    return BodyService.mutate(key, value, 'domain');
+  }
+
   static mutate(key, value, target) {
     return {
       _links: {
@@ -438,6 +442,56 @@ class BodyService {
       type: [
         {
           target_id: 'training_resource'
+        }
+      ]
+    };
+  }
+
+  static createBulkData(parentID, versionID, newData, type, addtional) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      body: [
+        {
+          value: newData
+        }
+      ],
+      field_parent: [
+        {
+          value: parentID
+        }
+      ],
+      field_item: [
+        {
+          value: versionID
+        }
+      ],
+      field_type: [
+        {
+          value: type
+        }
+      ],
+      field_additional_information: [
+        {
+          value: addtional
+        }
+      ]
+    };
+  }
+
+  static saveSorting(items) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      body: [
+        {
+          value: items
         }
       ]
     };
