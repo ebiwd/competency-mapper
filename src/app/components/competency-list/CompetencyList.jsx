@@ -6,19 +6,31 @@ import { Link } from 'react-router-dom';
 import { groupBy } from 'lodash-es';
 import './CompetencyList.css';
 
-function CompetencyList({ index, framework, competency, disable, version }) {
+function CompetencyList({
+  index,
+  framework,
+  competency,
+  disable,
+  version,
+  attributeTypes
+}) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
-  console.log(attributesGrouped);
-  const attributesTypes = Object.keys(attributesGrouped);
-  const attributes = attributesTypes.map(type => {
-    const attributes = attributesGrouped[type].map(attribute => (
-      <li key={attribute.id}>{attribute.title}</li>
-    ));
-    return (
+  //const attributesTypes = ["Knowledge", "Skill", "Attitude"]; //  Object.keys(attributesGrouped)
+  const attrTypes = attributeTypes;
+  //console.log(attributesTypes)
+  const attributes = attrTypes.map(type => {
+    const attributes = attributesGrouped[type]
+      ? attributesGrouped[type].map(attribute => (
+          <li key={attribute.id}>{attribute.title}</li>
+        ))
+      : '';
+    return attributes ? (
       <div key={type} className="attribute_type">
         <em>{type}</em>
         <ul>{attributes}</ul>
       </div>
+    ) : (
+      ''
     );
   });
 

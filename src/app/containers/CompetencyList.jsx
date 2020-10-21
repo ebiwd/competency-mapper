@@ -36,7 +36,8 @@ class CompetencyList extends Component {
     filter: '',
     filteredDomains: [],
     loadingError: false,
-    profileCount: 0
+    profileCount: 0,
+    attributeTypes: []
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -129,6 +130,10 @@ class CompetencyList extends Component {
         vr => vr.number === frameworkVersion
       );
       this.setState({ frameworkStatus: versionStatus[0].status });
+      let attrTypes = currentFramework[0].attribute_types.map(
+        type => type.title
+      );
+      this.setState({ attributeTypes: attrTypes });
     }
   }
 
@@ -172,13 +177,9 @@ class CompetencyList extends Component {
       filteredDomains,
       versions,
       filter,
-      loadingError
+      loadingError,
+      attributeTypes
     } = this.state;
-
-    /*if(versions.length > 0){
- console.log(this.state.versions[0].status);  
-}*/
-    console.log(this.state.profileCount);
 
     if (loadingError) {
       return <ErrorLoading />;
@@ -192,6 +193,7 @@ class CompetencyList extends Component {
           domain={domain}
           disable={true}
           version={frameworkVersion}
+          attributeTypes={attributeTypes}
         />
       )
     );
@@ -199,6 +201,7 @@ class CompetencyList extends Component {
     return (
       <>
         <h3>{frameworkName}</h3>
+        {console.log(attributeTypes)}
         <p>
           <span className="tag">{frameworkVersion}</span>
           <span className="tag secondary-background"> {frameworkStatus}</span>
