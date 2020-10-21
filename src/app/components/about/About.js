@@ -2,11 +2,11 @@ import React from 'react';
 
 const About = () => (
   <React.Fragment>
-    <h2>About competency mapper</h2>
+    <h2>About competency hub</h2>
     <p className="lead">
-      Competency mapper is a web-based tool to support the creation and
-      management of competency frameworks for professionals working in the
-      biomolecular sciences.
+      Competency hub is a web-based tool to support the creation and management
+      of competency frameworks for professionals working in the biomolecular
+      sciences.
     </p>
     <h3>Anyone can..</h3>
     <p>
@@ -36,7 +36,7 @@ const About = () => (
     </p>
     <h3>In addition to the above, content editors can...</h3>
     <ul>
-      <li>Map courses to any competency in the mapper</li>
+      <li>Map courses to any competency in the hub</li>
       <li>Map courses to any combination of knowledge, skills and attitudes</li>
     </ul>
     <h3>In addition to the above, administrators can...</h3>
@@ -103,9 +103,9 @@ const About = () => (
       competency frameworks to support emerging professions.
     </p>
 
-    <h3>Who is developing the competency mapper?</h3>
+    <h3>Who is developing the competency hub?</h3>
     <p>
-      The competency mapper is being developed by the{' '}
+      The competency hub is being developed by the{' '}
       <a
         href={'https://www.ebi.ac.uk/about/people/cath-brooksbank'}
         target={'_blank'}

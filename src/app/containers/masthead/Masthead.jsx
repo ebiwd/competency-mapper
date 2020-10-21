@@ -38,7 +38,7 @@ class Masthead extends Component {
           <div className="masthead-inner row">
             <div className="columns medium-12" id="local-title">
               <h1>
-                <Link to="/">Competency Mapper</Link>
+                <Link to="/">Competency Hub</Link>
               </h1>
             </div>
             {user && roles ? (

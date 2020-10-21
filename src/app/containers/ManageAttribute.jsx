@@ -198,7 +198,7 @@ class ManageAttribute extends React.Component {
       <div className="row">
         <div className="column medium-12">
           <li className="attribute_type">
-            <h4>{def.title}</h4>
+            <em>{def.title}</em>
             <span style={{ display: 'flex' }}>
               {editableFrm === true ? (
                 <button

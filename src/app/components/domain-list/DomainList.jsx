@@ -16,10 +16,10 @@ function DomainList({ index, framework, domain, disable, version }) {
   ));
 
   return (
-    <tbody>
-      <tr className="white-color secondary-background">
+    <tbody style={{ border: 'none' }}>
+      <tr>
         <td>
-          <h4> {domain.title}</h4>
+          <h2> {domain.title}</h2>
         </td>
       </tr>
       {competencies}

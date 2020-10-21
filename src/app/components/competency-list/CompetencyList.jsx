@@ -8,13 +8,14 @@ import './CompetencyList.css';
 
 function CompetencyList({ index, framework, competency, disable, version }) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
+  console.log(attributesGrouped);
   const attributesTypes = Object.keys(attributesGrouped);
   const attributes = attributesTypes.map(type => {
     const attributes = attributesGrouped[type].map(attribute => (
       <li key={attribute.id}>{attribute.title}</li>
     ));
     return (
-      <div key={type}>
+      <div key={type} className="attribute_type">
         <em>{type}</em>
         <ul>{attributes}</ul>
       </div>
@@ -31,18 +32,18 @@ function CompetencyList({ index, framework, competency, disable, version }) {
         <Collapsible
           trigger={
             <div className="open-close-title">
-              <span>{competency.title}</span>
-              <span className="icon icon-common icon-plus float-right">
+              <span className="icon icon-common icon-angle-right float-left icon-custom">
                 <p className="show-for-sr">show more</p>
               </span>
+              <span>{competency.title}</span>
             </div>
           }
           triggerWhenOpen={
             <div className="open-close-title">
-              <span>{competency.title}</span>
-              <span className="icon icon-common icon-minus float-right">
+              <span className="icon icon-common icon-angle-down float-left icon-custom">
                 <p className="show-for-sr">show less</p>
               </span>
+              <span>{competency.title}</span>
             </div>
           }
         >

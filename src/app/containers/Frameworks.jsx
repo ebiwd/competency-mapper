@@ -37,7 +37,7 @@ class Frameworks extends Component {
       <div className="column">
         <h3>Overview</h3>
         <p className="lead">
-          Competency mapper is a web-based tool to support the creation and
+          Competency hub is a web-based tool to support the creation and
           management of competency frameworks for professionals working in the
           biomolecular sciences{' '}
           <Link to="/about" className="readmore">
