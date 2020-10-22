@@ -287,14 +287,13 @@ class ManageDomains extends React.Component {
                         className="edit-indicator"
                       >
                         <button
-                          className="addButton"
+                          className="addButton icon icon-common icon-plus-circle icon-left-spacer"
                           href="#"
                           data-domainid={domain.nid}
                           data-domaintitle={domain.title}
                           onClick={e => this.OpenModalCompetency(e)}
                         >
-                          <i className="icon icon-common icon-plus-circle icon-left-spacer" />{' '}
-                          Add competencies{' '}
+                          Add competencies
                         </button>
                       </span>
                     ) : (
