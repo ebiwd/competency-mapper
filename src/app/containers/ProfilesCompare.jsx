@@ -119,7 +119,7 @@ export const ProfilesCompare = props => {
     <div>
       <h3>Compare career profiles</h3>
       <span className="lead">
-        Compere profile with other reference profiles to help you make career
+        Compare profile with other reference profiles to help you make career
         choices based on your competency
         {console.log(isGuestProfile)}
       </span>

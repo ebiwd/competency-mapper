@@ -200,7 +200,7 @@ class CompetencyList extends Component {
 
     return (
       <>
-        <h3>{frameworkName}</h3>
+        <h1 style={{ color: '#000000' }}>{frameworkName}</h1>
         {console.log(attributeTypes)}
         <p>
           <span className="tag">{frameworkVersion}</span>

@@ -202,7 +202,7 @@ class ManageAttribute extends React.Component {
             <span style={{ display: 'flex' }}>
               {editableFrm === true ? (
                 <button
-                  className="addButton"
+                  className="addButton icon icon-common icon-plus-circle icon-custom "
                   data-competencyid={competency.id}
                   data-competencytitle={competency.title}
                   data-typetitle={def.title}
@@ -211,7 +211,6 @@ class ManageAttribute extends React.Component {
                   onClick={e => this.handleOpenAttributeModal(e)}
                 >
                   Add {def.title}{' '}
-                  <i className="icon icon-common icon-plus-circle" />
                 </button>
               ) : (
                 ''
@@ -262,7 +261,7 @@ class ManageAttribute extends React.Component {
                             </span>
                             <span className="edit-indicator">
                               <button
-                                className="addButton"
+                                className="addButton icon icon-common icon-sort"
                                 title="Change order"
                                 data-typetitle={def.title}
                                 onClick={e =>
@@ -270,7 +269,6 @@ class ManageAttribute extends React.Component {
                                 }
                               >
                                 Change order{' '}
-                                <i className="icon icon-common icon-sort" />
                               </button>
                             </span>
                           </>

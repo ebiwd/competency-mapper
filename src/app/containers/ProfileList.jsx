@@ -127,10 +127,7 @@ const ProfileList = props => {
               <i class="icon icon-common icon-search-document" /> Discover and
               explore{' '}
             </h5>
-            <p>
-              You can explore career profiles for professionals in Biomolecular
-              Modelling and Simulation
-            </p>
+            <p>Explore career profiles within this competency framework</p>
           </div>
           <div className="column medium-6 item">
             <h5>
@@ -138,7 +135,8 @@ const ProfileList = props => {
               profile
             </h5>
             <p>
-              You can create your personal profile and choose your competencies{' '}
+              Create your own profile and assess yourself against the
+              competencies
             </p>
           </div>
         </div>
@@ -149,7 +147,7 @@ const ProfileList = props => {
             </h5>
             <p>
               Compare your profile with other reference profiles to help you
-              make career choices based on your competency
+              make career choices based on your competencies and interests
             </p>
           </div>
           <div className="column medium-6 item">
@@ -157,10 +155,7 @@ const ProfileList = props => {
               <i class="icon icon-common icon-tutorial" /> Identify training
               oportunities
             </h5>
-            <p>
-              Training oportunities will help boost a career in Biomoecular
-              Modelling and Simulation
-            </p>
+            <p>Training opportunities will help boost your career</p>
           </div>
         </div>
       </div>

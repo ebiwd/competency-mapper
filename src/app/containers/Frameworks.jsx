@@ -37,15 +37,20 @@ class Frameworks extends Component {
       <div className="column">
         <h3>Overview</h3>
         <p className="lead">
-          Competency hub is a web-based tool to support the creation and
-          management of competency frameworks for professionals working in the
-          biomolecular sciences{' '}
+          Competency Hub is a web-based tool to support the creation and
+          management of competency frameworks{' '}
           <Link to="/about" className="readmore">
             read more{' '}
           </Link>
         </p>
 
         <FrameworkButtons frameworks={frameworks} />
+        <div style={{ padding: '20px' }}>
+          <p>
+            If you have any questions, comments or suggestions, please contact
+            us: <a href="mailto:competency@ebi.ac.uk">competency@ebi.ac.uk </a>
+          </p>
+        </div>
       </div>
     );
   }

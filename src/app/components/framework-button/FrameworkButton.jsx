@@ -20,6 +20,31 @@ function FrameworkButton({ framework }) {
     return null;
   }
 
+  const tempDesc = [
+    {
+      title: 'bioexcel',
+      desc: 'Professionals in computational biomolecular research'
+    },
+    {
+      title: 'corbel',
+      desc: 'Technical operators of biomedical research infrastructures'
+    },
+    { title: 'ritrain', desc: 'Managers of research infrastructures' },
+    {
+      title: 'iscb',
+      desc: 'Students and professionals in computational biology'
+    },
+    {
+      title: 'cineca',
+      desc: 'Professionals working with human data for disease research'
+    },
+    {
+      title: 'nhs',
+      desc:
+        'Clinical practitioners for the application of genomics in the healthcare service'
+    }
+  ];
+
   return (
     <div className="column medium-4">
       <Link
@@ -34,8 +59,11 @@ function FrameworkButton({ framework }) {
           alt="competency logo"
         />
         <h5>
-          {description}
-          <i className="icon icon-functional" data-icon=">" />
+          {/* {description} */}
+          {tempDesc.map(item =>
+            item.title === framework.title.toLowerCase() ? item.desc : ''
+          )}
+          {/* <i className="icon icon-functional" data-icon=">" /> */}
         </h5>
       </Link>
     </div>

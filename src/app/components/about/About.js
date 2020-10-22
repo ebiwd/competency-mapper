@@ -2,22 +2,28 @@ import React from 'react';
 
 const About = () => (
   <React.Fragment>
-    <h2>About competency hub</h2>
+    <h2>About Competency Hub</h2>
     <p className="lead">
-      Competency hub is a web-based tool to support the creation and management
-      of competency frameworks for professionals working in the biomolecular
-      sciences.
+      Competency Hub is a web-based tool to support the creation and management
+      of competency frameworks. A competency is an observable ability of any
+      professional, integrating multiple components such as knowledge, skills
+      and behaviours. A competency framework lists and defines all the
+      competencies that an individual might need to fulfil a particular role, or
+      that define specific user groups.
     </p>
     <h3>Anyone can..</h3>
     <p>
       <ul>
         <li>
-          Explore the five competency frameworks that we currently have in the
-          system
+          Explore the competency frameworks that we currently have in the system
         </li>
         <li>
           Click on any competency to find the knowledge, skills and attitudes
           (KSAs) associated with it
+        </li>
+        <li>
+          Explore career profiles associated with a competency framework when
+          available
         </li>
         <li>
           See the relationships between different competency frameworks; for
@@ -36,7 +42,7 @@ const About = () => (
     </p>
     <h3>In addition to the above, content editors can...</h3>
     <ul>
-      <li>Map courses to any competency in the hub</li>
+      <li>Map courses to any competency in the Hub</li>
       <li>Map courses to any combination of knowledge, skills and attitudes</li>
     </ul>
     <h3>In addition to the above, administrators can...</h3>
@@ -103,9 +109,9 @@ const About = () => (
       competency frameworks to support emerging professions.
     </p>
 
-    <h3>Who is developing the competency hub?</h3>
+    <h3>Who is developing the Competency Hub?</h3>
     <p>
-      The competency hub is being developed by the{' '}
+      The Competency Hub is being developed by the{' '}
       <a
         href={'https://www.ebi.ac.uk/about/people/cath-brooksbank'}
         target={'_blank'}
@@ -182,13 +188,17 @@ const About = () => (
         </a>
         for scientists working on biomolecular modelling and simulation
       </li>
+      <li>
+        The CINECA competency framework for professionals working with human
+        data for disease research
+      </li>
       <p />
       <p>
         These competency frameworks were designed to be used by the training
         communities who developed them, and openly available to anyone who might
         find them useful, yet all too often they end up buried in a PDF file as
         part of a project deliverable. This made us long for a web-based tool
-        that would make these frameworks,and the training associated with them,
+        that would make these frameworks, and the training associated with them,
         readily discoverable. We therefore decided to build that tool, and
         although it’s still in the early stages of development we’ve decided to
         make it openly available now so that we can seek broad input to improve
