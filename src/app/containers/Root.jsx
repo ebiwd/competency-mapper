@@ -31,6 +31,7 @@ import ProfileMapGuest from './ProfileMapGuest';
 import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
 import ProfilesCompareSummary from './ProfilesCompareSummary';
+import Documentation from './Documentation';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -274,7 +275,7 @@ class Root extends Component {
                   component={UserView}
                 />
 
-                <Route path="/article/create" component={ArticleCreate} />
+                <Route path="/documentation" component={Documentation} />
 
                 <Route path="/about" component={About} />
                 <Route path="/" component={Frameworks} />

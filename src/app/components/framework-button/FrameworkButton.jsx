@@ -42,6 +42,10 @@ function FrameworkButton({ framework }) {
       title: 'nhs',
       desc:
         'Clinical practitioners for the application of genomics in the healthcare service'
+    },
+    {
+      title: 'datasteward',
+      desc: 'Data steward roles: policy, research and infrastructure'
     }
   ];
 
@@ -50,7 +54,9 @@ function FrameworkButton({ framework }) {
       <Link
         className="column callout"
         data-equalizer-watch
-        to={`/framework/${framework.title.toLowerCase()}/${liveVersion}`}
+        to={`/framework/${framework.title
+          .toLowerCase()
+          .replace(/ /g, '')}/${liveVersion}`}
       >
         <img
           className="float-center margin-bottom-medium"
@@ -61,7 +67,9 @@ function FrameworkButton({ framework }) {
         <h5>
           {/* {description} */}
           {tempDesc.map(item =>
-            item.title === framework.title.toLowerCase() ? item.desc : ''
+            item.title === framework.title.toLowerCase().replace(/ /g, '')
+              ? item.desc
+              : ''
           )}
           {/* <i className="icon icon-functional" data-icon=">" /> */}
         </h5>

@@ -87,9 +87,10 @@ export const ProfileView = props => {
       let obj = mapping.find(o => o.competency == competency);
       if (obj) {
         if (frameworkInfo) {
-          let expertise = frameworkInfo[0].expertise_levels.find(
-            level => level.id == obj.expertise
-          );
+          console.log(frameworkInfo);
+          let expertise = frameworkInfo
+            .find(info => info.title.toLowerCase() === frameworkName)
+            .expertise_levels.find(level => level.id == obj.expertise);
           return expertise;
         }
       } else {
@@ -108,7 +109,11 @@ export const ProfileView = props => {
   };
 
   const getBarWidth = data => {
-    width2 = data ? 100 / (3 / data.rating_level) : 0;
+    //console.log(`data: ${data}`)
+    let totalLevels = frameworkInfo.find(
+      info => info.title.toLowerCase() === frameworkName
+    ).expertise_levels.length;
+    width2 = data ? 100 / ((totalLevels - 1) / data.rating_level) : 0;
     return width2;
   };
 

@@ -208,7 +208,7 @@ const ProfileList = props => {
           <hr />
         </div>
         <div className="row">
-          <div className="column medium-4">
+          <div className="column small-12 medium-6 large-4">
             {guestProfile ? (
               <div class="profile_badge">
                 <span class="compare_checkbox">
@@ -302,13 +302,15 @@ const ProfileList = props => {
             )}
           </div>
           {profiles
-            ? profiles.map(profile => {
+            ? profiles.map((profile, index) => {
                 if (!checkUserAccess()) {
                   if (profile.publishing_status === 'Live') {
                     return (
-                      <div className="column medium-4">
+                      <div className="column small-12 medium-6 large-4">
                         <div className="profile_badge">
                           <span class="compare_checkbox">
+                            {' '}
+                            {console.log(index)}
                             <label>
                               <input
                                 type="checkbox"
@@ -412,8 +414,6 @@ const ProfileList = props => {
                 }
               })
             : ''}
-
-          <div className="column medium-4">&nbsp;</div>
         </div>
       </div>
     </div>
