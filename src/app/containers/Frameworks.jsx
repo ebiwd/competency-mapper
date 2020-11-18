@@ -50,6 +50,11 @@ class Frameworks extends Component {
             If you have any questions, comments or suggestions, please contact
             us: competency [at] ebi.ac.uk
           </p>
+          <p>
+            <Link to="/documentation" className="readmore">
+              Developer documentation{' '}
+            </Link>
+          </p>
         </div>
       </div>
     );

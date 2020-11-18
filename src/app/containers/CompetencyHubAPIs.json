@@ -1,0 +1,350 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "<ul><li><div>The Version Manager API provides top level details of all competency frameworks. You may use this data to: <ul><li>List frameworks</li> <li>Query framework data of a particular framework</li></ul></div><p>To query framework data, you will need framework title and version number from this API. </p></li><li> <div>The Framework Data API provides actual data of a competency framework.</div></li></ul>",
+    "version": "1.0.0",
+    "title": "Competency Hub APIs",
+    "contact": {
+      "url": "https://competency.ebi.ac.uk",
+      "email": "prakash@ebi.ac.uk"
+    },
+    "license": {
+      "name": "Creative commons",
+      "url": "https://creativecommons.org/licenses/by-sa/4.0/"
+    }
+  },
+  "host": "live-competency-mapper.pantheonsite.io",
+  "schemes": ["https"],
+  "paths": {
+    "/api/version_manager": {
+      "get": {
+        "tags": ["developers"],
+        "summary": "Version Manager API",
+        "description": "This api does not have any parameters. It needs a query string as _format=json\n",
+        "operationId": "versionInfo",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "_format",
+            "in": "query",
+            "description": "The _format query parameter is mandatory",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Version details of all frameworks",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/VersionInfo"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    },
+    "/api/{framework}/{version}": {
+      "get": {
+        "tags": ["developers"],
+        "summary": "Framework Data API",
+        "description": "This api does not have any parameters. It needs a query string as _format=json\n",
+        "operationId": "frameworkData",
+        "produces": ["application/json"],
+        "parameters": [
+          {
+            "name": "framework",
+            "in": "path",
+            "description": "Name of the framework",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "version",
+            "in": "path",
+            "description": "Version of the framework",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "_format",
+            "in": "query",
+            "description": "The _format query parameter is mandatory",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Framework Data",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/FrameworkData"
+              }
+            }
+          },
+          "400": {
+            "description": "bad input parameter"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "VersionInfo": {
+      "type": "object",
+      "required": ["nid", "title"],
+      "properties": {
+        "nid": {
+          "type": "string",
+          "format": "id",
+          "example": "9.0"
+        },
+        "title": {
+          "type": "string",
+          "example": "BioExcel"
+        },
+        "description": {
+          "type": "string",
+          "example": "The BioExcel training programme is based on a competency profile"
+        },
+        "logo": {
+          "type": "object",
+          "example": "Publich path to logo image",
+          "properties": {
+            "target_id": {
+              "type": "string"
+            },
+            "alt": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "width": {
+              "type": "integer"
+            },
+            "height": {
+              "type": "integer"
+            },
+            "target_type": {
+              "type": "string"
+            },
+            "target_uuid": {
+              "type": "string"
+            },
+            "url": {
+              "type": "string"
+            }
+          }
+        },
+        "attribute_types": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "uuid": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "uuid": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "expertise_levels": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "uuid": {
+                "type": "string"
+              },
+              "title": {
+                "type": "string"
+              },
+              "rating_level": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "uuid": {
+                "type": "string"
+              },
+              "number": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "release_notes": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "FrameworkData": {
+      "type": "object",
+      "properties": {
+        "uuid": {
+          "type": "string",
+          "format": "uuid",
+          "example": "b20064ef-5cbf-4147-90f8-08e7a6693e17"
+        },
+        "nid": {
+          "type": "string",
+          "format": "id",
+          "example": "9.0"
+        },
+        "title": {
+          "type": "string",
+          "example": "BioExcel"
+        },
+        "description": {
+          "type": "string",
+          "example": "The BioExcel training programme is based on a competency profile"
+        },
+        "version": {
+          "type": "string",
+          "example": "1.0"
+        },
+        "release_notes": {
+          "type": "string",
+          "example": "Initial version etc. etc."
+        },
+        "type": {
+          "type": "string",
+          "example": "framework"
+        },
+        "domains": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "uuid": {
+                "type": "string",
+                "format": "uuid",
+                "example": "b20064ef-5cbf-4147-90f8-08e7a6693e17"
+              },
+              "nid": {
+                "type": "string",
+                "format": "id",
+                "example": "9.0"
+              },
+              "title": {
+                "type": "string",
+                "example": "BioExcel"
+              },
+              "type": {
+                "type": "string",
+                "example": "Domain"
+              },
+              "competencies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "uuid": {
+                      "type": "string",
+                      "format": "uuid",
+                      "example": "b20064ef-5cbf-4147-90f8-08e7a6693e17"
+                    },
+                    "nid": {
+                      "type": "string",
+                      "format": "id",
+                      "example": "9.0"
+                    },
+                    "title": {
+                      "type": "string",
+                      "example": "BioExcel"
+                    },
+                    "type": {
+                      "type": "string",
+                      "example": "Competency"
+                    },
+                    "archived": {
+                      "type": "string",
+                      "example": "0 or 1"
+                    },
+                    "mapped_other_competency": {
+                      "type": "string",
+                      "example": "This maps to another framework"
+                    },
+                    "attributes": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "uuid": {
+                            "type": "string",
+                            "format": "uuid",
+                            "example": "b20064ef-5cbf-4147-90f8-08e7a6693e17"
+                          },
+                          "nid": {
+                            "type": "string",
+                            "format": "id",
+                            "example": "9.0"
+                          },
+                          "title": {
+                            "type": "string",
+                            "example": "BioExcel"
+                          },
+                          "type": {
+                            "type": "string",
+                            "example": "Attribute type e.g. Knowledge"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
