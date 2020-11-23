@@ -1,6 +1,6 @@
 import React from 'react';
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
-
+import CKEditor from 'react-ckeditor-component';
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -23,6 +23,7 @@ class ManageDomains extends React.Component {
       showModal: false,
       newDomains: '',
       showModalCompetency: false,
+      showModalMapping: false,
       newCompetencies: [{ competency: '', mapping: '' }],
       parentID: '',
       parentTitle: '',
@@ -33,11 +34,23 @@ class ManageDomains extends React.Component {
     this.OpenModalCompetency = this.OpenModalCompetency.bind(this);
     this.closeModalCompetency = this.closeModalCompetency.bind(this);
 
+    this.OpenModalMapping = this.OpenModalMapping.bind(this);
+    this.CloseModalMapping = this.CloseModalMapping.bind(this);
+
     this.handleRemoveCompetencies = this.handleRemoveCompetencies.bind(this);
     this.setCompetencies = this.setCompetencies.bind(this);
 
     this.OpenModalPosition = this.OpenModalPosition.bind(this);
     this.closeModalPosition = this.closeModalPosition.bind(this);
+  }
+
+  OpenModalMapping(e, domain) {
+    this.setState({ showModalMapping: true });
+    //this.setState({ domain: domain });
+  }
+
+  CloseModalMapping() {
+    this.setState({ showModalMapping: false });
   }
 
   handleOpenModal() {
@@ -88,7 +101,7 @@ class ManageDomains extends React.Component {
     if (type === 'competency') {
       newData[index].competency = e.target.value;
     } else {
-      newData[index].mapping = e.target.value;
+      newData[index].mapping = e.editor.getData(); //e.target.value;
     }
     this.setState({ newCompetencies: newData });
   }
@@ -336,6 +349,48 @@ class ManageDomains extends React.Component {
           </>
         )}
 
+        {/* Modal for mapping */}
+
+        {/* <Modal
+          open={this.state.showModalCompetency}
+          onClose={this.closeModalCompetency}
+          center
+          classNames={{
+            overlay: 'customOverlay',
+            modal: 'customModal'
+          }}
+        >
+         <form onSubmit={e => this.saveCompetencies(e)}>
+            {this.state.newCompetencies.map((item, index) => (
+              <div key={'competency_' + index} className="row callout">
+                <div className="column medium-9">
+
+                  Add/edit this competency maps to:
+  
+                   <CKEditor
+                    key={'mapsto_' + index}
+                    content={item.mapping}
+                    events={{
+                      change: (e) => this.setCompetencies(e, index, 'mapping')
+                    }}
+                    activeClass="p10"
+                    config={{
+                      toolbarGroups :[
+                        { name: 'document', groups: [ 'mode', 'document', 'doctools' ] },
+                        { name: 'paragraph', groups: [ 'list', 'indent', 'blocks', 'align', 'bidi', 'paragraph' ] },
+                        { name: 'links', groups: [ 'links' ] },
+                    ]
+                  }}
+                  />
+                </div>
+
+              </div>
+            ))}
+
+            <input type="submit" className="button" value="Save" />
+          </form> 
+        </Modal> */}
+
         {/* Modal for competencies */}
 
         <Modal
@@ -363,11 +418,40 @@ class ManageDomains extends React.Component {
                     required
                   />
                   This competency maps to:
-                  <input
+                  {/* <input
                     key={'mapsto_' + index}
                     type="text"
                     onChange={e => this.setCompetencies(e, index, 'mapping')}
                     value={item.mapping}
+                  />
+                   */}
+                  <CKEditor
+                    key={'mapsto_' + index}
+                    content={item.mapping}
+                    events={{
+                      change: e => this.setCompetencies(e, index, 'mapping')
+                    }}
+                    activeClass="p10"
+                    config={{
+                      toolbarGroups: [
+                        {
+                          name: 'document',
+                          groups: ['mode', 'document', 'doctools']
+                        },
+                        {
+                          name: 'paragraph',
+                          groups: [
+                            'list',
+                            'indent',
+                            'blocks',
+                            'align',
+                            'bidi',
+                            'paragraph'
+                          ]
+                        },
+                        { name: 'links', groups: ['links'] }
+                      ]
+                    }}
                   />
                 </div>
                 <div className="column medium-3" style={{ paddingTop: '1%' }}>

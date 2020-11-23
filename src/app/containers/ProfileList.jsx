@@ -18,9 +18,17 @@ const ProfileList = props => {
   const [guestProfile, setGuestProfile] = useState();
   const [profiles, setProfiles] = useState();
   const [framework, setFramework] = useState();
+  const [userFrameworks, setUserFrameworks] = useState([]);
   //const [userRole, setUserRole] = useState();
 
   var profilesToCompare = [];
+
+  var user_roles = localStorage.getItem('roles')
+    ? localStorage.getItem('roles')
+    : '';
+  var userName = localStorage.getItem('user')
+    ? localStorage.getItem('user')
+    : '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -33,7 +41,17 @@ const ProfileList = props => {
         .then(findresponse => {
           setProfiles(findresponse);
         });
+
+      await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setUserFrameworks(findresponse);
+        });
     };
+
     fetchData();
   }, [framework, frameworkVersion, frameworkName]);
 
@@ -118,6 +136,16 @@ const ProfileList = props => {
     });
   };
 
+  const checkFMAccess = () => {
+    var temp = [];
+    userFrameworks.map(item => {
+      temp.push(item.toLowerCase());
+    });
+    if (temp.includes(frameworkName)) {
+      return true;
+    }
+    return false;
+  };
   return (
     <div>
       <div className="introduction">
@@ -166,7 +194,7 @@ const ProfileList = props => {
           </div>
           <div className="column medium-6">
             <span style={{ float: 'right' }}>
-              {localStorage.getItem('roles') ? (
+              {localStorage.getItem('roles') && checkFMAccess() ? (
                 <span>
                   <Link
                     className="button secondary small action-buttons"

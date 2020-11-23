@@ -26,6 +26,7 @@ export const ProfileView = props => {
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
+  const [userFrameworks, setUserFrameworks] = useState([]);
 
   var competencyView = '';
   var expertise_levels = [];
@@ -37,6 +38,9 @@ export const ProfileView = props => {
   var mapping = [];
   var user_roles = localStorage.getItem('roles')
     ? localStorage.getItem('roles')
+    : '';
+  var userName = localStorage.getItem('user')
+    ? localStorage.getItem('user')
     : '';
 
   let profile2Expertise = '';
@@ -66,6 +70,15 @@ export const ProfileView = props => {
         .then(findresponse => {
           setFramework(findresponse);
         });
+
+      await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setUserFrameworks(findresponse);
+        });
     };
     fetchData();
   }, [profileId]);
@@ -87,7 +100,6 @@ export const ProfileView = props => {
       let obj = mapping.find(o => o.competency == competency);
       if (obj) {
         if (frameworkInfo) {
-          console.log(frameworkInfo);
           let expertise = frameworkInfo
             .find(info => info.title.toLowerCase() === frameworkName)
             .expertise_levels.find(level => level.id == obj.expertise);
@@ -109,7 +121,6 @@ export const ProfileView = props => {
   };
 
   const getBarWidth = data => {
-    //console.log(`data: ${data}`)
     let totalLevels = frameworkInfo.find(
       info => info.title.toLowerCase() === frameworkName
     ).expertise_levels.length;
@@ -119,7 +130,6 @@ export const ProfileView = props => {
 
   const generateProfileView = () => {
     if (frameworkInfo) {
-      console.log(frameworkInfo);
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
@@ -157,19 +167,8 @@ export const ProfileView = props => {
       });
     }
 
-    // let index = 0;
-    // expertise_levels.map((level, key) => {
-    //   expertise_levels_legend.push(
-    //     <li style={{ textAlign: 'center' }}>
-    //       <span className="badge secondary"> {key} </span> <span> {level}</span>
-    //     </li>
-    //   );
-    //   index++;
-    // });
-
     if (profile) {
       mapping = profile.profile_mapping;
-      console.log(mapping);
     }
 
     if (framework) {
@@ -340,12 +339,6 @@ export const ProfileView = props => {
     var sourceFull = document.getElementById('profile');
     var source = sourceFull;
 
-    //console.log(source[0].attributes)
-    // source = doc.splitTextToSize(
-    //   source,
-    //   profileBody
-    // );
-
     let profileTitle = options.jobTitle.split(' ').join('_');
     doc.fromHTML(
       source,
@@ -372,7 +365,7 @@ export const ProfileView = props => {
   return (
     <div>
       {generateProfileView()}
-
+      {console.log(userFrameworks)}
       {profile ? (
         <div id="profile">
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
@@ -380,7 +373,8 @@ export const ProfileView = props => {
           </h2>
 
           <div style={{ float: 'right' }}>
-            {user_roles.search('framework_manager') != -1 ? (
+            {user_roles.search('framework_manager') !== -1 &&
+            userFrameworks.includes(frameworkFullName) ? (
               <ul>
                 <li className="profile_navigation">
                   <Link

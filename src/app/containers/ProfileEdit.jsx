@@ -32,8 +32,16 @@ export const ProfileEdit = props => {
   const [qualification, setQualification] = useState();
   const [additionalInfo, setAdditionalInfo] = useState();
   const [publishStatus, setPublishStatus] = useState();
-
+  const [userFrameworks, setUserFrameworks] = useState([]);
   const [framework, setFramework] = useState();
+
+  var userName = localStorage.getItem('user')
+    ? localStorage.getItem('user')
+    : '';
+
+  var user_roles = localStorage.getItem('roles')
+    ? localStorage.getItem('roles')
+    : '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +91,15 @@ export const ProfileEdit = props => {
               ? findresponse.field_publishing_status[0].value
               : ''
           );
+        });
+
+      await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+        method: 'GET',
+        credentials: 'include'
+      })
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setUserFrameworks(findresponse);
         });
     };
     fetchData();
@@ -232,195 +249,214 @@ export const ProfileEdit = props => {
     document.getElementById('fileupload').value = '';
   };
 
+  const checkFMAccess = () => {
+    var temp = [];
+    userFrameworks.map(item => {
+      temp.push(item.toLowerCase());
+    });
+    if (temp.includes(frameworkName)) {
+      return true;
+    }
+    return false;
+  };
+
   return (
     <div>
-      <div>
-        <Link
-          to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`}
-        >
-          {' '}
-          View{' '}
-        </Link>
-        <h2>Create {placeholder} profile</h2>
+      {checkFMAccess() ? (
+        <div>
+          <Link
+            to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`}
+          >
+            {' '}
+            View{' '}
+          </Link>
+          <h2>Create {placeholder} profile</h2>
 
-        <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
-          <div className="row">
-            <div className="column large-4">
-              <span>
-                <strong>Name</strong>
-                <input
-                  type="text"
-                  id="title"
-                  placeholder="Name"
-                  value={title}
-                  onChange={e => setTitle(e.target.value)}
-                />
-                <div className={titleCalloutClass}>
-                  <i>{nameHelp}</i>
-                </div>
-              </span>
-            </div>
-            <div className="column large-8">
-              <span>
-                <strong>Job title</strong>
-                <input
-                  type="text"
-                  id="jobTitle"
-                  placeholder="Job title"
-                  value={jobTitle}
-                  onChange={e => setJobTitle(e.target.value)}
-                />
-                <div className={jobTitleCalloutClass}>
-                  <i>{jobTitleHelp}</i>
-                </div>
-              </span>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="column large-4">&nbsp;</div>
-            <div className="column large-8" />
-          </div>
-
-          <div className="row">
-            <div className="column large-4">
-              <span>
-                <strong>Image</strong>
-                <input type="file" id="fileupload" onChange={onSelectFile} />
-              </span>
-
-              <span>
-                <img
-                  id="imgpreview_image"
-                  width="100px"
-                  src={imgpreview}
-                  height="100px"
-                  style={{
-                    border: '1px solid #ccc',
-                    padding: '5px',
-                    width: '30%'
-                  }}
-                />
-                {imgpreview ? (
-                  <div>
-                    <a href="#" onClick={e => clearimgpreview(e)}>
-                      Clear image x
-                    </a>
+          <form
+            className="form"
+            id="profile_create_form"
+            onSubmit={handleSubmit}
+          >
+            <div className="row">
+              <div className="column large-4">
+                <span>
+                  <strong>Name</strong>
+                  <input
+                    type="text"
+                    id="title"
+                    placeholder="Name"
+                    value={title}
+                    onChange={e => setTitle(e.target.value)}
+                  />
+                  <div className={titleCalloutClass}>
+                    <i>{nameHelp}</i>
                   </div>
-                ) : (
-                  ''
-                )}
-
-                {fileSizeError ? (
-                  <div className="small callout alert">
-                    <em> Image size should not be more than 2 MB </em>{' '}
+                </span>
+              </div>
+              <div className="column large-8">
+                <span>
+                  <strong>Job title</strong>
+                  <input
+                    type="text"
+                    id="jobTitle"
+                    placeholder="Job title"
+                    value={jobTitle}
+                    onChange={e => setJobTitle(e.target.value)}
+                  />
+                  <div className={jobTitleCalloutClass}>
+                    <i>{jobTitleHelp}</i>
                   </div>
-                ) : (
-                  ''
-                )}
-
-                {fileTypeError ? (
-                  <div className="small callout alert">
-                    <em> Only JPG or PNG images are allowed </em>{' '}
-                  </div>
-                ) : (
-                  ''
-                )}
-              </span>
-
-              <br />
-              <br />
-              <span>
-                <strong>Age (in years)</strong>
-                <input
-                  type="number"
-                  id="age"
-                  placeholder="Age"
-                  width={4}
-                  value={age}
-                  onChange={e => setAge(e.target.value)}
-                />
-              </span>
-
-              <span>
-                <strong>Gender</strong>
-                <select
-                  value={gender}
-                  defaultValue="-None-"
-                  onChange={e => setGender(e.target.value)}
-                >
-                  <option value={'-None-'}>None</option>
-                  <option value={'Male'}>Male</option>
-                  <option value={'Female'}>Female</option>
-                </select>
-              </span>
+                </span>
+              </div>
             </div>
-            <div className="column large-8">
-              <span>
-                <strong>Qualification and background</strong>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={qualification}
-                  onInit={editor => {}}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setQualification(data);
-                  }}
-                />
-              </span>
 
-              <br />
-              <span>
-                <strong>Acitivities of current role</strong>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={currentRole}
-                  onInit={editor => {}}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setCurrentRole(data);
-                  }}
-                />
-              </span>
-
-              <br />
-              <span>
-                <strong>Additional information</strong>
-                <CKEditor
-                  editor={ClassicEditor}
-                  data={additionalInfo}
-                  onInit={editor => {}}
-                  onChange={(event, editor) => {
-                    const data = editor.getData();
-                    setAdditionalInfo(data);
-                  }}
-                />
-              </span>
-
-              <span>
-                <strong>Publishing status</strong>
-                <select
-                  value={publishStatus}
-                  defaultValue="-None-"
-                  onChange={e => setPublishStatus(e.target.value)}
-                >
-                  <option value={'Draft'}>Draft</option>
-                  <option value={'Live'}>Live</option>
-                </select>
-              </span>
+            <div className="row">
+              <div className="column large-4">&nbsp;</div>
+              <div className="column large-8" />
             </div>
-          </div>
 
-          <p />
-          <div className="row">
-            <div className="column medium-2" />
-            <div className="column medium-3">
-              <ButtonLabel />
+            <div className="row">
+              <div className="column large-4">
+                <span>
+                  <strong>Image</strong>
+                  <input type="file" id="fileupload" onChange={onSelectFile} />
+                </span>
+
+                <span>
+                  <img
+                    id="imgpreview_image"
+                    width="100px"
+                    src={imgpreview}
+                    height="100px"
+                    style={{
+                      border: '1px solid #ccc',
+                      padding: '5px',
+                      width: '30%'
+                    }}
+                  />
+                  {imgpreview ? (
+                    <div>
+                      <a href="#" onClick={e => clearimgpreview(e)}>
+                        Clear image x
+                      </a>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {fileSizeError ? (
+                    <div className="small callout alert">
+                      <em> Image size should not be more than 2 MB </em>{' '}
+                    </div>
+                  ) : (
+                    ''
+                  )}
+
+                  {fileTypeError ? (
+                    <div className="small callout alert">
+                      <em> Only JPG or PNG images are allowed </em>{' '}
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                </span>
+
+                <br />
+                <br />
+                <span>
+                  <strong>Age (in years)</strong>
+                  <input
+                    type="number"
+                    id="age"
+                    placeholder="Age"
+                    width={4}
+                    value={age}
+                    onChange={e => setAge(e.target.value)}
+                  />
+                </span>
+
+                <span>
+                  <strong>Gender</strong>
+                  <select
+                    value={gender}
+                    defaultValue="-None-"
+                    onChange={e => setGender(e.target.value)}
+                  >
+                    <option value={'-None-'}>None</option>
+                    <option value={'Male'}>Male</option>
+                    <option value={'Female'}>Female</option>
+                  </select>
+                </span>
+              </div>
+              <div className="column large-8">
+                <span>
+                  <strong>Qualification and background</strong>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={qualification}
+                    onInit={editor => {}}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setQualification(data);
+                    }}
+                  />
+                </span>
+
+                <br />
+                <span>
+                  <strong>Acitivities of current role</strong>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={currentRole}
+                    onInit={editor => {}}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setCurrentRole(data);
+                    }}
+                  />
+                </span>
+
+                <br />
+                <span>
+                  <strong>Additional information</strong>
+                  <CKEditor
+                    editor={ClassicEditor}
+                    data={additionalInfo}
+                    onInit={editor => {}}
+                    onChange={(event, editor) => {
+                      const data = editor.getData();
+                      setAdditionalInfo(data);
+                    }}
+                  />
+                </span>
+
+                <span>
+                  <strong>Publishing status</strong>
+                  <select
+                    value={publishStatus}
+                    defaultValue="-None-"
+                    onChange={e => setPublishStatus(e.target.value)}
+                  >
+                    <option value={'Draft'}>Draft</option>
+                    <option value={'Live'}>Live</option>
+                  </select>
+                </span>
+              </div>
             </div>
-            <div className="column medium-7" />
-          </div>
-        </form>
-      </div>
+
+            <p />
+            <div className="row">
+              <div className="column medium-2" />
+              <div className="column medium-3">
+                <ButtonLabel />
+              </div>
+              <div className="column medium-7" />
+            </div>
+          </form>
+        </div>
+      ) : (
+        ''
+      )}
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import React from 'react';
-
+import CKEditor from 'react-ckeditor-component';
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
 //import ErrorLoading from '../components/error-loading/ErrorLoading';
-
+import Parser from 'html-react-parser';
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -24,10 +24,14 @@ class ManageCompetency extends React.Component {
     this.state = {
       loadingError: false,
       editable: false,
-      domain: []
+      domain: [],
+      comp: '',
+      mapping: ''
     };
     this.OpenModalPosition = this.OpenModalPosition.bind(this);
     this.closeModalPosition = this.closeModalPosition.bind(this);
+    this.OpenModalMapping = this.OpenModalMapping.bind(this);
+    this.CloseModalMapping = this.CloseModalMapping.bind(this);
   }
 
   OpenModalPosition(e, domain) {
@@ -37,6 +41,16 @@ class ManageCompetency extends React.Component {
 
   closeModalPosition() {
     this.setState({ showModalPosition: false });
+  }
+
+  OpenModalMapping(e, competency) {
+    this.setState({ showModalMapping: true });
+    this.setState({ comp: competency });
+    this.setState({ mapping: competency.mapped_other_competency });
+  }
+
+  CloseModalMapping() {
+    this.setState({ showModalMapping: false });
   }
 
   async editCompetency(competency, title) {
@@ -57,7 +71,9 @@ class ManageCompetency extends React.Component {
     }
   }
 
-  async editMapping(competency, mapping) {
+  async editMapping(e, competency, mapping) {
+    console.log(competency);
+    e.preventDefault();
     const { framework } = this.props;
     try {
       this.activeRequests.startRequest();
@@ -67,6 +83,7 @@ class ManageCompetency extends React.Component {
         mapping
       );
       await this.props.loadData(framework);
+      this.CloseModalMapping();
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -232,12 +249,19 @@ class ManageCompetency extends React.Component {
             {competency.mapped_other_competency ? (
               <span>
                 This competency maps to:
-                <InlineEdit
+                {/* <InlineEdit
                   style={{ display: 'inline' }}
                   text={competency.mapped_other_competency}
                   change={newValue => this.editMapping(competency.id, newValue)}
                   editable={competency.archived === '1' ? false : true}
-                />
+                /> */}
+                {Parser(competency.mapped_other_competency)}
+                <button
+                  className="cursor"
+                  onClick={e => this.OpenModalMapping(e, competency)}
+                >
+                  <span className="fas fa-edit icon-left-spacer" />
+                </button>
               </span>
             ) : (
               ''
@@ -274,6 +298,57 @@ class ManageCompetency extends React.Component {
             ? competencies
             : 'No competencies found. Add new competencies to start.'}
         </div>
+        <Modal
+          open={this.state.showModalMapping}
+          onClose={this.CloseModalMapping}
+          center
+          classNames={{
+            overlay: 'customOverlay',
+            modal: 'customModal'
+          }}
+        >
+          <form
+            onSubmit={e =>
+              this.editMapping(e, this.state.comp.id, this.state.mapping)
+            }
+          >
+            <div className="column medium-9">
+              <h3>{this.state.comp.title}</h3>
+              <h4>This competency maps to:</h4>
+              {console.log(this.state.comp.id)}
+              <CKEditor
+                key={'mapsto_'}
+                content={this.state.mapping}
+                events={{
+                  change: e => this.setState({ mapping: e.editor.getData() }) //this.editMapping(this.state.comp.id, "This info")
+                }}
+                activeClass="p10"
+                config={{
+                  toolbarGroups: [
+                    {
+                      name: 'document',
+                      groups: ['mode', 'document', 'doctools']
+                    },
+                    {
+                      name: 'paragraph',
+                      groups: [
+                        'list',
+                        'indent',
+                        'blocks',
+                        'align',
+                        'bidi',
+                        'paragraph'
+                      ]
+                    },
+                    { name: 'links', groups: ['links'] }
+                  ]
+                }}
+              />
+              <input type="submit" className="button" value="Save" />
+            </div>
+          </form>
+        </Modal>
+
         {/* Modal for sorting competency positions */}
 
         <Modal
