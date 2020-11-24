@@ -32,6 +32,7 @@ import ProfileEdit from './ProfileEdit';
 import ProfileMap from './ProfileMap';
 import ProfilesCompareSummary from './ProfilesCompareSummary';
 import Documentation from './Documentation';
+import Login from './Login';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -278,6 +279,7 @@ class Root extends Component {
                 <Route path="/documentation" component={Documentation} />
 
                 <Route path="/about" component={About} />
+                <Route path="/login" component={Login} />
                 <Route path="/" component={Frameworks} />
               </Switch>
             </main>

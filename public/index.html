@@ -284,5 +284,17 @@
       defer="defer"
       src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/script.min.js"
     ></script>
+    <script>
+      jQuery(document).ready(function() {
+        jQuery('#data-protection-banner > div a:first').attr(
+          'href',
+          'https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub'
+        );
+        //jQuery("#loginForm").slideUp();
+        //jQuery("#loginSwitch").click(function(){
+        //  jQuery("#loginForm").slideToggle();
+        //});
+      });
+    </script>
   </body>
 </html>
