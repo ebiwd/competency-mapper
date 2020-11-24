@@ -48,8 +48,13 @@ class LoginForm extends Component {
     return (
       <nav>
         {/* The wrapping in an `ul.menu.float-left > li` is necessary for the sticky header to work */}
-        <a href={'#'} id="loginSwitch" onClick={e => this.OpenModal(e)}>
-          Admin login
+        <a
+          style={{ float: 'right', color: '#000' }}
+          href={'#'}
+          id="loginSwitch"
+          onClick={e => this.OpenModal(e)}
+        >
+          Admin login <i className="fa fa-key" aria-hidden="true" />
         </a>
         <Modal
           open={this.state.showModal}
