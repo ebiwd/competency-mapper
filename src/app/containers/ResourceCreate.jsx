@@ -84,7 +84,19 @@ class ResourceCreate extends React.Component {
       });
   }
 
+  dateValidate(d1, d2) {
+    let date1 = new Date(d1);
+    let date2 = new Date(d2);
+
+    if (date1 > date2) {
+      return false;
+    }
+
+    return true;
+  }
+
   handleSubmit(event) {
+    event.preventDefault();
     let title = this.refs.title.value;
     let dates = this.refs.dates.value;
     let dates2 = this.refs.dates2.value;
@@ -105,100 +117,106 @@ class ResourceCreate extends React.Component {
     let token = localStorage.getItem('csrf_token');
 
     //alert(learning_outcomes);
-
-    fetch(`${apiUrl}/node?_format=hal_json`, {
-      credentials: 'include',
-      method: 'POST',
-      cookies: 'x-access-token',
-      headers: {
-        Accept: 'application/hal+json',
-        'Content-Type': 'application/hal+json',
-        'X-CSRF-Token': token,
-        Authorization: 'Basic'
-      },
-      body: JSON.stringify({
-        _links: {
-          type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
-          }
+    if (this.dateValidate(dates, dates2)) {
+      fetch(`${apiUrl}/node?_format=hal_json`, {
+        credentials: 'include',
+        method: 'POST',
+        cookies: 'x-access-token',
+        headers: {
+          Accept: 'application/hal+json',
+          'Content-Type': 'application/hal+json',
+          'X-CSRF-Token': token,
+          Authorization: 'Basic'
         },
-        title: [
-          {
-            value: title
-          }
-        ],
-        field_dates: [
-          {
-            value: dates
-          }
-        ],
-        field_end_date: [
-          {
-            value: dates2
-          }
-        ],
-        field_type: [
-          {
-            value: type
-          }
-        ],
-        field_description: [
-          {
-            value: description,
-            format: 'basic_html'
-          }
-        ],
-        field_location: [
-          {
-            value: location
-          }
-        ],
-        field_url: [
-          {
-            value: url
-          }
-        ],
-        field_target_audience: [
-          {
-            value: target_audience,
-            format: 'basic_html'
-          }
-        ],
-        field_learning_outcomes: [
-          {
-            value: learning_outcomes,
-            format: 'basic_html'
-          }
-        ],
-        field_keywords: [
-          {
-            value: keywords
-          }
-        ],
-        field_organisers: [
-          {
-            value: organisers,
-            format: 'basic_html'
-          }
-        ],
-        field_trainers: [
-          {
-            value: trainers,
-            format: 'basic_html'
-          }
-        ],
+        body: JSON.stringify({
+          _links: {
+            type: {
+              href: `${apiUrl}/rest/type/node/training_resource`
+            }
+          },
+          title: [
+            {
+              value: title
+            }
+          ],
+          field_dates: [
+            {
+              value: dates ? dates : null
+            }
+          ],
+          field_end_date: [
+            {
+              value: dates2 ? dates2 : null
+            }
+          ],
+          field_type: [
+            {
+              value: type
+            }
+          ],
+          field_description: [
+            {
+              value: description,
+              format: 'basic_html'
+            }
+          ],
+          field_location: [
+            {
+              value: location
+            }
+          ],
+          field_url: [
+            {
+              value: url
+            }
+          ],
+          field_target_audience: [
+            {
+              value: target_audience,
+              format: 'basic_html'
+            }
+          ],
+          field_learning_outcomes: [
+            {
+              value: learning_outcomes,
+              format: 'basic_html'
+            }
+          ],
+          field_keywords: [
+            {
+              value: keywords
+            }
+          ],
+          field_organisers: [
+            {
+              value: organisers,
+              format: 'basic_html'
+            }
+          ],
+          field_trainers: [
+            {
+              value: trainers,
+              format: 'basic_html'
+            }
+          ],
 
-        type: [
-          {
-            target_id: 'training_resource'
-          }
-        ]
+          type: [
+            {
+              target_id: 'training_resource'
+            }
+          ]
+        })
       })
-    });
+        .then(response => response.json())
+        .then(data =>
+          this.props.history.push(`/training-resources/${data.nid[0].value}`)
+        );
+    } else {
+      alert('Incorrect dates');
+    }
 
-    event.target.reset();
-    this.setState({ updateFlag: true });
-    event.preventDefault();
+    //event.target.reset();
+    //this.setState({ updateFlag: true });
   }
 
   render() {
@@ -270,7 +288,7 @@ class ResourceCreate extends React.Component {
               <div className="row">
                 <div className="column large-12">
                   <strong>URL</strong>
-                  <input type="text" ref="url" required placeholder="URL" />
+                  <input type="url" ref="url" required placeholder="URL" />
                 </div>
               </div>
 
@@ -338,12 +356,12 @@ class ResourceCreate extends React.Component {
                 </div>
               </div>
 
-              <div id="fileupload" className="row">
+              {/* <div id="fileupload" className="row">
                 <div className="column large-12">
                   <strong>File upload</strong>
                   <FileUpload />
                 </div>
-              </div>
+              </div> */}
 
               <div className="row">
                 <div className="column large-2">

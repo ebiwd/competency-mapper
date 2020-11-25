@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl } from '../services/http/http';
@@ -67,9 +67,9 @@ class ResourceEdit extends React.Component {
         this.setState({ csrf: findresponse2 });
       });
 
-    //let fetchResource = "http://dev-competency-mapper.pantheonsite.io/api/v1/training-resources/"+nid+"?_format=json";
+    let fetchResource = `${apiUrl}/node/${this.state.path[3]}?_format=json`;
     //let fetchResource = `${apiUrl}/api/v1/training-resources/all?_format=json`;
-    let fetchResource = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
+    //let fetchResource = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
     fetch(fetchResource)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -87,7 +87,7 @@ class ResourceEdit extends React.Component {
       );
       this.props.history.push('/');
     }
-    console.log(localStorage.getItem('roles'));
+    //console.log(localStorage.getItem('roles'));
   }
 
   redirectTo(event) {
@@ -110,26 +110,38 @@ class ResourceEdit extends React.Component {
     let organisers = '';
     let trainers = '';
 
-    this.state.data.forEach(item => {
-      if (item.id === this.state.nid) {
-        nid = item.id;
-        title = item.title;
-        //temp_date = item.dates.split("-");
-        dates = item.dates;
-        dates2 = item.end_date;
-        type = item.type;
-        description = item.description;
-        location = item.location;
-        url = item.url;
-        target_audience = item.target_audience;
-        learning_outcomes = item.learning_outcomes;
-        keywords = item.keywords;
-        organisers = item.organisers;
-        trainers = item.trainers;
-      }
-    });
-    if (this.state.data.length > 0) {
-      console.log(title);
+    //this.state.data.forEach(item => {
+    //  if (item.id === this.state.nid) {
+    if (this.state.data.nid) {
+      let item = this.state.data;
+      nid = item.nid[0].value;
+      title = item.title[0].value;
+      dates = item.field_dates[0] ? item.field_dates[0].value : null;
+      dates2 = item.field_end_date[0] ? item.field_end_date[0].value : null;
+      type = item.field_type[0].value;
+      description = item.field_description[0]
+        ? item.field_description[0].value
+        : null;
+      location = item.field_location[0] ? item.field_location[0].value : null;
+      url = item.field_url[0] ? item.field_url[0].value : null;
+      target_audience = item.field_target_audience[0]
+        ? item.field_target_audience[0].value
+        : null;
+      learning_outcomes = item.field_learning_outcomes[0]
+        ? item.field_learning_outcomes[0].value
+        : null;
+      keywords = item.field_keywords[0] ? item.field_keywords[0].value : null;
+      organisers = item.field_organisers[0]
+        ? item.field_organisers[0].value
+        : null;
+      trainers = item.field_trainers[0] ? item.field_trainers[0].value : null;
+      //console.log(item.nid[0].value)
+    }
+
+    //  }
+    //});
+    if (this.state.data.nid) {
+      console.log(dates);
       return (
         <EditForm
           nid={nid}
@@ -271,11 +283,23 @@ class EditForm extends React.Component {
     }
   }
 
+  dateValidate(d1, d2) {
+    let date1 = new Date(d1);
+    let date2 = new Date(d2);
+
+    if (date1 > date2) {
+      return false;
+    }
+
+    return true;
+  }
+
   async handleSubmit(event) {
     let resourceID = this.state.nid;
     let title = this.refs.title.value;
     let dates = this.refs.dates.value;
     let dates2 = this.refs.dates2.value;
+
     let type = this.refs.type.value;
     let description = this.state.description;
     let location = this.refs.location.value;
@@ -287,110 +311,115 @@ class EditForm extends React.Component {
     let keywords = this.refs.keywords.value;
     let csrf = localStorage.getItem('csrf_token');
 
-    fetch(`${apiUrl}/node/` + resourceID + '?_format=hal_json', {
-      method: 'PATCH',
-      credentials: 'include',
-      cookies: 'x-access-token',
-      headers: {
-        Accept: 'application/hal+json',
-        'Content-Type': 'application/hal+json',
-        'X-CSRF-Token': csrf
-        //Authorization: 'Basic'
-      },
-      body: JSON.stringify({
-        _links: {
-          type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
-          }
+    if (this.dateValidate(dates, dates2)) {
+      fetch(`${apiUrl}/node/` + resourceID + '?_format=hal_json', {
+        method: 'PATCH',
+        credentials: 'include',
+        cookies: 'x-access-token',
+        headers: {
+          Accept: 'application/hal+json',
+          'Content-Type': 'application/hal+json',
+          'X-CSRF-Token': csrf
+          //Authorization: 'Basic'
         },
-        title: [
-          {
-            value: title
-          }
-        ],
-        field_dates: [
-          {
-            value: dates
-          }
-        ],
-        field_end_date: [
-          {
-            value: dates2
-          }
-        ],
-        field_type: [
-          {
-            value: type
-          }
-        ],
-        field_description: [
-          {
-            value: description,
-            format: 'basic_html'
-          }
-        ],
-        field_location: [
-          {
-            value: location
-          }
-        ],
-        field_url: [
-          {
-            value: url
-          }
-        ],
-        field_target_audience: [
-          {
-            value: target_audience,
-            format: 'basic_html'
-          }
-        ],
-        field_learning_outcomes: [
-          {
-            value: learning_outcomes,
-            format: 'basic_html'
-          }
-        ],
-        field_keywords: [
-          {
-            value: keywords
-          }
-        ],
-        field_organisers: [
-          {
-            value: organisers,
-            format: 'basic_html'
-          }
-        ],
-        field_trainers: [
-          {
-            value: trainers,
-            format: 'basic_html'
-          }
-        ],
-        type: [
-          {
-            target_id: 'training_resource'
-          }
-        ]
-      })
-    });
-
-    //event.target.reset();
+        body: JSON.stringify({
+          _links: {
+            type: {
+              href: `${apiUrl}/rest/type/node/training_resource`
+            }
+          },
+          title: [
+            {
+              value: title
+            }
+          ],
+          field_dates: [
+            {
+              value: dates ? dates : null
+            }
+          ],
+          field_end_date: [
+            {
+              value: dates2 ? dates2 : null
+            }
+          ],
+          field_type: [
+            {
+              value: type
+            }
+          ],
+          field_description: [
+            {
+              value: description,
+              format: 'basic_html'
+            }
+          ],
+          field_location: [
+            {
+              value: location
+            }
+          ],
+          field_url: [
+            {
+              value: url
+            }
+          ],
+          field_target_audience: [
+            {
+              value: target_audience,
+              format: 'basic_html'
+            }
+          ],
+          field_learning_outcomes: [
+            {
+              value: learning_outcomes,
+              format: 'basic_html'
+            }
+          ],
+          field_keywords: [
+            {
+              value: keywords
+            }
+          ],
+          field_organisers: [
+            {
+              value: organisers,
+              format: 'basic_html'
+            }
+          ],
+          field_trainers: [
+            {
+              value: trainers,
+              format: 'basic_html'
+            }
+          ],
+          type: [
+            {
+              target_id: 'training_resource'
+            }
+          ]
+        })
+      });
+      setTimeout(() => {
+        this.props.redirectTo();
+      }, 1000);
+    } else {
+      alert('Incorrect dates');
+    }
     event.preventDefault();
-    setTimeout(() => {
-      this.props.redirectTo();
-    }, 1000);
-    //this.props.redirectTo();
-
-    //this.setState({ updateFlag: true });
   }
 
   render() {
     return (
       <div>
         <h2>Edit Training Resources</h2>
-        {console.log(localStorage.getItem('csrf_token'))}
+        <p style={{ float: 'right' }}>
+          <Link to={`/training-resources/${this.state.nid}`}>
+            {' '}
+            <i class="fas fa-eye" /> View{' '}
+          </Link>
+        </p>
+
         <div className="row">
           <div className="column large-12 callout">
             <form

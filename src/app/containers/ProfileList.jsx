@@ -53,7 +53,7 @@ const ProfileList = props => {
     };
 
     fetchData();
-  }, [framework, frameworkVersion, frameworkName]);
+  }, [framework, frameworkVersion, frameworkName, userName]);
 
   const checkUserAccess = () => {
     if (localStorage.getItem('roles')) {
@@ -138,13 +138,15 @@ const ProfileList = props => {
 
   const checkFMAccess = () => {
     var temp = [];
-    userFrameworks.map(item => {
-      temp.push(item.toLowerCase());
-    });
-    if (temp.includes(frameworkName)) {
-      return true;
+    if (userFrameworks.length > 0) {
+      userFrameworks.map(item => {
+        temp.push(item.toLowerCase());
+      });
+      if (temp.includes(frameworkName)) {
+        return true;
+      }
+      return false;
     }
-    return false;
   };
   return (
     <div>

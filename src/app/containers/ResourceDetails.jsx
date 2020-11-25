@@ -88,18 +88,6 @@ class ResourceDetails extends React.Component {
             <ul>
               {this.state.frameworks.map((item, id) => {
                 return (
-                  // <li style={{ display: 'inline', margin: '5px' }}>
-                  //   <a // eslint-disable-line jsx-a11y/anchor-is-valid
-                  //     onClick={this.handleOpenModal.bind(
-                  //       this,
-                  //       item.name.toLowerCase()
-                  //     )}
-                  //   >
-                  //     {' '}
-                  //     <i className="fas fa-tags" /> {item.name}{' '}
-                  //   </a>
-                  // </li>
-
                   <li style={{ display: 'inline', margin: '5px' }}>
                     <a
                       href={
@@ -122,38 +110,92 @@ class ResourceDetails extends React.Component {
     }
   }
 
+  formatDates(start, end) {
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
+    let start_dt = new Date(start);
+    let end_date = new Date(end);
+
+    let start_day = start_dt.getDate();
+    let start_month = start_dt.getMonth();
+    let start_year = start_dt.getFullYear();
+
+    if (end) {
+      let end_day = end_date.getDate();
+      let end_month = end_date.getMonth();
+      let end_year = end_date.getFullYear();
+
+      if (start_year === end_year) {
+        if (start_month === end_month) {
+          if (start_day === end_day) {
+            return start_day + ' ' + months[start_month] + ' ' + start_year;
+          } else {
+            return (
+              start_day +
+              ' - ' +
+              end_day +
+              ' ' +
+              months[start_month] +
+              ' ' +
+              start_year
+            );
+          }
+        } else {
+          return (
+            start_day +
+            ' ' +
+            months[start_month] +
+            ' - ' +
+            end_day +
+            ' ' +
+            months[end_month] +
+            ' ' +
+            start_year
+          );
+        }
+      } else {
+        return (
+          start_day +
+          ' ' +
+          months[start_month] +
+          ' ' +
+          start_year +
+          ' - ' +
+          end_day +
+          ' ' +
+          months[end_month] +
+          ' ' +
+          end_year
+        );
+      }
+    } else {
+      return start_day + ' ' + months[start_month] + ' ' + start_year;
+    }
+  }
+
   render() {
-    // console.log(this.state.resources);
     let attributes = [];
     let selectedCompetencies = [];
     let attribute_types = [];
-    //let framework_repeat = [];
-    //console.log(this.state.resource);
     let item = this.state.resource;
     let frameworkLiveVersion = '';
 
     let link = '/bioexcel/1.1';
     let check_array = Array.isArray(item.competency_profile);
     const Resource = (
-      // this.state.resource.map((item, index) => {
-      //   if (item.id === this.state.resourcePath[2]) {
-      //     item.competency_profile.map(profile =>
-      //       profile.domains.map(domain =>
-      //         domain.competencies.map(competency =>
-      //           competency.attributes.map(
-      //             attribute =>
-      //               attributes.push(attribute.uuid + 'id' + attribute.id),
-      //             selectedCompetencies.push(competency.id)
-      //           )
-      //         )
-      //       )
-      //     );
-
-      //     item.competency_profile.map(profile =>
-      //         selectedCompetencies.push(profile.competency_id)
-      //       );
-
-      //return (
       <div>
         <div>
           <div className={'row'}>
@@ -172,10 +214,11 @@ class ResourceDetails extends React.Component {
           <div className={'row'}>
             <div className={'column large-9'}>
               <div className={'callout'}>
-                {item.date ? (
-                  <p>
-                    <strong>Date:</strong> {item.dates}
-                  </p>
+                {item.dates ? (
+                  <span>
+                    <strong>Date:</strong>{' '}
+                    {this.formatDates(item.dates, item.end_date)}
+                  </span>
                 ) : (
                   ''
                 )}

@@ -67,17 +67,7 @@ class CompetencyList extends Component {
         this.fetchVersions(framework)
       ]);
 
-      fetch(
-        `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json&timestamp=${Date.now()}`
-      )
-        .then(Response => Response.json())
-        .then(findResponse => {
-          this.setState({
-            profileCount: findResponse.filter(
-              item => item.publishing_status === 'Live'
-            ).length
-          });
-        });
+      this.fetchProfiles();
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -101,7 +91,23 @@ class CompetencyList extends Component {
           this.activeRequests.finishRequest();
         }
       }
+      this.fetchProfiles();
     }
+  }
+
+  fetchProfiles() {
+    const { framework, frameworkVersion } = this.state;
+    fetch(
+      `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json&timestamp=${Date.now()}`
+    )
+      .then(Response => Response.json())
+      .then(findResponse => {
+        this.setState({
+          profileCount: findResponse.filter(
+            item => item.publishing_status === 'Live'
+          ).length
+        });
+      });
   }
 
   async fetchFramework(framework, frameworkVersion) {
@@ -211,7 +217,7 @@ class CompetencyList extends Component {
         <Tabs>
           <TabList>
             {localStorage.getItem('roles') ? (
-              <Tab>Career profiles</Tab>
+              <Tab>Career profiles {console.log(this.state.profileCount)} </Tab>
             ) : this.state.profileCount > 0 ? (
               <Tab>Career profiles</Tab>
             ) : (
