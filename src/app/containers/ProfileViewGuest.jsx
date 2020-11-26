@@ -58,9 +58,12 @@ export const ProfileViewGuest = props => {
       let obj = mapping.find(o => o.competency == competency);
       if (obj) {
         if (frameworkInfo) {
-          let expertise = frameworkInfo[0].expertise_levels.find(
-            level => level.id == obj.expertise
-          );
+          // let expertise = frameworkInfo[0].expertise_levels.find(
+          //   level => level.id == obj.expertise
+          // );
+          let expertise = frameworkInfo
+            .find(info => info.title.toLowerCase() === frameworkName)
+            .expertise_levels.find(level => level.id == obj.expertise);
           return expertise;
         }
       } else {
@@ -79,7 +82,12 @@ export const ProfileViewGuest = props => {
   };
 
   const getBarWidth = data => {
-    width2 = data ? 100 / (3 / data.rating_level) : 0;
+    let totalLevels = frameworkInfo.find(
+      info => info.title.toLowerCase() === frameworkName
+    ).expertise_levels.length;
+
+    width2 = data ? 100 / ((totalLevels - 1) / data.rating_level) : 0;
+    console.log(data);
     return width2;
   };
 
@@ -245,7 +253,13 @@ export const ProfileViewGuest = props => {
   return (
     <div>
       {generateProfileView()}
-
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkFullName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       {profile ? (
         <div id="profile">
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
@@ -284,7 +298,7 @@ export const ProfileViewGuest = props => {
               <p />
               <p style={{ textAlign: 'center' }}>
                 {profile.gender ? profile.gender : ''}{' '}
-                {profile.age ? '| ' + profile.age + ' years' : ''}
+                {profile.age ? profile.age + ' years' : ''}
               </p>
             </div>
             <div className="column large-9">
@@ -315,7 +329,10 @@ export const ProfileViewGuest = props => {
                 {frameworkFullName} {frameworkVersion} / Competencies
               </h5>
             </div>
-            <div className="column medium-9 ">
+            <div className="column medium-9 " />
+          </div>
+          <div className="row">
+            <div className="column medium-12">
               <ul className="legend-inline" style={{ float: 'right' }}>
                 {expertise_levels_legend}
               </ul>

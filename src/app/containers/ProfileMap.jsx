@@ -342,6 +342,13 @@ export const ProfileMap = props => {
   return (
     <div>
       {generateForm()}
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkFullName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       {profile ? (
         <div>
           <div className="row">

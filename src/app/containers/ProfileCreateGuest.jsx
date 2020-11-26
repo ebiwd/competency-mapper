@@ -109,8 +109,8 @@ export const ProfileCreateGuest = props => {
       ver => ver.status == 'live'
     );
 
-    let versionID = liveVersion.id;
-    let versionNumber = liveVersion.number;
+    //let versionID = liveVersion.id;
+    let versionNumber = frameworkVersion;
     var arrayBuffer = '';
     var fileid = null;
 
@@ -320,6 +320,13 @@ export const ProfileCreateGuest = props => {
 
   return (
     <div>
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       <h2>Create / Edit {placeholder} profile</h2>
       <div className="callout warning">
         <i class="icon icon-common icon-exclamation-triangle" /> Your profile

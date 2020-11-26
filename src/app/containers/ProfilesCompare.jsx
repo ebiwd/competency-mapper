@@ -117,6 +117,13 @@ export const ProfilesCompare = props => {
 
   return (
     <div>
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       <h3>Compare career profiles</h3>
       <span className="lead">
         Compare profile with other reference profiles to help you make career

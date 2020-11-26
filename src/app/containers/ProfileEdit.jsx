@@ -262,6 +262,13 @@ export const ProfileEdit = props => {
 
   return (
     <div>
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       {checkFMAccess() ? (
         <div>
           <Link
@@ -382,7 +389,7 @@ export const ProfileEdit = props => {
                     defaultValue="-None-"
                     onChange={e => setGender(e.target.value)}
                   >
-                    <option value={'-None-'}>None</option>
+                    <option value={'None'}>None</option>
                     <option value={'Male'}>Male</option>
                     <option value={'Female'}>Female</option>
                   </select>

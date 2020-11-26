@@ -26,7 +26,7 @@ class ResourcesList extends React.Component {
       );
       this.props.history.push('/');
     }
-    console.log(localStorage.getItem('roles'));
+    //console.log(localStorage.getItem('roles'));
     //console.log(localStorage.getItem('userid'));
   }
 
@@ -264,7 +264,14 @@ class ResourcesList extends React.Component {
               <th>Edit</th>
             </tr>
           </thead>
-          <tbody>{ListOfResources}</tbody>
+          {resources.length > 0 ? (
+            <tbody>{ListOfResources}</tbody>
+          ) : (
+            <center>
+              <img alt="progress" src="progressbar.gif" />
+              <h4>Loading results...</h4>
+            </center>
+          )}
         </table>
       </div>
     );

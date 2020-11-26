@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 //import { apiUrl } from '../services/http/http';
 //import ProfileService from '../services/profile/profile';
 //import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -41,6 +41,7 @@ export const ProfilesCompareButterfly = props => {
   var chart_props = [];
   var leftData = [];
   var rightData = [];
+  var totalLevels = '';
 
   var includeSummary = [];
 
@@ -55,9 +56,18 @@ export const ProfilesCompareButterfly = props => {
     let obj = mapping.find(o => o.competency == competency);
     if (obj) {
       if (frameworkInfo) {
-        let expertise = frameworkInfo[0].expertise_levels.find(
+        // let expertise = frameworkInfo[0].expertise_levels.find(
+        //   level => level.id == obj.expertise
+        // );
+
+        let frm = frameworkInfo.find(
+          info => info.title.toLowerCase() === frameworkName
+        );
+
+        let expertise = frm.expertise_levels.find(
           level => level.id == obj.expertise
         );
+        totalLevels = frm.expertise_levels.length;
         return expertise;
       }
     } else {
@@ -133,6 +143,7 @@ export const ProfilesCompareButterfly = props => {
           framework.expertise_levels.map((level, key) => {
             expertise_array[key] = level.id;
           });
+          totalLevels = framework.expertise_levels.length;
         }
       });
     }
@@ -156,14 +167,15 @@ export const ProfilesCompareButterfly = props => {
               includeSummary.push(competency.id);
             }
 
+            console.log(totalLevels);
             let width1 = profile1Expertise
-              ? 100 / (3 / profile1Expertise.rating_level)
+              ? 100 / (totalLevels / profile1Expertise.rating_level)
               : 0;
             let margin1 = 100 - width1;
             margin1 = margin1 == 100 ? 88 : margin1;
 
             let width2 = profile2Expertise
-              ? 100 / (3 / profile2Expertise.rating_level)
+              ? 100 / (totalLevels / profile2Expertise.rating_level)
               : 0;
             let floatRight = width2 == 0 ? 'none' : 'right';
 

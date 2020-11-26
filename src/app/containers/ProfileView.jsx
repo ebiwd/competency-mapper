@@ -365,7 +365,13 @@ export const ProfileView = props => {
   return (
     <div>
       {generateProfileView()}
-      {console.log(userFrameworks)}
+      <nav>
+        <Link to={'/'}>Home</Link> /{' '}
+        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
+          {' '}
+          {frameworkFullName} {frameworkVersion}{' '}
+        </Link>{' '}
+      </nav>
       {profile ? (
         <div id="profile">
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
@@ -374,6 +380,7 @@ export const ProfileView = props => {
 
           <div style={{ float: 'right' }}>
             {user_roles.search('framework_manager') !== -1 &&
+            userFrameworks.length > 0 &&
             userFrameworks.includes(frameworkFullName) ? (
               <ul>
                 <li className="profile_navigation">
@@ -412,8 +419,10 @@ export const ProfileView = props => {
               </center>
               <p />
               <p style={{ textAlign: 'center' }}>
-                {profile.gender ? profile.gender : ''}{' '}
-                {profile.age ? '| ' + profile.age + ' years' : ''}
+                {profile.gender && profile.gender !== 'None'
+                  ? profile.gender
+                  : ''}{' '}
+                {profile.age ? profile.age + ' years' : ''}
               </p>
             </div>
             <div className="column large-9">
@@ -444,7 +453,10 @@ export const ProfileView = props => {
                 {frameworkFullName} {frameworkVersion} / Competencies
               </h5>
             </div>
-            <div className="column medium-9 ">
+            <div className="column medium-9 " />
+          </div>
+          <div className="row">
+            <div className="column medium-12">
               <ul className="legend-inline" style={{ float: 'right' }}>
                 {expertise_levels_legend}
               </ul>
