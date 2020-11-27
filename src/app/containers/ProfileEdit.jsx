@@ -392,6 +392,8 @@ export const ProfileEdit = props => {
                     <option value={'None'}>None</option>
                     <option value={'Male'}>Male</option>
                     <option value={'Female'}>Female</option>
+                    <option value={'Nonbinary'}>Nonbinary</option>
+                    <option value={'Prefernottosay'}>Prefer not to say</option>
                   </select>
                 </span>
               </div>

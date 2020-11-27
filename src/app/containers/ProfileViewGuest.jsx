@@ -297,8 +297,28 @@ export const ProfileViewGuest = props => {
               </center>
               <p />
               <p style={{ textAlign: 'center' }}>
-                {profile.gender ? profile.gender : ''}{' '}
-                {profile.age ? profile.age + ' years' : ''}
+                {profile.gender !== 'None' ? (
+                  <div>
+                    <p>
+                      {profile.gender && profile.gender === 'Prefernottosay' ? (
+                        <p> Gender: Prefer not to say </p>
+                      ) : (
+                        ''
+                      )}
+                    </p>
+                    <p>
+                      {profile.gender && profile.gender !== 'Prefernottosay' ? (
+                        <p> Gender: {profile.gender} </p>
+                      ) : (
+                        ''
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  ''
+                )}
+
+                {profile.age ? <p> Age: {profile.age + ' years'} </p> : ''}
               </p>
             </div>
             <div className="column large-9">

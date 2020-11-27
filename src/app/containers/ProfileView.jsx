@@ -419,9 +419,26 @@ export const ProfileView = props => {
               </center>
               <p />
               <p style={{ textAlign: 'center' }}>
-                {profile.gender && profile.gender !== 'None'
-                  ? profile.gender
-                  : ''}{' '}
+                {profile.gender !== 'None' ? (
+                  <div>
+                    <p>
+                      {profile.gender && profile.gender === 'Prefernottosay' ? (
+                        <p> Gender: Prefer not to say </p>
+                      ) : (
+                        ''
+                      )}
+                    </p>
+                    <p>
+                      {profile.gender && profile.gender !== 'Prefernottosay' ? (
+                        <p> Gender: {profile.gender} </p>
+                      ) : (
+                        ''
+                      )}
+                    </p>
+                  </div>
+                ) : (
+                  ''
+                )}
                 {profile.age ? profile.age + ' years' : ''}
               </p>
             </div>
@@ -466,7 +483,7 @@ export const ProfileView = props => {
           {competencyView}
         </div>
       ) : (
-        'Loaing profile'
+        'Loading profile'
       )}
 
       <form onSubmit={e => handlePrint(e)}>

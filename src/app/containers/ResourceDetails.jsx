@@ -185,6 +185,13 @@ class ResourceDetails extends React.Component {
       return start_day + ' ' + months[start_month] + ' ' + start_year;
     }
   }
+  checkUser() {
+    if (!localStorage.getItem('roles')) {
+      return false;
+    } else if (!localStorage.getItem('roles').includes('content_manager')) {
+      return false;
+    }
+  }
 
   render() {
     let attributes = [];
@@ -200,15 +207,19 @@ class ResourceDetails extends React.Component {
         <div>
           <div className={'row'}>
             <h2>{item.title}</h2>
-            <span className="float-right">
-              {' '}
-              <Link
-                to={'/training-resource/edit/' + this.state.resourcePath[2]}
-              >
+            {this.checkUser() ? (
+              <span className="float-right">
                 {' '}
-                <i class="fas fa-edit" /> Edit{' '}
-              </Link>
-            </span>
+                <Link
+                  to={'/training-resource/edit/' + this.state.resourcePath[2]}
+                >
+                  {' '}
+                  <i class="fas fa-edit" /> Edit{' '}
+                </Link>
+              </span>
+            ) : (
+              ''
+            )}
           </div>
 
           <div className={'row'}>
@@ -401,6 +412,17 @@ class ResourceDetails extends React.Component {
 
     return (
       <div className={'row'}>
+        {this.checkUser() ? (
+          <p>
+            <nav>
+              <Link to={`/`}>Home</Link> /{' '}
+              <Link to={`/all-training-resources`}>All training resources</Link>
+            </nav>
+          </p>
+        ) : (
+          ''
+        )}
+
         <div className={'column large-12'}>
           {Resource}
           {this.mappingBlock()}

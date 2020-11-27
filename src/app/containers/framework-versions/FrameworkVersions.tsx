@@ -19,7 +19,10 @@ const customStyles = {
     right: 'auto',
     bottom: 'auto',
     marginRight: '-50%',
-    transform: 'translate(-50%, -50%)'
+    transform: 'translate(-50%, -50%)',
+    width: '80%',
+    height: '50%',
+    border: '1px solid #000'
   }
 };
 

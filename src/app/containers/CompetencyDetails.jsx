@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-
+import Parser from 'html-react-parser';
 import { withSnackbar } from 'notistack';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
@@ -161,7 +161,7 @@ class CompetencyDetails extends React.Component {
               <p>
                 {' '}
                 {competency.mapped_other_competency
-                  ? competency.mapped_other_competency
+                  ? Parser(competency.mapped_other_competency)
                   : 'No data available'}{' '}
               </p>
             </div>

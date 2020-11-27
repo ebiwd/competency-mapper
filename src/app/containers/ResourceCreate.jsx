@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
@@ -223,11 +223,18 @@ class ResourceCreate extends React.Component {
     this.checkUser();
     return (
       <div>
-        <h2>Create Training Resources</h2>
+        <p>
+          <nav>
+            <Link to={`/`}>Home</Link> /{' '}
+            <Link to={`/all-training-resources`}>All training resources</Link> /
+            Create resource{' '}
+          </nav>
+        </p>
+        <h2>Create Training Resource</h2>
+        <p>(* fields are mandatory)</p>
 
         <div className="row">
           <div className="column large-12 callout">
-            <h4>Create new competency</h4>
             <form
               className="form"
               id={'resource_create_form'}
@@ -235,7 +242,7 @@ class ResourceCreate extends React.Component {
             >
               <div className="row">
                 <div className="column large-12">
-                  <strong>Title</strong>
+                  <strong>Title *</strong>
                   <input type="text" ref="title" required placeholder="Title" />
                 </div>
               </div>
@@ -253,7 +260,7 @@ class ResourceCreate extends React.Component {
 
               <div className="row">
                 <div className="column large-12">
-                  <strong>Event type</strong>
+                  <strong>Event type *</strong>
                   <select ref={'type'}>
                     <option value={'Online'}>Online</option>
                     <option value={'Face-to-Face'}>Face-to-Face</option>
@@ -287,7 +294,7 @@ class ResourceCreate extends React.Component {
 
               <div className="row">
                 <div className="column large-12">
-                  <strong>URL</strong>
+                  <strong>URL *</strong>
                   <input type="url" ref="url" required placeholder="URL" />
                 </div>
               </div>

@@ -412,7 +412,15 @@ class EditForm extends React.Component {
   render() {
     return (
       <div>
+        <p>
+          <nav>
+            <Link to={`/`}>Home</Link> /{' '}
+            <Link to={`/all-training-resources`}>All training resources</Link> /
+            Edit resource{' '}
+          </nav>
+        </p>
         <h2>Edit Training Resources</h2>
+        <p>(* fields are mandatory)</p>
         <p style={{ float: 'right' }}>
           <Link to={`/training-resources/${this.state.nid}`}>
             {' '}
@@ -429,7 +437,7 @@ class EditForm extends React.Component {
             >
               <div className="row">
                 <div className="column large-12">
-                  <strong>Title</strong>
+                  <strong>Title *</strong>
                   <input
                     type="text"
                     ref="title"
@@ -467,7 +475,7 @@ class EditForm extends React.Component {
 
               <div className="row">
                 <div className="column large-12">
-                  <strong>Event type</strong>
+                  <strong>Event type *</strong>
                   <select
                     ref={'type'}
                     value={this.state.type}
@@ -512,7 +520,7 @@ class EditForm extends React.Component {
 
               <div className="row">
                 <div className="column large-12">
-                  <strong>URL</strong>
+                  <strong>URL *</strong>
                   <input
                     type="text"
                     ref="url"
