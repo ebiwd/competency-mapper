@@ -9,8 +9,26 @@ class HeadersService {
     HeadersService.instance = this;
   }
 
-  get() {
+  get(type = 'hal+json') {
     const csfrToken = window.localStorage.getItem('csrf_token');
+    if (type === 'json') {
+      return {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': csfrToken,
+        Authorization: 'Basic'
+      };
+    }
+
+    if (type === 'octet-stream') {
+      return {
+        Accept: 'application/octet-stream',
+        'Content-Type': 'application/octet-stream',
+        'X-CSRF-Token': csfrToken,
+        'Content-Disposition': 'file; filename="uploaded_file"'
+      };
+    }
+
     return {
       Accept: 'application/hal+json',
       'Content-Type': 'application/hal+json',

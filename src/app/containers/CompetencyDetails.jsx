@@ -13,6 +13,7 @@ class CompetencyDetails extends React.Component {
 
   state = {
     framework: this.props.match.params.framework,
+    version: this.props.location.pathname.split('/'),
     frameworkData: [],
     competencyId: this.props.match.params.cid,
     attributeDefs: [],
@@ -34,7 +35,11 @@ class CompetencyDetails extends React.Component {
 
   async getFramework() {
     const { framework } = this.state;
-    const frameworkData = await this.competencyService.getFramework(framework);
+    const { version } = this.state;
+    const frameworkData = await this.competencyService.getVersionedFramework(
+      framework,
+      version[3]
+    );
 
     this.setState({
       frameworkData
@@ -57,7 +62,24 @@ class CompetencyDetails extends React.Component {
 
   async getResources() {
     try {
-      const resources = await this.coursesService.getCourses();
+      const allResources = await this.coursesService.getCourses();
+      const resources = allResources.filter(
+        resource =>
+          !!resource.competency_profile.find(
+            profile =>
+              // !!profile.domains.find(
+              //   domain =>
+              //     !!domain.competencies.find(
+              //       competency => competency.id === this.state.competencyId
+              //     )
+              // )
+
+              profile.competency_id === this.state.competencyId
+          )
+      );
+
+      this.setState({ resources });
+      /*const resources = [{"id":1, "title":this.state.version[3]}];*/
       this.setState({ resources });
     } catch (error) {
       this.props.enqueueSnackbar('Unable to retrieve training resources', {
@@ -68,30 +90,23 @@ class CompetencyDetails extends React.Component {
 
   resourceBlock() {
     const { resources } = this.state;
-    return resources.map(resource =>
-      resource.competency_profile.map(profile =>
-        profile.domains.map(domain =>
-          domain.competencies
-            .filter(competency => competency.id === this.state.competencyId)
-            .map(competency => {
-              return (
-                <li key={resource.id}>
-                  <Link to={`/training-resources/${resource.id}`}>
-                    {resource.title}
-                  </Link>
-                </li>
-              );
-            })
-        )
-      )
-    );
+    return resources.map(resource => (
+      <li key={resource.id}>
+        <Link to={`/training-resources/${resource.id}`}>{resource.title}</Link>
+      </li>
+    ));
   }
 
   render() {
-    const { competencyId, frameworkData, attributeDefs } = this.state;
+    const {
+      competencyId,
+      frameworkData,
+      attributeDefs,
+      resources
+    } = this.state;
 
     const competencies = [];
-
+    console.log(this.state.competencyId);
     frameworkData.forEach(item =>
       item.domains.forEach(domain =>
         domain.competencies.forEach(competency => {
@@ -143,12 +158,20 @@ class CompetencyDetails extends React.Component {
           <div className="column large-4">
             <div className="callout notice industry-background white-color">
               <p>Competency derived from:</p>
-              <p>No data available</p>
+              <p>
+                {' '}
+                {competency.mapped_other_competency
+                  ? competency.mapped_other_competency
+                  : 'No data available'}{' '}
+              </p>
             </div>
-            <div className="callout notice training-background white-color">
-              <p>Training resources mapped to this competency</p>
-              <ul>{this.resourceBlock()}</ul>
-            </div>
+
+            {resources.length === 0 ? null : (
+              <div className="callout notice training-background white-color">
+                <p>Training resources mapped to this competency</p>
+                <ul>{this.resourceBlock()}</ul>
+              </div>
+            )}
           </div>
         </div>
       </div>

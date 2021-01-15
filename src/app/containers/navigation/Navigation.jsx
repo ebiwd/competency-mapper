@@ -42,6 +42,9 @@ class Navigation extends Component {
           <li>
             <Link to="/framework/nhs/manage/competencies">NHS</Link>
           </li>
+          <li>
+            <Link to="/framework/cineca/manage/competencies">CINECA</Link>
+          </li>
         </ul>
       </li>
     );
@@ -76,7 +79,7 @@ class Navigation extends Component {
     );
 
     return (
-      <nav ref={this.navRef}>
+      <nav ref={this.navRef} className="hide-for-print">
         <ul
           className="dropdown menu float-left"
           data-dropdown-menu

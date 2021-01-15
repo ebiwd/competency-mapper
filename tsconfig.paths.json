@@ -1,0 +1,8 @@
+{
+  "compilerOptions": {
+    "baseUrl": "src",
+    "paths": {
+      "react-ckeditor-component": ["typings/react-ckeditor-component"]
+    }
+  }
+}

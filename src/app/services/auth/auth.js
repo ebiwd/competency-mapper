@@ -1,9 +1,8 @@
-import { apiUrl } from '../competency/competency';
 import HttpService from '../http/http';
 
 const http = new HttpService();
-const loginUrl = `${apiUrl}/user/login?_format=json`;
-const logoutUrl = `${apiUrl}/user/logout`;
+const loginUrl = '/user/login?_format=json';
+const logoutUrl = '/user/logout';
 
 export async function login(username, password) {
   const credentials = { name: username, pass: password };
@@ -15,6 +14,7 @@ export async function login(username, password) {
     localStorage.setItem('logout_token', data.logout_token);
     localStorage.setItem('user', data.current_user.name);
     localStorage.setItem('userid', data.current_user.uid);
+    console.log(localStorage.getItem('roles'));
     return data;
   } catch (error) {
     logout();

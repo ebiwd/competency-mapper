@@ -1,28 +1,43 @@
 import React, { Component } from 'react';
 
+const defaultProps = {
+  showMappingField: false
+};
+
 type Props = {
   title: string;
   placeholder: string;
   options: Record<'description' | 'uuid', string>[];
-  onCreate(newValue: string, uuid: string): any;
-};
+  onCreate(newValue: string, uuid: string, mapping: string): any;
+} & Partial<typeof defaultProps>;
 
 const defaultState = {
-  value: '',
-  uuid: ''
+  description: '',
+  uuid: '',
+  mapping: ''
 };
 
 type State = Readonly<typeof defaultState>;
 
 export default class SimpleForm extends Component<Props, State> {
+  static defaultProps = defaultProps;
   readonly state = defaultState;
 
   componentDidMount() {
+    this.setDefaultOption();
+  }
+
+  setDefaultOption() {
     const { options } = this.props;
     if (options.length) {
       const { uuid } = options[0];
       this.setState({ uuid });
     }
+  }
+
+  reset() {
+    this.setState(defaultState);
+    this.setDefaultOption();
   }
 
   onChange = (event: React.FormEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -33,7 +48,10 @@ export default class SimpleForm extends Component<Props, State> {
     if (name === 'uuid') {
       this.setState({ [name]: value });
     }
-    if (name === 'value') {
+    if (name === 'description') {
+      this.setState({ [name]: value });
+    }
+    if (name === 'mapping') {
       this.setState({ [name]: value });
     }
   };
@@ -41,15 +59,17 @@ export default class SimpleForm extends Component<Props, State> {
   onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { onCreate } = this.props;
-    const { value, uuid } = this.state;
-    if (value.trim() && uuid) {
-      onCreate(value, uuid);
+    const { description, uuid, mapping } = this.state;
+
+    if (description.trim() && uuid) {
+      onCreate(description, uuid, mapping);
+      this.reset();
     }
   };
 
   render() {
-    const { title, placeholder, options } = this.props;
-    const { value, uuid } = this.state;
+    const { title, placeholder, options, showMappingField } = this.props;
+    const { description, uuid, mapping } = this.state;
 
     const selectOptions = options.map(({ description, uuid }) => (
       <option key={uuid} value={uuid}>
@@ -65,8 +85,8 @@ export default class SimpleForm extends Component<Props, State> {
             <input
               type="text"
               placeholder={placeholder}
-              name="value"
-              value={value}
+              name="description"
+              value={description}
               required
               onChange={this.onChange}
             />
@@ -79,6 +99,20 @@ export default class SimpleForm extends Component<Props, State> {
           <div className="column large-2">
             <input type="submit" className="button" value="Create" />
           </div>
+          {showMappingField ? (
+            <div className="column">
+              <label>
+                Maps to competency/attribute from other framework
+                <input
+                  type="text"
+                  placeholder="Framework (version), competency or attribute"
+                  name="mapping"
+                  value={mapping}
+                  onChange={this.onChange}
+                />
+              </label>
+            </div>
+          ) : null}
         </div>
       </form>
     );

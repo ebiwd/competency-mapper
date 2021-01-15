@@ -1,7 +1,14 @@
-import { apiUrl } from './competency';
+import { apiUrl } from '../http/http';
 
 class BodyService {
-  static createCompetency({ description, domainId, domainUuid }) {
+  static createCompetency({
+    description,
+    domainId,
+    domainUuid,
+    mapping = '',
+    draftId,
+    draftUuid
+  }) {
     return {
       _links: {
         type: {
@@ -9,7 +16,12 @@ class BodyService {
         },
         [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
           href: `${apiUrl}/node/${domainId}?_format=hal_json`
-        }
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
+          }
+        ]
       },
       title: [
         {
@@ -21,8 +33,29 @@ class BodyService {
           target_id: 'competency'
         }
       ],
-
+      field_map_other_competency: [
+        {
+          value: mapping
+        }
+      ],
       _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/taxonomy_term/version`
+              }
+            },
+            uuid: [
+              {
+                value: draftUuid
+              }
+            ]
+          }
+        ],
         [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
           {
             _links: {
@@ -50,7 +83,9 @@ class BodyService {
     attributeTypeId,
     attributeTypeUuid,
     competencyId,
-    competencyUuid
+    competencyUuid,
+    draftId,
+    draftUuid
   }) {
     return {
       _links: {
@@ -62,7 +97,12 @@ class BodyService {
         },
         [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
           href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
-        }
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
+          }
+        ]
       },
       title: [
         {
@@ -76,6 +116,23 @@ class BodyService {
       ],
 
       _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/taxonomy_term/version`
+              }
+            },
+            uuid: [
+              {
+                value: draftUuid
+              }
+            ]
+          }
+        ],
         [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
           {
             _links: {
@@ -120,6 +177,10 @@ class BodyService {
     return BodyService.mutate(key, value, 'competency');
   }
 
+  static mutateCompetencyPosition(key, value) {
+    return BodyService.mutate(key, value, 'competency');
+  }
+
   static mutateAttribute(key, value) {
     return BodyService.mutate(key, value, 'attribute');
   }
@@ -139,6 +200,244 @@ class BodyService {
       type: [
         {
           target_id: target
+        }
+      ]
+    };
+  }
+
+  static publishFramework(framework, version, releaseNotes) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      title: [
+        {
+          value: framework
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ],
+      field_release_notes: [
+        {
+          value: releaseNotes
+        }
+      ],
+      field_item: [
+        {
+          value: version
+        }
+      ]
+    };
+  }
+
+  static createDraftFramework(framework) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      title: [
+        {
+          value: 'draft'
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ]
+    };
+  }
+
+  static toggleArchivingVersionedNode(framework, nodeId) {
+    return {
+      type: [
+        {
+          target_id: 'article'
+        }
+      ],
+      field_parent: [
+        {
+          value: framework
+        }
+      ],
+      field_item: [
+        {
+          value: nodeId
+        }
+      ]
+    };
+  }
+
+  static updateReleaseNotes(notes) {
+    return {
+      _links: {
+        type: {
+          href:
+            //'https://dev-competency-mapper.pantheonsite.io/rest/type/taxonomy_term/version'
+            `${apiUrl}/rest/type/taxonomy_term/version`
+        }
+      },
+      vid: [
+        {
+          target_id: 'version'
+        }
+      ],
+      field_release_notes: [
+        {
+          value: notes
+        }
+      ]
+    };
+  }
+
+  // Change domain service
+
+  static changeDomain(competencyId, domainId, domainUuid, mapping) {
+    return {
+      _links: {
+        self: {
+          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        },
+        type: {
+          href: `${apiUrl}/rest/type/node/competency`
+        },
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
+          href: `${apiUrl}/node/${domainId}?_format=hal_json`
+        }
+      },
+      field_map_other_competency: [
+        {
+          value: mapping
+        }
+      ],
+      type: {
+        target_id: 'competency'
+      },
+      _embedded: {
+        [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${domainId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/domain`
+              }
+            },
+            uuid: [
+              {
+                value: domainUuid
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  // Change competency service
+
+  static changeAttributeSettings(
+    attribuiteId,
+    competencyId,
+    competencyUuid,
+    attributeTypeId,
+    attributeTypeUuid
+  ) {
+    return {
+      _links: {
+        self: {
+          href: `${apiUrl}/node/${attribuiteId}?_format=hal_json`
+        },
+        type: {
+          href: `${apiUrl}/rest/type/node/attribute`
+        },
+        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: {
+          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        },
+        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
+          href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+        }
+      },
+      type: {
+        target_id: 'attribute'
+      },
+      _embedded: {
+        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/competency`
+              }
+            },
+            uuid: [
+              {
+                value: competencyUuid
+              }
+            ]
+          }
+        ],
+        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
+          {
+            _links: {
+              self: {
+                href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+              },
+              type: {
+                href: `${apiUrl}/rest/type/node/attribute_type`
+              }
+            },
+            uuid: [
+              {
+                value: attributeTypeUuid
+              }
+            ]
+          }
+        ]
+      }
+    };
+  }
+
+  static editResource(
+    resourceID,
+    title,
+    dates,
+    dates2,
+    type,
+    description,
+    location,
+    url,
+    target_audience,
+    learning_outcomes,
+    keywords,
+    organisers,
+    trainers
+  ) {
+    return {
+      _links: {
+        type: {
+          href: `${apiUrl}/rest/type/node/training_resource`
+        }
+      },
+      title: [
+        {
+          value: title
+        }
+      ],
+
+      type: [
+        {
+          target_id: 'training_resource'
         }
       ]
     };

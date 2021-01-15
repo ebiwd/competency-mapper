@@ -1,8 +1,8 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
-
-import { apiUrl } from '../services/competency/competency';
+import FileUpload from './FileUpload';
+import { apiUrl } from '../services/http/http';
 
 class ResourceCreate extends React.Component {
   constructor(props) {
@@ -335,6 +335,13 @@ class ResourceCreate extends React.Component {
                 <div className="column large-12">
                   <strong>Keywords</strong>
                   <input type="text" ref="keywords" placeholder="Keywords" />
+                </div>
+              </div>
+
+              <div id="fileupload" className="row">
+                <div className="column large-12">
+                  <strong>File upload</strong>
+                  <FileUpload />
                 </div>
               </div>
 

@@ -16,7 +16,8 @@ class CoursesService {
 
   async getCourses() {
     const response = await this.http.get(
-      `${apiUrl}/api/v1/training-resources/all?_format=json`
+      /*`${apiUrl}/api/v1/training-resources/all?_format=json`*/
+      `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`
     );
     return response.data;
   }

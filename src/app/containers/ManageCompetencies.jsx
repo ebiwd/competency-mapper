@@ -19,9 +19,13 @@ class ManageCompetencies extends React.Component {
     framework: '',
     frameworkName: '',
     frameworkData: [],
+    frameworkVersion: '',
+    frameworkVersionId: '',
+    frameworkStatus: '',
     competencyTypes: [],
+    versions: [],
     loadingError: false,
-    editable: true
+    editable: false
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -40,7 +44,7 @@ class ManageCompetencies extends React.Component {
 
   async componentDidMount() {
     const { framework, domainId } = this.props.match.params;
-    await this.fetchFramework(framework);
+    await this.loadData(framework);
 
     if (domainId) {
       setTimeout(() => {
@@ -52,54 +56,93 @@ class ManageCompetencies extends React.Component {
     }
   }
 
-  componentDidUpdate(prevProps, prevState) {
+  async componentDidUpdate(prevProps, prevState) {
     const { framework, frameworkData, loadingError } = this.state;
     if (framework !== prevState.framework) {
       if (frameworkData.length === 0 && !loadingError) {
-        this.fetchFramework(framework);
+        this.loadData(framework);
       }
     }
   }
 
-  async fetchFramework(framework) {
+  async loadData(framework) {
     try {
       this.activeRequests.startRequest();
-      const frameworkData = await this.competencyService.getFramework(
-        framework
-      );
-
-      if (frameworkData.length) {
-        const competencyTypes = frameworkData[0].domains.map(domain => ({
-          description: domain.title,
-          uuid: domain.uuid
-        }));
-        this.setState({
-          frameworkName: frameworkData[0].title,
-          frameworkData,
-          competencyTypes
-        });
-      }
-    } catch (e) {
+      await this.fetchVersions(framework);
+      await this.fetchFramework(framework);
+    } catch (error) {
       this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
     }
   }
 
-  createCompetency = async (description, domainUuid) => {
-    const { framework, frameworkData } = this.state;
+  async fetchVersions(framework) {
+    const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
+    const currentFramework = allFrameworks.filter(
+      fw => fw.title.toLowerCase() === framework
+    );
+    if (currentFramework.length > 0) {
+      this.setState({ versions: currentFramework[0].versions.reverse() });
+    }
+  }
 
+  async fetchFramework(framework) {
+    const { versions } = this.state;
+    const liveVersion = versions.filter(version => version.status === 'live');
+    const draftVersion = versions.filter(version => version.status === 'draft');
+    let frameworkData = [];
+    let editable = false;
+    if (draftVersion.length) {
+      frameworkData = await this.competencyService.getVersionedDraftFramework(
+        framework
+      );
+      this.setState({ frameworkVersionId: draftVersion[0].id });
+      editable = true;
+    } else {
+      if (liveVersion.length) {
+        frameworkData = await this.competencyService.getVersionedFramework(
+          framework,
+          liveVersion[0].number
+        );
+      }
+    }
+
+    if (frameworkData.length) {
+      const competencyTypes = frameworkData[0].domains.map(domain => ({
+        description: domain.title,
+        uuid: domain.uuid
+      }));
+      this.setState({
+        frameworkName: frameworkData[0].title,
+        frameworkData,
+        frameworkVersion: frameworkData[0].version,
+        frameworkStatus: frameworkData[0].status,
+        competencyTypes,
+        editable
+      });
+    }
+  }
+
+  createCompetency = async (description, domainUuid, mapping) => {
+    const { framework, frameworkData, versions } = this.state;
+    const draftVersion = versions.filter(version => version.number === 'draft');
     try {
       this.activeRequests.startRequest();
       const domainId = frameworkData[0].domains.find(
         domain => domain.uuid === domainUuid
       ).nid;
+      const draftId = draftVersion[0].id;
+      const draftUuid = draftVersion[0].uuid;
       await this.competencyService.createCompetency({
         description,
         domainId,
-        domainUuid
+        domainUuid,
+        mapping,
+        draftId,
+        draftUuid
       });
-      this.fetchFramework(framework);
+      await this.fetchFramework(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -110,11 +153,30 @@ class ManageCompetencies extends React.Component {
   };
 
   async editCompetency(cid, title) {
+    const { framework } = this.state;
     try {
       this.activeRequests.startRequest();
       await this.competencyService.patchCompetency(cid, 'title', title);
-      const { framework } = this.state;
-      this.fetchFramework(framework);
+      await this.fetchFramework(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  }
+
+  async editCompetencyPosition(cid, position) {
+    const { framework } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.patchCompetencyPosition(
+        cid,
+        'field_number',
+        position
+      );
+      await this.fetchFramework(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -125,16 +187,11 @@ class ManageCompetencies extends React.Component {
   }
 
   async toggleArchive(cid, isArchived) {
+    const { framework } = this.state;
     try {
       this.activeRequests.startRequest();
-      const archive = isArchived ? false : true;
-      await this.competencyService.patchCompetency(
-        cid,
-        'field_archived',
-        archive
-      );
-      const { framework } = this.state;
-      this.fetchFramework(framework);
+      await this.competencyService.toggleArchivingVersionedNode(framework, cid);
+      await this.fetchFramework(framework);
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
@@ -144,78 +201,177 @@ class ManageCompetencies extends React.Component {
     }
   }
 
+  releaseNewVersion = async (version, notes) => {
+    const { framework } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.publishFramework(framework, version, notes);
+      this.loadData(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  };
+
+  updateNotes = async notes => {
+    const { framework, frameworkVersionId } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.updateReleaseNotes(
+        notes,
+        frameworkVersionId
+      );
+      this.loadData(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  };
+
+  createDraft = async () => {
+    const { framework } = this.state;
+    try {
+      this.activeRequests.startRequest();
+      await this.competencyService.createDraftFramework(framework);
+      this.loadData(framework);
+    } catch (e) {
+      this.props.enqueueSnackbar('Unable to perform the request', {
+        variant: 'error'
+      });
+    } finally {
+      this.activeRequests.finishRequest();
+    }
+  };
+
   getCompetencyList() {
     const { frameworkData, editable } = this.state;
-    return frameworkData[0].domains.map((domain, parentIndex) => (
+    return frameworkData[0].domains.map(domain => (
       <React.Fragment key={domain.nid}>
         <tr
           className="secondary-background-important white-color"
           ref={domain.nid}
         >
-          <td>{parentIndex + 1}</td>
           <td>
             <h4>{domain.title}</h4>
           </td>
+          {editable && <td className="small-1">Position</td>}
           {editable && <td className="small-1">Archive</td>}
           <td>Attributes</td>
+          {editable && <td className="small-1">Settings</td>}
         </tr>
-        {this.getCompetencyRows(domain.competencies, parentIndex)}
+        {this.getCompetencyRows(domain.competencies)}
       </React.Fragment>
     ));
   }
 
-  getCompetencyRows(competencies, parentIndex) {
+  getCompetencyRows(competencies) {
     const { framework, editable } = this.state;
-    return competencies.map((competency, index) => (
-      <tr key={competency.id}>
-        <td>
-          {parentIndex + 1}.{index + 1}
-        </td>
-        <td>
-          <InlineEdit
-            text={competency.title}
-            change={newValue => this.editCompetency(competency.id, newValue)}
-            editable={editable}
-          />
-        </td>
-        {editable && (
+    return competencies.map(competency => {
+      if (editable) {
+        return (
+          <tr key={competency.id}>
+            <td className={competency.archived === '1' ? 'strikeout' : ''}>
+              <InlineEdit
+                text={competency.title}
+                change={newValue =>
+                  this.editCompetency(competency.id, newValue)
+                }
+                editable={competency.archived === '1' ? false : true}
+              />
+            </td>
+            <td>
+              <InlineEdit
+                text={competency.position}
+                change={newValue =>
+                  this.editCompetencyPosition(competency.id, newValue)
+                }
+                editable={competency.archived === '1' ? false : true}
+              />
+            </td>
+
+            <td>
+              <button
+                className="cursor"
+                onClick={this.toggleArchive.bind(
+                  this,
+                  competency.id,
+                  competency.archived
+                )}
+              >
+                {competency.archived === '1' ? (
+                  <span className="fas fa-toggle-on">
+                    <span>Archived</span>
+                  </span>
+                ) : (
+                  <span className="fas fa-toggle-off" />
+                )}
+              </button>
+            </td>
+            <td>
+              <Link
+                to={`/framework/${framework}/manage/competencies/${
+                  competency.id
+                }/manage-attributes`}
+              >
+                <i className="fas fa-sitemap" />
+              </Link>
+            </td>
+
+            <td>
+              <Link
+                to={`/framework/${framework}/competency/${
+                  competency.id
+                }/settings`}
+              >
+                <i class="fas fa-cog" />
+              </Link>
+            </td>
+          </tr>
+        );
+      }
+
+      if (competency.archived === '1') {
+        return null;
+      }
+
+      return (
+        <tr key={competency.id}>
           <td>
-            <button
-              className="cursor"
-              onClick={this.toggleArchive.bind(
-                this,
-                competency.id,
-                competency.archived
-              )}
-            >
-              {competency.archived === 1 ? (
-                <span className="fas fa-toggle-on">
-                  <span>Archived</span>
-                </span>
-              ) : (
-                <span className="fas fa-toggle-off" />
-              )}
-            </button>
+            <InlineEdit
+              text={competency.title}
+              change={newValue => this.editCompetency(competency.id, newValue)}
+              editable={editable}
+            />
           </td>
-        )}
-        <td>
-          <Link
-            to={`/framework/${framework}/manage/competencies/${
-              competency.id
-            }/manage-attributes`}
-          >
-            <i className="fas fa-sitemap" />
-          </Link>
-        </td>
-      </tr>
-    ));
+          <td>
+            <Link
+              to={`/framework/${framework}/manage/competencies/${
+                competency.id
+              }/manage-attributes`}
+            >
+              <i className="fas fa-sitemap" />
+            </Link>
+          </td>
+        </tr>
+      );
+    });
   }
 
   render() {
     const {
+      framework,
       frameworkName,
       frameworkData,
+      frameworkVersion,
+      frameworkStatus,
       competencyTypes,
+      versions,
       loadingError,
       editable
     } = this.state;
@@ -234,11 +390,19 @@ class ManageCompetencies extends React.Component {
         <h4>{frameworkName}</h4>
 
         <p>
-          <span className="tag">draft</span>
-          <span className="tag secondary-background">editable</span>
+          <span className="tag">{frameworkVersion}</span>
+          <span className="tag secondary-background">
+            {frameworkStatus === '' ? 'draft' : frameworkStatus}
+          </span>
         </p>
 
-        <VersionControls />
+        <VersionControls
+          editable={editable}
+          createDraft={this.createDraft}
+          versions={versions}
+          release={this.releaseNewVersion}
+          updateNotes={this.updateNotes}
+        />
 
         {editable && (
           <SimpleForm
@@ -246,6 +410,7 @@ class ManageCompetencies extends React.Component {
             placeholder="Competency description"
             options={competencyTypes}
             onCreate={this.createCompetency}
+            showMappingField={true}
           />
         )}
 
@@ -253,7 +418,7 @@ class ManageCompetencies extends React.Component {
           <tbody>{this.getCompetencyList()}</tbody>
         </table>
 
-        <FrameworkVersions />
+        <FrameworkVersions framework={framework} versions={versions} />
       </div>
     );
   }

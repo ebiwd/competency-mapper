@@ -5,14 +5,21 @@ import Masthead from '../containers/masthead/Masthead';
 import ManageAttributes from './ManageAttributes';
 import ManageCompetencies from './ManageCompetencies';
 import CompetencyDetails from './CompetencyDetails';
-import Competencies from './CompetencyList';
+import CompetencyList from './CompetencyList';
 import ResourceEdit from './ResourceEdit';
 import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
 import ResourcesList from './ResourcesList';
+import ResourcesHome from './ResourcesHome';
 import ChangePassword from './ChangePassword';
 import About from '../components/about/About';
 import Frameworks from './Frameworks';
+import ArticleCreate from './ArticleCreate';
+import AttributeMap from './AttributeMap';
+import CompetencySettings from './CompetencySettings';
+import AttributeSettings from './AttributeSettings';
+import AttributeDemap from './AttributeDemap';
+import Profile from '../profile/Profile';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -49,7 +56,6 @@ class Root extends Component {
 
   handleActiveRequests = hasPendingRequests => {
     this.setState({ isActive: hasPendingRequests });
-    console.log('isActive', hasPendingRequests);
   };
 
   detectUserChangesFromOtherTabs = ({ key, newValue }) => {
@@ -116,6 +122,16 @@ class Root extends Component {
           <section id="main-content-area" className="row" role="main">
             <main className="column">
               <Switch>
+                {/* Remove trailing slash */}
+                <Route
+                  path="/:url*(/+)"
+                  exact
+                  strict
+                  render={({ location }) => (
+                    <Redirect to={location.pathname.replace(/\/+$/, '')} />
+                  )}
+                />
+
                 <ProtectedRoute
                   condition={!!user && roles.includes('content_manager')}
                   path="/training-resource/edit/:nid"
@@ -126,13 +142,10 @@ class Root extends Component {
                   path="/training-resource/create"
                   component={ResourceCreate}
                 />
-                <Route
-                  path="/training-resources/:id"
-                  component={ResourceDetails}
-                />
-                <Route
-                  path="/all-training-resources"
-                  component={ResourcesList}
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:cid/attribute/:aid/settings"
+                  component={AttributeSettings}
                 />
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
@@ -145,14 +158,49 @@ class Root extends Component {
                   component={ManageCompetencies}
                 />
                 <Route
-                  path="/framework/:framework/competency/details/:cid"
+                  path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
-                <Route path="/framework/:framework" component={Competencies} />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('framework_manager')}
+                  path="/framework/:framework/competency/:id/settings"
+                  component={CompetencySettings}
+                />
+                <Route
+                  path="/framework/:framework/:version/profile"
+                  component={Profile}
+                />
+                <Route
+                  path="/framework/:framework/:version"
+                  component={CompetencyList}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resources/:id/map/:framework"
+                  component={AttributeMap}
+                />
+                <ProtectedRoute
+                  condition={!!user && roles.includes('content_manager')}
+                  path="/training-resources/:resource/demap/:attribute"
+                  component={AttributeDemap}
+                />
+                <Route
+                  path="/training-resources/:id"
+                  component={ResourceDetails}
+                />
+                <Route
+                  path="/all-training-resources"
+                  component={ResourcesList}
+                />
+                <Route
+                  path="/training-resources-home"
+                  component={ResourcesHome}
+                />
                 <Route
                   path="/user/change/password"
                   component={ChangePassword}
                 />
+                <Route path="/article/create" component={ArticleCreate} />
                 <Route path="/about" component={About} />
                 <Route path="/" component={Frameworks} />
               </Switch>
@@ -166,7 +214,7 @@ class Root extends Component {
 
 export default Root;
 
-class ProtectedRoute extends Component {
+export class ProtectedRoute extends Component {
   render() {
     const { component: Component, condition, ...props } = this.props;
     return (

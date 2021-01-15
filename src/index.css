@@ -21,3 +21,343 @@
 .secondary-background-important {
   background-color: #555555 !important;
 }
+
+.strikeout {
+  text-decoration: line-through;
+}
+
+.anchor-like {
+  cursor: pointer;
+  color: #222;
+  line-height: initial;
+  border-bottom-width: 1px;
+  border-bottom-style: dotted;
+  border-bottom-color: inherit;
+}
+
+.archived {
+  color: red;
+  /* display: inline-flex;*/
+  margin-right: 3px;
+}
+
+.archived button {
+  padding-left: 3px;
+  color: red;
+}
+
+/*#checkboxMapping{*/
+input[type='checkbox'] {
+  width: 14px;
+  height: 14px;
+  border: 10px solid;
+  /*top: 4px;*/
+  position: relative;
+  cursor: pointer;
+}
+
+input[type='checkbox'] + span {
+  font-size: 16px;
+  /*display: contents;*/
+  padding: 3px;
+}
+
+input[type='checkbox']:checked {
+  border: 13px solid;
+  /*top: 7px;*/
+  position: relative;
+}
+
+input[type='checkbox']:checked + span {
+  border: 2px solid green;
+  padding: 3px;
+}
+
+input[type='checkbox']:checked + div > .attribute_label {
+  border: 2px solid green;
+  padding: 3px;
+}
+
+.submit_fixed {
+  padding: 10px;
+  background: #f1f1f1;
+  text-align: center;
+  bottom: 0px;
+}
+
+.competency_list {
+  /*border: 1px dashed #ccc;*/
+  padding: 10px;
+  margin-bottom: 5px;
+  list-style-type: none;
+  font-size: 110%;
+}
+
+.domain_list {
+  list-style-type: none;
+}
+
+.domain_title {
+  /*font-weight: 600;*/
+  left: 20px;
+  position: relative;
+}
+
+.attribute_title {
+  list-style-type: none;
+  font-weight: normal;
+  color: #777;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.attribute_title:checkbox {
+  top: 0;
+}
+
+.attribute_selected {
+  color: #000;
+}
+
+.attribute_selected:before {
+  /*content: '\2713';*/
+  font-weight: bold;
+  margin-right: 10px;
+}
+
+.attribute_not_selected:before {
+  content: ' ';
+  margin-right: 22px;
+}
+
+.attribute_label {
+  font-size: large;
+  list-style-type: none;
+  margin-bottom: 7px;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+.attribute_type {
+  font-size: large;
+  list-style-type: none;
+  margin-top: 20px;
+  font-weight: 600;
+}
+
+.competency_section {
+  /*  border: 1px outset #ccc;
+*/
+  margin-top: 30px;
+  padding: 10px;
+}
+
+.form_intro {
+  font-size: large;
+  font-weight: lighter;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  /*left: 40px;*/
+  position: relative;
+}
+
+.icon-custom {
+  margin: 10px;
+}
+
+.button {
+  font-size: larger;
+}
+
+.profile_navigation {
+  display: inline;
+  margin-left: 10px;
+}
+
+.legend {
+  font-size: 20px;
+  margin: 20px;
+  display: table-cell;
+  padding: 20px;
+  text-align: center;
+}
+
+.legend_number {
+  background-color: #cbd0df;
+  border-radius: 50%;
+  padding: 15px;
+  font-weight: 600;
+  width: 50px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.legend_container {
+  width: 100%;
+  padding: 20px;
+  border: 2px solid #000;
+  background-color: #f1f1f1;
+  display: table-row;
+  text-align: center;
+}
+
+.Draft {
+  background-image: url('./assets/watermark.jpg');
+  background-size: 25%;
+}
+
+.profile_legend {
+  display: table-cell;
+  padding: 20px;
+}
+
+#profile1_legend:before {
+  content: ' ';
+  border: 1px solid #ccc;
+  background-color: #1f77b4;
+  padding: 0 5px 0 15px;
+}
+
+#profile2_legend:before {
+  content: ' ';
+  border: 1px solid #ccc;
+  background-color: #ff7f0e;
+  padding: 0 5px 0 15px;
+}
+
+.profileMeta {
+  display: table-row;
+  margin-bottom: 20px;
+}
+
+.profileMeta div {
+  display: table-cell;
+  padding: 10px;
+  margin: 10px;
+}
+
+.legend-inline {
+  list-style-type: none;
+  display: inline-flex;
+  /*float: right;
+  position: absolute;
+  bottom: 0;*/
+}
+
+.legend-inline li {
+  margin: 10px;
+}
+
+.legend-inline-wrapper {
+  border: 1px dashed #ccc;
+  text-align: center;
+}
+
+.action-buttons {
+  margin: 5px;
+  box-shadow: 0 5px 5px 0 rgba(0, 0, 0, 0.2), 0 6px 5px 0 rgba(0, 0, 0, 0.19) !important;
+}
+
+.compare_checkbox {
+  /*padding: 5px;
+  background-color: #f0f0f0;
+  border-radius: 5px;*/
+}
+
+.compare_checkbox label {
+  padding: 5px;
+  width: 150px;
+}
+
+.ChartRow-barLabel {
+  max-width: 300px;
+}
+
+.ButterflyChart {
+  width: 100%;
+}
+
+.butterflyRow {
+  margin-bottom: 15px;
+}
+
+.fillerbg {
+  background-color: #ccc;
+}
+
+.fillerLeft {
+  background-color: rgb(233, 180, 0);
+  width: 50%;
+  margin-left: 50%;
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+.fillerRight {
+  background-color: rgb(233, 180, 0);
+  /*width: 50%;*/
+  display: inline-block;
+  padding-top: 4px;
+  padding-bottom: 4px;
+}
+
+table tbody tr:nth-child(even) {
+  background-color: #fff;
+}
+
+@media print {
+  html > canvas {
+    display: none;
+  }
+
+  .profile_navigation {
+    /*display: none*/
+  }
+  .submit_fixed {
+    display: none;
+  }
+  nav {
+    display: none;
+  }
+  a {
+    display: none;
+  }
+  .masthead-inner {
+    display: none;
+  }
+
+  #main-content-area {
+    margin-top: 0px;
+  }
+
+  #main-content-area:before {
+    content: 'Competency Mapper';
+    font-size: 40px;
+    position: absolute;
+    top: 50px;
+  }
+
+  .button {
+    display: none;
+  }
+
+  .badge.secondary {
+    background: #777 !important;
+    color: #fefefe !important;
+  }
+
+  /* filters and fills */
+  .fillerbg {
+    background-color: #ccc !important;
+  }
+
+  .fillerRight {
+    background-color: rgb(233, 180, 0) !important;
+  }
+
+  .fillerLeft {
+    background-color: rgb(233, 180, 0) !important;
+  }
+}

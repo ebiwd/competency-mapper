@@ -10,7 +10,8 @@ import { safeFlat } from '../../services/util/util';
 
 class Courses extends Component {
   static propTypes = {
-    framework: PropTypes.string
+    framework: PropTypes.string,
+    version: PropTypes.string
   };
 
   state = {
@@ -23,6 +24,7 @@ class Courses extends Component {
   constructor(props) {
     super(props);
     this.state.framework = props.framework;
+    this.state.version = props.version;
   }
 
   coursesService = new CoursesService();
@@ -43,6 +45,7 @@ class Courses extends Component {
 
   filterCourses(allCourses) {
     const { framework } = this.state;
+    const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
       if (course.archived === '1') {
@@ -50,7 +53,8 @@ class Courses extends Component {
       }
 
       const filteredProfiles = course.competency_profile.filter(
-        profile => (profile.title || '').toLowerCase() === framework
+        //profile => (profile.title || '').toLowerCase() === framework
+        profile => (profile.framework_label || '').toLowerCase() === framework
       );
 
       if (filteredProfiles.length === 0) {
@@ -60,22 +64,24 @@ class Courses extends Component {
       const modifiedCourse = {
         ...course,
         competencies: safeFlat(
-          filteredProfiles.map(profile =>
-            safeFlat(
-              profile.domains.map(domain =>
-                domain.competencies.map(competency => ({
-                  ...competency,
-                  domain: domain.title
-                }))
-              )
-            )
+          filteredProfiles.map(
+            profile =>
+              // safeFlat(
+              //   profile.domains.map(domain =>
+              //     domain.competencies.map(competency => ({
+              //       ...competency,
+              //       domain: domain.title
+              //     }))
+              //   )
+              // )
+              profile
           )
         )
       };
 
       filteredCourses.push(modifiedCourse);
     });
-
+    //console.log(filteredCourses);
     return filteredCourses;
   }
 
@@ -92,22 +98,40 @@ class Courses extends Component {
   };
 
   render() {
-    const { filteredCourses, framework, filter, loadingError } = this.state;
+    const {
+      filteredCourses,
+      framework,
+      filter,
+      loadingError,
+      version
+    } = this.state;
 
     if (loadingError) {
       return <ErrorLoading />;
     }
 
+    //let unique = [...new Set(course.competencies.map(item => item.id))];
+
+    let duplicates = [];
+
     const competencyList = competencies =>
-      competencies.map(competency => (
-        <li key={competency.id}>
-          <Link
-            to={`/framework/${framework}/competency/details/${competency.id}`}
-          >
-            {competency.title}
-          </Link>
-        </li>
-      ));
+      competencies
+        .filter(
+          (competency, index, all) =>
+            all.findIndex(c => c.competency_id === competency.competency_id) ===
+            index
+        )
+        .map(competency => (
+          <li key={competency.id}>
+            <Link
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.competency_id
+              }`}
+            >
+              {competency.competency_label}
+            </Link>
+          </li>
+        ));
 
     const resources = filteredCourses.map(course => (
       <tr key={course.id}>
@@ -116,7 +140,7 @@ class Courses extends Component {
         </td>
         <td>{course.type}</td>
         <td>
-          <ul>{competencyList(course.competencies)}</ul>
+          <ul>{competencyList(course.competencies)} </ul>
         </td>
       </tr>
     ));
@@ -131,6 +155,13 @@ class Courses extends Component {
           placeholder="Filter resources"
         />
         <table>
+          <thead>
+            <tr>
+              <th>Training resource(s)</th>
+              <th>Type</th>
+              <th>Competencies</th>
+            </tr>
+          </thead>
           <tbody>{resources}</tbody>
         </table>
       </>

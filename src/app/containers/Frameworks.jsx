@@ -18,12 +18,13 @@ class Frameworks extends Component {
   async componentDidMount() {
     try {
       this.activeRequests.startRequest();
-      const frameworks = await this.competencyService.getAllFrameworksDetails();
+      const frameworks = await this.competencyService.getAllVersionedFrameworks();
       this.setState({ frameworks });
     } catch (error) {
       this.props.enqueueSnackbar('Unable to fetch framework data', {
         variant: 'error'
       });
+      console.error(error);
     } finally {
       this.activeRequests.finishRequest();
     }
