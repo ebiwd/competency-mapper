@@ -129,7 +129,7 @@ class CompetencyList extends Component {
 
     const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
     const currentFramework = allFrameworks.filter(
-      fw => fw.title.toLowerCase() === framework
+      fw => fw.title.toLowerCase().replace(/ /g, '') === framework
     );
     if (currentFramework.length > 0) {
       const versionStatus = currentFramework[0].versions.filter(
@@ -146,7 +146,7 @@ class CompetencyList extends Component {
   async fetchVersions(framework) {
     const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
     const currentFramework = allFrameworks.filter(
-      fw => fw.title.toLowerCase() === framework
+      fw => fw.title.toLowerCase().replace(/ /g, '') === framework
     );
     if (currentFramework.length > 0) {
       this.setState({ versions: currentFramework[0].versions.reverse() });
