@@ -106,7 +106,7 @@ class CompetencyDetails extends React.Component {
     } = this.state;
 
     const competencies = [];
-    console.log(this.state.competencyId);
+    console.log(frameworkData);
     frameworkData.forEach(item =>
       item.domains.forEach(domain =>
         domain.competencies.forEach(competency => {
@@ -123,17 +123,14 @@ class CompetencyDetails extends React.Component {
 
     const competencyDetails = competencies.map(competency => (
       <div key={competency.id}>
-        <div className="row">
-          <div className="column large-12">
-            <h4>
-              {' '}
-              {competency.framework} / {competency.domain}
-            </h4>
-            <h4>{competency.title}</h4>
-          </div>
-        </div>
-        <div className="row">
-          <div className="column large-8">
+        <h4>
+          {' '}
+          {competency.framework} / {competency.domain}
+        </h4>
+
+        <div className="vf-grid">
+          <div>
+            <h3>{competency.title}</h3>
             <ul>
               {attributeDefs.map(def => {
                 return (
@@ -155,20 +152,19 @@ class CompetencyDetails extends React.Component {
               })}
             </ul>
           </div>
-          <div className="column large-4">
-            <div className="callout notice industry-background white-color">
-              <p>Competency derived from:</p>
-              <p>
-                {' '}
-                {competency.mapped_other_competency
-                  ? Parser(competency.mapped_other_competency)
-                  : 'No data available'}{' '}
-              </p>
-            </div>
+
+          <div>
+            <h4>Competency derived from:</h4>
+            <p>
+              {' '}
+              {competency.mapped_other_competency
+                ? Parser(competency.mapped_other_competency)
+                : 'No data available'}{' '}
+            </p>
 
             {resources.length === 0 ? null : (
-              <div className="callout notice training-background white-color">
-                <p>Training resources mapped to this competency</p>
+              <div>
+                <h4>Training resources mapped to this competency</h4>
                 <ul>{this.resourceBlock()}</ul>
               </div>
             )}
@@ -180,7 +176,34 @@ class CompetencyDetails extends React.Component {
     return (
       <div className="row">
         <div className="column large-12">
+          {frameworkData.length > 0 ? (
+            <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
+              <ul class="vf-breadcrumbs__list | vf-list vf-list--inline">
+                <li class="vf-breadcrumbs__item">
+                  <Link to="/" class="vf-breadcrumbs__link">
+                    Home
+                  </Link>
+                </li>
+                <li class="vf-breadcrumbs__item">
+                  <Link
+                    to={`/framework/${frameworkData[0].title.toLowerCase()}/${
+                      frameworkData[0].version
+                    }`}
+                  >
+                    {frameworkData[0].title} {frameworkData[0].version}
+                  </Link>{' '}
+                </li>
+                <li class="vf-breadcrumbs__item" aria-current="location">
+                  Competency details
+                </li>
+              </ul>
+            </nav>
+          ) : (
+            ''
+          )}
+
           <h3>Competency details</h3>
+
           {competencyDetails}
         </div>
       </div>

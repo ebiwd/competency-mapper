@@ -198,7 +198,7 @@ class ManageCompetency extends React.Component {
               <>
                 <span className="edit-indicator">
                   <button
-                    className="cursor"
+                    className="ch_link"
                     onClick={() =>
                       this.archiveCompetency(competency.id, competency.archived)
                     }
@@ -218,7 +218,7 @@ class ManageCompetency extends React.Component {
 
                 <span className="edit-indicator">
                   <button
-                    className="cursor"
+                    className="ch_link"
                     onClick={e => this.OpenModalPosition(e, domain)}
                   >
                     <span className="fas fa-sort icon-left-spacer">
@@ -249,15 +249,9 @@ class ManageCompetency extends React.Component {
             {competency.mapped_other_competency ? (
               <span>
                 This competency maps to:
-                {/* <InlineEdit
-                  style={{ display: 'inline' }}
-                  text={competency.mapped_other_competency}
-                  change={newValue => this.editMapping(competency.id, newValue)}
-                  editable={competency.archived === '1' ? false : true}
-                /> */}
                 {Parser(competency.mapped_other_competency)}
                 <button
-                  className="cursor"
+                  className="ch_link"
                   onClick={e => this.OpenModalMapping(e, competency)}
                 >
                   <span className="fas fa-edit icon-left-spacer" />
@@ -387,7 +381,10 @@ class ManageCompetency extends React.Component {
               })
             )}
           </ul>
-          <button className="button primary" onClick={this.saveSorting}>
+          <button
+            className="vf-button vf-button--primary vf-button--sm"
+            onClick={this.saveSorting}
+          >
             Save
           </button>
         </Modal>

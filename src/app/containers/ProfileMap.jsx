@@ -98,11 +98,7 @@ export const ProfileMap = props => {
         item.checked = false;
         item.disabled = true;
       });
-      //console.log(tempMapping.find(o => o.competency == competency_id))
-      // tempMapping.splice(
-      //   tempMapping.find(o => o.competency == competency_id),
-      //   1
-      // );
+
       console.log(tempMapping);
       // Remove the NA competency from the temp array
       tempMapping = tempMapping.filter(o => o.competency != competency_id);
@@ -166,14 +162,14 @@ export const ProfileMap = props => {
                 ? (expertise_not_applicable = level.id)
                 : '',
               expertise_levels_legend.push(
-                <li style={{ textAlign: 'center' }}>
+                <li className="vf-list__item" style={{ textAlign: 'center' }}>
                   <div
                     data-tip={level.description ? level.description : 'NA'}
                     data-html={true}
                     data-type="info"
                     data-multiline={true}
                   >
-                    <span className="badge secondary">
+                    <span className="vf-badge vf-badge--tertiary">
                       {' '}
                       {level.rating_level}{' '}
                     </span>{' '}
@@ -195,17 +191,6 @@ export const ProfileMap = props => {
       });
     }
 
-    // let index = 0;
-    // expertise_levels.map((level, key) => {
-    //   expertise_levels_legend.push(
-    //     <li style={{ textAlign: 'center' }}>
-    //       <span className="badge secondary"> {index} </span>{' '}
-    //       <span> {level}</span>
-    //     </li>
-    //   );
-    //   index++;
-    // });
-
     if (profile) {
       if (!mapping) {
         setMapping(profile.profile_mapping);
@@ -226,8 +211,8 @@ export const ProfileMap = props => {
               <ul>
                 {domain.competencies.map((competency, cid) => (
                   <li className="competency_list">
-                    <div className="row">
-                      <div className="column medium-9">
+                    <div className="vf-grid vf-grid__col-4">
+                      <div className="vf-grid__col--span-3">
                         <Collapsible
                           trigger={
                             <div className="open-close-title">
@@ -259,8 +244,8 @@ export const ProfileMap = props => {
                                       )
                                       .map(attribute => (
                                         <li className="attribute_title">
-                                          <div className="row">
-                                            <div className="column medium-1">
+                                          <div className="vf-grid vf-grid__col-4">
+                                            <div className="vf-grid__col--span-1">
                                               <input
                                                 type="checkbox"
                                                 id={attribute.id}
@@ -288,7 +273,7 @@ export const ProfileMap = props => {
                                                 data-competency={competency.id}
                                               />
                                             </div>
-                                            <div className="column medium-11">
+                                            <div className="vf-grid__col--span-3">
                                               <label
                                                 className="attribute_label"
                                                 for={attribute.id}
@@ -307,8 +292,9 @@ export const ProfileMap = props => {
                           </ul>
                         </Collapsible>
                       </div>
-                      <div className="column medium-3">
+                      <div className="vf-grid__col--span-1">
                         <select
+                          className="vf-form__select"
                           onChange={e => handleSelect(e)}
                           defaultValue={
                             mapping.find(o => o.competency == competency.id)
@@ -391,15 +377,18 @@ export const ProfileMap = props => {
                   </p>
                 </div>
               </div>
-              <div className="row">
-                <div className="column medium-3">
+              <div className="vf-grid vf-grid__col-4">
+                <div className="vf-grid__col--span-1">
                   {' '}
                   <h5 style={{ marginTop: '25px' }}>
                     {frameworkFullName} {frameworkVersion} / Competencies
                   </h5>
                 </div>
-                <div className="column medium-9 ">
-                  <ul className="legend-inline" style={{ float: 'right' }}>
+                <div className="vf-grid__col--span-3">
+                  <ul
+                    className="vf-list legend-inline"
+                    style={{ float: 'right' }}
+                  >
                     {expertise_levels_legend}
                   </ul>
                 </div>
@@ -411,7 +400,10 @@ export const ProfileMap = props => {
                   <form onSubmit={e => handleSubmit(e)}>
                     {competencyForm}
                     <div className="submit_fixed">
-                      <button className="button" type="submit">
+                      <button
+                        className="vf-button vf-button--primary vf-button--sm"
+                        type="submit"
+                      >
                         Save <i class="icon icon-common icon-save" />
                       </button>
                     </div>

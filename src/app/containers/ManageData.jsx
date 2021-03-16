@@ -283,19 +283,24 @@ class ManageData extends React.Component {
               updateNotes={this.updateNotes}
             />
           </div>
-          <div className="column medium-3">
-            {editable === true ? (
-              <button
-                href="#"
-                className="addButton"
-                onClick={this.handleOpenModal}
-              >
-                {' '}
-                <i className="icon icon-common icon-plus-circle" /> Add domains{' '}
-              </button>
-            ) : (
-              ''
-            )}
+          <div className="vf-grid vf-grid vf-grid__col-4">
+            <div className="vf-grid vf-grid__col--span-3" />
+
+            <div className="vf-grid vf-grid__col--span-1">
+              {editable === true ? (
+                <button
+                  href="#"
+                  className="vf-button vf-button--tertirary vf-button--sm"
+                  onClick={this.handleOpenModal}
+                >
+                  {' '}
+                  <i className="icon icon-common icon-plus-circle" /> Add
+                  domains{' '}
+                </button>
+              ) : (
+                ''
+              )}
+            </div>
           </div>
         </div>
 
@@ -322,14 +327,18 @@ class ManageData extends React.Component {
         >
           <h2>Add domain(s) </h2>
           <h3>Please enter one domain per line</h3>
-          <form>
+          <form className="vf-form">
             <textarea
               id="domain_txt_area"
               rows="5"
               onChange={e => this.setDomains(e)}
               required
+              className="vf-form__input"
             />
-            <button className="button" onClick={e => this.saveDomains(e)}>
+            <button
+              className="vf-button vf-button--sm vf-button--primary"
+              onClick={e => this.saveDomains(e)}
+            >
               Save
             </button>
           </form>

@@ -33,6 +33,10 @@ import ProfileMap from './ProfileMap';
 import ProfilesCompareSummary from './ProfilesCompareSummary';
 import Documentation from './Documentation';
 import Login from './Login';
+import ManageFrameworks from '../containers/navigation/ManageFrameworks';
+import Navigation from '../containers/navigation/Navigation';
+import Footer from '../components/Footer';
+import Breadcrumbs from '../containers/Breadcrumbs';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -49,8 +53,8 @@ class Root extends Component {
   activeRequests = new ActiveRequestsService();
 
   componentDidMount() {
-    $(document).foundation();
-    $(document).foundationExtendEBI();
+    // $(document).foundation();
+    // $(document).foundationExtendEBI();
 
     this.setState({ isActive: this.activeRequests.isActive });
     this.subcription = this.activeRequests.addEventListener(
@@ -91,6 +95,7 @@ class Root extends Component {
         user: localStorage.getItem('user'),
         roles: localStorage.getItem('roles')
       });
+      document.location.reload();
     } catch (error) {
       window.console.error(error);
       if (error.response) {
@@ -124,6 +129,8 @@ class Root extends Component {
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
           preventDuplicate
         >
+          <Breadcrumbs />
+          <div class="vf-u-margin__top--200" />
           <Masthead
             roles={roles}
             user={user}
@@ -276,6 +283,12 @@ class Root extends Component {
                   component={UserView}
                 />
 
+                <ProtectedRoute
+                  condition={!!user}
+                  path="/manage-frameworks"
+                  component={ManageFrameworks}
+                />
+
                 <Route path="/documentation" component={Documentation} />
 
                 <Route path="/about" component={About} />
@@ -284,6 +297,7 @@ class Root extends Component {
               </Switch>
             </main>
           </section>
+          <Footer />
         </SnackbarProvider>
       </>
     );

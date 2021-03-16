@@ -105,7 +105,7 @@ export default class EditInline extends Component<Props, State> {
       <div className="edit-inline-container" ref={this.selfRef}>
         <input
           type="text"
-          className="inner-input"
+          className="inner-input vf-form__input"
           value={value}
           onChange={event => this.onChange(event.target.value)}
           ref={this.inputRef}

@@ -169,20 +169,20 @@ export const ProfilesCompareButterfly = props => {
 
             console.log(totalLevels);
             let width1 = profile1Expertise
-              ? 100 / (totalLevels / profile1Expertise.rating_level)
+              ? 100 / ((totalLevels - 1) / profile1Expertise.rating_level)
               : 0;
             let margin1 = 100 - width1;
             margin1 = margin1 == 100 ? 88 : margin1;
 
             let width2 = profile2Expertise
-              ? 100 / (totalLevels / profile2Expertise.rating_level)
+              ? 100 / ((totalLevels - 1) / profile2Expertise.rating_level)
               : 0;
             let floatRight = width2 == 0 ? 'none' : 'right';
 
             return (
               <div>
-                <div className="row">
-                  <div className="column medium-6">
+                <div className="vf-grid vf-grid__col-5">
+                  <div className="vf-grid__col--span-3">
                     <span className="competency_title">
                       {' '}
                       {competency.title.length > 150
@@ -193,7 +193,7 @@ export const ProfilesCompareButterfly = props => {
                         : competency.title}
                     </span>
                   </div>
-                  <div className="column medium-3">
+                  <div className="vf-grid__col--span-1">
                     <div className="fillerbg">
                       <div
                         className="fillerLeft"
@@ -213,7 +213,7 @@ export const ProfilesCompareButterfly = props => {
                       </div>
                     </div>
                   </div>
-                  <div className="column medium-3">
+                  <div className="vf-grid__col--span-1">
                     <div className="fillerbg">
                       <div
                         className="fillerRight"
@@ -246,51 +246,50 @@ export const ProfilesCompareButterfly = props => {
                   >
                     {attribute_types.map(attribute_type => {
                       return (
-                        <div
-                          className="accordion-item is-active"
-                          data-accordion-item
-                        >
-                          <div className="row attribute_align_type">
-                            <div className="column medium-6">
-                              <strong> {attribute_type} </strong>
-                            </div>
-                            <div className="column medium-3" />
-                            <div className="column medium-3" />
+                        <>
+                          <p style={{ paddingLeft: '20px', marginTop: '10px' }}>
+                            <strong> {attribute_type} </strong>
+                          </p>
+                          <div className="vf-grid vf-grid__col-5">
+                            {competency.attributes
+                              .filter(
+                                attribute => attribute.type == attribute_type
+                              )
+                              .map(attribute => {
+                                return (
+                                  <>
+                                    <span
+                                      className="vf-grid__col--span-3"
+                                      style={{ paddingLeft: '20px' }}
+                                    >
+                                      {attribute.title}
+                                    </span>
+
+                                    <div className="vf-grid__col--span-1">
+                                      {getAttributeStatus(
+                                        attribute.id,
+                                        'profile1'
+                                      ) ? (
+                                        <i className="icon icon-common icon-check" />
+                                      ) : (
+                                        '-'
+                                      )}
+                                    </div>
+                                    <div className="vf-grid__col--span-1">
+                                      {getAttributeStatus(
+                                        attribute.id,
+                                        'profile2'
+                                      ) ? (
+                                        <i className="icon icon-common icon-check" />
+                                      ) : (
+                                        '-'
+                                      )}
+                                    </div>
+                                  </>
+                                );
+                              })}
                           </div>
-                          {competency.attributes
-                            .filter(
-                              attribute => attribute.type == attribute_type
-                            )
-                            .map(attribute => {
-                              return (
-                                <div className="row attribute_align">
-                                  <div className="column medium-6">
-                                    {attribute.title}
-                                  </div>
-                                  <div className="column medium-3">
-                                    {getAttributeStatus(
-                                      attribute.id,
-                                      'profile1'
-                                    ) ? (
-                                      <i className="icon icon-common icon-check" />
-                                    ) : (
-                                      '-'
-                                    )}
-                                  </div>
-                                  <div className="column medium-3">
-                                    {getAttributeStatus(
-                                      attribute.id,
-                                      'profile2'
-                                    ) ? (
-                                      <i className="icon icon-common icon-check" />
-                                    ) : (
-                                      '-'
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
-                        </div>
+                        </>
                       );
                     })}
                   </Collapsible>
@@ -337,49 +336,49 @@ export const ProfilesCompareButterfly = props => {
       {generateProfileView()}
 
       <p>&nbsp; </p>
-      <div className="row">
-        <div className="column medium-6">
+      <div className="vf-grid vf-grid__col-5">
+        <div className="vf-grid__col--span-3">
           <h5>
             {frameworkFullName} {frameworkVersion} / Competencies
           </h5>
         </div>
-        <div className="column medium-3">
+        <div className="vf-grid__col--span-1">
           <h5>{profile1.job_title}</h5>
         </div>
-        <div className="column medium-3">
+        <div className="vf-grid__col--span-1">
           <h5>{profile2.job_title}</h5>
         </div>
       </div>
 
       <hr />
-      <div className="row">
-        <div className="column medium-6">&nbsp;</div>
-        <div className="column medium-3">
+      <div className="vf-grid vf-grid__col-5">
+        <div className="vf-grid__col--span-3" />
+        <div className="vf-grid__col--span-1">
           <span>High</span> <span style={{ float: 'right' }}> Low</span>
         </div>
-        <div className="column medium-3">
+        <div className="vf-grid__col--span-1">
           <span>Low</span> <span style={{ float: 'right' }}> High</span>
         </div>
       </div>
 
       <div>{competencyView}</div>
-      <div className="row">
-        <div className="column medium-2">&nbsp;</div>
-        <div className="column medium-4" style={{ textAling: 'center' }}>
+      <div className="vf-grid">
+        <div />
+        <div style={{ textAling: 'center' }}>
           {isGuestProfile ? (
-            <a to={'#'} className="button" onClick={e => handleSummary(e)}>
+            <a to={'#'} className="vf-button" onClick={e => handleSummary(e)}>
               Summary <i className="icon-common icon-list" />
             </a>
           ) : (
             ''
           )}
         </div>
-        <div className="column medium-4" style={{ textAling: 'center' }}>
-          <a href="#" className="button" onClick={e => handlePrint(e)}>
+        <div style={{ textAling: 'center' }}>
+          <a href="#" className="vf-button" onClick={e => handlePrint(e)}>
             Print <i className="icon icon-common icon-print" />
           </a>
         </div>
-        <div className="column medium-2" />
+        <div />
       </div>
     </div>
   );

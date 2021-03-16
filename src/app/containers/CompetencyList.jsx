@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -14,6 +15,7 @@ import CompetencyService from '../services/competency/competency';
 import { apiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
+import FAIRDownload from '../components/FAIRDownload';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -207,17 +209,16 @@ class CompetencyList extends Component {
     return (
       <>
         <h1 style={{ color: '#000000' }}>{frameworkName}</h1>
-        {console.log(attributeTypes)}
         <p>
-          <span className="tag">{frameworkVersion}</span>
-          <span className="tag secondary-background"> {frameworkStatus}</span>
+          <span className="vf-badge">{frameworkVersion}</span>
+          <span className="vf-badge vf-badge--primary"> {frameworkStatus}</span>
         </p>
         <p>{frameworkDescription}</p>
 
-        <Tabs>
-          <TabList>
+        <Tabs className="vf-tabs ch_tabs__list">
+          <TabList className="vf-tabs__list">
             {localStorage.getItem('roles') ? (
-              <Tab>Career profiles {console.log(this.state.profileCount)} </Tab>
+              <Tab>Career profiles</Tab>
             ) : this.state.profileCount > 0 ? (
               <Tab>Career profiles</Tab>
             ) : (
@@ -225,6 +226,7 @@ class CompetencyList extends Component {
             )}
 
             <Tab>Competencies</Tab>
+            <Tab>Export</Tab>
             <Tab>Training resources</Tab>
           </TabList>
 
@@ -243,20 +245,89 @@ class CompetencyList extends Component {
           )}
 
           <TabPanel>
-            <input
-              // className="clearable" // It doesn't work correctly
-              type="search"
-              value={filter}
-              onChange={event => this.onFilter(event.target.value)}
-              placeholder="Filter competencies"
-            />
+            <form action="#" class="vf-form | vf-search vf-search--inline">
+              <div className="vf-form__item | vf-search__item">
+                <label
+                  className="vf-form__label vf-u-sr-only | vf-search__label"
+                  for="inlinesearchitem"
+                >
+                  Inline search
+                </label>
+                <input
+                  type="search"
+                  placeholder="Filter competencies"
+                  id="inlinesearchitem"
+                  className="vf-form__input | vf-search__input"
+                  onChange={event => this.onFilter(event.target.value)}
+                  value={filter}
+                />
+              </div>
+            </form>
             <table>{domainList}</table>
+            <FrameworkVersions framework={framework} versions={versions} />
+          </TabPanel>
+          <TabPanel>
+            <FAIRDownload />
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
           <TabPanel>
             <Courses framework={framework} version={frameworkVersion} />
           </TabPanel>
         </Tabs>
+        {/* <div className="vf-tabs">
+          <ul className="vf-tabs__list ch_tabs__list" data-vf-js-tabs>
+              <li className="vf-tabs__item">
+                <a
+                  className="vf-tabs__link"
+                  href="#vf-tabs__section--career_profiles"
+                >
+                  Career profiles
+                </a>
+              </li>
+            <li className="vf-tabs__item">
+              <a
+                className="vf-tabs__link"
+                href="#vf-tabs__section--competencies"
+              >
+                Competencies
+              </a>
+            </li>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--export">
+                Export
+              </a>
+            </li>
+            <li className="vf-tabs__item">
+              <a
+                className="vf-tabs__link"
+                href="#vf-tabs__section--training_resources"
+              >
+                Training resources
+              </a>
+            </li>
+          </ul>
+        </div>
+        <div class="vf-tabs-content" data-vf-js-tabs-content>
+          <section
+            class="vf-tabs__section"
+            id="vf-tabs__section--career_profiles"
+          >
+            <ProfileList framework={framework} version={frameworkVersion} />
+            <FrameworkVersions framework={framework} versions={versions} />
+          </section>
+          <section class="vf-tabs__section" id="vf-tabs__section--competencies">
+            competencies
+          </section>
+          <section class="vf-tabs__section" id="vf-tabs__section--export">
+            export
+          </section>
+          <section
+            class="vf-tabs__section"
+            id="vf-tabs__section--training_resources"
+          >
+            training_resources
+          </section>
+        </div> */}
       </>
     );
   }

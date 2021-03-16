@@ -173,14 +173,14 @@ export const ProfileMapGuest = props => {
                 ? (expertise_not_applicable = level.id)
                 : '',
               expertise_levels_legend.push(
-                <li style={{ textAlign: 'center' }}>
+                <li className="vf-list__item" style={{ textAlign: 'center' }}>
                   <div
                     data-tip={level.description ? level.description : 'NA'}
                     data-html={true}
                     data-type="info"
                     data-multiline={true}
                   >
-                    <span className="badge secondary">
+                    <span className="vf-badge vf-badge--tertiary">
                       {' '}
                       {level.rating_level}{' '}
                     </span>{' '}
@@ -226,8 +226,8 @@ export const ProfileMapGuest = props => {
               <ul>
                 {domain.competencies.map((competency, cid) => (
                   <li className="competency_list">
-                    <div className="row">
-                      <div className="column medium-9">
+                    <div className="vf-grid vf-grid__col-4">
+                      <div className="vf-grid__col--span-3">
                         <Collapsible
                           trigger={
                             <div className="open-close-title">
@@ -259,8 +259,8 @@ export const ProfileMapGuest = props => {
                                       )
                                       .map(attribute => (
                                         <li className="attribute_title">
-                                          <div className="row">
-                                            <div className="column medium-1">
+                                          <div className="vf-grid vf-grid__col-4">
+                                            <div className="vf-grid__col--span-1">
                                               <input
                                                 type="checkbox"
                                                 id={attribute.id}
@@ -292,7 +292,7 @@ export const ProfileMapGuest = props => {
                                                 data-competency={competency.id}
                                               />
                                             </div>
-                                            <div className="column medium-11">
+                                            <div className="vf-grid__col--span-3">
                                               <label
                                                 className="attribute_label"
                                                 for={attribute.id}
@@ -311,7 +311,7 @@ export const ProfileMapGuest = props => {
                           </ul>
                         </Collapsible>
                       </div>
-                      <div className="column medium-3">
+                      <div className="vf-grid__col--span-1">
                         <select
                           onChange={e => handleSelect(e)}
                           defaultValue={
@@ -323,6 +323,7 @@ export const ProfileMapGuest = props => {
                                 : expertise_not_applicable
                               : expertise_not_applicable
                           }
+                          className="vf-form__select"
                         >
                           {expertise_levels.map((key, value) => (
                             <option
@@ -365,9 +366,9 @@ export const ProfileMapGuest = props => {
             </h2>
 
             <div className="column medium-12">
-              <div className="row">
-                <div className="column medium-10" />
-                <div className="column medium-2">
+              <div className="vf-grid vf-grid__col-5">
+                <div className="vf-grid__col--span-4" />
+                <div className="vf-grid__col--span-1">
                   <Link
                     to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/guest`}
                   >
@@ -378,14 +379,14 @@ export const ProfileMapGuest = props => {
                 </div>
               </div>
 
-              <div className="row">
-                <div className="column medium-3">
+              <div className="vf-grid vf-grid__col-4">
+                <div className="vf-grid__col--span-1">
                   <img
                     src={profile.image[0] ? profile.image[0].url : user_icon}
                     width="150px"
                   />
                 </div>
-                <div className="column medium-9 form_intro">
+                <div className="vf-grid__col--span-3 form_intro">
                   <h3 />
                   <p>
                     Hi Guest. The form below is listing competencies from{' '}
@@ -398,15 +399,18 @@ export const ProfileMapGuest = props => {
                   </p>
                 </div>
               </div>
-              <div className="row">
-                <div className="column medium-3">
+              <div className="vf-grid vf-grid__col-4">
+                <div className="vf-grid__col--span-1">
                   {' '}
                   <h5 style={{ marginTop: '25px' }}>
                     {frameworkFullName} {frameworkVersion} / Competencies
                   </h5>
                 </div>
-                <div className="column medium-9 ">
-                  <ul className="legend-inline" style={{ float: 'right' }}>
+                <div className="vf-grid__col--span-3">
+                  <ul
+                    className="vf-list legend-inline"
+                    style={{ float: 'right' }}
+                  >
                     {expertise_levels_legend}
                   </ul>
                 </div>
@@ -418,7 +422,10 @@ export const ProfileMapGuest = props => {
                   <form onSubmit={e => handleSubmit(e)}>
                     {competencyForm}
                     <div className="submit_fixed">
-                      <button className="button" type="submit">
+                      <button
+                        className="vf-button vf-button--primary vf-button--sm"
+                        type="submit"
+                      >
                         Save <i class="icon icon-common icon-save" />
                       </button>
                     </div>

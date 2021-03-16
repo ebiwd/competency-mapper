@@ -97,14 +97,17 @@ export const ProfilesCompare = props => {
       if (info.title.toLowerCase() === frameworkName) {
         info.expertise_levels.map(level =>
           expertise_levels_legend.push(
-            <li style={{ textAlign: 'center' }}>
+            <li className="vf-list__item" style={{ textAlign: 'center' }}>
               <div
                 data-tip={level.description ? level.description : 'NA'}
                 data-html={true}
                 data-type="info"
                 data-multiline={true}
               >
-                <span className="badge secondary"> {level.rating_level} </span>{' '}
+                <span className="vf-badge vf-badge--tertiary">
+                  {' '}
+                  {level.rating_level}{' '}
+                </span>{' '}
                 <span> {level.title}</span>
               </div>
               <ReactTooltip class="tooltip-custom" />
@@ -117,13 +120,6 @@ export const ProfilesCompare = props => {
 
   return (
     <div>
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       <h3>Compare career profiles</h3>
       <span className="lead">
         Compare profile with other reference profiles to help you make career
@@ -131,12 +127,13 @@ export const ProfilesCompare = props => {
         {console.log(isGuestProfile)}
       </span>
 
-      <div className="row">
-        <div className="column medium-3">&nbsp;</div>
-        <div className="column medium-3">
+      <div className="vf-grid">
+        <div />
+        <div>
           {profile1 ? (
             <div className="profile_badge_page">
               <img
+                alt="profile1"
                 src={profile1.image[0] ? profile1.image[0].url : user_icon}
                 width="120px"
               />
@@ -149,10 +146,11 @@ export const ProfilesCompare = props => {
           )}
         </div>
 
-        <div className="column medium-3">
+        <div>
           {profile2 ? (
             <div className="profile_badge_page">
               <img
+                alt="profile2"
                 src={profile2.image[0] ? profile2.image[0].url : user_icon}
                 width="120px"
               />
@@ -164,15 +162,13 @@ export const ProfilesCompare = props => {
             'loading profiles'
           )}
         </div>
-        <div className="column medium-3" />
+        <div />
       </div>
 
-      <div className="row">
-        <div className="column medium-12">
-          <div className="legend-inline-wrapper">
-            <strong>Rating levels </strong>{' '}
-            <ul className="legend-inline">{expertise_levels_legend}</ul>
-          </div>
+      <div>
+        <div className="legend-inline-wrapper">
+          <strong>Rating levels </strong>{' '}
+          <ul className="vf-list legend-inline">{expertise_levels_legend}</ul>
         </div>
       </div>
       <p />

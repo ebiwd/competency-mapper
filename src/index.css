@@ -335,6 +335,12 @@ table tbody tr:nth-child(even) {
 }
 
 @media print {
+  footer {
+    display: none;
+  }
+  .vf-button {
+    display: none;
+  }
   .profile_navigation {
     /*display: none*/
   }
@@ -366,7 +372,7 @@ table tbody tr:nth-child(even) {
     display: none;
   }
 
-  .badge.secondary {
+  .vf-badge--tertiary {
     background: #777 !important;
     color: #fefefe !important;
   }
@@ -477,4 +483,53 @@ table tbody tr:nth-child(even) {
 
 code {
   color: #fff;
+}
+
+.ch_tabs__list ul {
+  padding: 0px;
+  width: 100%;
+  /* border-bottom: 1px solid #000 !important; */
+  margin-bottom: 2rem;
+}
+
+.ch_tabs__list .vf-tabs__item {
+  margin-left: 0;
+}
+
+/* .ch_tabs__list a {
+  text-decoration: none;
+  background: none ! important;
+} */
+
+.ch_tabs__list ul li {
+  border: none;
+  margin-bottom: 0 !important;
+}
+
+.ch_tabs__list .vf-tabs__link.is-active {
+  border: none !important;
+  font-weight: 500;
+}
+
+.ch_tabs__list .vf-tabs__link:hover {
+  color: #000;
+}
+
+.ch_tabs__list .react-tabs__tab--selected {
+  border-bottom: 3px solid #307fe2 !important;
+}
+
+.ch_link {
+  border: none;
+  background-color: #fff;
+  cursor: pointer;
+}
+
+/* Over writing not recommended*/
+.react-responsive-modal-overlay {
+  z-index: 11000 !important;
+}
+
+.ReactModal__Overlay {
+  z-index: 11000 !important;
 }

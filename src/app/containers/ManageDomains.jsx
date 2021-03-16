@@ -267,13 +267,13 @@ class ManageDomains extends React.Component {
                     <span key={'span_' + domain.nid} className="edit-indicator">
                       <button
                         key={domain.nid}
-                        className="cursor"
+                        className="ch_link "
                         onClick={() =>
                           this.archiveDomain(domain.nid, domain.archived)
                         }
                       >
                         {domain.archived === '1' ? (
-                          <span className="fas fa-toggle-on icon-left-spacer">
+                          <span className="ch_link fas fa-toggle-on icon-left-spacer">
                             <span>Archived</span>
                           </span>
                         ) : (
@@ -286,7 +286,7 @@ class ManageDomains extends React.Component {
                     </span>
                     <span key={'span_' + domain.nid} className="edit-indicator">
                       <button
-                        className="addButton"
+                        className="ch_link addButton"
                         onClick={this.OpenModalPosition}
                       >
                         {' '}
@@ -300,7 +300,7 @@ class ManageDomains extends React.Component {
                         className="edit-indicator"
                       >
                         <button
-                          className="addButton icon icon-common icon-plus-circle icon-left-spacer"
+                          className="ch_link addButton icon icon-common icon-plus-circle icon-left-spacer"
                           href="#"
                           data-domainid={domain.nid}
                           data-domaintitle={domain.title}
@@ -405,7 +405,7 @@ class ManageDomains extends React.Component {
           <h2>{this.state.parentTitle}</h2>
           <h3>Add competencies(s) </h3>
 
-          <form onSubmit={e => this.saveCompetencies(e)}>
+          <form className="vf-form" onSubmit={e => this.saveCompetencies(e)}>
             {this.state.newCompetencies.map((item, index) => (
               <div key={'competency_' + index} className="row callout">
                 <div className="column medium-9">
@@ -416,17 +416,12 @@ class ManageDomains extends React.Component {
                     onChange={e => this.setCompetencies(e, index, 'competency')}
                     value={item.competency}
                     required
+                    className="vf-form__input"
                   />
                   This competency maps to:
-                  {/* <input
-                    key={'mapsto_' + index}
-                    type="text"
-                    onChange={e => this.setCompetencies(e, index, 'mapping')}
-                    value={item.mapping}
-                  />
-                   */}
                   <CKEditor
                     key={'mapsto_' + index}
+                    className="vf-form__input"
                     content={item.mapping}
                     events={{
                       change: e => this.setCompetencies(e, index, 'mapping')
@@ -457,7 +452,7 @@ class ManageDomains extends React.Component {
                 <div className="column medium-3" style={{ paddingTop: '1%' }}>
                   {index > 0 ? (
                     <button
-                      className="button small"
+                      className="vf-button vf-button--sm"
                       onClick={e => this.handleRemoveCompetencies(e, index)}
                     >
                       <i className="icon icon-common icon-close" />{' '}
@@ -472,14 +467,18 @@ class ManageDomains extends React.Component {
             <div className="row">
               <div className="column medium-10">
                 <button
-                  className="button small"
+                  className="vf-button vf-button--sm vf-button--secondary"
                   onClick={e => this.handleAddMoreCompetencies(e)}
                 >
                   <i className="icon icon-common icon-plus-circle" /> Add more
                 </button>
               </div>
             </div>
-            <input type="submit" className="button" value="Save" />
+            <input
+              type="submit"
+              className="vf-button vf-button--sm vf-button--primary"
+              value="Save"
+            />
           </form>
         </Modal>
 
@@ -515,7 +514,10 @@ class ManageDomains extends React.Component {
               })
             )}
           </ul>
-          <button className="button primary" onClick={this.saveSorting}>
+          <button
+            className="vf-button vf-button--sm vf-button--primary"
+            onClick={this.saveSorting}
+          >
             Save
           </button>
         </Modal>

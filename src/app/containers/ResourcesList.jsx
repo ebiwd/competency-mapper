@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { Link } from 'react-router-dom';
-
+import Pagination from 'react-js-pagination';
 import { apiUrl } from '../services/http/http';
 
 class ResourcesList extends React.Component {
@@ -12,9 +12,31 @@ class ResourcesList extends React.Component {
       resources: [],
       filterType: '',
       filterMapping: '',
-      userid: ''
+      userid: '',
+      activePage: 0,
+      totalItemsCount: 0,
+      filter: ''
     };
     this.archiveHandle = this.archiveHandle.bind(this);
+    this.handlePageChange = this.handlePageChange.bind(this);
+    this.searchSubmit = this.searchSubmit.bind(this);
+  }
+
+  async handlePageChange(pageNumber) {
+    await this.setState({ resources: null });
+    await this.setState({ activePage: pageNumber });
+    await this.fetchData();
+    setTimeout(function() {
+      window.scrollTo(0, 0);
+    }, 700);
+  }
+
+  async searchSubmit(e) {
+    e.preventDefault();
+    await this.setState({ resources: null });
+    await this.setState({ activePage: 0 });
+    await this.setState({ totalItemsCount: 0 });
+    await this.fetchData();
   }
 
   checkUser() {
@@ -26,8 +48,6 @@ class ResourcesList extends React.Component {
       );
       this.props.history.push('/');
     }
-    //console.log(localStorage.getItem('roles'));
-    //console.log(localStorage.getItem('userid'));
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -36,7 +56,6 @@ class ResourcesList extends React.Component {
       setTimeout(() => {
         this.setState({ updateFlag: false });
       }, 1000);
-      console.log('componentDidUpdate');
     }
   }
 
@@ -44,7 +63,7 @@ class ResourcesList extends React.Component {
     this.fetchData();
   }
 
-  fetchData() {
+  async fetchData() {
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -53,14 +72,21 @@ class ResourcesList extends React.Component {
       });
 
     //let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=json`;
-    let resourcesURL = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
-    fetch(resourcesURL)
+    //let resourcesURL = `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`;
+    let resourcesURL = `${apiUrl}/api/resources?_format=json&page=${
+      this.state.activePage
+    }&title=${this.state.filter}&type=${this.state.filterType}`;
+    await fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({
           resources: findresponse
         });
       });
+    if (this.state.resources[0]) {
+      let hitcount = this.state.resources[0].hitcount;
+      this.setState({ totalItemsCount: hitcount });
+    }
   }
 
   checkAuthor(author_id) {
@@ -70,11 +96,10 @@ class ResourcesList extends React.Component {
     } else {
       return false;
     }
-    //console.log(localStorage.getItem('userid'));
   }
 
-  filter(e) {
-    this.setState({ filter: e.target.value });
+  async filter(e) {
+    await this.setState({ filter: e.target.value });
   }
 
   filterTypeHandle(e) {
@@ -90,7 +115,6 @@ class ResourcesList extends React.Component {
   }
 
   archiveHandle(rid, status, event) {
-    //alert("competency "+ cid+ "is "+ status);
     let archivedStatus = '';
     if (status === 1) {
       archivedStatus = false;
@@ -135,94 +159,104 @@ class ResourcesList extends React.Component {
   render() {
     this.checkUser();
     let resources = this.state.resources;
-    if (this.state.filter) {
-      resources = resources.filter(
-        item =>
-          item.title.toLowerCase().includes(this.state.filter.toLowerCase()) ||
-          item.description
-            .toLocaleLowerCase()
-            .includes(this.state.filter.toLowerCase())
-      );
-    }
+    // if (this.state.filter) {
+    //   resources = resources.filter(
+    //     item =>
+    //       item.title.toLowerCase().includes(this.state.filter.toLowerCase()) ||
+    //       item.description
+    //         .toLocaleLowerCase()
+    //         .includes(this.state.filter.toLowerCase())
+    //   );
+    // }
 
-    if (this.state.filterType !== 'All') {
-      resources = resources.filter(item =>
-        item.type
-          .toLocaleLowerCase()
-          .includes(this.state.filterType.toLowerCase())
-      );
-    }
+    // if (this.state.filterType !== 'All') {
+    //   resources = resources.filter(item =>
+    //     item.type
+    //       .toLocaleLowerCase()
+    //       .includes(this.state.filterType.toLowerCase())
+    //   );
+    // }
 
-    if (this.state.filterMapping) {
-      resources = resources.filter(item =>
-        item.competency_profile.some(
-          profile =>
-            profile.attribute_archived == 'archived' ||
-            profile.competency_archived == 'archived' ||
-            profile.domain == 'archived'
-        )
-      );
-      console.log('filter applied');
-    }
-
-    const ListOfResources = resources.map((item, index) => (
-      <tr key={index}>
-        <td>{index + 1} </td>
-        <td>
-          {' '}
-          <Link to={'/training-resources/' + item.id}>{item.title} </Link>
-        </td>
-        <td>{item.dates}</td>
-        <td>{item.type}</td>
-        <td>
-          <a href={item.url} target={'_blank'}>
-            {item.url}
-          </a>
-        </td>
-        <td>
-          {item.archived === '1' ? (
-            <a // eslint-disable-line jsx-a11y/anchor-is-valid
-              onClick={this.archiveHandle.bind(this, item.id, 1)}
-            >
-              {' '}
-              <i className="fas fa-toggle-on" /> <span>Archived</span>{' '}
+    // if (this.state.filterMapping) {
+    //   resources = resources.filter(item =>
+    //     item.competency_profile.some(
+    //       profile =>
+    //         profile.attribute_archived == 'archived' ||
+    //         profile.competency_archived == 'archived' ||
+    //         profile.domain == 'archived'
+    //     )
+    //   );
+    //   console.log('filter applied');
+    // }
+    var ListOfResources = '';
+    if (resources) {
+      ListOfResources = resources.map((item, index) => (
+        <tr className="vf-table__row" key={index}>
+          <td className="vf-table__cell">{index + 1} </td>
+          <td className="vf-table__cell">
+            <div style={{ maxWidth: '500px' }}>
+              <Link to={'/training-resources/' + item.id}>{item.title} </Link>
+            </div>
+          </td>
+          <td className="vf-table__cell">{item.dates}</td>
+          <td className="vf-table__cell">{item.type}</td>
+          <td className="vf-table__cell">
+            <a href={item.url} target={'_blank'}>
+              Resource URL
             </a>
-          ) : (
-            <a // eslint-disable-line jsx-a11y/anchor-is-valid
-              onClick={this.archiveHandle.bind(this, item.id, 0)}
-            >
-              {' '}
-              <i className="fas fa-toggle-off" />
-            </a>
-          )}
-        </td>
-        <td>
-          {this.checkAuthor(item.author) ? (
-            <Link to={`/training-resource/edit/${item.id}`}>
-              <i className="fas fa-edit" />{' '}
-            </Link>
-          ) : (
-            ''
-          )}
-        </td>
-      </tr>
-    ));
+          </td>
+          <td className="vf-table__cell">
+            {item.archived === '1' ? (
+              <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                onClick={this.archiveHandle.bind(this, item.id, 1)}
+              >
+                {' '}
+                <i className="fas fa-toggle-on" /> <span>Archived</span>{' '}
+              </a>
+            ) : (
+              <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                onClick={this.archiveHandle.bind(this, item.id, 0)}
+              >
+                {' '}
+                <i className="fas fa-toggle-off" />
+              </a>
+            )}
+          </td>
+          <td className="vf-table__cell">
+            {this.checkAuthor(item.author) ? (
+              <Link to={`/training-resource/edit/${item.id}`}>
+                <i className="fas fa-edit" />{' '}
+              </Link>
+            ) : (
+              ''
+            )}
+          </td>
+        </tr>
+      ));
+    }
+
     return (
-      <div className={'row'}>
+      <div>
         <h3>Training Resources</h3>
-        <div className="row">
-          <div className="column large-6">
-            <div>
+        <form
+          className="vf-form | vf-search"
+          onSubmit={e => this.searchSubmit(e)}
+        >
+          <div className="vf-grid vf-grid__col-6">
+            <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
               <input
-                type="text"
+                type="search"
                 onChange={this.filter.bind(this)}
                 placeholder="Type to search"
+                className="vf-form__input | vf-search__item"
               />
             </div>
-          </div>
-          <div className="column large-2">
-            <div>
-              <select ref={'type'} onChange={this.filterTypeHandle.bind(this)}>
+            <div className="vf-form__item vf-grid__col--span-1">
+              <select
+                ref={'type'}
+                onChange={this.filterTypeHandle.bind(this)}
+                className="vf-form__select"
+              >
                 <option value={'All'}>All</option>
                 <option value={'Online'}>Online</option>
                 <option value={'Face-to-Face'}>Face-to-Face</option>
@@ -230,49 +264,82 @@ class ResourcesList extends React.Component {
                 <option value={'Hackathon'}>Hackathon</option>
               </select>
             </div>
+            <div className="vf-form__item vf-grid__col--span-1">
+              <input
+                type="submit"
+                className="vf-search__button | vf-button vf-button--primary vf-button--sm"
+                value="Search"
+              />
+            </div>
+            {/* <div className="vf-form__item vf-grid__col--span-2">
+              <input
+                type="checkbox"
+                id="checkboxMapping"
+                checked={this.state.filterMapping}
+                onChange={this.filterMappingHandle.bind(this)}
+                className="vf-form__checkbox"
+              />
+              <label for="checkboxMapping" class="vf-form__label">
+                {' '}
+                Items with deprecated mapping{' '}
+              </label>
+            </div> */}
+            {/* <div className="vf-grid__col--span-1">
+              <Link
+                className={'vf-button vf-button--primary vf-button--sm'}
+                to={'/training-resource/create'}
+              >
+                <i className="fas fa-plus-circle"> </i> Add new{' '}
+              </Link>
+            </div> */}
+            <div className="vf-form__item vf-grid__col--span-1">
+              <h5>Total: {this.state.totalItemsCount}</h5>
+            </div>
           </div>
-          <div className="column large-3">
-            <input
-              type="checkbox"
-              id="checkboxMapping"
-              checked={this.state.filterMapping}
-              onChange={this.filterMappingHandle.bind(this)}
-            />
-            <span id="checkboxMappingLabel" for="checkboxMapping">
-              Items with deprecated mapping
-            </span>
-          </div>
-          <div className={'column large-1'}>
-            <Link
-              className={'button float-right'}
-              to={'/training-resource/create'}
-            >
-              <i className="fas fa-plus-circle"> </i> Add new{' '}
-            </Link>
-          </div>
-        </div>
+        </form>
 
-        <table>
-          <thead>
-            <tr>
-              <th>S. No.</th>
-              <th>Title</th>
-              <th>Date(s)</th>
-              <th>Type</th>
-              <th>URL</th>
-              <th>Archive</th>
-              <th>Edit</th>
+        <table className="vf-table vf-table--striped">
+          <thead className="vf-table__header">
+            <tr className="vf-table__row">
+              <th className="vf-table__heading">S. No.</th>
+              <th className="vf-table__heading">Title</th>
+              <th className="vf-table__heading">Date(s)</th>
+              <th className="vf-table__heading">Type</th>
+              <th className="vf-table__heading">URL</th>
+              <th className="vf-table__heading">Archive</th>
+              <th className="vf-table__heading">Edit</th>
             </tr>
           </thead>
-          {resources.length > 0 ? (
-            <tbody>{ListOfResources}</tbody>
+          {resources ? (
+            resources.length > 0 ? (
+              <tbody className="vf-table__body">{ListOfResources}</tbody>
+            ) : (
+              <h5>No resulds found</h5>
+            )
           ) : (
             <center>
               <img alt="progress" src="progressbar.gif" />
-              <h4>Loading results...</h4>
+              <h4>Loading resources</h4>
             </center>
           )}
         </table>
+        <nav className="vf-pagination" aria-label="Pagination">
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={50}
+            totalItemsCount={this.state.totalItemsCount}
+            pageRangeDisplayed={5}
+            onChange={e => this.handlePageChange(e)}
+            innerClass="vf-pagination__list"
+            itemClass="vf-pagination__item"
+            itemClassPrev="vf-pagination__item--previous-page"
+            itemClassNext="vf-pagination__item--next-page"
+            linkClass="vf-pagination__link vf-pagination__label"
+            activeClass="vf-pagination__item--is-active"
+            prevPageText="Previous"
+            nextPageText="Next"
+          />
+        </nav>
       </div>
     );
   }

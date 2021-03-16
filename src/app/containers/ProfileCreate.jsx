@@ -296,7 +296,13 @@ export const ProfileCreate = props => {
       submitButtonLabel = 'Add Competencies';
     }
 
-    return <input type="submit" className="button" value={submitButtonLabel} />;
+    return (
+      <input
+        type="submit"
+        className="vf-button vf-button--sm vf-button-primary"
+        value={submitButtonLabel}
+      />
+    );
   }
 
   const getWhoCreateProfile = () => {
@@ -368,9 +374,13 @@ export const ProfileCreate = props => {
   return (
     <div>
       <h2>Create {placeholder} profile</h2>
-      <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="column large-4">
+      <form
+        className="vf-form"
+        id="profile_create_form"
+        onSubmit={handleSubmit}
+      >
+        <div className="vf-grid vf-grid__col-6">
+          <div className="vf-grid__col--span-2">
             <span>
               <strong>Name</strong>
               <input
@@ -379,41 +389,16 @@ export const ProfileCreate = props => {
                 placeholder="Name"
                 onChange={e => setTitle(e.target.value)}
                 defaultValue={profile ? profile.title : title}
+                className="vf-form__input"
               />
               <div className={titleCalloutClass}>
                 <i>{nameHelp}</i>
               </div>
             </span>
-          </div>
-          <div className="column large-8">
-            <span>
-              <strong>Job title</strong>
-              <input
-                type="text"
-                id="jobTitle"
-                placeholder="Job title"
-                onChange={e => setJobTitle(e.target.value)}
-                defaultValue={profile ? profile.jobTitle : jobTitle}
-              />
-              <div className={jobTitleCalloutClass}>
-                <i>{jobTitleHelp}</i>
-              </div>
-            </span>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="column large-4">&nbsp;</div>
-          <div className="column large-8" />
-        </div>
-
-        <div className="row">
-          <div className="column large-4">
             <span>
               <strong>Image</strong>
               <input type="file" id="fileupload" onChange={onSelectFile} />
             </span>
-
             <span>
               <img
                 id="imgpreview_image"
@@ -452,9 +437,6 @@ export const ProfileCreate = props => {
                 ''
               )}
             </span>
-
-            <br />
-            <br />
             <span>
               <strong>Age (in years)</strong>
               <input
@@ -464,6 +446,7 @@ export const ProfileCreate = props => {
                 width={4}
                 onChange={e => setAge(e.target.value)}
                 defaultValue={profile ? profile.age : age}
+                className="vf-form__input"
               />
             </span>
 
@@ -472,6 +455,7 @@ export const ProfileCreate = props => {
               <select
                 onChange={e => setGender(e.target.value)}
                 defaultValue={profile ? profile.gender : gender}
+                className="vf-form__input"
               >
                 <option value={'None'}>None</option>
                 <option value={'Male'}>Male</option>
@@ -481,7 +465,21 @@ export const ProfileCreate = props => {
               </select>
             </span>
           </div>
-          <div className="column large-8">
+          <div className="vf-grid__col--span-4">
+            <span>
+              <strong>Job title</strong>
+              <input
+                type="text"
+                id="jobTitle"
+                placeholder="Job title"
+                onChange={e => setJobTitle(e.target.value)}
+                defaultValue={profile ? profile.jobTitle : jobTitle}
+                className="vf-form__input"
+              />
+              <div className={jobTitleCalloutClass}>
+                <i>{jobTitleHelp}</i>
+              </div>
+            </span>
             <span>
               <strong>Qualification and background</strong>
               <CKEditor
@@ -492,12 +490,13 @@ export const ProfileCreate = props => {
                   const data = editor.getData();
                   setQualification(data);
                 }}
+                className="vf-form__input"
               />
             </span>
 
             <br />
             <span>
-              <strong>Acitivities of current role</strong>
+              <strong>Activities of current role</strong>
               <CKEditor
                 editor={ClassicEditor}
                 data={currentRole}
@@ -506,6 +505,7 @@ export const ProfileCreate = props => {
                   const data = editor.getData();
                   setCurrentRole(data);
                 }}
+                className="vf-form__input"
               />
             </span>
 
@@ -520,19 +520,19 @@ export const ProfileCreate = props => {
                   const data = editor.getData();
                   setAdditionalInfo(data);
                 }}
+                className="vf-form__input"
               />
             </span>
             <br />
           </div>
         </div>
 
-        <p />
-        <div className="row">
-          <div className="column medium-2" />
-          <div className="column medium-3">
+        <div className="vf-grid">
+          <div />
+          <div>
             <ButtonLabel />
           </div>
-          <div className="column medium-7" />
+          <div />
         </div>
       </form>
     </div>

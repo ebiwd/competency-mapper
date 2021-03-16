@@ -21,13 +21,17 @@ function CompetencyList({
   const attributes = attrTypes.map(type => {
     const attributes = attributesGrouped[type]
       ? attributesGrouped[type].map(attribute => (
-          <li key={attribute.id}>{attribute.title}</li>
+          <li className="vf-list__item" key={attribute.id}>
+            {attribute.title}
+          </li>
         ))
       : '';
     return attributes ? (
       <div key={type} className="attribute_type">
         <em>{type}</em>
-        <ul>{attributes}</ul>
+        <ul className="vf-list--unordered" style={{ paddingLeft: '24px' }}>
+          {attributes}
+        </ul>
       </div>
     ) : (
       ''
@@ -44,33 +48,29 @@ function CompetencyList({
         <Collapsible
           trigger={
             <div className="open-close-title">
-              <span className="icon icon-common icon-angle-right float-left icon-custom">
-                <p className="show-for-sr">show more</p>
-              </span>
+              <span className="icon icon-common icon-angle-right float-left icon-custom" />
               <span>{competency.title}</span>
             </div>
           }
           triggerWhenOpen={
             <div className="open-close-title">
-              <span className="icon icon-common icon-angle-down float-left icon-custom">
-                <p className="show-for-sr">show less</p>
-              </span>
+              <span className="icon icon-common icon-angle-down float-left icon-custom" />
               <span>{competency.title}</span>
             </div>
           }
         >
-          <div className="padding-left-large padding-top-large">
+          <div>
+            {attributes}
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.id
               }`}
             >
-              <span className="float-right">
+              <span style={{ float: 'right' }}>
                 <i className="icon icon-spacer icon-common icon-info" />
                 More details
               </span>
             </Link>
-            {attributes}
           </div>
         </Collapsible>
       </td>

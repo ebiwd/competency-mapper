@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { apiUrl } from '../../services/http/http';
 import HttpService from '../../services/http/http';
+//import ManageFrameworks from './ManageFrameworks';
 
 const http = new HttpService();
 
@@ -19,7 +20,7 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    $(this.navRef.current).foundation();
+    //$(this.navRef.current).foundation();
     fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
       method: 'GET',
       credentials: 'include'
@@ -29,7 +30,6 @@ class Navigation extends Component {
         this.setState({
           frameworks: findresponse
         });
-        //console.log(findresponse)
       });
   }
 
@@ -41,87 +41,77 @@ class Navigation extends Component {
   render() {
     const { roles, user } = this.props;
     const frameworkResources = (
-      <li key="navigation">
-        <a // eslint-disable-line jsx-a11y/anchor-is-valid
-          tabIndex="0"
-          className="dropdown-on-dark-background"
-        >
-          Manage Competencies
-        </a>
-        <ul className="menu vertical">
-          {this.state.frameworks ? (
-            this.state.frameworks.map(framework => {
-              return (
-                <li key={framework}>
-                  <Link
-                    to={`/framework/${framework
-                      .toLowerCase()
-                      .replace(/\s+/g, '')}/manage/data`}
-                  >
-                    {framework}
-                  </Link>
-                </li>
-              );
-            })
-          ) : (
-            <li style={{ color: '#000' }}>
-              No Framework assigned to this user.
-            </li>
-          )}
-        </ul>
-      </li>
+      <>
+        <li className="vf-list__item" key="navigation">
+          <Link
+            className="vf-link"
+            to="/manage-frameworks" // eslint-disable-line jsx-a11y/anchor-is-valid
+            tabIndex="0"
+          >
+            Manage frameworks
+          </Link>
+        </li>
+        <li className="vf-list__item" style={{ padding: '5px' }}>
+          |
+        </li>
+      </>
     );
 
     const trainingResources = (
-      <li key="resources">
-        <Link to="/all-training-resources">Manage Training Resources</Link>
-      </li>
+      <>
+        <li className="vf-list__item" key="resources">
+          <Link className="vf-link" to="all-training-resources">
+            Manage Training Resources
+          </Link>
+        </li>
+        <li className="vf-list__item" style={{ padding: '5px' }}>
+          |
+        </li>
+      </>
     );
 
     const userDropdown = (
-      <li key="dropdown-on-light-background">
-        <a // eslint-disable-line jsx-a11y/anchor-is-valid
-          tabIndex="0"
-          className="dropdown-on-light-background"
+      <>
+        <li
+          className="vf-list__item"
+          key="myaccount"
+          style={{ padding: '5px' }}
         >
-          <i className="fas fa-user" /> Hi {user}
-        </a>
-        <ul className="menu vertical">
-          <li key="myaccount">
-            <Link to={'/user/view'}>My account</Link>
-          </li>
-          <li key="changepwd">
-            <Link to={'/user/change/password'}>Change password</Link>
-          </li>
-          <li>
-            <a // eslint-disable-line jsx-a11y/anchor-is-valid
-              onClick={this.logout}
-            >
-              Logout
-            </a>
-          </li>
-        </ul>
-      </li>
+          <Link className="vf-link" to={'/user/view'}>
+            My account
+          </Link>
+        </li>
+        <li
+          className="vf-list__item"
+          key="changepwd"
+          style={{ padding: '5px' }}
+        >
+          <Link className="vf-link" to={'/user/change/password'}>
+            Change password
+          </Link>
+        </li>
+        <li className="vf-list__item" style={{ padding: '5px' }}>
+          <a
+            className="vf-link"
+            href="#" // eslint-disable-line jsx-a11y/anchor-is-valid
+            onClick={this.logout}
+          >
+            Logout
+          </a>
+        </li>
+      </>
     );
 
     return (
-      <nav ref={this.navRef}>
-        <ul
-          className="dropdown menu float-left"
-          data-dropdown-menu
-          data-description="navigational"
-        >
-          {roles.includes('framework_manager') && frameworkResources}
-          {roles.includes('content_manager') && trainingResources}
-        </ul>
-        <ul
-          className="dropdown menu float-right"
-          data-dropdown-menu
-          data-description="user tasks"
-        >
-          {userDropdown}
-        </ul>
-      </nav>
+      <div>
+        <div className="vf-breadcrumbs">
+          <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
+            {roles.includes('framework_manager') && frameworkResources}
+            {roles.includes('content_manager') && trainingResources}
+            {userDropdown}
+          </ul>
+        </div>
+      </div>
     );
   }
 }

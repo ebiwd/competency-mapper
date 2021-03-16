@@ -412,6 +412,18 @@ class ResourceDetails extends React.Component {
 
     return (
       <div className={'row'}>
+        <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
+          <ul class="vf-breadcrumbs__list | vf-list vf-list--inline">
+            <li class="vf-breadcrumbs__item">
+              <Link to="/" class="vf-breadcrumbs__link">
+                Home
+              </Link>
+            </li>
+            <li class="vf-breadcrumbs__item" aria-current="location">
+              Training resource
+            </li>
+          </ul>
+        </nav>
         {this.checkUser() ? (
           <p>
             <nav>

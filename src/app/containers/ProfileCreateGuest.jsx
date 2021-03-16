@@ -320,13 +320,6 @@ export const ProfileCreateGuest = props => {
 
   return (
     <div>
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       <h2>Create / Edit {placeholder} profile</h2>
       <div className="callout warning">
         <i class="icon icon-common icon-exclamation-triangle" /> Your profile
@@ -338,9 +331,13 @@ export const ProfileCreateGuest = props => {
         for help.
         <GuestHelp modalOpen={modalOpen} closeModal={closeModal} />
       </div>
-      <form className="form" id="profile_create_form" onSubmit={handleSubmit}>
-        <div className="row">
-          <div className="column large-4">
+      <form
+        className="vf-form"
+        id="profile_create_form"
+        onSubmit={handleSubmit}
+      >
+        <div className="vf-grid vf-grid__col-6">
+          <div className="vf-grid__col--span-2">
             <span>
               <strong>Name</strong>
               <input
@@ -349,36 +346,12 @@ export const ProfileCreateGuest = props => {
                 placeholder="Name"
                 onChange={e => setTitle(e.target.value)}
                 defaultValue={profile ? profile.title : ''}
+                className="vf-form__input"
               />
               <div className={titleCalloutClass}>
                 <i>{nameHelp}</i>
               </div>
             </span>
-          </div>
-          <div className="column large-8">
-            <span>
-              <strong>Job title</strong>
-              <input
-                type="text"
-                id="jobTitle"
-                placeholder="Job title"
-                onChange={e => setJobTitle(e.target.value)}
-                defaultValue={profile ? profile.job_title : ''}
-              />
-              <div className={jobTitleCalloutClass}>
-                <i>{jobTitleHelp}</i>
-              </div>
-            </span>
-          </div>
-        </div>
-
-        <div className="row">
-          <div className="column large-4">&nbsp;</div>
-          <div className="column large-8" />
-        </div>
-
-        <div className="row">
-          <div className="column large-4">
             <span>
               <strong>Image</strong>
               <input type="file" id="fileupload" onChange={onSelectFile} />
@@ -422,9 +395,6 @@ export const ProfileCreateGuest = props => {
                 ''
               )}
             </span>
-
-            <br />
-            <br />
             <span>
               <strong>Age (in years)</strong>
               <input
@@ -434,6 +404,7 @@ export const ProfileCreateGuest = props => {
                 width={4}
                 onChange={e => setAge(e.target.value)}
                 defaultValue={profile ? profile.age : ''}
+                className="vf-form__input"
               />
             </span>
 
@@ -443,6 +414,7 @@ export const ProfileCreateGuest = props => {
                 onChange={e => setGender(e.target.value)}
                 //defaultValue={gender?gender:'-None-'}
                 value={gender ? gender : '-None-'}
+                className="vf-form__select"
               >
                 <option value={'None'}>None</option>
                 <option value={'Male'}>Male</option>
@@ -452,7 +424,21 @@ export const ProfileCreateGuest = props => {
               </select>
             </span>
           </div>
-          <div className="column large-8">
+          <div className="vf-grid__col--span-4">
+            <span>
+              <strong>Job title</strong>
+              <input
+                type="text"
+                id="jobTitle"
+                placeholder="Job title"
+                onChange={e => setJobTitle(e.target.value)}
+                defaultValue={profile ? profile.job_title : ''}
+                className="vf-form__input"
+              />
+              <div className={jobTitleCalloutClass}>
+                <i>{jobTitleHelp}</i>
+              </div>
+            </span>
             <span>
               <strong>Qualification and background</strong>
               <CKEditor
@@ -465,12 +451,13 @@ export const ProfileCreateGuest = props => {
                   const data = editor.getData();
                   setQualification(data);
                 }}
+                className="vf-form__input"
               />
             </span>
 
             <br />
             <span>
-              <strong>Acitivities of current role</strong>
+              <strong>Activities of current role</strong>
               <CKEditor
                 editor={ClassicEditor}
                 data={storedProfile ? storedProfile.current_role : ''}
@@ -479,6 +466,7 @@ export const ProfileCreateGuest = props => {
                   const data = editor.getData();
                   setCurrentRole(data);
                 }}
+                className="vf-form__input"
               />
             </span>
 
@@ -493,9 +481,9 @@ export const ProfileCreateGuest = props => {
                   const data = editor.getData();
                   setAdditionalInfo(data);
                 }}
+                className="vf-form__input"
               />
             </span>
-            <br />
           </div>
         </div>
 

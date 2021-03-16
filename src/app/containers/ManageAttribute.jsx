@@ -202,7 +202,7 @@ class ManageAttribute extends React.Component {
             <span style={{ display: 'flex' }}>
               {editableFrm === true ? (
                 <button
-                  className="addButton icon icon-common icon-plus-circle icon-custom "
+                  className="ch_link addButton icon icon-common icon-plus-circle icon-custom "
                   data-competencyid={competency.id}
                   data-competencytitle={competency.title}
                   data-typetitle={def.title}
@@ -242,7 +242,7 @@ class ManageAttribute extends React.Component {
                           <>
                             <span className="edit-indicator">
                               <button
-                                className="cursor"
+                                className="ch_link"
                                 onClick={() =>
                                   this.archiveAttribute(attr.id, attr.archived)
                                 }
@@ -261,7 +261,7 @@ class ManageAttribute extends React.Component {
                             </span>
                             <span className="edit-indicator">
                               <button
-                                className="addButton icon icon-common icon-sort"
+                                className="ch_link addButton icon icon-common icon-sort"
                                 title="Change order"
                                 data-typetitle={def.title}
                                 onClick={e =>
@@ -345,14 +345,18 @@ class ManageAttribute extends React.Component {
           <h3>Add {attributeTypeTitle} attributes</h3>
           <h4>{parentTitle} </h4>
           <h5>Please enter one {attributeTypeTitle} attribute per line</h5>
-          <form>
+          <form className="vf-form">
             <textarea
               id="attribute_txt"
               rows="5"
               onChange={e => this.setAttributes(e)}
               required
+              className="vf-form__input"
             />
-            <button className="button" onClick={e => this.saveAttributes(e)}>
+            <button
+              className="vf-button vf-button--primary vf-button--sm"
+              onClick={e => this.saveAttributes(e)}
+            >
               Save
             </button>
           </form>
@@ -373,7 +377,6 @@ class ManageAttribute extends React.Component {
           <p>Please drag and drop items to change order</p>
           {this.state.competency.id ? (
             <>
-              {console.log(competency)}
               <h4>{this.state.competency.title}</h4>
               <ul onDragOver={this.dragOver.bind(this)}>
                 {this.state.competency.attributes.map((attribute, i) => {
@@ -399,7 +402,10 @@ class ManageAttribute extends React.Component {
             ''
           )}
 
-          <button className="button primary" onClick={this.saveSorting}>
+          <button
+            className="vf-button vf-button--primary vf-button--sm"
+            onClick={this.saveSorting}
+          >
             Save
           </button>
         </Modal>

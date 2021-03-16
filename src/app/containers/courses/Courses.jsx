@@ -147,13 +147,31 @@ class Courses extends Component {
 
     return (
       <>
-        <input
+        {/* <input
           type="search"
           // className="clearable" // It doesn't work correctly
           value={filter}
           onChange={event => this.onFilter(event.target.value)}
           placeholder="Filter resources"
-        />
+        /> */}
+        <form action="#" class="vf-form | vf-search vf-search--inline">
+          <div className="vf-form__item | vf-search__item">
+            <label
+              className="vf-form__label vf-u-sr-only | vf-search__label"
+              for="inlinesearchitem"
+            >
+              Inline search
+            </label>
+            <input
+              type="search"
+              placeholder="Filter training resources"
+              id="inlinesearchitem"
+              className="vf-form__input | vf-search__input"
+              onChange={event => this.onFilter(event.target.value)}
+              value={filter}
+            />
+          </div>
+        </form>
         <table>
           <thead>
             <tr>

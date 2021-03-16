@@ -32,6 +32,8 @@ class LoginForm extends Component {
 
   CloseModal() {
     this.setState({ showModal: false });
+    //document.location.reload();
+
     //console.log(this.state.showModal)
   }
 
@@ -48,14 +50,15 @@ class LoginForm extends Component {
     return (
       <nav>
         {/* The wrapping in an `ul.menu.float-left > li` is necessary for the sticky header to work */}
-        <a
-          style={{ float: 'right', color: '#000' }}
+        <button
+          style={{ float: 'right' }}
           href={'#'}
-          id="loginSwitch"
+          //id="loginSwitch"
           onClick={e => this.OpenModal(e)}
+          className="vf-button vf-button--sm vf-button--tertiary vf-button--outline"
         >
           Admin login <i className="fa fa-key" aria-hidden="true" />
-        </a>
+        </button>
         <Modal
           open={this.state.showModal}
           onClose={e => this.CloseModal()}
@@ -65,46 +68,43 @@ class LoginForm extends Component {
             modal: 'customModal'
           }}
         >
-          <ul id="loginForm" className="menu float-left small-12">
-            <li className="small-12 margin-bottom-large">
-              <div className="columns small-12 medium-12 large-12 margin-top-large">
-                <h3>Admin login</h3>
-                <p>
-                  If you are a framework manager or content manager, please
-                  login to continue
-                </p>
-              </div>
-              <label className="columns small-12 medium-12 large-12 margin-top-large">
-                <input
-                  value={username}
-                  name="username"
-                  onChange={event => this.onChange(event)}
-                  type="text"
-                  autoComplete="username"
-                  placeholder="Username"
-                />
-              </label>
-              <label className="columns small-12 medium-12 large-12 margin-top-large">
-                <input
-                  value={password}
-                  name="password"
-                  onChange={event => this.onChange(event)}
-                  type="password"
-                  autoComplete="current-password"
-                  placeholder="Password"
-                />
-              </label>
-              <div className="columns small-12 medium-12 large-12 margin-top-large">
-                <button
-                  className="button"
-                  type="button"
-                  onClick={() => this.submit()}
-                >
-                  <i className="fa fa-key" aria-hidden="true" /> Login
-                </button>
-              </div>
-            </li>
-          </ul>
+          <div className="columns small-12 medium-12 large-12 margin-top-large">
+            <h3>Admin login</h3>
+            <p>
+              If you are a framework manager or content manager, please login to
+              continue
+            </p>
+          </div>
+          <div className="vf-form__item">
+            <input
+              value={username}
+              name="username"
+              onChange={event => this.onChange(event)}
+              type="text"
+              autoComplete="username"
+              placeholder="Username"
+              className="vf-form__input"
+            />
+          </div>
+          <div className="vf-form__item">
+            <input
+              value={password}
+              name="password"
+              onChange={event => this.onChange(event)}
+              type="password"
+              autoComplete="current-password"
+              placeholder="Password"
+              className="vf-form__input"
+            />
+          </div>
+          <div>
+            <button
+              className="vf-button vf-button--sm vf-button--primary"
+              onClick={() => this.submit()}
+            >
+              <i className="fa fa-key" aria-hidden="true" /> Login
+            </button>
+          </div>
         </Modal>
       </nav>
     );

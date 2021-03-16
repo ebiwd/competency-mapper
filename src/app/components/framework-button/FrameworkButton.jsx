@@ -49,32 +49,89 @@ function FrameworkButton({ framework }) {
     }
   ];
 
+  const logoStyles = [
+    {
+      title: 'bioexcel',
+      width: '250px',
+      left: '15%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'corbel',
+      width: '200px',
+      left: '25%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'ritrain',
+      width: '150px',
+      left: '25%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'iscb',
+      width: '200px',
+      left: '25%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'nhs',
+      width: '300px',
+      left: '10%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'cineca',
+      width: '250px',
+      left: '15%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'datasteward',
+      width: '340px',
+      left: '10%',
+      position: 'relative',
+      objectFit: 'contain'
+    }
+  ];
   return (
-    <div className="column medium-4">
-      <Link
-        className="column callout"
-        data-equalizer-watch
-        to={`/framework/${framework.title
-          .toLowerCase()
-          .replace(/ /g, '')}/${liveVersion}`}
-      >
-        <img
-          className="float-center margin-bottom-medium"
-          style={{ height: '6rem' }}
-          src={framework.logo[0].url}
-          alt="competency logo"
-        />
-        <h5>
-          {/* {description} */}
+    <article className="vf-card vf-card--primary">
+      <img
+        alt="tile"
+        className="vf-card__image"
+        src={`https://acxngcvroo.cloudimg.io/v7/${framework.logo[0].url}?w=600`}
+        style={logoStyles.find(
+          el => el.title === framework.title.toLowerCase().replace(/ /g, '')
+        )}
+      />
+      <div className="vf-card__content | vf-stack vf-stack--400">
+        <div className="vf-card__title">
+          <Link
+            className="vf-card__link"
+            data-equalizer-watch
+            to={`/framework/${framework.title
+              .toLowerCase()
+              .replace(/ /g, '')}/${liveVersion}`}
+          >
+            {framework.title}
+          </Link>
+        </div>
+
+        <div className="vf-card__text">
           {tempDesc.map(item =>
             item.title === framework.title.toLowerCase().replace(/ /g, '')
               ? item.desc
               : ''
           )}
-          {/* <i className="icon icon-functional" data-icon=">" /> */}
-        </h5>
-      </Link>
-    </div>
+        </div>
+      </div>
+    </article>
   );
 }
 

@@ -121,14 +121,14 @@ export const VersionControls: React.FC<Props> = ({
         </Modal>
         <span className="padding-right-small">
           <button
-            className="button secondary"
+            className="vf-button vf-button--tertiary vf-button--sm"
             onClick={() => setPressedRelease(true)}
           >
             Release new version <i className="icon icon-common icon-send" />
           </button>
         </span>
         <button
-          className="button secondary"
+          className="vf-button vf-button--tertiary vf-button--sm"
           onClick={() => setPressedNotes(true)}
         >
           Update release notes <i className="icon icon-common icon-edit" />
@@ -140,7 +140,10 @@ export const VersionControls: React.FC<Props> = ({
   return (
     <div>
       <span className="padding-right-small">
-        <button className="button" onClick={() => createDraft()}>
+        <button
+          className="vf-button vf-button--tertiary vf-button--sm"
+          onClick={() => createDraft()}
+        >
           Create draft
         </button>
       </span>

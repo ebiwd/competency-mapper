@@ -103,14 +103,14 @@ export const ProfileViewGuest = props => {
             //level => (expertise_levels[level.rating_level] = level.title)
             level =>
               expertise_levels_legend.push(
-                <li style={{ textAlign: 'center' }}>
+                <li className="vf-list__item" style={{ textAlign: 'center' }}>
                   <div
                     data-tip={level.description ? level.description : 'NA'}
                     data-html={true}
                     data-type="info"
                     data-multiline={true}
                   >
-                    <span className="badge secondary">
+                    <span className="vf-badge vf-badge--tertiary">
                       {' '}
                       {level.rating_level}{' '}
                     </span>{' '}
@@ -147,8 +147,8 @@ export const ProfileViewGuest = props => {
             </div>
             {domain.competencies.map(competency => (
               <div>
-                <div className="row">
-                  <div className="column medium-8">
+                <div className="vf-grid vf-grid__col-4">
+                  <div className="vf-grid__col--span-3">
                     <span className="competency_title">
                       {' '}
                       {competency.title.length > 150
@@ -159,7 +159,7 @@ export const ProfileViewGuest = props => {
                         : competency.title}
                     </span>
                   </div>
-                  <div className="column medium-4">
+                  <div className="vf-grid__col--span-1">
                     <div className="fillerbg">
                       <div
                         className="fillerRight"
@@ -204,11 +204,11 @@ export const ProfileViewGuest = props => {
                           className="accordion-item is-active"
                           data-accordion-item
                         >
-                          <div className="row attribute_align_type">
-                            <div className="column medium-8">
+                          <div className="vf-grid vf-grid__col-4 attribute_align_type">
+                            <div className="vf-grid__col--span-3">
                               <strong> {attribute_type} </strong>
                             </div>
-                            <div className="column medium-4" />
+                            <div className="vf-grid__col--span-1" />
                           </div>
                           {competency.attributes
                             .filter(
@@ -216,11 +216,11 @@ export const ProfileViewGuest = props => {
                             )
                             .map(attribute => {
                               return (
-                                <div className="row attribute_align">
-                                  <div className="column medium-8">
+                                <div className="vf-grid vf-grid__col-4 attribute_align">
+                                  <div className="vf-grid__col--span-3">
                                     {attribute.title}
                                   </div>
-                                  <div className="column medium-4">
+                                  <div className="vf-grid__col--span-1">
                                     {getAttributeStatus(
                                       attribute.id,
                                       'profile1'
@@ -253,13 +253,6 @@ export const ProfileViewGuest = props => {
   return (
     <div>
       {generateProfileView()}
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkFullName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       {profile ? (
         <div id="profile">
           <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
@@ -270,6 +263,7 @@ export const ProfileViewGuest = props => {
             <ul>
               <li className="profile_navigation">
                 <Link
+                  className="vf-button vf-button--sm vf-button--primary"
                   to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
                 >
                   Edit overview
@@ -278,6 +272,7 @@ export const ProfileViewGuest = props => {
               </li>
               <li className="profile_navigation">
                 <Link
+                  className="vf-button vf-button--sm vf-button--primary"
                   to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/guest`}
                 >
                   Map competencies <i className="icon icon-common icon-cog" />{' '}
@@ -286,8 +281,10 @@ export const ProfileViewGuest = props => {
             </ul>
           </div>
 
-          <div className={profile.publishing_status + ' row'}>
-            <div className="column large-3">
+          <div
+            className={profile.publishing_status + ' vf-grid vf-grid__col-4'}
+          >
+            <div className="vf-grid__col--span-1">
               <center>
                 <img
                   style={{ display: 'block', maxWidth: '150px' }}
@@ -321,7 +318,7 @@ export const ProfileViewGuest = props => {
                 {profile.age ? <p> Age: {profile.age + ' years'} </p> : ''}
               </p>
             </div>
-            <div className="column large-9">
+            <div className="vf-grid__col--span-3">
               <h3>Qualification and background</h3>
               <p>
                 {profile.qualification_background
@@ -342,21 +339,21 @@ export const ProfileViewGuest = props => {
           </div>
           <p>&nbsp;</p>
 
-          <div className="row">
-            <div className="column medium-3">
+          <div className="vf-grid vf-grid__col-4">
+            <div className="vf-grid__col--span-1">
               {' '}
               <h5 style={{ marginTop: '25px' }}>
                 {frameworkFullName} {frameworkVersion} / Competencies
               </h5>
             </div>
-            <div className="column medium-9 " />
-          </div>
-          <div className="row">
-            <div className="column medium-12">
-              <ul className="legend-inline" style={{ float: 'right' }}>
+            <div className="vf-grid__col--span-3">
+              <ul className="vf-list legend-inline" style={{ float: 'right' }}>
                 {expertise_levels_legend}
               </ul>
             </div>
+          </div>
+          <div className="row">
+            <div className="column medium-12" />
           </div>
           <hr />
           {competencyView}

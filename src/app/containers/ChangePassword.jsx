@@ -54,13 +54,27 @@ class ChangePassword extends React.Component {
     return (
       <div>
         <h3>Change password:</h3>
-        <form id={'passChange'}>
-          <input type={'password'} ref={'old'} placeholder={'Old password'} />
-          <input type={'password'} ref={'new1'} placeholder={'New password'} />
-          <input type={'password'} placeholder={'Confirm new password'} />
+        <form className="vf-form" id={'passChange'}>
+          <input
+            className="vf-form__input"
+            type={'password'}
+            ref={'old'}
+            placeholder={'Old password'}
+          />
+          <input
+            className="vf-form__input"
+            type={'password'}
+            ref={'new1'}
+            placeholder={'New password'}
+          />
+          <input
+            className="vf-form__input"
+            type={'password'}
+            placeholder={'Confirm new password'}
+          />
           <input
             type={'button'}
-            className={'button'}
+            className={'vf-button vf-button--sm vf-button--primary'}
             onClick={this.handlePasswordChange.bind(this)}
             value={'Submit'}
           />

@@ -40,7 +40,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
           {version.number}
         </Link>{' '}
         <button
-          className="anchor-like"
+          className="vf-link ch_link"
           onClick={() => {
             setNotes('Version: ' + version.number + version.release_notes);
             setShowNotes(true);
@@ -55,6 +55,17 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
     <>
       <Modal isOpen={showNotes} style={customStyles}>
         <h4>Release notes for {framework} </h4>
+        <div style={{ float: 'right' }}>
+          <button
+            className="button"
+            onClick={() => {
+              setNotes('');
+              setShowNotes(false);
+            }}
+          >
+            X
+          </button>
+        </div>
         {Parser(notes)}
         {versionItems}
         <div className="padding-top-large">
@@ -69,7 +80,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
           </button>
         </div>
       </Modal>
-      <div className="callout">
+      <div>
         <h5>Framework versions</h5>
         {versions.length === 0 ? (
           'No previous versions'

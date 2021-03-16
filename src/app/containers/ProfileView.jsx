@@ -139,14 +139,14 @@ export const ProfileView = props => {
             //level => (expertise_levels[level.rating_level] = level.title)
             level =>
               expertise_levels_legend.push(
-                <li style={{ textAlign: 'center' }}>
+                <li className="vf-list__item" style={{ textAlign: 'center' }}>
                   <div
                     data-tip={level.description ? level.description : 'NA'}
                     data-html={true}
                     data-type="info"
                     data-multiline={true}
                   >
-                    <span className="badge secondary">
+                    <span className="vf-badge vf-badge--tertiary">
                       {' '}
                       {level.rating_level}{' '}
                     </span>{' '}
@@ -174,108 +174,113 @@ export const ProfileView = props => {
     if (framework) {
       competencyView = framework.map(item =>
         item.domains.map(domain => (
-          <div>
-            <div className="row callout">
-              <div className="column medium-12 ">
-                <h5>{domain.title}</h5>{' '}
+          <>
+            <div>
+              <div>
+                <h4>{domain.title}</h4>{' '}
               </div>
             </div>
-            {domain.competencies.map(competency => (
+            <div>
               <div>
-                <div className="row">
-                  <div className="column medium-8">
-                    <span className="competency_title">
-                      {' '}
-                      {competency.title.length > 150
-                        ? competency.title
-                            .split(' ')
-                            .splice(0, 18)
-                            .join(' ') + ' ..'
-                        : competency.title}
-                    </span>
-                  </div>
-                  <div className="column medium-4">
-                    <div className="fillerbg">
-                      <div
-                        className="fillerRight"
-                        style={{
-                          width: getBarWidth(getExpertise(competency.id)) + '%',
-                          display: 'flow-root'
-                        }}
-                      >
-                        <span
-                          style={{
-                            float:
-                              getBarWidth(getExpertise(competency.id)) == 0
-                                ? 'none'
-                                : 'right'
-                          }}
-                          className="rating_level_number"
-                        >
-                          {getExpertise(competency.id)
-                            ? getExpertise(competency.id).rating_level
-                            : 0}
+                {domain.competencies.map(competency => (
+                  <>
+                    <div className="vf-grid vf-grid__col-4">
+                      <div className="vf-grid__col--span-3">
+                        <span className="vf-text vf-text-heading--5 competency_title">
+                          {competency.title.length > 150
+                            ? competency.title
+                                .split(' ')
+                                .splice(0, 18)
+                                .join(' ') + ' ..'
+                            : competency.title}
                         </span>
                       </div>
-                    </div>
-                  </div>
-                </div>
-                <div className="profile_collapsible">
-                  <Collapsible
-                    trigger={
-                      <div className="open-close-title">
-                        <i className="icon icon-common icon-angle-right icon-custom" />
-                      </div>
-                    }
-                    triggerWhenOpen={
-                      <div className="open-close-title">
-                        <i className="icon icon-common icon-angle-down icon-custom" />
-                      </div>
-                    }
-                  >
-                    {attribute_types.map(attribute_type => {
-                      return (
-                        <div
-                          className="accordion-item is-active"
-                          data-accordion-item
-                        >
-                          <div className="row attribute_align_type">
-                            <div className="column medium-8">
-                              <strong> {attribute_type} </strong>
-                            </div>
-                            <div className="column medium-4" />
+                      <div className="vf-grid__col--span-1">
+                        <div className="fillerbg">
+                          <div
+                            className="fillerRight"
+                            style={{
+                              width:
+                                getBarWidth(getExpertise(competency.id)) + '%',
+                              display: 'flow-root'
+                            }}
+                          >
+                            <span
+                              style={{
+                                float:
+                                  getBarWidth(getExpertise(competency.id)) == 0
+                                    ? 'none'
+                                    : 'right'
+                              }}
+                              className="rating_level_number"
+                            >
+                              {getExpertise(competency.id)
+                                ? getExpertise(competency.id).rating_level
+                                : 0}
+                            </span>
                           </div>
-                          {competency.attributes
-                            .filter(
-                              attribute => attribute.type == attribute_type
-                            )
-                            .map(attribute => {
-                              return (
-                                <div className="row attribute_align">
-                                  <div className="column medium-8">
-                                    {attribute.title}
-                                  </div>
-                                  <div className="column medium-4">
-                                    {getAttributeStatus(
-                                      attribute.id,
-                                      'profile1'
-                                    ) ? (
-                                      <i className="icon icon-common icon-check" />
-                                    ) : (
-                                      '-'
-                                    )}
-                                  </div>
-                                </div>
-                              );
-                            })}
                         </div>
-                      );
-                    })}
-                  </Collapsible>
-                </div>
+                      </div>
+                    </div>
+                    <div className="profile_collapsible">
+                      <Collapsible
+                        trigger={
+                          <div className="open-close-title">
+                            <i className="icon icon-common icon-angle-right icon-custom" />
+                          </div>
+                        }
+                        triggerWhenOpen={
+                          <div className="open-close-title">
+                            <i className="icon icon-common icon-angle-down icon-custom" />
+                          </div>
+                        }
+                      >
+                        {attribute_types.map(attribute_type => {
+                          return (
+                            <div
+                              className="accordion-item is-active"
+                              data-accordion-item
+                            >
+                              <div className="embl-grid">
+                                <div />
+                                <ul className="vf-list">
+                                  <div>
+                                    <strong> {attribute_type} </strong>
+                                  </div>
+                                  {competency.attributes
+                                    .filter(
+                                      attribute =>
+                                        attribute.type === attribute_type
+                                    )
+                                    .map(attribute => {
+                                      return (
+                                        <li className="vf-list__item">
+                                          <span style={{ marginRight: '20px' }}>
+                                            {getAttributeStatus(
+                                              attribute.id,
+                                              'profile1'
+                                            ) ? (
+                                              <i className="icon icon-common icon-check" />
+                                            ) : (
+                                              '-'
+                                            )}
+                                          </span>
+                                          <span>{attribute.title}</span>
+                                        </li>
+                                      );
+                                    })}
+                                </ul>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </Collapsible>
+                    </div>
+                  </>
+                ))}
               </div>
-            ))}
-          </div>
+            </div>
+          </>
         ))
       );
     }
@@ -365,19 +370,8 @@ export const ProfileView = props => {
   return (
     <div>
       {generateProfileView()}
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkFullName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       {profile ? (
         <div id="profile">
-          <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
-            {profile.title} - {profile.job_title}
-          </h2>
-
           <div style={{ float: 'right' }}>
             {user_roles.search('framework_manager') !== -1 &&
             userFrameworks.length > 0 &&
@@ -385,6 +379,7 @@ export const ProfileView = props => {
               <ul>
                 <li className="profile_navigation">
                   <Link
+                    className="vf-button vf-button--primary vf-button--sm"
                     to={`/framework/${frameworkName}/${frameworkVersion}/profile/edit/${profileId}`}
                   >
                     Edit overview
@@ -393,6 +388,7 @@ export const ProfileView = props => {
                 </li>
                 <li className="profile_navigation">
                   <Link
+                    className="vf-button vf-button--primary vf-button--sm"
                     to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/${profileId}`}
                   >
                     Map competencies <i className="icon icon-common icon-cog" />{' '}
@@ -402,15 +398,19 @@ export const ProfileView = props => {
               </ul>
             ) : (
               <Link
+                className="vf-button vf-button--primary vf-button--sm"
                 to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
               >
                 Create your profile <i className="icon icon-common icon-plus" />
               </Link>
             )}
           </div>
+          <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
+            {profile.title} - {profile.job_title}
+          </h2>
 
-          <div className={profile.publishing_status + ' row'}>
-            <div className="column large-3">
+          <div className={profile.publishing_status + ' embl-grid'}>
+            <div>
               <center>
                 <img
                   style={{ display: 'block', maxWidth: '200px' }}
@@ -442,7 +442,7 @@ export const ProfileView = props => {
                 {profile.age ? profile.age + ' years' : ''}
               </p>
             </div>
-            <div className="column large-9">
+            <div>
               <h3>Qualification and background</h3>
               <p>
                 {profile.qualification_background
@@ -459,9 +459,7 @@ export const ProfileView = props => {
                   : ''}
               </p>
             </div>
-            <p />
           </div>
-          <p>&nbsp;</p>
 
           <div className="row">
             <div className="column medium-3">
@@ -474,7 +472,7 @@ export const ProfileView = props => {
           </div>
           <div className="row">
             <div className="column medium-12">
-              <ul className="legend-inline" style={{ float: 'right' }}>
+              <ul className="vf-list legend-inline" style={{ float: 'right' }}>
                 {expertise_levels_legend}
               </ul>
             </div>
@@ -488,7 +486,7 @@ export const ProfileView = props => {
 
       <form onSubmit={e => handlePrint(e)}>
         <div className="submit_fixed">
-          <button className="button" type="submit">
+          <button className="vf-button" type="submit">
             Print <i className="icon icon-common icon-print" />
           </button>
         </div>

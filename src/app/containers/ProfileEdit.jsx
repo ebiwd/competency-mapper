@@ -169,7 +169,13 @@ export const ProfileEdit = props => {
       submitButtonLabel = 'Download';
     }
 
-    return <input type="submit" className="button" value={submitButtonLabel} />;
+    return (
+      <input
+        type="submit"
+        className="vf-button vf-button--primary vf-button--sm"
+        value={submitButtonLabel}
+      />
+    );
   }
 
   const getWhoCreateProfile = () => {
@@ -262,13 +268,6 @@ export const ProfileEdit = props => {
 
   return (
     <div>
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       {checkFMAccess() ? (
         <div>
           <Link
@@ -284,8 +283,8 @@ export const ProfileEdit = props => {
             id="profile_create_form"
             onSubmit={handleSubmit}
           >
-            <div className="row">
-              <div className="column large-4">
+            <div className="vf-grid vf-grid__col-4">
+              <div className="vf-grid__col--span-1">
                 <span>
                   <strong>Name</strong>
                   <input
@@ -294,36 +293,12 @@ export const ProfileEdit = props => {
                     placeholder="Name"
                     value={title}
                     onChange={e => setTitle(e.target.value)}
+                    className="vf-form__input"
                   />
                   <div className={titleCalloutClass}>
                     <i>{nameHelp}</i>
                   </div>
                 </span>
-              </div>
-              <div className="column large-8">
-                <span>
-                  <strong>Job title</strong>
-                  <input
-                    type="text"
-                    id="jobTitle"
-                    placeholder="Job title"
-                    value={jobTitle}
-                    onChange={e => setJobTitle(e.target.value)}
-                  />
-                  <div className={jobTitleCalloutClass}>
-                    <i>{jobTitleHelp}</i>
-                  </div>
-                </span>
-              </div>
-            </div>
-
-            <div className="row">
-              <div className="column large-4">&nbsp;</div>
-              <div className="column large-8" />
-            </div>
-
-            <div className="row">
-              <div className="column large-4">
                 <span>
                   <strong>Image</strong>
                   <input type="file" id="fileupload" onChange={onSelectFile} />
@@ -367,9 +342,6 @@ export const ProfileEdit = props => {
                     ''
                   )}
                 </span>
-
-                <br />
-                <br />
                 <span>
                   <strong>Age (in years)</strong>
                   <input
@@ -379,15 +351,16 @@ export const ProfileEdit = props => {
                     width={4}
                     value={age}
                     onChange={e => setAge(e.target.value)}
+                    className="vf-form__input"
                   />
                 </span>
-
                 <span>
                   <strong>Gender</strong>
                   <select
                     value={gender}
                     defaultValue="-None-"
                     onChange={e => setGender(e.target.value)}
+                    className="vf-form__select"
                   >
                     <option value={'None'}>None</option>
                     <option value={'Male'}>Male</option>
@@ -397,7 +370,21 @@ export const ProfileEdit = props => {
                   </select>
                 </span>
               </div>
-              <div className="column large-8">
+              <div className="vf-grid__col--span-3">
+                <span>
+                  <strong>Job title</strong>
+                  <input
+                    type="text"
+                    id="jobTitle"
+                    placeholder="Job title"
+                    value={jobTitle}
+                    onChange={e => setJobTitle(e.target.value)}
+                    className="vf-form__input"
+                  />
+                  <div className={jobTitleCalloutClass}>
+                    <i>{jobTitleHelp}</i>
+                  </div>
+                </span>
                 <span>
                   <strong>Qualification and background</strong>
                   <CKEditor
@@ -408,12 +395,13 @@ export const ProfileEdit = props => {
                       const data = editor.getData();
                       setQualification(data);
                     }}
+                    className="vf-form__input"
                   />
                 </span>
 
                 <br />
                 <span>
-                  <strong>Acitivities of current role</strong>
+                  <strong>Activities of current role</strong>
                   <CKEditor
                     editor={ClassicEditor}
                     data={currentRole}
@@ -422,6 +410,7 @@ export const ProfileEdit = props => {
                       const data = editor.getData();
                       setCurrentRole(data);
                     }}
+                    className="vf-form__input"
                   />
                 </span>
 
@@ -436,6 +425,7 @@ export const ProfileEdit = props => {
                       const data = editor.getData();
                       setAdditionalInfo(data);
                     }}
+                    className="vf-form__input"
                   />
                 </span>
 
@@ -445,12 +435,21 @@ export const ProfileEdit = props => {
                     value={publishStatus}
                     defaultValue="-None-"
                     onChange={e => setPublishStatus(e.target.value)}
+                    className="vf-form__select"
                   >
                     <option value={'Draft'}>Draft</option>
                     <option value={'Live'}>Live</option>
                   </select>
                 </span>
               </div>
+            </div>
+
+            <div className="row">
+              <div className="column large-4">
+                <br />
+                <br />
+              </div>
+              <div className="column large-8" />
             </div>
 
             <p />

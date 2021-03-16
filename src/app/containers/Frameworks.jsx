@@ -34,7 +34,7 @@ class Frameworks extends Component {
     const { frameworks } = this.state;
 
     return (
-      <div className="column">
+      <div>
         <h3>Overview</h3>
         <p className="lead">
           Competency Hub is a web-based tool to support the creation and
@@ -46,14 +46,20 @@ class Frameworks extends Component {
 
         <FrameworkButtons frameworks={frameworks} />
         <div style={{ padding: '20px' }}>
+          <hr class="vf-divider" />
+          <p>
+            <div>
+              <Link
+                to="/documentation"
+                className="vf-button vf-button--outline vf-button--primary vf-button--sm"
+              >
+                API documentation{' '}
+              </Link>
+            </div>
+          </p>
           <p>
             If you have any questions, comments or suggestions, please contact
             us: competency [at] ebi.ac.uk
-          </p>
-          <p>
-            <Link to="/documentation" className="readmore">
-              Developer documentation{' '}
-            </Link>
           </p>
         </div>
       </div>

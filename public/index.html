@@ -62,7 +62,7 @@
       color="#ffffff"
     />
 
-    <link
+    <!-- <link
       rel="stylesheet"
       href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/css/ebi-global.min.css"
       type="text/css"
@@ -77,6 +77,12 @@
     <link
       rel="stylesheet"
       href="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/css/theme-ebi-training.css"
+    /> -->
+
+    <!-- Css from new VF -->
+    <link
+      rel="stylesheet"
+      href="https://assets.emblstatic.net/vf/v2.4.5/css/styles.css"
     />
 
     <link
@@ -85,6 +91,7 @@
       type="text/css"
       media="all"
     />
+
     <link
       rel="stylesheet"
       href="https://use.fontawesome.com/releases/v5.1.0/css/all.css"
@@ -124,160 +131,14 @@
     </script>
     <!-- End Single Page Apps for GitHub Pages -->
   </head>
-  <body>
+  <body class="vf-body">
     <noscript>You need to enable JavaScript to run this app.</noscript>
-    <div id="root"></div>
+    <div id="root" class="vf-content"></div>
 
-    <footer>
-      <div id="global-footer" class="global-footer">
-        <nav id="global-nav-expanded" class="global-nav-expanded row">
-          <div class="columns small-12">
-            <h4 class="inline-block">
-              <a
-                href="https://www.ebi.ac.uk"
-                class="no-underline"
-                title="EMBL-EBI"
-                >Competency Hub</a
-              >
-            </h4>
-          </div>
-          <div class="medium-up-5 small-up-2">
-            <div class="column">
-              <h5 class="services">
-                <a class="services-color" href="https://www.ebi.ac.uk/services"
-                  >Services</a
-                >
-              </h5>
-              <ul>
-                <li class="first">
-                  <a href="https://www.ebi.ac.uk/services">By topic</a>
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/services/all">By name (A-Z)</a>
-                </li>
-                <li class="last">
-                  <a href="https://www.ebi.ac.uk/support">Help &amp; Support</a>
-                </li>
-              </ul>
-            </div>
-            <div class="column">
-              <h5 class="research">
-                <a class="research-color" href="https://www.ebi.ac.uk/research"
-                  >Research</a
-                >
-              </h5>
-              <ul>
-                <li>
-                  <a href="https://www.ebi.ac.uk/research/publications"
-                    >Publications</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/research/groups"
-                    >Research groups</a
-                  >
-                </li>
-                <li class="last">
-                  <a href="https://www.ebi.ac.uk/research/postdocs">Postdocs</a>
-                  &amp; <a href="https://www.ebi.ac.uk/research/eipp">PhDs</a>
-                </li>
-              </ul>
-            </div>
-            <div class="column">
-              <h5 class="training">
-                <a class="training-color" href="https://www.ebi.ac.uk/training"
-                  >Training</a
-                >
-              </h5>
-              <ul>
-                <li>
-                  <a href="https://www.ebi.ac.uk/training/handson"
-                    >Train at EBI</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/training/roadshow"
-                    >Train outside EBI</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/training/online"
-                    >Train online</a
-                  >
-                </li>
-                <li class="last">
-                  <a href="https://www.ebi.ac.uk/training/contact-us"
-                    >Contact organisers</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="column">
-              <h5 class="industry">
-                <a class="industry-color" href="https://www.ebi.ac.uk/industry"
-                  >Industry</a
-                >
-              </h5>
-              <ul>
-                <li>
-                  <a href="https://www.ebi.ac.uk/industry/private"
-                    >Members Area</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/industry/workshops"
-                    >Workshops</a
-                  >
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/industry/sme-forum"
-                    ><abbr title="Small Medium Enterprise">SME</abbr> Forum</a
-                  >
-                </li>
-                <li class="last">
-                  <a href="https://www.ebi.ac.uk/industry/contact"
-                    >Contact Industry programme</a
-                  >
-                </li>
-              </ul>
-            </div>
-            <div class="column">
-              <h5 class="about">
-                <a class="ebi-color" href="https://www.ebi.ac.uk/about"
-                  >About</a
-                >
-              </h5>
-              <ul>
-                <li>
-                  <a href="https://www.ebi.ac.uk/about/contact">Contact us</a>
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/about/events">Events</a>
-                </li>
-                <li>
-                  <a
-                    href="https://www.ebi.ac.uk/about/jobs"
-                    title="Jobs, postdocs, PhDs..."
-                    >Jobs</a
-                  >
-                </li>
-                <li class="first">
-                  <a href="https://www.ebi.ac.uk/about/news">News</a>
-                </li>
-                <li>
-                  <a href="https://www.ebi.ac.uk/about/people"
-                    >People &amp; groups</a
-                  >
-                </li>
-              </ul>
-            </div>
-          </div>
-        </nav>
-      </div>
-    </footer>
+    <!--<link rel="import" href="https://www.embl.org/api/v1/pattern.html?filter-content-type=article&filter-id=106902&pattern=node-body&source=contenthub" data-target="self" data-embl-js-content-hub-loader> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/libraries/foundation-6/js/foundation.min.js"></script>
     <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/foundationExtendEBI.min.js"></script>
     <script
@@ -290,11 +151,12 @@
           'href',
           'https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub'
         );
-        //jQuery("#loginForm").slideUp();
-        //jQuery("#loginSwitch").click(function(){
-        //  jQuery("#loginForm").slideToggle();
-        //});
       });
-    </script>
+    </script> -->
+    <!-- new js from VF -->
+    <script
+      defer
+      src="https://assets.emblstatic.net/vf/v2.4.5/scripts/scripts.js"
+    ></script>
   </body>
 </html>
