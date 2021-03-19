@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/dev-competency-mapper/static/css/main.d77ff791.chunk.css",
-    "main.js": "/dev-competency-mapper/static/js/main.bb5e24ba.chunk.js",
-    "main.js.map": "/dev-competency-mapper/static/js/main.bb5e24ba.chunk.js.map",
-    "runtime~main.js": "/dev-competency-mapper/static/js/runtime~main.5713b721.js",
-    "runtime~main.js.map": "/dev-competency-mapper/static/js/runtime~main.5713b721.js.map",
-    "static/css/2.2556c1d5.chunk.css": "/dev-competency-mapper/static/css/2.2556c1d5.chunk.css",
-    "static/js/2.79986814.chunk.js": "/dev-competency-mapper/static/js/2.79986814.chunk.js",
-    "static/js/2.79986814.chunk.js.map": "/dev-competency-mapper/static/js/2.79986814.chunk.js.map",
-    "index.html": "/dev-competency-mapper/index.html",
-    "precache-manifest.6e13e23662f729d4a1fc9c2517e80305.js": "/dev-competency-mapper/precache-manifest.6e13e23662f729d4a1fc9c2517e80305.js",
-    "service-worker.js": "/dev-competency-mapper/service-worker.js",
-    "static/css/2.2556c1d5.chunk.css.map": "/dev-competency-mapper/static/css/2.2556c1d5.chunk.css.map",
-    "static/css/main.d77ff791.chunk.css.map": "/dev-competency-mapper/static/css/main.d77ff791.chunk.css.map",
-    "static/media/Bioexcel.png": "/dev-competency-mapper/static/media/Bioexcel.9e7ef4d7.png",
-    "static/media/PerMedCoE.jpg": "/dev-competency-mapper/static/media/PerMedCoE.2b28bd09.jpg",
-    "static/media/european-union.png": "/dev-competency-mapper/static/media/european-union.0ae78626.png"
+    "main.css": "/static/css/main.d77ff791.chunk.css",
+    "main.js": "/static/js/main.f3b84c43.chunk.js",
+    "main.js.map": "/static/js/main.f3b84c43.chunk.js.map",
+    "runtime~main.js": "/static/js/runtime~main.a8a9905a.js",
+    "runtime~main.js.map": "/static/js/runtime~main.a8a9905a.js.map",
+    "static/css/2.2556c1d5.chunk.css": "/static/css/2.2556c1d5.chunk.css",
+    "static/js/2.79986814.chunk.js": "/static/js/2.79986814.chunk.js",
+    "static/js/2.79986814.chunk.js.map": "/static/js/2.79986814.chunk.js.map",
+    "index.html": "/index.html",
+    "precache-manifest.dd519c8681831401e83f50606bac0366.js": "/precache-manifest.dd519c8681831401e83f50606bac0366.js",
+    "service-worker.js": "/service-worker.js",
+    "static/css/2.2556c1d5.chunk.css.map": "/static/css/2.2556c1d5.chunk.css.map",
+    "static/css/main.d77ff791.chunk.css.map": "/static/css/main.d77ff791.chunk.css.map",
+    "static/media/Bioexcel.png": "/static/media/Bioexcel.9e7ef4d7.png",
+    "static/media/PerMedCoE.jpg": "/static/media/PerMedCoE.2b28bd09.jpg",
+    "static/media/european-union.png": "/static/media/european-union.0ae78626.png"
   }
 }
