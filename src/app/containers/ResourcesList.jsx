@@ -115,6 +115,7 @@ class ResourcesList extends React.Component {
   }
 
   archiveHandle(rid, status, event) {
+    console.log(status);
     let archivedStatus = '';
     if (status === 1) {
       archivedStatus = false;
@@ -156,38 +157,85 @@ class ResourcesList extends React.Component {
     event.preventDefault();
   }
 
+  formatDates(start, end) {
+    let months = [
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December'
+    ];
+
+    let start_dt = new Date(start);
+    let end_date = new Date(end);
+
+    let start_day = start_dt.getDate();
+    let start_month = start_dt.getMonth();
+    let start_year = start_dt.getFullYear();
+
+    if (end) {
+      let end_day = end_date.getDate();
+      let end_month = end_date.getMonth();
+      let end_year = end_date.getFullYear();
+
+      if (start_year === end_year) {
+        if (start_month === end_month) {
+          if (start_day === end_day) {
+            return start_day + ' ' + months[start_month] + ' ' + start_year;
+          } else {
+            return (
+              start_day +
+              ' - ' +
+              end_day +
+              ' ' +
+              months[start_month] +
+              ' ' +
+              start_year
+            );
+          }
+        } else {
+          return (
+            start_day +
+            ' ' +
+            months[start_month] +
+            ' - ' +
+            end_day +
+            ' ' +
+            months[end_month] +
+            ' ' +
+            start_year
+          );
+        }
+      } else {
+        return (
+          start_day +
+          ' ' +
+          months[start_month] +
+          ' ' +
+          start_year +
+          ' - ' +
+          end_day +
+          ' ' +
+          months[end_month] +
+          ' ' +
+          end_year
+        );
+      }
+    } else {
+      return start_day + ' ' + months[start_month] + ' ' + start_year;
+    }
+  }
+
   render() {
     this.checkUser();
     let resources = this.state.resources;
-    // if (this.state.filter) {
-    //   resources = resources.filter(
-    //     item =>
-    //       item.title.toLowerCase().includes(this.state.filter.toLowerCase()) ||
-    //       item.description
-    //         .toLocaleLowerCase()
-    //         .includes(this.state.filter.toLowerCase())
-    //   );
-    // }
-
-    // if (this.state.filterType !== 'All') {
-    //   resources = resources.filter(item =>
-    //     item.type
-    //       .toLocaleLowerCase()
-    //       .includes(this.state.filterType.toLowerCase())
-    //   );
-    // }
-
-    // if (this.state.filterMapping) {
-    //   resources = resources.filter(item =>
-    //     item.competency_profile.some(
-    //       profile =>
-    //         profile.attribute_archived == 'archived' ||
-    //         profile.competency_archived == 'archived' ||
-    //         profile.domain == 'archived'
-    //     )
-    //   );
-    //   console.log('filter applied');
-    // }
     var ListOfResources = '';
     if (resources) {
       ListOfResources = resources.map((item, index) => (
@@ -198,7 +246,9 @@ class ResourcesList extends React.Component {
               <Link to={'/training-resources/' + item.id}>{item.title} </Link>
             </div>
           </td>
-          <td className="vf-table__cell">{item.dates}</td>
+          <td className="vf-table__cell">
+            {item.dates ? this.formatDates(item.dates, item.end_date) : ''}
+          </td>
           <td className="vf-table__cell">{item.type}</td>
           <td className="vf-table__cell">
             <a href={item.url} target={'_blank'}>
@@ -206,8 +256,9 @@ class ResourcesList extends React.Component {
             </a>
           </td>
           <td className="vf-table__cell">
-            {item.archived === '1' ? (
+            {item.archived === 'archived' ? (
               <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                style={{ cursor: 'pointer' }}
                 onClick={this.archiveHandle.bind(this, item.id, 1)}
               >
                 {' '}
@@ -215,6 +266,7 @@ class ResourcesList extends React.Component {
               </a>
             ) : (
               <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                style={{ cursor: 'pointer' }}
                 onClick={this.archiveHandle.bind(this, item.id, 0)}
               >
                 {' '}
@@ -271,32 +323,37 @@ class ResourcesList extends React.Component {
                 value="Search"
               />
             </div>
-            {/* <div className="vf-form__item vf-grid__col--span-2">
-              <input
-                type="checkbox"
-                id="checkboxMapping"
-                checked={this.state.filterMapping}
-                onChange={this.filterMappingHandle.bind(this)}
-                className="vf-form__checkbox"
-              />
-              <label for="checkboxMapping" class="vf-form__label">
-                {' '}
-                Items with deprecated mapping{' '}
-              </label>
-            </div> */}
-            {/* <div className="vf-grid__col--span-1">
+            <div className="vf-grid__col--span-1">
               <Link
                 className={'vf-button vf-button--primary vf-button--sm'}
                 to={'/training-resource/create'}
               >
-                <i className="fas fa-plus-circle"> </i> Add new{' '}
+                <i className="fas fa-plus-circle"> </i> Add training resource{' '}
               </Link>
-            </div> */}
-            <div className="vf-form__item vf-grid__col--span-1">
-              <h5>Total: {this.state.totalItemsCount}</h5>
             </div>
           </div>
         </form>
+        <div className="vf-grid vf-grid__col-6">
+          <div className="vf-form__item vf-grid__col--span-3">
+            <h5>Total: {this.state.totalItemsCount}</h5>
+          </div>
+          <div
+            className="vf-form__item vf-grid__col--span-3"
+            style={{ paddingTop: '30px' }}
+          >
+            <input
+              type="checkbox"
+              id="checkboxMapping"
+              checked={this.state.filterMapping}
+              onChange={this.filterMappingHandle.bind(this)}
+              className="vf-form__checkbox"
+            />
+            <label for="checkboxMapping" class="vf-form__label">
+              {' '}
+              Show resources with deprecated mapping{' '}
+            </label>
+          </div>
+        </div>
 
         <table className="vf-table vf-table--striped">
           <thead className="vf-table__header">
@@ -314,7 +371,7 @@ class ResourcesList extends React.Component {
             resources.length > 0 ? (
               <tbody className="vf-table__body">{ListOfResources}</tbody>
             ) : (
-              <h5>No resulds found</h5>
+              <h5>No results found</h5>
             )
           ) : (
             <center>

@@ -60,7 +60,7 @@ class Navigation extends Component {
     const trainingResources = (
       <>
         <li className="vf-list__item" key="resources">
-          <Link className="vf-link" to="all-training-resources">
+          <Link className="vf-link" to="/all-training-resources">
             Manage Training Resources
           </Link>
         </li>

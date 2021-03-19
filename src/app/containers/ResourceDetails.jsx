@@ -83,7 +83,7 @@ class ResourceDetails extends React.Component {
     if (localStorage.getItem('roles')) {
       if (localStorage.getItem('roles').includes('content_manager')) {
         return (
-          <div className={'callout white-color industry-background'}>
+          <div>
             <strong> Manage competency profile </strong>
             <ul>
               {this.state.frameworks.map((item, id) => {
@@ -94,7 +94,7 @@ class ResourceDetails extends React.Component {
                         '/training-resources/' +
                         this.state.resourcePath[2] +
                         '/map/' +
-                        item.title.toLowerCase()
+                        item.title.toLowerCase().replace(/ /g, '')
                       }
                     >
                       {' '}
@@ -190,7 +190,52 @@ class ResourceDetails extends React.Component {
       return false;
     } else if (!localStorage.getItem('roles').includes('content_manager')) {
       return false;
+    } else {
+      return true;
     }
+  }
+
+  archiveHandle(rid, status, event) {
+    console.log(status);
+    let archivedStatus = '';
+    if (status === 1) {
+      archivedStatus = false;
+    } else {
+      archivedStatus = true;
+    }
+    let token = localStorage.getItem('csrf_token');
+    fetch(`${apiUrl}/node/` + rid + '?_format=hal_json', {
+      credentials: 'include',
+      method: 'PATCH',
+      cookies: 'x-access-token',
+      headers: {
+        Accept: 'application/hal+json',
+        'Content-Type': 'application/hal+json',
+        'X-CSRF-Token': token,
+        Authorization: 'Basic'
+      },
+      body: JSON.stringify({
+        _links: {
+          type: {
+            href: `${apiUrl}/rest/type/node/training_resource`
+          }
+        },
+        field_archived: [
+          {
+            value: archivedStatus
+          }
+        ],
+        type: [
+          {
+            target_id: 'training_resource'
+          }
+        ]
+      })
+    });
+
+    this.setState({ updateFlag: true });
+
+    event.preventDefault();
   }
 
   render() {
@@ -203,238 +248,225 @@ class ResourceDetails extends React.Component {
     let link = '/bioexcel/1.1';
     let check_array = Array.isArray(item.competency_profile);
     const Resource = (
-      <div>
-        <div>
-          <div className={'row'}>
-            <h2>{item.title}</h2>
+      <>
+        <h2>{item.title}</h2>
+        <div className="vf-grid  vf-grid__col-4">
+          <div className="vf-grid__col--span-3">
+            <div className={'callout'}>
+              {item.dates ? (
+                <span>
+                  <strong>Dates:</strong>{' '}
+                  {this.formatDates(item.dates, item.end_date)}
+                </span>
+              ) : (
+                ''
+              )}
+
+              {item.keywords ? (
+                <p>
+                  <strong>Keywords:</strong> {item.keywords}
+                </p>
+              ) : (
+                ''
+              )}
+              {item.location ? (
+                <p>
+                  <strong>Location:</strong> {item.location}
+                </p>
+              ) : (
+                ''
+              )}
+              {item.type ? (
+                <p>
+                  <strong>Type:</strong> {item.type}
+                </p>
+              ) : (
+                ''
+              )}
+              {item.url ? (
+                <p>
+                  <strong> URL: </strong>{' '}
+                  <a href={item.url} target={'_blank'}>
+                    {item.url}
+                  </a>
+                </p>
+              ) : (
+                ''
+              )}
+            </div>
+            <h3>Overview</h3>
+            {item.description ? Parser(item.description) : ''}
+
+            {item.target_audience
+              ? Parser('<h3>Target Audience</h3>' + item.target_audience)
+              : ''}
+            {item.learning_outcomes
+              ? Parser('<h3>Learning Outcomes</h3>' + item.learning_outcomes)
+              : ''}
+            {item.organisers
+              ? Parser('<h3>Organisers</h3>' + item.organisers)
+              : ''}
+
+            {item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}
+            <h3>Competency Profile</h3>
+
+            <table className={'hover'}>
+              <tbody>
+                {check_array
+                  ? item.competency_profile.map(profile => {
+                      return (
+                        <tr>
+                          {this.state.frameworks.map(framework => {
+                            if (framework.nid === profile.id) {
+                              framework.attribute_types.map(type =>
+                                attribute_types.push(type.title)
+                              );
+                              frameworkLiveVersion = framework.versions.find(
+                                version => version.status === 'live'
+                              );
+                            }
+
+                            return null;
+                          })}
+                          <td>
+                            <h4>{profile.title}</h4>
+                          </td>
+                          <td>
+                            {profile.domains.map(domain => (
+                              <div>
+                                <h5>{domain.title}</h5>
+                                <ul>
+                                  {domain.competencies.map(competency => (
+                                    <li>
+                                      <span
+                                        className={
+                                          competency.archived === 'archived'
+                                            ? 'archived'
+                                            : ''
+                                        }
+                                      >
+                                        {competency.title}
+                                        {competency.archived === 'archived' ? (
+                                          <ItemVersions
+                                            framework="bioexcel"
+                                            versions={link}
+                                          />
+                                        ) : (
+                                          ''
+                                        )}
+                                      </span>
+                                      <ul>
+                                        {attribute_types.map(type => (
+                                          <span>
+                                            {competency.attributes.map(
+                                              attribute => {
+                                                if (attribute.type === type) {
+                                                  return (
+                                                    <li>
+                                                      {' '}
+                                                      <em>{type}</em> -{' '}
+                                                      <span
+                                                        className={
+                                                          attribute.archived ===
+                                                          'archived'
+                                                            ? 'archived'
+                                                            : ''
+                                                        }
+                                                      >
+                                                        {attribute.title}
+                                                        {attribute.archived ===
+                                                        'archived' ? (
+                                                          <ItemVersions
+                                                            framework={
+                                                              profile.title
+                                                            }
+                                                            version={
+                                                              frameworkLiveVersion.number
+                                                            }
+                                                          />
+                                                        ) : (
+                                                          ''
+                                                        )}
+                                                        {attribute.archived ===
+                                                        'archived' ? (
+                                                          <a
+                                                            href={
+                                                              '/training-resources/' +
+                                                              item.id +
+                                                              '/demap/' +
+                                                              attribute.id
+                                                            }
+                                                          >
+                                                            <i class="fas fa-times-circle" />
+                                                          </a>
+                                                        ) : (
+                                                          ''
+                                                        )}
+                                                      </span>
+                                                    </li>
+                                                  );
+                                                }
+                                                return null;
+                                              }
+                                            )}
+                                          </span>
+                                        ))}
+                                      </ul>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </td>
+                        </tr>
+                      );
+                    })
+                  : ''}
+              </tbody>
+            </table>
+          </div>
+          <div className="vf-grid__col--span-1">
             {this.checkUser() ? (
-              <span className="float-right">
-                {' '}
-                <Link
-                  to={'/training-resource/edit/' + this.state.resourcePath[2]}
-                >
-                  {' '}
-                  <i class="fas fa-edit" /> Edit{' '}
-                </Link>
-              </span>
+              <div className="float-right">
+                <div>
+                  <Link
+                    to={'/training-resource/edit/' + this.state.resourcePath[2]}
+                  >
+                    <i class="fas fa-edit" /> Edit this resource{' '}
+                  </Link>
+                </div>
+                {item.archived === 'archived' ? (
+                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.archiveHandle.bind(this, item.id, 1)}
+                  >
+                    {' '}
+                    <i className="fas fa-toggle-on" />{' '}
+                    <span>Resource is archived</span>{' '}
+                  </a>
+                ) : (
+                  <a // eslint-disable-line jsx-a11y/anchor-is-valid
+                    style={{ cursor: 'pointer' }}
+                    onClick={this.archiveHandle.bind(this, item.id, 0)}
+                  >
+                    {' '}
+                    <i className="fas fa-toggle-off" />{' '}
+                    <span>Archive this resource</span>
+                  </a>
+                )}
+              </div>
             ) : (
               ''
             )}
-          </div>
-
-          <div className={'row'}>
-            <div className={'column large-9'}>
-              <div className={'callout'}>
-                {item.dates ? (
-                  <span>
-                    <strong>Date:</strong>{' '}
-                    {this.formatDates(item.dates, item.end_date)}
-                  </span>
-                ) : (
-                  ''
-                )}
-                {item.keywords ? (
-                  <p>
-                    <strong>Keywords:</strong> {item.keywords}
-                  </p>
-                ) : (
-                  ''
-                )}
-                {item.location ? (
-                  <p>
-                    <strong>Location:</strong> {item.location}
-                  </p>
-                ) : (
-                  ''
-                )}
-                {item.type ? (
-                  <p>
-                    <strong>Type:</strong> {item.type}
-                  </p>
-                ) : (
-                  ''
-                )}
-                {item.url ? (
-                  <p>
-                    <strong> URL: </strong>{' '}
-                    <a href={item.url} target={'_blank'}>
-                      {item.url}
-                    </a>
-                  </p>
-                ) : (
-                  ''
-                )}
-              </div>
-              <h3>Overview</h3>
-              {item.description ? Parser(item.description) : ''}
-
-              {item.target_audience
-                ? Parser('<h3>Target Audience</h3>' + item.target_audience)
-                : ''}
-              {item.learning_outcomes
-                ? Parser('<h3>Learning Outcomes</h3>' + item.learning_outcomes)
-                : ''}
-              {item.organisers
-                ? Parser('<h3>Organizers</h3>' + item.organisers)
-                : ''}
-
-              {item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}
-              <h3>Competency Profile</h3>
-
-              <table className={'hover'}>
-                <tbody>
-                  {check_array
-                    ? item.competency_profile.map(profile => {
-                        return (
-                          <tr>
-                            {this.state.frameworks.map(framework => {
-                              if (framework.nid === profile.id) {
-                                framework.attribute_types.map(type =>
-                                  attribute_types.push(type.title)
-                                );
-                                frameworkLiveVersion = framework.versions.find(
-                                  version => version.status === 'live'
-                                );
-                              }
-
-                              return null;
-                            })}
-                            <td>
-                              <h4>{profile.title}</h4>
-                            </td>
-                            <td>
-                              {profile.domains.map(domain => (
-                                <div>
-                                  <h5>{domain.title}</h5>
-                                  <ul>
-                                    {domain.competencies.map(competency => (
-                                      <li>
-                                        <span
-                                          className={
-                                            competency.archived === 'archived'
-                                              ? 'archived'
-                                              : ''
-                                          }
-                                        >
-                                          {competency.title}
-                                          {competency.archived ===
-                                          'archived' ? (
-                                            <ItemVersions
-                                              framework="bioexcel"
-                                              versions={link}
-                                            />
-                                          ) : (
-                                            ''
-                                          )}
-                                        </span>
-                                        <ul>
-                                          {attribute_types.map(type => (
-                                            <span>
-                                              {competency.attributes.map(
-                                                attribute => {
-                                                  if (attribute.type === type) {
-                                                    return (
-                                                      <li>
-                                                        {' '}
-                                                        <em>{type}</em> -{' '}
-                                                        <span
-                                                          className={
-                                                            attribute.archived ===
-                                                            'archived'
-                                                              ? 'archived'
-                                                              : ''
-                                                          }
-                                                        >
-                                                          {attribute.title}
-                                                          {attribute.archived ===
-                                                          'archived' ? (
-                                                            <ItemVersions
-                                                              framework={
-                                                                profile.title
-                                                              }
-                                                              version={
-                                                                frameworkLiveVersion.number
-                                                              }
-                                                            />
-                                                          ) : (
-                                                            ''
-                                                          )}
-                                                          {attribute.archived ===
-                                                          'archived' ? (
-                                                            <a
-                                                              href={
-                                                                '/training-resources/' +
-                                                                item.id +
-                                                                '/demap/' +
-                                                                attribute.id
-                                                              }
-                                                            >
-                                                              <i class="fas fa-times-circle" />
-                                                            </a>
-                                                          ) : (
-                                                            ''
-                                                          )}
-                                                        </span>
-                                                      </li>
-                                                    );
-                                                  }
-                                                  return null;
-                                                }
-                                              )}
-                                            </span>
-                                          ))}
-                                        </ul>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                </div>
-                              ))}
-                            </td>
-                          </tr>
-                        );
-                      })
-                    : ''}
-                </tbody>
-              </table>
-            </div>
-            <div
-              className={
-                'column large-3 callout industry-background white-color'
-              }
-            >
-              <h3>More information</h3>
-              <p>No data available</p>
-            </div>
+            <h3>More information</h3>
+            <p>No data available</p>
           </div>
         </div>
-      </div>
+      </>
     );
 
     return (
       <div className={'row'}>
-        <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
-          <ul class="vf-breadcrumbs__list | vf-list vf-list--inline">
-            <li class="vf-breadcrumbs__item">
-              <Link to="/" class="vf-breadcrumbs__link">
-                Home
-              </Link>
-            </li>
-            <li class="vf-breadcrumbs__item" aria-current="location">
-              Training resource
-            </li>
-          </ul>
-        </nav>
-        {this.checkUser() ? (
-          <p>
-            <nav>
-              <Link to={`/`}>Home</Link> /{' '}
-              <Link to={`/all-training-resources`}>All training resources</Link>
-            </nav>
-          </p>
-        ) : (
-          ''
-        )}
-
         <div className={'column large-12'}>
           {Resource}
           {this.mappingBlock()}

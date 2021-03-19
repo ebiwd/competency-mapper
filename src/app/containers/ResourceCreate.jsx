@@ -236,144 +236,145 @@ class ResourceCreate extends React.Component {
         <div className="row">
           <div className="column large-12 callout">
             <form
-              className="form"
+              className="vf-form"
               id={'resource_create_form'}
               onSubmit={this.handleSubmit.bind(this)}
             >
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Title *</strong>
-                  <input type="text" ref="title" required placeholder="Title" />
-                </div>
+              <div className="vf-form__item">
+                <strong>Title *</strong>
+                <input
+                  className="vf-form__input"
+                  type="text"
+                  ref="title"
+                  required
+                  placeholder="Title"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-6">
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-grid">
+                <div className="vf-form__item">
                   <strong>Start Date</strong>
-                  <input type="date" ref="dates" placeholder="Date" />
+                  <input
+                    type="date"
+                    className="vf-form__input"
+                    ref="dates"
+                    placeholder="Date"
+                  />
                 </div>
-                <div className="column large-6">
+                <div className="vf-form__item">
                   <strong>End Date</strong>
-                  <input type="date" ref="dates2" placeholder="Date" />
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Event type *</strong>
-                  <select ref={'type'}>
-                    <option value={'Online'}>Online</option>
-                    <option value={'Face-to-Face'}>Face-to-Face</option>
-                    <option value={'Webinar'}>Webinar</option>
-                    <option value={'Hackathon'}>Hackathon</option>
-                  </select>
-                </div>
-              </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Description</strong>
-                  <CKEditor
-                    content={this.state.description}
-                    events={{
-                      change: this.changeDescription
-                    }}
-                    activeClass="p10"
-                    required
+                  <input
+                    type="date"
+                    className="vf-form__input"
+                    ref="dates2"
+                    placeholder="Date"
                   />
-                  {/*<textarea rows={"5"} ref="description" required placeholder="Description"/>*/}
                 </div>
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Location</strong>
-                  <input type="text" ref="location" placeholder="Location" />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Event type *</strong>
+                <select className="vf-form__select" ref={'type'}>
+                  <option value={'Online'}>Online</option>
+                  <option value={'Face-to-Face'}>Face-to-Face</option>
+                  <option value={'Webinar'}>Webinar</option>
+                  <option value={'Hackathon'}>Hackathon</option>
+                </select>
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>URL *</strong>
-                  <input type="url" ref="url" required placeholder="URL" />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Description</strong>
+                <CKEditor
+                  content={this.state.description}
+                  events={{
+                    change: this.changeDescription
+                  }}
+                  activeClass="p10"
+                  required
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Target audience</strong>
-                  <CKEditor
-                    content={this.state.target_audience}
-                    events={{
-                      change: this.changeTargetAudience
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<input type="text" ref="target_audience" required placeholder="Target audience"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Location</strong>
+                <input
+                  type="text"
+                  className="vf-form__input"
+                  ref="location"
+                  placeholder="Location"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Learning outcomes</strong>
-                  <CKEditor
-                    content={this.state.learning_outcomes}
-                    events={{
-                      change: this.changeLearningOutcomes
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="learning_outcomes" required placeholder="Learning outcomes"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>URL *</strong>
+                <input
+                  type="url"
+                  className="vf-form__input"
+                  ref="url"
+                  required
+                  placeholder="URL"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Organisers</strong>
-                  <CKEditor
-                    content={this.state.organisers}
-                    events={{
-                      change: this.changeOrganisers
-                    }}
-                    activeClass="p10"
-                  />
-
-                  {/*<textarea rows={"5"} ref="organisers" required placeholder="Organisers"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Target audience</strong>
+                <CKEditor
+                  content={this.state.target_audience}
+                  events={{
+                    change: this.changeTargetAudience
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Trainers</strong>
-                  <CKEditor
-                    content={this.state.trainers}
-                    events={{
-                      change: this.changeTrainers
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="trainers" required placeholder="Trainers"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Learning outcomes</strong>
+                <CKEditor
+                  content={this.state.learning_outcomes}
+                  events={{
+                    change: this.changeLearningOutcomes
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Keywords</strong>
-                  <input type="text" ref="keywords" placeholder="Keywords" />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Organisers</strong>
+                <CKEditor
+                  content={this.state.organisers}
+                  events={{
+                    change: this.changeOrganisers
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              {/* <div id="fileupload" className="row">
-                <div className="column large-12">
-                  <strong>File upload</strong>
-                  <FileUpload />
-                </div>
-              </div> */}
-
-              <div className="row">
-                <div className="column large-2">
-                  <input type="submit" className="button" value="Submit" />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Trainers</strong>
+                <CKEditor
+                  content={this.state.trainers}
+                  events={{
+                    change: this.changeTrainers
+                  }}
+                  activeClass="p10"
+                />
+              </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Keywords</strong>
+                <input
+                  type="text"
+                  className="vf-form__input"
+                  ref="keywords"
+                  placeholder="Keywords"
+                />
+              </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <input
+                  type="submit"
+                  className="vf-button vf-button--primary"
+                  value="Submit"
+                />
               </div>
             </form>
           </div>

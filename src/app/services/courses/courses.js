@@ -6,7 +6,8 @@ class CoursesService {
   static instance;
   http = new HttpService();
 
-  constructor() {
+  constructor(props) {
+    //super(props);
     if (CoursesService.instance) {
       return this.instance;
     }
@@ -14,10 +15,10 @@ class CoursesService {
     CoursesService.instance = this;
   }
 
-  async getCourses() {
+  async getCourses(page, filter, filterType) {
     const response = await this.http.get(
-      /*`${apiUrl}/api/v1/training-resources/all?_format=json`*/
-      `${apiUrl}/api/resources?_format=json&timestamp=${Date.now()}`
+      //`${apiUrl}/api/resources?_format=json`
+      `${apiUrl}/api/resources?_format=json&page=${page}&title=${filter}&type=${filterType}`
     );
     return response.data;
   }

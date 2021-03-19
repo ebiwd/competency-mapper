@@ -246,22 +246,19 @@ const ProfileList = props => {
                 }
                 class="vf-profile__image"
               />
-              <div class="row action-buttons-row my-profile-card">
-                <h4>{guestProfile.job_title}</h4>
-                <Link
-                  style={{ marginRight: '20px' }}
-                  to={`/framework/${guestProfile.frameworkName}/${
-                    guestProfile.versionNumber
-                  }/profile/view/guest`}
-                >
-                  View profile <i class="icon icon-common icon-angle-right" />
-                </Link>
+              <div>
+                <h3 className="vf-profile__title">
+                  <Link
+                    className="vf-profile__link"
+                    to={`/framework/${guestProfile.frameworkName}/${
+                      guestProfile.versionNumber
+                    }/profile/view/guest`}
+                  >
+                    {guestProfile.job_title}
+                  </Link>
+                </h3>
 
-                <Link onClick={e => handleDelete(e)} to={`#`}>
-                  Delete profile <i class="icon icon-common icon-trash-alt" />
-                </Link>
-
-                <span class="compare_checkbox">
+                <span>
                   <label>
                     <input
                       type="checkbox"
@@ -270,18 +267,26 @@ const ProfileList = props => {
                     />
                     Click to compare
                   </label>
-                  <span className="cm_badge">Your profile</span>
                 </span>
 
-                <p
+                <div
                   style={{
                     color: '#999',
                     bottom: '-15px',
                     position: 'relative'
                   }}
                 >
-                  {guestProfile.frameworkName} - {guestProfile.versionNumber}
-                </p>
+                  <span>
+                    <hr class="vf-divider | vf-u-fullbleed" />
+                    {/* Your profile {guestProfile.frameworkName} -{' '}
+                    {guestProfile.versionNumber} */}
+                  </span>
+
+                  <Link onClick={e => handleDelete(e)} to={`#`}>
+                    Delete your profile{' '}
+                    <i class="icon icon-common icon-trash-alt" />
+                  </Link>
+                </div>
               </div>
             </div>
           ) : (

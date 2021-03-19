@@ -60,7 +60,7 @@ class Masthead extends Component {
       // </div>
       <>
         <section
-          className="vf-hero vf-hero--primary  vf-hero--block    vf-hero--1200 | vf-u-fullbleed"
+          className="vf-hero vf-hero--primary vf-hero--800 | vf-u-fullbleed"
           style={bgStyle}
           data-vf-google-analytics-region="masthead"
         >

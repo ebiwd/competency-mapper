@@ -130,12 +130,14 @@ export const ProfilesCompare = props => {
       <div className="vf-grid">
         <div />
         <div>
+          <div className="vf-u-margin__bottom--1200" />
           {profile1 ? (
-            <div className="profile_badge_page">
+            <div className="vf-profile">
               <img
                 alt="profile1"
                 src={profile1.image[0] ? profile1.image[0].url : user_icon}
                 width="120px"
+                className="vf-profile__image"
               />
               <Link to={link1}>
                 <h5>{profile1.job_title}</h5>
@@ -147,12 +149,14 @@ export const ProfilesCompare = props => {
         </div>
 
         <div>
+          <div className="vf-u-margin__bottom--1200" />
           {profile2 ? (
-            <div className="profile_badge_page">
+            <div className="vf-profile">
               <img
                 alt="profile2"
                 src={profile2.image[0] ? profile2.image[0].url : user_icon}
                 width="120px"
+                className="vf-profile__image"
               />
               <Link to={link2}>
                 <h5>{profile2.job_title}</h5>
@@ -166,6 +170,7 @@ export const ProfilesCompare = props => {
       </div>
 
       <div>
+        <div className="vf-u-margin__bottom--600" />
         <div className="legend-inline-wrapper">
           <strong>Rating levels </strong>{' '}
           <ul className="vf-list legend-inline">{expertise_levels_legend}</ul>

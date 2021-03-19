@@ -18,7 +18,9 @@ class Courses extends Component {
     courses: [],
     filteredCourses: [],
     filter: '',
-    loadingError: false
+    filterType: '',
+    loadingError: false,
+    activePage: 0
   };
 
   constructor(props) {
@@ -31,9 +33,17 @@ class Courses extends Component {
   activeRequests = new ActiveRequestsService();
 
   async componentDidMount() {
+    this.fetchData();
+  }
+
+  async fetchData() {
     try {
       this.activeRequests.startRequest();
-      const allCourses = await this.coursesService.getCourses();
+      const allCourses = await this.coursesService.getCourses(
+        0,
+        this.state.filter,
+        this.state.filterType
+      );
       const courses = this.filterCourses(allCourses);
       this.setState({ courses, filteredCourses: courses });
     } catch (error) {
@@ -43,12 +53,19 @@ class Courses extends Component {
     }
   }
 
+  async searchSubmit(e) {
+    e.preventDefault();
+    //await this.setState({ resources: null });
+    await this.setState({ activePage: 0 });
+    await this.fetchData();
+  }
+
   filterCourses(allCourses) {
     const { framework } = this.state;
     const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
-      if (course.archived === '1') {
+      if (course.archived === 'archived') {
         return;
       }
 
@@ -97,6 +114,14 @@ class Courses extends Component {
     this.setState({ filteredCourses, filter });
   };
 
+  async filter(e) {
+    await this.setState({ filter: e.target.value });
+  }
+
+  async filterTypeHandle(e) {
+    await this.setState({ filterType: e.target.value });
+  }
+
   render() {
     const {
       filteredCourses,
@@ -133,8 +158,9 @@ class Courses extends Component {
           </li>
         ));
 
-    const resources = filteredCourses.map(course => (
+    const resources = filteredCourses.map((course, index) => (
       <tr key={course.id}>
+        <td>{index + 1} </td>
         <td>
           <Link to={`/training-resources/${course.id}`}>{course.title}</Link>
         </td>
@@ -147,34 +173,45 @@ class Courses extends Component {
 
     return (
       <>
-        {/* <input
-          type="search"
-          // className="clearable" // It doesn't work correctly
-          value={filter}
-          onChange={event => this.onFilter(event.target.value)}
-          placeholder="Filter resources"
-        /> */}
-        <form action="#" class="vf-form | vf-search vf-search--inline">
-          <div className="vf-form__item | vf-search__item">
-            <label
-              className="vf-form__label vf-u-sr-only | vf-search__label"
-              for="inlinesearchitem"
-            >
-              Inline search
-            </label>
-            <input
-              type="search"
-              placeholder="Filter training resources"
-              id="inlinesearchitem"
-              className="vf-form__input | vf-search__input"
-              onChange={event => this.onFilter(event.target.value)}
-              value={filter}
-            />
+        <form
+          className="vf-form | vf-search"
+          onSubmit={e => this.searchSubmit(e)}
+        >
+          <div className="vf-grid vf-grid__col-4">
+            <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
+              <input
+                type="search"
+                onChange={this.filter.bind(this)}
+                placeholder="Type to search"
+                className="vf-form__input | vf-search__item"
+              />
+            </div>
+            <div className="vf-form__item vf-grid__col--span-1">
+              <select
+                ref={'type'}
+                onChange={this.filterTypeHandle.bind(this)}
+                className="vf-form__select"
+              >
+                <option value={'All'}>All</option>
+                <option value={'Online'}>Online</option>
+                <option value={'Face-to-Face'}>Face-to-Face</option>
+                <option value={'Webinar'}>Webinar</option>
+                <option value={'Hackathon'}>Hackathon</option>
+              </select>
+            </div>
+            <div className="vf-form__item vf-grid__col--span-1">
+              <input
+                type="submit"
+                className="vf-search__button | vf-button vf-button--primary vf-button--sm"
+                value="Search"
+              />
+            </div>
           </div>
         </form>
         <table>
           <thead>
             <tr>
+              <th>S. No.</th>
               <th>Training resource(s)</th>
               <th>Type</th>
               <th>Competencies</th>

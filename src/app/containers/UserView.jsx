@@ -1,25 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
-//import { Draggable, Droppable } from 'react-drag-and-drop';
-import List from './List';
 
 const UserView = () => {
   const [user, setUser] = useState();
-  const [test, setTest] = useState();
+  //const [test, setTest] = useState();
   const [frameworks, setFrameworks] = useState();
   const [frm, setFrm] = useState();
 
-  let colors = [
-    { id: '101', position: '10', title: 'First' },
-    { id: '102', position: '11', title: 'Second' },
-    { id: '103', position: '21', title: 'Third' },
-    { id: '104', position: '32', title: 'Fourth' }
-  ];
-
   let uid = localStorage.getItem('userid');
-  //let dt = '';
-  //let year = '';
   useEffect(() => {
     const fetchData = async () => {
       await fetch(`${apiUrl}/user/${uid}?_format=json`, {
@@ -38,22 +27,19 @@ const UserView = () => {
         .then(findResponse => setFrameworks(findResponse));
     };
     fetchData();
-  }, [test]);
+  }, [uid]);
 
   if (!frm && user && frameworks) {
     let test = [];
     frameworks.map(item => {
-      user.field_frameworks.map(frm => {
-        if (frm.target_id == item.nid) test.push(item.title);
+      user.field_frameworks.map(framework => {
+        if (framework.target_id == item.nid) test.push(item.title);
       });
     });
-    setFrm(test.join());
+    if (test.length > 0) {
+      setFrm(test.join());
+    }
   }
-
-  const onDrop = data => {
-    console.log(data);
-    // => banana
-  };
 
   return (
     <div>
@@ -80,7 +66,7 @@ const UserView = () => {
                   <td>
                     <strong>Frameworks:</strong>
                   </td>
-                  <td>{frm ? frm : ''}</td>
+                  <td>{frm ? frm : 'NA'}</td>
                 </tr>
               </tbody>
             </table>

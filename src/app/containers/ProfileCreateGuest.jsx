@@ -239,7 +239,13 @@ export const ProfileCreateGuest = props => {
       submitButtonLabel = 'Save and Map Competencies';
     }
 
-    return <input type="submit" className="button" value={submitButtonLabel} />;
+    return (
+      <input
+        type="submit"
+        className="vf-button vf-button--primary vf-button--sm"
+        value={submitButtonLabel}
+      />
+    );
   }
 
   const getWhoCreateProfile = () => {
@@ -352,11 +358,12 @@ export const ProfileCreateGuest = props => {
                 <i>{nameHelp}</i>
               </div>
             </span>
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Image</strong>
               <input type="file" id="fileupload" onChange={onSelectFile} />
             </span>
-
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <img
                 id="imgpreview_image"
@@ -378,7 +385,7 @@ export const ProfileCreateGuest = props => {
               ) : (
                 ''
               )}
-
+              <div className="vf-u-margin__bottom--600" />
               {fileSizeError ? (
                 <div className="small callout alert">
                   <em> Image size should not be more than 2 MB </em>{' '}
@@ -395,6 +402,7 @@ export const ProfileCreateGuest = props => {
                 ''
               )}
             </span>
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Age (in years)</strong>
               <input
@@ -407,7 +415,7 @@ export const ProfileCreateGuest = props => {
                 className="vf-form__input"
               />
             </span>
-
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Gender</strong>
               <select
@@ -439,6 +447,7 @@ export const ProfileCreateGuest = props => {
                 <i>{jobTitleHelp}</i>
               </div>
             </span>
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Qualification and background</strong>
               <CKEditor
@@ -455,7 +464,7 @@ export const ProfileCreateGuest = props => {
               />
             </span>
 
-            <br />
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Activities of current role</strong>
               <CKEditor
@@ -470,7 +479,7 @@ export const ProfileCreateGuest = props => {
               />
             </span>
 
-            <br />
+            <div className="vf-u-margin__bottom--600" />
             <span>
               <strong>Additional information</strong>
               <CKEditor
@@ -486,15 +495,7 @@ export const ProfileCreateGuest = props => {
             </span>
           </div>
         </div>
-
-        <p />
-        <div className="row">
-          <div className="column medium-2" />
-          <div className="column medium-3">
-            <ButtonLabel />
-          </div>
-          <div className="column medium-7" />
-        </div>
+        <ButtonLabel />
       </form>
     </div>
   );

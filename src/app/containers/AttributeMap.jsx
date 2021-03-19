@@ -15,7 +15,7 @@ class AttributeMap extends React.Component {
       data: [],
       //framework: this.props.selectedFramework,
       //resourceID: this.props.resourceID,
-      framework: this.props.location.pathname.split('/')[4],
+      framework: this.props.location.pathname.split('/')[4].replace(/ /g, ''),
       resourceID: this.props.location.pathname.split('/')[2],
       frameworkdetails: [],
       csrf: '',
@@ -167,14 +167,18 @@ class AttributeMap extends React.Component {
     let latest_version = '';
 
     this.state.frameworkdetails.map(detail => {
-      if (detail.title.toLowerCase() == this.state.framework) {
+      if (
+        detail.title.toLowerCase().replace(/ /g, '') === this.state.framework
+      ) {
         detail.versions.map(version => {
-          if (version.status == 'live') {
+          if (version.status === 'live') {
             latest_version = version.number;
           }
         });
       }
     });
+
+    console.log(latest_version);
 
     let fetchCompetencyList =
       `${apiUrl}` +
@@ -183,7 +187,7 @@ class AttributeMap extends React.Component {
       '/' +
       latest_version +
       '?_format=json';
-    console.log(fetchCompetencyList);
+
     await fetch(fetchCompetencyList)
       .then(Response => Response.json())
       .then(findresponse => {
@@ -191,8 +195,6 @@ class AttributeMap extends React.Component {
           data: findresponse
         });
       });
-
-    //this.loadSelectedAttributes();
   }
 
   shouldComponentUpdate(nextProps, nextState) {
@@ -227,7 +229,7 @@ class AttributeMap extends React.Component {
     //this.loadSelectedAttributes();
 
     frameworkDetails.forEach((item, ikey) => {
-      if (item.title.toLowerCase() === this.state.framework) {
+      if (item.title.toLowerCase().replace(/ /g, '') === this.state.framework) {
         //this.state.frameworkUUID = item.uuid;
         item.attribute_types.forEach(attribute_type => {
           frameworkDefs.push(attribute_type.title);
@@ -337,7 +339,7 @@ class AttributeMap extends React.Component {
         </tbody>
       ))
     );
-
+    console.log(this.state.data);
     return (
       <div>
         <h2>{resDetails.title}</h2>
@@ -345,7 +347,10 @@ class AttributeMap extends React.Component {
         <h4>URL: {resDetails.url}</h4>
         <table className={'table'}>{ListOfCompetencies}</table>
         <div id={'footer-button'}>
-          <button className={'button'} onClick={this.handleSelect.bind(this)}>
+          <button
+            className={'vf-button vf-button--primary vf-button--sm'}
+            onClick={this.handleSelect.bind(this)}
+          >
             {' '}
             Save
           </button>

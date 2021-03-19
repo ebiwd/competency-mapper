@@ -60,7 +60,6 @@ function CompetencyList({
           }
         >
           <div>
-            {attributes}
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.id
@@ -71,6 +70,7 @@ function CompetencyList({
                 More details
               </span>
             </Link>
+            {attributes}
           </div>
         </Collapsible>
       </td>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl } from '../services/http/http';
@@ -90,7 +90,8 @@ class ResourceEdit extends React.Component {
     //console.log(localStorage.getItem('roles'));
   }
 
-  redirectTo(event) {
+  redirectTo() {
+    //alert(this.state.nid)
     this.props.history.push('/training-resources/' + this.state.nid);
   }
 
@@ -295,6 +296,7 @@ class EditForm extends React.Component {
   }
 
   async handleSubmit(event) {
+    event.preventDefault();
     let resourceID = this.state.nid;
     let title = this.refs.title.value;
     let dates = this.refs.dates.value;
@@ -312,7 +314,7 @@ class EditForm extends React.Component {
     let csrf = localStorage.getItem('csrf_token');
 
     if (this.dateValidate(dates, dates2)) {
-      fetch(`${apiUrl}/node/` + resourceID + '?_format=hal_json', {
+      await fetch(`${apiUrl}/node/` + resourceID + '?_format=hal_json', {
         method: 'PATCH',
         credentials: 'include',
         cookies: 'x-access-token',
@@ -400,9 +402,10 @@ class EditForm extends React.Component {
           ]
         })
       });
-      setTimeout(() => {
-        this.props.redirectTo();
-      }, 1000);
+      // setTimeout(() => {
+      //   this.props.redirectTo();
+      // }, 1000);
+      this.props.redirectTo();
     } else {
       alert('Incorrect dates');
     }
@@ -412,46 +415,32 @@ class EditForm extends React.Component {
   render() {
     return (
       <div>
-        <p>
-          <nav>
-            <Link to={`/`}>Home</Link> /{' '}
-            <Link to={`/all-training-resources`}>All training resources</Link> /
-            Edit resource{' '}
-          </nav>
-        </p>
         <h2>Edit Training Resources</h2>
         <p>(* fields are mandatory)</p>
-        <p style={{ float: 'right' }}>
-          <Link to={`/training-resources/${this.state.nid}`}>
-            {' '}
-            <i class="fas fa-eye" /> View{' '}
-          </Link>
-        </p>
-
         <div className="row">
           <div className="column large-12 callout">
             <form
-              className="form"
+              className="vf-form"
               id={'resource_edit_form'}
               onSubmit={this.handleSubmit.bind(this)}
             >
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Title *</strong>
-                  <input
-                    type="text"
-                    ref="title"
-                    id={'title'}
-                    value={this.state.title}
-                    onChange={this.handleTitle.bind(this)}
-                    required
-                    placeholder="Title"
-                  />
-                </div>
-              </div>
+              <div className="vf-form__item">
+                <strong>Title *</strong>
 
-              <div className="row">
-                <div className="column large-6">
+                <input
+                  type="text"
+                  ref="title"
+                  id={'title'}
+                  value={this.state.title}
+                  onChange={this.handleTitle.bind(this)}
+                  required
+                  placeholder="Title"
+                  className="vf-form__input"
+                />
+              </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-grid">
+                <div className="vf-form__item">
                   <strong>Dates</strong>
                   <input
                     type="date"
@@ -459,9 +448,10 @@ class EditForm extends React.Component {
                     value={this.state.dates}
                     onChange={this.handleDates.bind(this)}
                     placeholder="Date"
+                    className="vf-form__input"
                   />
                 </div>
-                <div className="column large-6">
+                <div className="vf-form__item">
                   <strong>Dates</strong>
                   <input
                     type="date"
@@ -469,142 +459,127 @@ class EditForm extends React.Component {
                     value={this.state.dates2}
                     onChange={this.handleDates2.bind(this)}
                     placeholder="Date"
+                    className="vf-form__input"
                   />
                 </div>
               </div>
+              <div className="vf-u-margin__bottom--600" />
 
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Event type *</strong>
-                  <select
-                    ref={'type'}
-                    value={this.state.type}
-                    onChange={this.handleType.bind(this)}
-                  >
-                    <option value={'Online'}>Online</option>
-                    <option value={'Face-to-Face'}>Face-to-Face</option>
-                    <option value={'Webinar'}>Webinar</option>
-                    <option value={'Hackathon'}>Hackathon</option>
-                  </select>
-                </div>
+              <div className="vf-form__item">
+                <strong>Event type *</strong>
+                <select
+                  ref={'type'}
+                  value={this.state.type}
+                  onChange={this.handleType.bind(this)}
+                  className="vf-form__select"
+                >
+                  <option value={'Online'}>Online</option>
+                  <option value={'Face-to-Face'}>Face-to-Face</option>
+                  <option value={'Webinar'}>Webinar</option>
+                  <option value={'Hackathon'}>Hackathon</option>
+                </select>
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Description</strong>
-                  <CKEditor
-                    content={this.state.description}
-                    events={{
-                      change: this.handleDesc
-                    }}
-                    onChange={this.handleDesc}
-                    activeClass="p10"
-                    required
-                  />
-                  {/*<textarea rows={"5"} ref="description" value={this.state.description} onChange={this.handleDesc.bind(this)} required placeholder="Description"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Description</strong>
+                <CKEditor
+                  content={this.state.description}
+                  events={{
+                    change: this.handleDesc
+                  }}
+                  onChange={this.handleDesc}
+                  activeClass="p10"
+                  required
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Location</strong>
-                  <input
-                    type="text"
-                    ref="location"
-                    value={this.state.location}
-                    onChange={this.handleLocation.bind(this)}
-                    placeholder="Location"
-                  />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Location</strong>
+                <input
+                  type="text"
+                  ref="location"
+                  value={this.state.location}
+                  onChange={this.handleLocation.bind(this)}
+                  placeholder="Location"
+                  className="vf-form__input"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>URL *</strong>
-                  <input
-                    type="text"
-                    ref="url"
-                    value={this.state.url}
-                    onChange={this.handleURL.bind(this)}
-                    required
-                    placeholder="URL"
-                  />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>URL *</strong>
+                <input
+                  type="text"
+                  ref="url"
+                  value={this.state.url}
+                  onChange={this.handleURL.bind(this)}
+                  required
+                  placeholder="URL"
+                  className="vf-form__input"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Target audience</strong>
-                  <CKEditor
-                    content={this.state.target_audience}
-                    events={{
-                      change: this.handleTargetAudience
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="target_audience" value={this.state.target_audience} onChange={this.handleTargetAudience.bind(this)} required placeholder="Target audience"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Target audience</strong>
+                <CKEditor
+                  content={this.state.target_audience}
+                  events={{
+                    change: this.handleTargetAudience
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Learning outcomes</strong>
-                  <CKEditor
-                    content={this.state.learning_outcomes}
-                    events={{
-                      change: this.handleLearningOutcomes
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="learning_outcomes" value={this.state.learning_outcomes} onChange={this.handleLearningOutcomes.bind(this)} required placeholder="Learning outcomes"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Learning outcomes</strong>
+                <CKEditor
+                  content={this.state.learning_outcomes}
+                  events={{
+                    change: this.handleLearningOutcomes
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Organisers</strong>
-                  <CKEditor
-                    content={this.state.organisers}
-                    events={{
-                      change: this.handleOrganisers
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="organisers" value={this.state.organisers} onChange={this.handleOrganisers.bind(this)} required placeholder="Organisers"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Organisers</strong>
+                <CKEditor
+                  content={this.state.organisers}
+                  events={{
+                    change: this.handleOrganisers
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Trainers</strong>
-                  <CKEditor
-                    content={this.state.trainers}
-                    events={{
-                      change: this.handleTrainers
-                    }}
-                    activeClass="p10"
-                  />
-                  {/*<textarea rows={"5"} ref="trainers" value={this.state.trainers} onChange={this.handleTrainers.bind(this)} required placeholder="Trainers"/>*/}
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Trainers</strong>
+                <CKEditor
+                  content={this.state.trainers}
+                  events={{
+                    change: this.handleTrainers
+                  }}
+                  activeClass="p10"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-12">
-                  <strong>Keywords</strong>
-                  <input
-                    type="text"
-                    ref="keywords"
-                    value={this.state.keywords}
-                    onChange={this.handleKeywords.bind(this)}
-                    placeholder="Keywords"
-                  />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <strong>Keywords</strong>
+                <input
+                  type="text"
+                  ref="keywords"
+                  value={this.state.keywords}
+                  onChange={this.handleKeywords.bind(this)}
+                  placeholder="Keywords"
+                  className="vf-form__input"
+                />
               </div>
-
-              <div className="row">
-                <div className="column large-2">
-                  <input type="submit" className="button" value="Update" />
-                </div>
+              <div className="vf-u-margin__bottom--600" />
+              <div className="vf-form__item">
+                <input
+                  type="submit"
+                  className="vf-button vf-button--primary vf-button--sm"
+                  value="Update"
+                />
               </div>
             </form>
           </div>
