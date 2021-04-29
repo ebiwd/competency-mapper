@@ -527,7 +527,7 @@ code {
 
 /* Over writing not recommended*/
 .react-responsive-modal-overlay {
-  z-index: 11000 !important;
+  z-index: 10000 !important;
 }
 
 .ReactModal__Overlay {
