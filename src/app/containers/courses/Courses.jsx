@@ -7,6 +7,7 @@ import ErrorLoading from '../../components/error-loading/ErrorLoading';
 import ActiveRequestsService from '../../services/active-requests/active-requests';
 import CoursesService from '../../services/courses/courses';
 import { safeFlat } from '../../services/util/util';
+import Pagination from 'react-js-pagination';
 
 class Courses extends Component {
   static propTypes = {
@@ -219,6 +220,23 @@ class Courses extends Component {
           </thead>
           <tbody>{resources}</tbody>
         </table>
+        <nav className="vf-pagination" aria-label="Pagination">
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={50}
+            totalItemsCount={this.state.totalItemsCount}
+            pageRangeDisplayed={5}
+            onChange={e => this.handlePageChange(e)}
+            innerClass="vf-pagination__list"
+            itemClass="vf-pagination__item"
+            itemClassPrev="vf-pagination__item--previous-page"
+            itemClassNext="vf-pagination__item--next-page"
+            linkClass="vf-pagination__link vf-pagination__label"
+            activeClass="vf-pagination__item--is-active"
+            prevPageText="Previous"
+            nextPageText="Next"
+          />
+        </nav>
       </>
     );
   }
