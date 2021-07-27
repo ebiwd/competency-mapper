@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
-import ReactModal from 'react-modal';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CompetencyList from './CompetencyList';
+// import Collapsible from 'react-collapsible';
+// import ReactModal from 'react-modal';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import CompetencyList from './CompetencyList';
 import { apiUrl } from '../services/http/http';
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -128,10 +128,10 @@ class AttributeSettings extends React.Component {
   render() {
     let attribute_title = '';
     let competency_id = '';
-    let competency_uuid = '';
+    //let competency_uuid = '';
     let competency_title = '';
     let attribute_type_id = '';
-    let attribute_type_uuid = '';
+    //let attribute_type_uuid = '';
     let attribute_type_title = '';
     let attribute = this.state.attribute;
     let frameworkData = this.state.frameworkData;
@@ -145,7 +145,7 @@ class AttributeSettings extends React.Component {
 
     if (frameworkList) {
       frameworkList.map(framework => {
-        if (framework.title.toLowerCase() == this.state.frameworkName) {
+        if (framework.title.toLowerCase() === this.state.frameworkName) {
           framework.attribute_types.map(attribute_type => {
             attributeTypeOptions.push(
               <option
@@ -161,8 +161,10 @@ class AttributeSettings extends React.Component {
               key: attribute_type.id,
               value: attribute_type.title
             });
+            return null;
           });
         }
+        return null;
       });
       //console.log(attributeTypeArray);
     }
@@ -171,7 +173,7 @@ class AttributeSettings extends React.Component {
       frameworkData.map(framework => {
         framework.domains.map(domain => {
           domain.competencies.map(competency => {
-            if (competency.archived == 0) {
+            if (competency.archived === 0) {
               competencyOptions.push(
                 <option
                   key={competency.id}
@@ -187,24 +189,27 @@ class AttributeSettings extends React.Component {
                 value: competency.title
               });
             }
+            return null;
           });
+          return null;
         });
+        return null;
       });
     }
 
     if (attribute) {
       attribute_title = attribute.title[0].value;
       competency_id = attribute.field_competency[0].target_id;
-      competency_uuid = attribute.field_competency[0].target_uuid;
+      //competency_uuid = attribute.field_competency[0].target_uuid;
       attribute_type_id = attribute.field_attribute_type[0].target_id;
       if (competencyArray.length > 0) {
-        let obj = competencyArray.find(d => d.key == competency_id);
+        let obj = competencyArray.find(d => d.key === competency_id);
         competency_title = obj.value;
         //console.log(attribute_type_id);
       }
 
       if (attributeTypeArray.length > 0) {
-        let obj = attributeTypeArray.find(d => d.key == attribute_type_id);
+        let obj = attributeTypeArray.find(d => d.key === attribute_type_id);
         attribute_type_title = obj.value;
       }
 

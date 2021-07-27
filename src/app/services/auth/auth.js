@@ -19,7 +19,8 @@ export async function login(username, password) {
     return data;
   } catch (error) {
     logout();
-    throw error;
+    //throw error;
+    alert(`Login failed with ${error}`);
   }
 }
 

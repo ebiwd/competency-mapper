@@ -46,6 +46,10 @@ function FrameworkButton({ framework }) {
     {
       title: 'datasteward',
       desc: 'Data steward roles: policy, research and infrastructure'
+    },
+    {
+      title: 'permedcoe',
+      desc: 'Professionals in computational biomedicine'
     }
   ];
 
@@ -98,6 +102,13 @@ function FrameworkButton({ framework }) {
       left: '10%',
       position: 'relative',
       objectFit: 'contain'
+    },
+    {
+      title: 'permedcoe',
+      width: '340px',
+      left: '10%',
+      position: 'relative',
+      objectFit: 'contain'
     }
   ];
   return (
@@ -105,7 +116,9 @@ function FrameworkButton({ framework }) {
       <img
         alt="tile"
         className="vf-card__image"
-        src={`https://acxngcvroo.cloudimg.io/v7/${framework.logo[0].url}?w=600`}
+        src={`https://acxngcvroo.cloudimg.io/v7/https:${
+          framework.logo[0].url
+        }?w=600`}
         style={logoStyles.find(
           el => el.title === framework.title.toLowerCase().replace(/ /g, '')
         )}

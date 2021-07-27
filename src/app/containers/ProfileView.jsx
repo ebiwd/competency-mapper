@@ -2,26 +2,26 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 //import CKEditor from 'react-ckeditor-component';
 import Parser from 'html-react-parser';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
+// import CKEditor from '@ckeditor/ckeditor5-react';
+// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
+// import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+// import ProfileService from '../services/profile/profile';
+// import ActiveRequestsService from '../services/active-requests/active-requests';
+import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 
-import jsPDF from 'jspdf';
-import moment from 'moment';
+//import jsPDF from 'jspdf';
+//import moment from 'moment';
 
-const $ = window.$;
+//const $ = window.$;
 
 export const ProfileView = props => {
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
-  const alias = props.location.pathname.split('/')[7];
+  //const alias = props.location.pathname.split('/')[7];
 
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
@@ -29,12 +29,12 @@ export const ProfileView = props => {
   const [userFrameworks, setUserFrameworks] = useState([]);
 
   var competencyView = '';
-  var expertise_levels = [];
+  //var expertise_levels = [];
   var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
+  //var frameworkLogo = '';
+  //var frameworkDesc = '';
   var mapping = [];
   var user_roles = localStorage.getItem('roles')
     ? localStorage.getItem('roles')
@@ -43,9 +43,9 @@ export const ProfileView = props => {
     ? localStorage.getItem('user')
     : '';
 
-  let profile2Expertise = '';
+  //let profile2Expertise = '';
   let width2 = '';
-  let floatRight = '';
+  //let floatRight = '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -71,38 +71,40 @@ export const ProfileView = props => {
           setFramework(findresponse);
         });
 
-      await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
-        method: 'GET',
-        credentials: 'include'
-      })
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setUserFrameworks(findresponse);
-        });
+      if (userName) {
+        await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+          .then(Response => Response.json())
+          .then(findresponse => {
+            setUserFrameworks(findresponse);
+          });
+      }
     };
     fetchData();
-  }, [profileId]);
+  }, [profileId, frameworkVersion, frameworkName, userName]);
 
-  const checkAlias = () => {
-    if (profile) {
-      let url_alias = profile.url_alias;
+  // const checkAlias = () => {
+  //   if (profile) {
+  //     let url_alias = profile.url_alias;
 
-      if (profile.url_alias != alias) {
-        props.history.push(
-          `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
-        );
-      }
-    }
-  };
+  //     if (profile.url_alias != alias) {
+  //       props.history.push(
+  //         `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
+  //       );
+  //     }
+  //   }
+  // };
 
   const getExpertise = competency => {
     if (mapping) {
-      let obj = mapping.find(o => o.competency == competency);
+      let obj = mapping.find(o => o.competency === competency);
       if (obj) {
         if (frameworkInfo) {
           let expertise = frameworkInfo
             .find(info => info.title.toLowerCase() === frameworkName)
-            .expertise_levels.find(level => level.id == obj.expertise);
+            .expertise_levels.find(level => level.id === obj.expertise);
           return expertise;
         }
       } else {
@@ -114,7 +116,7 @@ export const ProfileView = props => {
   const getAttributeStatus = aid => {
     if (mapping) {
       let attribute_check_status = mapping.find(o =>
-        o.attributes.find(a => a == aid)
+        o.attributes.find(a => a === aid)
       );
       return attribute_check_status;
     }
@@ -130,33 +132,36 @@ export const ProfileView = props => {
 
   const generateProfileView = () => {
     if (frameworkInfo) {
-      frameworkInfo.map(info => {
+      frameworkInfo.map((info, infoIndex) => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
-          info.expertise_levels.map(
-            //level => (expertise_levels[level.rating_level] = level.title)
-            level =>
-              expertise_levels_legend.push(
-                <li className="vf-list__item" style={{ textAlign: 'center' }}>
-                  <div
-                    data-tip={level.description ? level.description : 'NA'}
-                    data-html={true}
-                    data-type="info"
-                    data-multiline={true}
-                  >
-                    <span className="vf-badge vf-badge--tertiary">
-                      {' '}
-                      {level.rating_level}{' '}
-                    </span>{' '}
-                    <span> {level.title}</span>
-                  </div>
-                  <ReactTooltip class="tooltip-custom" />
-                </li>
-              )
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
+          info.expertise_levels.map((level, levelIndex) =>
+            expertise_levels_legend.push(
+              <li
+                key={levelIndex}
+                className="vf-list__item"
+                style={{ textAlign: 'center' }}
+              >
+                <div
+                  data-tip={level.description ? level.description : 'NA'}
+                  data-html={true}
+                  data-type="info"
+                  data-multiline={true}
+                >
+                  <span className="vf-badge vf-badge--tertiary">
+                    {' '}
+                    {level.rating_level}{' '}
+                  </span>{' '}
+                  <span> {level.title}</span>
+                </div>
+                <ReactTooltip className="tooltip-custom" />
+              </li>
+            )
           );
         }
+        return null;
       });
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -164,6 +169,7 @@ export const ProfileView = props => {
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
@@ -172,18 +178,18 @@ export const ProfileView = props => {
     }
 
     if (framework) {
-      competencyView = framework.map(item =>
-        item.domains.map(domain => (
-          <>
-            <div>
+      competencyView = framework.map((item, itemIndex) =>
+        item.domains.map((domain, domainIndex) => (
+          <React.Fragment key={itemIndex + domainIndex}>
+            <div key={domainIndex}>
               <div>
                 <h4>{domain.title}</h4>{' '}
               </div>
             </div>
             <div>
               <div>
-                {domain.competencies.map(competency => (
-                  <>
+                {domain.competencies.map((competency, compIndex) => (
+                  <React.Fragment key={compIndex}>
                     <div className="vf-grid vf-grid__col-4">
                       <div className="vf-grid__col--span-3">
                         <span className="vf-text vf-text-heading--5 competency_title">
@@ -208,7 +214,7 @@ export const ProfileView = props => {
                             <span
                               style={{
                                 float:
-                                  getBarWidth(getExpertise(competency.id)) == 0
+                                  getBarWidth(getExpertise(competency.id)) === 0
                                     ? 'none'
                                     : 'right'
                               }}
@@ -235,9 +241,10 @@ export const ProfileView = props => {
                           </div>
                         }
                       >
-                        {attribute_types.map(attribute_type => {
+                        {attribute_types.map((attribute_type, typeIndex) => {
                           return (
                             <div
+                              key={typeIndex}
                               className="accordion-item is-active"
                               data-accordion-item
                             >
@@ -252,9 +259,12 @@ export const ProfileView = props => {
                                       attribute =>
                                         attribute.type === attribute_type
                                     )
-                                    .map(attribute => {
+                                    .map((attribute, attrIndex) => {
                                       return (
-                                        <li className="vf-list__item">
+                                        <li
+                                          key={attrIndex}
+                                          className="vf-list__item"
+                                        >
                                           <span style={{ marginRight: '20px' }}>
                                             {getAttributeStatus(
                                               attribute.id,
@@ -276,102 +286,102 @@ export const ProfileView = props => {
                         })}
                       </Collapsible>
                     </div>
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             </div>
-          </>
+          </React.Fragment>
         ))
       );
     }
   };
 
-  const handleDownload = e => {
-    e.preventDefault();
+  // const handleDownload = e => {
+  //   e.preventDefault();
 
-    // Download Profile
-    let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
-    downloadProfileFromHtml(storedProfile);
-  };
-  const downloadProfileFromHtml = options => {
-    let doc = new jsPDF('p', 'pt', 'a4');
-    doc.setFont('helvetica');
-    const margin = 0.5;
+  //   // Download Profile
+  //   let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
+  //   downloadProfileFromHtml(storedProfile);
+  // };
+  // const downloadProfileFromHtml = options => {
+  //   let doc = new jsPDF('p', 'pt', 'a4');
+  //   doc.setFont('helvetica');
+  //   const margin = 0.5;
 
-    let currentDate = moment().format('MMMM D, Y');
-    let currentTime = moment().format('hh:mm:ss');
+  //   let currentDate = moment().format('MMMM D, Y');
+  //   let currentTime = moment().format('hh:mm:ss');
 
-    let pdfWidth = doc.internal.pageSize.getWidth();
-    let pdfHeight = doc.internal.pageSize.getHeight();
+  //   let pdfWidth = doc.internal.pageSize.getWidth();
+  //   let pdfHeight = doc.internal.pageSize.getHeight();
 
-    const startHeight = 30;
-    const marginleft = 20;
-    const pdfProfileImgWidth = 180;
-    const pageLogoWidth = 100;
+  //   const startHeight = 30;
+  //   const marginleft = 20;
+  //   const pdfProfileImgWidth = 180;
+  //   const pageLogoWidth = 100;
 
-    let marginright = doc.internal.pageSize.getWidth() - 20;
-    let col = pdfWidth * 0.07383;
-    let gutter = pdfWidth * 0.01036727272;
-    let fourthCol = col * 4 + gutter * 3;
-    let fifthCol = col * 5 + gutter * 4;
+  //   let marginright = doc.internal.pageSize.getWidth() - 20;
+  //   let col = pdfWidth * 0.07383;
+  //   let gutter = pdfWidth * 0.01036727272;
+  //   let fourthCol = col * 4 + gutter * 3;
+  //   let fifthCol = col * 5 + gutter * 4;
 
-    const profileBody = pdfWidth - fifthCol - 20;
+  //   const profileBody = pdfWidth - fifthCol - 20;
 
-    let selectedFileWidth = options.selectedFile
-      ? options.selectedFileData[0].width
-      : 180;
-    let selectedFileHeight = options.selectedFile
-      ? options.selectedFileData[0].height
-      : 150;
-    let ratio = selectedFileWidth / selectedFileHeight;
-    let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
+  //   let selectedFileWidth = options.selectedFile
+  //     ? options.selectedFileData[0].width
+  //     : 180;
+  //   let selectedFileHeight = options.selectedFile
+  //     ? options.selectedFileData[0].height
+  //     : 150;
+  //   let ratio = selectedFileWidth / selectedFileHeight;
+  //   let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
 
-    let currentYAxis = startHeight;
+  //   let currentYAxis = startHeight;
 
-    var specialElementHandlers = {
-      '#editor': function(element, renderer) {
-        return true;
-      }
-    };
+  //   var specialElementHandlers = {
+  //     '#editor': function(element, renderer) {
+  //       return true;
+  //     }
+  //   };
 
-    let margins = {
-      top: startHeight,
-      bottom: 60,
-      left: marginleft,
-      right: marginright,
-      width: 490
-    };
-    var sourceFull = document.getElementById('profile');
-    var source = sourceFull;
+  //   let margins = {
+  //     top: startHeight,
+  //     bottom: 60,
+  //     left: marginleft,
+  //     right: marginright,
+  //     width: 490
+  //   };
+  //   var sourceFull = document.getElementById('profile');
+  //   var source = sourceFull;
 
-    let profileTitle = options.jobTitle.split(' ').join('_');
-    doc.fromHTML(
-      source,
-      marginleft,
-      currentYAxis,
-      {
-        // y coord
-        width: margins.width, // max width of content on PDF
-        elementHandlers: specialElementHandlers
-      },
-      function(dispose) {
-        // dispose: object with X, Y of the last line add to the PDF
-        //          this allow the insertion of new lines after html
-        doc.save(profileTitle.toLowerCase() + '.pdf');
-      }
-      // margins
-    );
-  };
+  //   let profileTitle = options.jobTitle.split(' ').join('_');
+  //   doc.fromHTML(
+  //     source,
+  //     marginleft,
+  //     currentYAxis,
+  //     {
+  //       // y coord
+  //       width: margins.width, // max width of content on PDF
+  //       elementHandlers: specialElementHandlers
+  //     },
+  //     function(dispose) {
+  //       // dispose: object with X, Y of the last line add to the PDF
+  //       //          this allow the insertion of new lines after html
+  //       doc.save(profileTitle.toLowerCase() + '.pdf');
+  //     }
+  //     // margins
+  //   );
+  // };
 
   const handlePrint = () => {
     window.print();
   };
 
   return (
-    <div>
+    <div key={'unique'}>
       {generateProfileView()}
       {profile ? (
-        <div id="profile">
+        <div key={profileId} id="profile">
           <div style={{ float: 'right' }}>
             {user_roles.search('framework_manager') !== -1 &&
             userFrameworks.length > 0 &&
@@ -413,6 +423,7 @@ export const ProfileView = props => {
             <div>
               <center>
                 <img
+                  alt=""
                   style={{ display: 'block', maxWidth: '200px' }}
                   src={profile.image[0] ? profile.image[0].url : ''}
                 />
@@ -444,20 +455,22 @@ export const ProfileView = props => {
             </div>
             <div>
               <h3>Qualification and background</h3>
-              <p>
+              <div>
                 {profile.qualification_background
                   ? Parser(profile.qualification_background)
                   : ''}
-              </p>
+              </div>
 
               <h3>Activities of current role</h3>
-              <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
+              <div>
+                {profile.current_role ? Parser(profile.current_role) : ''}
+              </div>
 
-              <p>
+              <div>
                 {profile.additional_information
                   ? Parser(profile.additional_information)
                   : ''}
-              </p>
+              </div>
             </div>
           </div>
 

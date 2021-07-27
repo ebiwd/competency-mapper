@@ -55,15 +55,6 @@ class ManageCompetencies extends React.Component {
         }
       }, 100);
     }
-
-    // fetch(`https://dev-competency-mapper.pantheonsite.io/api/authorisation/cath?_format=json`,{
-    //   method: 'GET',
-    //   credentials: 'include'
-    // })
-    // .then(Response => Response.json())
-    // .then(findResponse =>
-    //   this.setState({allowedFrms: findResponse})
-    // );
   }
 
   async componentDidUpdate(prevProps, prevState) {
@@ -339,7 +330,7 @@ class ManageCompetencies extends React.Component {
                   competency.id
                 }/settings`}
               >
-                <i class="fas fa-cog" />
+                <i className="fas fa-cog" />
               </Link>
             </td>
           </tr>
@@ -376,7 +367,7 @@ class ManageCompetencies extends React.Component {
   render() {
     // if(this.state.allowedFrms.length > 0){
     //   if(this.state.allowedFrms.indexOf(this.state.framework) == -1){
-    //     return(<h4 className="callout warning"> <i class="icon icon-common icon-exclamation-triangle"></i> You are not authorised to manage this framework </h4> );
+    //     return(<h4 className="callout warning"> <i className="icon icon-common icon-exclamation-triangle"></i> You are not authorised to manage this framework </h4> );
     //   }
     // }
 

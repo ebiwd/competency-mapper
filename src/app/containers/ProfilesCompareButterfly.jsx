@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 //import { apiUrl } from '../services/http/http';
 //import ProfileService from '../services/profile/profile';
 //import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -31,29 +31,29 @@ export const ProfilesCompareButterfly = props => {
   //var frameworkDesc = '';
   var mapping1 = [];
   var mapping2 = [];
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
-  var competencies_array = [];
+  // var user_roles = localStorage.getItem('roles')
+  //   ? localStorage.getItem('roles')
+  //   : '';
+  // var competencies_array = [];
   var expertise_array = [];
-  var profile1_expertise_obj = new Object();
-  var profile2_expertise_obj = new Object();
+  //var profile1_expertise_obj = new Object();
+  //var profile2_expertise_obj = new Object();
   var chart_props = [];
-  var leftData = [];
-  var rightData = [];
+  //var leftData = [];
+  //var rightData = [];
   var totalLevels = '';
 
   var includeSummary = [];
 
   const getExpertise = (competency, profileid) => {
     let mapping = [];
-    if (profileid == 'profile1') {
+    if (profileid === 'profile1') {
       mapping = mapping1;
     } else {
       mapping = mapping2;
     }
 
-    let obj = mapping.find(o => o.competency == competency);
+    let obj = mapping.find(o => o.competency === competency);
     if (obj) {
       if (frameworkInfo) {
         // let expertise = frameworkInfo[0].expertise_levels.find(
@@ -65,7 +65,7 @@ export const ProfilesCompareButterfly = props => {
         );
 
         let expertise = frm.expertise_levels.find(
-          level => level.id == obj.expertise
+          level => level.id === obj.expertise
         );
         totalLevels = frm.expertise_levels.length;
         return expertise;
@@ -77,7 +77,7 @@ export const ProfilesCompareButterfly = props => {
 
   const getAttributeStatus = (attribute, profile) => {
     let mapping = '';
-    if (profile == 'profile1') {
+    if (profile === 'profile1') {
       mapping = profile1.profile_mapping;
     } else {
       mapping = profile2.profile_mapping;
@@ -85,16 +85,16 @@ export const ProfilesCompareButterfly = props => {
     //console.log(mapping)
     if (mapping) {
       let attribute_check_status = mapping.find(o =>
-        o.attributes.find(a => a == attribute)
+        o.attributes.find(a => a === attribute)
       );
       //console.log(attribute_check_status)
       return attribute_check_status ? true : false;
     }
   };
 
-  const getAttributeRows = competency => {
-    console.log('hi ' + competency);
-  };
+  // const getAttributeRows = competency => {
+  //   console.log('hi ' + competency);
+  // };
 
   const generateProfileView = () => {
     if (frameworkInfo) {
@@ -107,6 +107,7 @@ export const ProfilesCompareButterfly = props => {
             (level, key) => (expertise_array[key] = level.id) //(expertise_levels[level.id] = level.title)
           );
         }
+        return null;
       });
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -114,6 +115,7 @@ export const ProfilesCompareButterfly = props => {
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
@@ -127,6 +129,7 @@ export const ProfilesCompareButterfly = props => {
           '</li>'
       );
       index++;
+      return null;
     });
 
     if (profile1) {
@@ -139,19 +142,21 @@ export const ProfilesCompareButterfly = props => {
 
     if (frameworkInfo) {
       frameworkInfo.map(framework => {
-        if (framework.title == frameworkName) {
+        if (framework.title === frameworkName) {
           framework.expertise_levels.map((level, key) => {
             expertise_array[key] = level.id;
+            return null;
           });
           totalLevels = framework.expertise_levels.length;
         }
+        return null;
       });
     }
 
     if (framework) {
-      competencyView = framework.map(item =>
-        item.domains.map(domain =>
-          domain.competencies.map(competency => {
+      competencyView = framework.map((item, frmIndex) =>
+        item.domains.map((domain, domainIndex) =>
+          domain.competencies.map((competency, compIndex) => {
             let profile1Expertise = getExpertise(competency.id, 'profile1');
             let profile2Expertise = getExpertise(competency.id, 'profile2');
 
@@ -172,15 +177,15 @@ export const ProfilesCompareButterfly = props => {
               ? 100 / ((totalLevels - 1) / profile1Expertise.rating_level)
               : 0;
             let margin1 = 100 - width1;
-            margin1 = margin1 == 100 ? 88 : margin1;
+            margin1 = margin1 === 100 ? 88 : margin1;
 
             let width2 = profile2Expertise
               ? 100 / ((totalLevels - 1) / profile2Expertise.rating_level)
               : 0;
-            let floatRight = width2 == 0 ? 'none' : 'right';
+            let floatRight = width2 === 0 ? 'none' : 'right';
 
             return (
-              <div>
+              <div key={compIndex}>
                 <div className="vf-grid vf-grid__col-5">
                   <div className="vf-grid__col--span-3">
                     <span className="competency_title">
@@ -244,20 +249,20 @@ export const ProfilesCompareButterfly = props => {
                       </div>
                     }
                   >
-                    {attribute_types.map(attribute_type => {
+                    {attribute_types.map((attribute_type, typeIndex) => {
                       return (
-                        <>
+                        <React.Fragment key={typeIndex}>
                           <p style={{ paddingLeft: '20px', marginTop: '10px' }}>
                             <strong> {attribute_type} </strong>
                           </p>
                           <div className="vf-grid vf-grid__col-5">
                             {competency.attributes
                               .filter(
-                                attribute => attribute.type == attribute_type
+                                attribute => attribute.type === attribute_type
                               )
-                              .map(attribute => {
+                              .map((attribute, attrIndex) => {
                                 return (
-                                  <>
+                                  <React.Fragment key={attrIndex}>
                                     <span
                                       className="vf-grid__col--span-3"
                                       style={{ paddingLeft: '20px' }}
@@ -285,11 +290,11 @@ export const ProfilesCompareButterfly = props => {
                                         '-'
                                       )}
                                     </div>
-                                  </>
+                                  </React.Fragment>
                                 );
                               })}
                           </div>
-                        </>
+                        </React.Fragment>
                       );
                     })}
                   </Collapsible>
@@ -366,17 +371,21 @@ export const ProfilesCompareButterfly = props => {
         <div />
         <div style={{ textAling: 'center' }}>
           {isGuestProfile ? (
-            <a to={'#'} className="vf-button" onClick={e => handleSummary(e)}>
+            <button
+              to={'#'}
+              className="vf-button"
+              onClick={e => handleSummary(e)}
+            >
               Summary <i className="icon-common icon-list" />
-            </a>
+            </button>
           ) : (
             ''
           )}
         </div>
         <div style={{ textAling: 'center' }}>
-          <a href="#" className="vf-button" onClick={e => handlePrint(e)}>
+          <button href="#" className="vf-button" onClick={e => handlePrint(e)}>
             Print <i className="icon icon-common icon-print" />
-          </a>
+          </button>
         </div>
         <div />
       </div>

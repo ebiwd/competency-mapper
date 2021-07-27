@@ -5,7 +5,6 @@ const Breadcrumbs = () => {
   let location = useLocation();
   let pathname = location.pathname;
   let URL = pathname.split('/');
-  let links = [];
   let frameworkName = URL[2];
   let frameworkVersion = URL[3];
 
@@ -43,12 +42,12 @@ const Breadcrumbs = () => {
     if (pathname.includes('compare')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item">
+          <li className="vf-breadcrumbs__item">
             <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
               {convertFrameworkName(frameworkName)} {frameworkVersion}
             </Link>
           </li>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             Compare career profiles
           </li>
         </>
@@ -56,12 +55,12 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('profile')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item">
+          <li className="vf-breadcrumbs__item">
             <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
               {convertFrameworkName(frameworkName)} {frameworkVersion}
             </Link>
           </li>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             View career profile
           </li>
         </>
@@ -69,12 +68,12 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('competency')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item">
+          <li className="vf-breadcrumbs__item">
             <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
               {convertFrameworkName(frameworkName)} {frameworkVersion}
             </Link>
           </li>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             Competency details
           </li>
         </>
@@ -82,7 +81,7 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('framework')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             {convertFrameworkName(frameworkName)} {frameworkVersion}
           </li>
         </>
@@ -90,7 +89,7 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('all-training-resources')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             Manage training resources
           </li>
         </>
@@ -98,7 +97,7 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('resource')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             Training resource
           </li>
         </>
@@ -106,7 +105,7 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('documentation')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             API documentation
           </li>
         </>
@@ -114,7 +113,7 @@ const Breadcrumbs = () => {
     } else if (pathname.includes('about')) {
       return (
         <>
-          <li class="vf-breadcrumbs__item" aria-current="location">
+          <li className="vf-breadcrumbs__item" aria-current="location">
             About
           </li>
         </>
@@ -126,8 +125,8 @@ const Breadcrumbs = () => {
     <span />
   ) : (
     <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
-      <ul class="vf-breadcrumbs__list | vf-list vf-list--inline">
-        <li class="vf-breadcrumbs__item">
+      <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
+        <li className="vf-breadcrumbs__item">
           <Link to={`/`}>Home</Link>
         </li>
         {getBreadcrumbs()}

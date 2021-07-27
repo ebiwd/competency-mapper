@@ -1,7 +1,6 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
-import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
 
 class ResourceCreate extends React.Component {
@@ -182,7 +181,7 @@ class ResourceCreate extends React.Component {
               format: 'basic_html'
             }
           ],
-          field_keywords: [
+          field_domain_topics: [
             {
               value: keywords
             }

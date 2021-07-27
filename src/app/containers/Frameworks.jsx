@@ -46,16 +46,16 @@ class Frameworks extends Component {
 
         <FrameworkButtons frameworks={frameworks} />
         <div style={{ padding: '20px' }}>
-          <hr class="vf-divider" />
+          <hr className="vf-divider" />
           <p>
-            <div>
+            <span>
               <Link
                 to="/documentation"
                 className="vf-button vf-button--outline vf-button--primary vf-button--sm"
               >
                 API documentation{' '}
               </Link>
-            </div>
+            </span>
           </p>
           <p>
             If you have any questions, comments or suggestions, please contact

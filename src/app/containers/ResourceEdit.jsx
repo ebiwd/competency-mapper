@@ -131,7 +131,9 @@ class ResourceEdit extends React.Component {
       learning_outcomes = item.field_learning_outcomes[0]
         ? item.field_learning_outcomes[0].value
         : null;
-      keywords = item.field_keywords[0] ? item.field_keywords[0].value : null;
+      keywords = item.field_domain_topics[0]
+        ? item.field_domain_topics[0].value
+        : null;
       organisers = item.field_organisers[0]
         ? item.field_organisers[0].value
         : null;
@@ -378,7 +380,7 @@ class EditForm extends React.Component {
               format: 'basic_html'
             }
           ],
-          field_keywords: [
+          field_domain_topics: [
             {
               value: keywords
             }

@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import CompetencyList from './CompetencyList';
 import { Line, Circle } from 'rc-progress';
 import ReactModal from 'react-modal';
+import { apiUrl } from '../services/http/http';
 
 class CompetencyForm extends React.Component {
   constructor(props) {
@@ -100,68 +101,64 @@ class CompetencyForm extends React.Component {
       var domainUUID = this.refs.domain_ref.value;
 
       for (var i = 0; i < competencies.length; i++) {
-        fetch(
-          'http://dev-competency-mapper.pantheonsite.io/node?_format=hal_json',
-          {
-            method: 'POST',
-            cookies: 'x-access-token',
-            headers: {
-              Accept: 'application/hal+json',
-              'Content-Type': 'application/hal+json',
-              'X-CSRF-Token': 'O1YI90dygefMwzYqQbEavAs7poklc9lLXCL8MwXYdaQ',
-              Authorization: 'Basic'
-            },
-            body: JSON.stringify({
-              _links: {
-                type: {
-                  href:
-                    'http://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
-                },
-                'http://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': {
-                  href:
-                    'http://dev-competency-mapper.pantheonsite.io/node/' +
-                    domainID +
-                    '?_format=hal_json'
-                }
+        fetch(`${apiUrl}/node?_format=hal_json`, {
+          method: 'POST',
+          cookies: 'x-access-token',
+          headers: {
+            Accept: 'application/hal+json',
+            'Content-Type': 'application/hal+json',
+            'X-CSRF-Token': 'O1YI90dygefMwzYqQbEavAs7poklc9lLXCL8MwXYdaQ',
+            Authorization: 'Basic'
+          },
+          body: JSON.stringify({
+            _links: {
+              type: {
+                href: `${apiUrl}/rest/type/node/competency`
               },
-              title: [
-                {
-                  value: competencies[i]
-                }
-              ],
-              type: [
-                {
-                  target_id: 'competency'
-                }
-              ],
-
-              _embedded: {
-                'http://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': [
-                  {
-                    _links: {
-                      self: {
-                        href:
-                          'http://dev-competency-mapper.pantheonsite.io/node/' +
-                          domainID +
-                          '?_format=hal_json'
-                      },
-                      type: {
-                        href:
-                          'http://dev-competency-mapper.pantheonsite.io/rest/type/node/domain'
-                      }
-                    },
-                    uuid: [
-                      {
-                        value: domainUUID //"b20064ef-5cbf-4147-90f8-08e7a6693e17"
-                      }
-                    ],
-                    lang: 'en'
-                  }
-                ]
+              'http://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': {
+                href:
+                  'http://dev-competency-mapper.pantheonsite.io/node/' +
+                  domainID +
+                  '?_format=hal_json'
               }
-            })
-          }
-        );
+            },
+            title: [
+              {
+                value: competencies[i]
+              }
+            ],
+            type: [
+              {
+                target_id: 'competency'
+              }
+            ],
+
+            _embedded: {
+              'http://dev-competency-mapper.pantheonsite.io/rest/relation/node/competency/field_domain': [
+                {
+                  _links: {
+                    self: {
+                      href:
+                        'http://dev-competency-mapper.pantheonsite.io/node/' +
+                        domainID +
+                        '?_format=hal_json'
+                    },
+                    type: {
+                      href:
+                        'http://dev-competency-mapper.pantheonsite.io/rest/type/node/domain'
+                    }
+                  },
+                  uuid: [
+                    {
+                      value: domainUUID //"b20064ef-5cbf-4147-90f8-08e7a6693e17"
+                    }
+                  ],
+                  lang: 'en'
+                }
+              ]
+            }
+          })
+        });
       }
       this.setState({ formSubmitted: competencies.length });
       this.setState({ values: [''] });
@@ -193,7 +190,7 @@ class CompetencyForm extends React.Component {
                     <span style={{ color: 'red' }}>
                       Please select domain{' '}
                     </span>{' '}
-                    <i class="far fa-frown"> </i>
+                    <i className="far fa-frown"> </i>
                   </div>
                 ) : (
                   ''

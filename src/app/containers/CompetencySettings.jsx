@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
-import ReactModal from 'react-modal';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
-import CompetencyList from './CompetencyList';
+// import Collapsible from 'react-collapsible';
+// import ReactModal from 'react-modal';
+// import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+// import CompetencyList from './CompetencyList';
 import { apiUrl } from '../services/http/http';
 import CompetencyService from '../services/competency/competency';
 import ActiveRequestsService from '../services/active-requests/active-requests';
@@ -103,7 +103,7 @@ class CompetencySettings extends React.Component {
   render() {
     let competency_title = '';
     let domain_id = '';
-    let domain_uuid = '';
+    //let domain_uuid = '';
     let domain_title = '';
     let competency = this.state.competency;
     let frameworkList = this.state.frameworkList;
@@ -127,18 +127,19 @@ class CompetencySettings extends React.Component {
               </option>
             );
             domainArray.push({ key: domain.id, value: domain.title });
-            console.log(frameworkList);
+            return null;
           });
         }
+        return null;
       });
     }
 
     if (competency) {
       competency_title = competency.title[0].value;
       domain_id = competency.field_domain[0].target_id;
-      domain_uuid = competency.field_domain[0].target_uuid;
+      //domain_uuid = competency.field_domain[0].target_uuid;
       if (domainArray.length > 0) {
-        let obj = domainArray.find(d => d.key == domain_id);
+        let obj = domainArray.find(d => d.key === domain_id);
         domain_title = obj.value;
       }
     }

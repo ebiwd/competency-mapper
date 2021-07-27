@@ -30,7 +30,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
   const [showNotes, setShowNotes] = useState(false);
   const [notes, setNotes] = useState('');
 
-  let versionNumber = '';
+  //let versionNumber = '';
 
   const versionItems = versions
     .filter(version => version.number !== 'draft')

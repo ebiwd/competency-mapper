@@ -1,6 +1,6 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Parser from 'html-react-parser';
+//import Parser from 'html-react-parser';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import { apiUrl } from '../services/http/http';
@@ -34,7 +34,7 @@ class ResourcesList extends React.Component {
   async searchSubmit(e) {
     e.preventDefault();
     await this.setState({ resources: null });
-    await this.setState({ activePage: 0 });
+    await this.setState({ activePage: 1 });
     await this.setState({ totalItemsCount: 0 });
     await this.fetchData();
   }
@@ -91,7 +91,7 @@ class ResourcesList extends React.Component {
 
   checkAuthor(author_id) {
     let userid = localStorage.getItem('userid');
-    if (userid == author_id) {
+    if (userid === author_id) {
       return true;
     } else {
       return false;
@@ -348,7 +348,7 @@ class ResourcesList extends React.Component {
               onChange={this.filterMappingHandle.bind(this)}
               className="vf-form__checkbox"
             />
-            <label for="checkboxMapping" class="vf-form__label">
+            <label for="checkboxMapping" className="vf-form__label">
               {' '}
               Show resources with deprecated mapping{' '}
             </label>
@@ -387,12 +387,12 @@ class ResourcesList extends React.Component {
             totalItemsCount={this.state.totalItemsCount}
             pageRangeDisplayed={5}
             onChange={e => this.handlePageChange(e)}
-            innerClass="vf-pagination__list"
-            itemClass="vf-pagination__item"
+            innerclassName="vf-pagination__list"
+            itemclassName="vf-pagination__item"
             itemClassPrev="vf-pagination__item--previous-page"
             itemClassNext="vf-pagination__item--next-page"
-            linkClass="vf-pagination__link vf-pagination__label"
-            activeClass="vf-pagination__item--is-active"
+            linkclassName="vf-pagination__link vf-pagination__label"
+            activeclassName="vf-pagination__item--is-active"
             prevPageText="Previous"
             nextPageText="Next"
           />

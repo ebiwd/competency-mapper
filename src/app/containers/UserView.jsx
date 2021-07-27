@@ -33,8 +33,12 @@ const UserView = () => {
     let test = [];
     frameworks.map(item => {
       user.field_frameworks.map(framework => {
-        if (framework.target_id == item.nid) test.push(item.title);
+        if (framework.target_id === item.nid) {
+          test.push(item.title);
+        }
+        return null;
       });
+      return null;
     });
     if (test.length > 0) {
       setFrm(test.join());

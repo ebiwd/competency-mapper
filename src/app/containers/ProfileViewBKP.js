@@ -159,7 +159,7 @@ export const ProfileView = props => {
                       data-html={true}
                       data-type="light"
                     >
-                      <i class="icon icon-common icon-info" />
+                      <i className="icon icon-common icon-info" />
                     </span>
                   </h4>
                   <ReactTooltip />
@@ -219,7 +219,7 @@ export const ProfileView = props => {
                                                 {getAttributeStatus(
                                                   attribute.id
                                                 ) ? (
-                                                  <i class="icon icon-common icon-check" />
+                                                  <i className="icon icon-common icon-check" />
                                                 ) : (
                                                   ''
                                                 )}{' '}
@@ -358,19 +358,19 @@ export const ProfileView = props => {
                     to={`/framework/bioexcel/2.0/profile/edit/${profileId}`}
                   >
                     Edit overview
-                    <i class="icon icon-common icon-pencil-alt" />
+                    <i className="icon icon-common icon-pencil-alt" />
                   </Link>
                 </li>
                 <li className="profile_navigation">
                   <Link to={`/framework/bioexcel/2.0/profile/map/${profileId}`}>
-                    Map competencies <i class="icon icon-common icon-cog" />{' '}
+                    Map competencies <i className="icon icon-common icon-cog" />{' '}
                     {console.log(localStorage.getItem('roles'))}
                   </Link>
                 </li>
               </ul>
             ) : (
               <Link to={`/framework/bioexcel/2.0/profile/create`}>
-                Create your profile <i class="icon icon-common icon-plus" />
+                Create your profile <i className="icon icon-common icon-plus" />
               </Link>
             )}
           </div>

@@ -3,13 +3,13 @@ import { Switch, Route } from 'react-router-dom';
 import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+//import ProfileService from '../services/profile/profile';
+//import ActiveRequestsService from '../services/active-requests/active-requests';
+import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import user_icon from './user_icon.png';
-const $ = window.$;
+//const $ = window.$;
 
 export const ProfileViewGuest = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -20,17 +20,17 @@ export const ProfileViewGuest = props => {
   const [frameworkInfo, setFrameworkInfo] = useState();
 
   var competencyView = '';
-  var expertise_levels = [];
+  //var expertise_levels = [];
   var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
+  //var frameworkLogo = '';
+  //var frameworkDesc = '';
   var mapping = [];
 
-  let profile2Expertise = '';
+  //let profile2Expertise = '';
   let width2 = '';
-  let floatRight = '';
+  //let floatRight = '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,11 +51,11 @@ export const ProfileViewGuest = props => {
         });
     };
     fetchData();
-  }, []);
+  }, [frameworkName, frameworkVersion]);
 
   const getExpertise = competency => {
     if (mapping) {
-      let obj = mapping.find(o => o.competency == competency);
+      let obj = mapping.find(o => o.competency === competency);
       if (obj) {
         if (frameworkInfo) {
           // let expertise = frameworkInfo[0].expertise_levels.find(
@@ -63,7 +63,7 @@ export const ProfileViewGuest = props => {
           // );
           let expertise = frameworkInfo
             .find(info => info.title.toLowerCase() === frameworkName)
-            .expertise_levels.find(level => level.id == obj.expertise);
+            .expertise_levels.find(level => level.id === obj.expertise);
           return expertise;
         }
       } else {
@@ -75,7 +75,7 @@ export const ProfileViewGuest = props => {
   const getAttributeStatus = aid => {
     if (mapping) {
       let attribute_check_status = mapping.find(o =>
-        o.attributes.find(a => a == aid)
+        o.attributes.find(a => a === aid)
       );
       return attribute_check_status;
     }
@@ -93,34 +93,36 @@ export const ProfileViewGuest = props => {
 
   const generateProfileView = () => {
     if (frameworkInfo) {
-      console.log(frameworkInfo);
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
-          info.expertise_levels.map(
-            //level => (expertise_levels[level.rating_level] = level.title)
-            level =>
-              expertise_levels_legend.push(
-                <li className="vf-list__item" style={{ textAlign: 'center' }}>
-                  <div
-                    data-tip={level.description ? level.description : 'NA'}
-                    data-html={true}
-                    data-type="info"
-                    data-multiline={true}
-                  >
-                    <span className="vf-badge vf-badge--tertiary">
-                      {' '}
-                      {level.rating_level}{' '}
-                    </span>{' '}
-                    <span> {level.title}</span>
-                  </div>
-                  <ReactTooltip class="tooltip-custom" />
-                </li>
-              )
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
+          info.expertise_levels.map((level, index) =>
+            expertise_levels_legend.push(
+              <li
+                key={level.rating_level}
+                className="vf-list__item"
+                style={{ textAlign: 'center' }}
+              >
+                <div
+                  data-tip={level.description ? level.description : 'NA'}
+                  data-html={true}
+                  data-type="info"
+                  data-multiline={true}
+                >
+                  <span className="vf-badge vf-badge--tertiary">
+                    {' '}
+                    {level.rating_level}{' '}
+                  </span>{' '}
+                  <span> {level.title}</span>
+                </div>
+                <ReactTooltip className="tooltip-custom" />
+              </li>
+            )
           );
         }
+        return null;
       });
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -128,6 +130,7 @@ export const ProfileViewGuest = props => {
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
@@ -138,15 +141,15 @@ export const ProfileViewGuest = props => {
 
     if (framework) {
       competencyView = framework.map(item =>
-        item.domains.map(domain => (
-          <div>
+        item.domains.map((domain, domainIndex) => (
+          <div key={domainIndex}>
             <div className="row callout">
               <div className="column medium-12 ">
                 <h5>{domain.title}</h5>{' '}
               </div>
             </div>
-            {domain.competencies.map(competency => (
-              <div>
+            {domain.competencies.map((competency, compIndex) => (
+              <div key={compIndex}>
                 <div className="vf-grid vf-grid__col-4">
                   <div className="vf-grid__col--span-3">
                     <span className="competency_title">
@@ -171,7 +174,7 @@ export const ProfileViewGuest = props => {
                         <span
                           style={{
                             float:
-                              getBarWidth(getExpertise(competency.id)) == 0
+                              getBarWidth(getExpertise(competency.id)) === 0
                                 ? 'none'
                                 : 'right'
                           }}
@@ -198,9 +201,10 @@ export const ProfileViewGuest = props => {
                       </div>
                     }
                   >
-                    {attribute_types.map(attribute_type => {
+                    {attribute_types.map((attribute_type, typeIndex) => {
                       return (
                         <div
+                          key={typeIndex}
                           className="accordion-item is-active"
                           data-accordion-item
                         >
@@ -212,11 +216,14 @@ export const ProfileViewGuest = props => {
                           </div>
                           {competency.attributes
                             .filter(
-                              attribute => attribute.type == attribute_type
+                              attribute => attribute.type === attribute_type
                             )
-                            .map(attribute => {
+                            .map((attribute, attrIndex) => {
                               return (
-                                <div className="vf-grid vf-grid__col-4 attribute_align">
+                                <div
+                                  key={attrIndex}
+                                  className="vf-grid vf-grid__col-4 attribute_align"
+                                >
                                   <div className="vf-grid__col--span-3">
                                     {attribute.title}
                                   </div>
@@ -287,53 +294,48 @@ export const ProfileViewGuest = props => {
             <div className="vf-grid__col--span-1">
               <center>
                 <img
+                  alt=""
                   style={{ display: 'block', maxWidth: '150px' }}
                   src={profile.image[0] ? profile.image[0].url : user_icon}
                   //src='#'
                 />
               </center>
               <p />
-              <p style={{ textAlign: 'center' }}>
+              <div style={{ textAlign: 'center' }}>
                 {profile.gender !== 'None' ? (
                   <div>
-                    <p>
-                      {profile.gender && profile.gender === 'Prefernottosay' ? (
-                        <p> Gender: Prefer not to say </p>
-                      ) : (
-                        ''
-                      )}
-                    </p>
-                    <p>
-                      {profile.gender && profile.gender !== 'Prefernottosay' ? (
-                        <p> Gender: {profile.gender} </p>
-                      ) : (
-                        ''
-                      )}
-                    </p>
+                    {profile.gender && profile.gender === 'Prefernottosay' ? (
+                      <p> Gender: Prefer not to say </p>
+                    ) : (
+                      ''
+                    )}
+
+                    {profile.gender && profile.gender !== 'Prefernottosay' ? (
+                      <span> Gender: {profile.gender} </span>
+                    ) : (
+                      ''
+                    )}
                   </div>
                 ) : (
                   ''
                 )}
 
                 {profile.age ? <p> Age: {profile.age + ' years'} </p> : ''}
-              </p>
+              </div>
             </div>
             <div className="vf-grid__col--span-3">
               <h3>Qualification and background</h3>
-              <p>
-                {profile.qualification_background
-                  ? Parser(profile.qualification_background)
-                  : ''}
-              </p>
+
+              {profile.qualification_background
+                ? Parser(profile.qualification_background)
+                : ''}
 
               <h3>Activities of current role</h3>
-              <p>{profile.current_role ? Parser(profile.current_role) : ''}</p>
+              {profile.current_role ? Parser(profile.current_role) : ''}
 
-              <p>
-                {profile.additional_information
-                  ? Parser(profile.additional_information)
-                  : ''}
-              </p>
+              {profile.additional_information
+                ? Parser(profile.additional_information)
+                : ''}
             </div>
             <p />
           </div>

@@ -21,7 +21,8 @@ class Login extends Component {
   };
 
   render() {
-    const { roles, user, isActive } = this.props;
+    //const { roles, user, isActive } = this.props;
+    const { roles, user } = this.props;
 
     return (
       <div>

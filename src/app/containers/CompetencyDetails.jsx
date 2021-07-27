@@ -171,13 +171,13 @@ class CompetencyDetails extends React.Component {
         <div className="column large-12">
           {frameworkData.length > 0 ? (
             <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
-              <ul class="vf-breadcrumbs__list | vf-list vf-list--inline">
-                <li class="vf-breadcrumbs__item">
-                  <Link to="/" class="vf-breadcrumbs__link">
+              <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
+                <li className="vf-breadcrumbs__item">
+                  <Link to="/" className="vf-breadcrumbs__link">
                     Home
                   </Link>
                 </li>
-                <li class="vf-breadcrumbs__item">
+                <li className="vf-breadcrumbs__item">
                   <Link
                     to={`/framework/${frameworkData[0].title.toLowerCase()}/${
                       frameworkData[0].version
@@ -186,7 +186,7 @@ class CompetencyDetails extends React.Component {
                     {frameworkData[0].title} {frameworkData[0].version}
                   </Link>{' '}
                 </li>
-                <li class="vf-breadcrumbs__item" aria-current="location">
+                <li className="vf-breadcrumbs__item" aria-current="location">
                   Competency details
                 </li>
               </ul>

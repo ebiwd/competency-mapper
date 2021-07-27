@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { CSVLink } from 'react-csv';
 import HttpService from '../services/http/http';
 import { apiUrl } from '../services/http/http';
@@ -47,27 +47,31 @@ const FAIRDownload = () => {
   return (
     <>
       <div>
-        <div class="vf-u-margin__top--400" />
+        <div className="vf-u-margin__top--400" />
         <h3>Filter columns</h3>
       </div>
       <div className="vf-grid">
         <div>
-          <div class="vf-u-margin__top--400" />
+          <div className="vf-u-margin__top--400" />
           <h4>Identifiers</h4>
-          <form action="#" class="vf-form | vf-search">
+          <form action="#" className="vf-form | vf-search">
             {filters
               ? filters.identifiers.map(filter => {
                   return (
-                    <div class="vf-form__item vf-form__item--checkbox">
+                    <div
+                      key={filter}
+                      className="vf-form__item vf-form__item--checkbox"
+                    >
                       <input
                         type="checkbox"
                         id={filter}
                         name={filter}
-                        class="vf-form__checkbox"
-                        checked={!facets.includes(filter)}
+                        className="vf-form__checkbox"
+                        //checked={!facets.includes(filter)}
+                        defaultChecked={!facets.includes(filter)}
                         onClick={e => facetClick(e)}
                       />
-                      <label for={filter} class="vf-form__label">
+                      <label htmlFor={filter} className="vf-form__label">
                         {filter}
                       </label>
                     </div>
@@ -77,23 +81,23 @@ const FAIRDownload = () => {
           </form>
         </div>
         <div>
-          <div class="vf-u-margin__top--400" />
+          <div className="vf-u-margin__top--400" />
           <h4>Reference profiles</h4>
-          <form action="#" class="vf-form | vf-search">
-            <div class="vf-form__item" style={{ columnCount: '2' }}>
+          <form action="#" className="vf-form | vf-search">
+            <div className="vf-form__item" style={{ columnCount: '2' }}>
               {filters
                 ? filters.profiles.map(filter => {
                     return (
-                      <div class="vf-form__item vf-form__item--checkbox">
+                      <div className="vf-form__item vf-form__item--checkbox">
                         <input
                           type="checkbox"
                           id={filter}
                           name={filter}
-                          class="vf-form__checkbox"
+                          className="vf-form__checkbox"
                           checked={!facets.includes(filter)}
                           onClick={e => facetClick(e)}
                         />
-                        <label for={filter} class="vf-form__label">
+                        <label for={filter} className="vf-form__label">
                           {filter}
                         </label>
                       </div>
@@ -104,7 +108,7 @@ const FAIRDownload = () => {
           </form>
         </div>
         <div>
-          <div class="vf-u-margin__top--1600" />
+          <div className="vf-u-margin__top--1600" />
           <CSVLink
             className="vf-button vf-button--primary vf-button--sm"
             filename={frameworkName + '_' + frameworkVersion + '.csv'}
@@ -114,7 +118,7 @@ const FAIRDownload = () => {
           </CSVLink>
         </div>
       </div>
-      <div class="vf-u-margin__top--400" />
+      <div className="vf-u-margin__top--400" />
       <div>
         <svg className="vf-icon-sprite vf-icon-sprite--tables" display="none">
           <defs>
@@ -141,35 +145,43 @@ const FAIRDownload = () => {
         <table className="vf-table vf-table--striped">
           <thead className="vf-table__header">
             <tr className="vf-table__row">
-              {headers
-                ? headers.map(header => {
-                    return (
-                      <>
-                        <th className="vf-table__heading">{header}</th>
-                      </>
-                    );
-                  })
-                : ''}
+              {headers ? (
+                headers.map((header, index) => {
+                  return (
+                    <th key={index} className="vf-table__heading">
+                      {header}
+                    </th>
+                  );
+                })
+              ) : (
+                <th />
+              )}
             </tr>
           </thead>
           <tbody className="vf-table__body">
             {data ? (
-              data.map(data => {
+              data.map((data, index) => {
                 return (
-                  <tr className="vf-table__row">
-                    {headers
-                      ? headers.map(header => (
-                          <td className="vf-table__cell">{data[header]}</td>
-                        ))
-                      : ''}
+                  <tr key={index} className="vf-table__row">
+                    {headers ? (
+                      headers.map(header => (
+                        <td key={header} className="vf-table__cell">
+                          {data[header]}
+                        </td>
+                      ))
+                    ) : (
+                      <td />
+                    )}
                   </tr>
                 );
               })
             ) : (
-              <div>
-                <img alt="progress" src="progressbar.gif" />
-                <h4>Loading data...</h4>
-              </div>
+              <tr>
+                <td>
+                  <img alt="progress" src="progressbar.gif" />
+                  <h4>Loading data...</h4>
+                </td>
+              </tr>
             )}
           </tbody>
         </table>

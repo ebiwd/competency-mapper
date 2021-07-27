@@ -2,20 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
+//import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+//import ActiveRequestsService from '../services/active-requests/active-requests';
+import { Link } from 'react-router-dom';
 
 export const ProfileEdit = props => {
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
 
-  const [profile, setProfile] = useState();
+  //const [profile, setProfile] = useState();
 
-  const activeRequests = new ActiveRequestsService();
+  //const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
   const [title, setTitle] = useState();
   const [age, setAge] = useState();
@@ -33,22 +33,22 @@ export const ProfileEdit = props => {
   const [additionalInfo, setAdditionalInfo] = useState();
   const [publishStatus, setPublishStatus] = useState();
   const [userFrameworks, setUserFrameworks] = useState([]);
-  const [framework, setFramework] = useState();
+  // const [framework, setFramework] = useState();
 
   var userName = localStorage.getItem('user')
     ? localStorage.getItem('user')
     : '';
 
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+  //var user_roles = localStorage.getItem('roles')
+  //  ? localStorage.getItem('roles')
+  //  : '';
 
   useEffect(() => {
     const fetchData = async () => {
       await fetch(`${apiUrl}/node/${profileId}?_format=json`)
         .then(Response => Response.json())
         .then(findresponse => {
-          setProfile(findresponse);
+          //setProfile(findresponse);
           setTitle(findresponse.title[0].value);
           setImgpreview(
             findresponse.field_image[0] ? findresponse.field_image[0].url : ''
@@ -103,7 +103,7 @@ export const ProfileEdit = props => {
         });
     };
     fetchData();
-  }, [profileId]);
+  }, [profileId, userName]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
@@ -208,14 +208,14 @@ export const ProfileEdit = props => {
     }
   }
 
-  const setPreview = () => {
-    props.history.push(
-      `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
-      {
-        title: title
-      }
-    );
-  };
+  // const setPreview = () => {
+  //   props.history.push(
+  //     `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
+  //     {
+  //       title: title
+  //     }
+  //   );
+  // };
 
   const onSelectFile = e => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -231,8 +231,8 @@ export const ProfileEdit = props => {
       }
 
       if (
-        e.target.files[0].type != 'image/jpeg' &&
-        e.target.files[0].type != 'image/png'
+        e.target.files[0].type !== 'image/jpeg' &&
+        e.target.files[0].type !== 'image/png'
       ) {
         setFileTypeError(1);
       } else {
@@ -259,6 +259,7 @@ export const ProfileEdit = props => {
     var temp = [];
     userFrameworks.map(item => {
       temp.push(item.toLowerCase());
+      return null;
     });
     if (temp.includes(frameworkName)) {
       return true;
@@ -306,6 +307,7 @@ export const ProfileEdit = props => {
 
                 <span>
                   <img
+                    alt=""
                     id="imgpreview_image"
                     width="100px"
                     src={imgpreview}
@@ -318,9 +320,9 @@ export const ProfileEdit = props => {
                   />
                   {imgpreview ? (
                     <div>
-                      <a href="#" onClick={e => clearimgpreview(e)}>
+                      <button onClick={e => clearimgpreview(e)}>
                         Clear image x
-                      </a>
+                      </button>
                     </div>
                   ) : (
                     ''

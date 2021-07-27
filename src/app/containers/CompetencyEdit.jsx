@@ -4,6 +4,7 @@ import Collapsible from 'react-collapsible';
 import ReactModal from 'react-modal';
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import CompetencyList from './CompetencyList';
+import { apiUrl } from '../services/http/http';
 
 class CompetencyEdit extends React.Component {
   constructor(props) {
@@ -28,9 +29,8 @@ class CompetencyEdit extends React.Component {
     let title = this.refs.title.value;
     alert(title);
     fetch(
-      'http://dev-competency-mapper.pantheonsite.io/node/' +
-        this.state.competencyID +
-        '?_format=hal_json',
+      `${apiUrl}/node/
+        ${this.state.competencyID}?_format=hal_json`,
       {
         method: 'PATCH',
         cookies: 'x-access-token',
@@ -43,8 +43,7 @@ class CompetencyEdit extends React.Component {
         body: JSON.stringify({
           _links: {
             type: {
-              href:
-                'http://dev-competency-mapper.pantheonsite.io/rest/type/node/competency'
+              href: `${apiUrl}/rest/type/node/competency`
             }
           },
           title: [

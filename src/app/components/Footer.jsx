@@ -8,7 +8,7 @@ const Footer = () => {
     <footer className="vf-footer">
       <div className="vf-footer__inner">
         <div className="vf-grid">
-          <p class="vf-footer__notice">
+          <p className="vf-footer__notice">
             The Competency Hub's web infrastructure is developed by the
             <a className="vf-footer__link" href="http://www.ebi.ac.uk/training">
               {' '}
@@ -41,7 +41,7 @@ const Footer = () => {
 
           <figure className="vf-figure" style={{ margin: '10px' }}>
             <img
-              classNAME="vf-figure__image"
+              className="vf-figure__image"
               src={EU}
               alt="European union"
               loading="lazy"
@@ -50,7 +50,7 @@ const Footer = () => {
           </figure>
           <figure className="vf-figure" style={{ margin: '10px' }}>
             <img
-              classNAME="vf-figure__image"
+              className="vf-figure__image"
               src={PerMed}
               alt="European union"
               loading="lazy"
@@ -59,7 +59,7 @@ const Footer = () => {
           </figure>
           <figure className="vf-figure" style={{ margin: '10px' }}>
             <img
-              classNAME="vf-figure__image"
+              className="vf-figure__image"
               src={BioExcel}
               alt="Bioexcel"
               loading="lazy"

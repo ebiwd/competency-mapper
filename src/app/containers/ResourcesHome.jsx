@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-import Parser from 'html-react-parser';
+//import Parser from 'html-react-parser';
 import { Link } from 'react-router-dom';
 
-import { apiUrl } from '../services/http/http';
+//import { apiUrl } from '../services/http/http';
 
 class ResourcesHome extends React.Component {
   constructor(props) {

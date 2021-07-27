@@ -2,24 +2,24 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+//import ActiveRequestsService from '../services/active-requests/active-requests';
+import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
-import Parser from 'html-react-parser';
+
 import ReactTooltip from 'react-tooltip';
 
 const $ = window.$;
 
 export const ProfileMap = props => {
-  const activeRequests = new ActiveRequestsService();
+  //const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
 
   const [profile, setProfile] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
 
-  const [ksa, setKsa] = useState();
+  //const [ksa, setKsa] = useState();
   const [mapping, setMapping] = useState();
 
   const frameworkName = props.location.pathname.split('/')[2];
@@ -32,10 +32,10 @@ export const ProfileMap = props => {
   var expertise_not_applicable = '';
   var attribute_types = [];
   var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
+  //var frameworkLogo = '';
+  //var frameworkDesc = '';
   //var mapping = [];
-  var checkboxes = [];
+  //var checkboxes = [];
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +69,7 @@ export const ProfileMap = props => {
         console.log('test ' + item.dataset);
       });
     }
-  }, [profileId]);
+  }, [profileId, frameworkName, frameworkVersion, mapping]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -93,7 +93,7 @@ export const ProfileMap = props => {
     let attributesList = [];
     let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
 
-    if (expertise_id == expertise_not_applicable) {
+    if (expertise_id === expertise_not_applicable) {
       checkBoxes.each(function(index, item, arr) {
         item.checked = false;
         item.disabled = true;
@@ -101,7 +101,7 @@ export const ProfileMap = props => {
 
       console.log(tempMapping);
       // Remove the NA competency from the temp array
-      tempMapping = tempMapping.filter(o => o.competency != competency_id);
+      tempMapping = tempMapping.filter(o => o.competency !== competency_id);
       console.log(tempMapping);
     } else if (tempMapping) {
       if (tempMapping.find(o => o.competency === competency_id)) {
@@ -135,12 +135,12 @@ export const ProfileMap = props => {
     let competency_id = e.target.dataset.competency;
     let tempMapping = mapping;
     if (tempMapping) {
-      if (checkboxStatus == true) {
+      if (checkboxStatus === true) {
         e.target.checked = true;
-        let o = tempMapping.find(o => o.competency == competency_id);
+        let o = tempMapping.find(o => o.competency === competency_id);
         o.attributes.push(e.target.id);
       } else {
-        let o = tempMapping.find(o => o.competency == competency_id);
+        let o = tempMapping.find(o => o.competency === competency_id);
         o.attributes.splice(o.attributes.indexOf(e.target.id), 1);
       }
       setMapping(tempMapping);
@@ -153,12 +153,12 @@ export const ProfileMap = props => {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
           info.expertise_levels.map(
             level => (
               (expertise_levels[level.id] = level.title),
-              level.title == 'Not applicable'
+              level.title === 'Not applicable'
                 ? (expertise_not_applicable = level.id)
                 : '',
               expertise_levels_legend.push(
@@ -175,12 +175,13 @@ export const ProfileMap = props => {
                     </span>{' '}
                     <span> {level.title}</span>
                   </div>
-                  <ReactTooltip class="tooltip-custom" />
+                  <ReactTooltip className="tooltip-custom" />
                 </li>
               )
             )
           );
         }
+        return null;
       });
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -188,6 +189,7 @@ export const ProfileMap = props => {
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
@@ -240,7 +242,7 @@ export const ProfileMap = props => {
                                     {competency.attributes
                                       .filter(
                                         attribute =>
-                                          attribute.type == attribute_type
+                                          attribute.type === attribute_type
                                       )
                                       .map(attribute => (
                                         <li className="attribute_title">
@@ -255,7 +257,7 @@ export const ProfileMap = props => {
                                                 defaultChecked={
                                                   mapping.find(o =>
                                                     o.attributes.find(
-                                                      a => a == attribute.id
+                                                      a => a === attribute.id
                                                     )
                                                   )
                                                     ? true
@@ -264,7 +266,7 @@ export const ProfileMap = props => {
                                                 disabled={
                                                   mapping.find(
                                                     o =>
-                                                      o.competency ==
+                                                      o.competency ===
                                                       competency.id
                                                   )
                                                     ? false
@@ -297,9 +299,10 @@ export const ProfileMap = props => {
                           className="vf-form__select"
                           onChange={e => handleSelect(e)}
                           defaultValue={
-                            mapping.find(o => o.competency == competency.id)
-                              ? mapping.find(o => o.competency == competency.id)
-                                  .expertise
+                            mapping.find(o => o.competency === competency.id)
+                              ? mapping.find(
+                                  o => o.competency === competency.id
+                                ).expertise
                               : expertise_not_applicable
                           }
                         >
@@ -350,7 +353,7 @@ export const ProfileMap = props => {
                   <Link
                     to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`}
                   >
-                    <i class="icon icon-common icon-angle-left" /> Profile
+                    <i className="icon icon-common icon-angle-left" /> Profile
                     overview
                   </Link>
                   <p />
@@ -360,12 +363,12 @@ export const ProfileMap = props => {
               <div className="row">
                 <div className="column medium-3">
                   <img
+                    alt=""
                     src={profile.image[0] ? profile.image[0].url : user_icon}
                     width="150px"
                   />
                 </div>
                 <div className="column medium-9 form_intro">
-                  <h3 />
                   <p>
                     The form below is listing competencies from{' '}
                     {frameworkFullName} competency framework. A competency is an
@@ -404,7 +407,7 @@ export const ProfileMap = props => {
                         className="vf-button vf-button--primary vf-button--sm"
                         type="submit"
                       >
-                        Save <i class="icon icon-common icon-save" />
+                        Save <i className="icon icon-common icon-save" />
                       </button>
                     </div>
                   </form>

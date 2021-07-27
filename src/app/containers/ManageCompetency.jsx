@@ -281,8 +281,10 @@ class ManageCompetency extends React.Component {
     const { frameworkData, domain } = this.props;
     const competencies = frameworkData.map(item =>
       item.domains.map(item => {
-        if (item.nid == domain.nid)
+        if (item.nid === domain.nid) {
           return <ul>{this.getCompetencies(item.competencies)}</ul>;
+        }
+        return null;
       })
     );
     return (
@@ -316,7 +318,7 @@ class ManageCompetency extends React.Component {
                 events={{
                   change: e => this.setState({ mapping: e.editor.getData() }) //this.editMapping(this.state.comp.id, "This info")
                 }}
-                activeClass="p10"
+                activeclassName="p10"
                 config={{
                   toolbarGroups: [
                     {
@@ -372,12 +374,13 @@ class ManageCompetency extends React.Component {
                         onDragEnd={this.dragEnd.bind(this)}
                         onDragStart={this.dragStart.bind(this)}
                       >
-                        <i class="icon icon-common icon-move" />{' '}
+                        <i className="icon icon-common icon-move" />{' '}
                         {competency.title}
                       </li>
                     );
                   });
                 }
+                return null;
               })
             )}
           </ul>

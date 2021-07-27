@@ -35,7 +35,7 @@ class AttributeMap extends React.Component {
   async handleSelect() {
     let checkedAttributes = this.state.selectedAttributes;
     let attributeIDs = [];
-    let token = localStorage.getItem('csrf_token');
+    //let token = localStorage.getItem('csrf_token');
     for (let i = 0; i < checkedAttributes.length; i++) {
       attributeIDs.push(checkedAttributes[i].split('id', 2));
     }
@@ -139,10 +139,14 @@ class AttributeMap extends React.Component {
         domain.competencies.map(competency => {
           competency.attributes.map(attribute => {
             selectedAttributes.push(attribute.id);
+            return null;
           });
+          return null;
         });
+        return null;
       });
       //}
+      return null;
     });
 
     this.setState({ selectedAttributes: selectedAttributes });
@@ -174,8 +178,10 @@ class AttributeMap extends React.Component {
           if (version.status === 'live') {
             latest_version = version.number;
           }
+          return null;
         });
       }
+      return null;
     });
 
     console.log(latest_version);
@@ -219,9 +225,13 @@ class AttributeMap extends React.Component {
             selectedCompetenciesArray.push(competency.id);
             competency.attributes.map(attribute => {
               selectedAttributesArray.push(attribute.id);
+              return null;
             });
+            return null;
           });
+          return null;
         });
+        return null;
       });
 
       //console.log(selectedAttributesArray);

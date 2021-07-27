@@ -12,14 +12,16 @@ class LoginForm extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      showModal: false
+      showModal: false,
+      username: '',
+      password: ''
     };
   }
 
-  state = {
-    username: '',
-    password: ''
-  };
+  // state = {
+  //   username: "",
+  //   password: ""
+  // };
 
   onChange = event => {
     this.setState({ [event.currentTarget.name]: event.currentTarget.value });
@@ -32,9 +34,6 @@ class LoginForm extends Component {
 
   CloseModal() {
     this.setState({ showModal: false });
-    //document.location.reload();
-
-    //console.log(this.state.showModal)
   }
 
   submit = () => {

@@ -2,17 +2,17 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
+//import FileUpload from './FileUpload';
 import HttpService from '../services/http/http';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+//import ActiveRequestsService from '../services/active-requests/active-requests';
+//import { Link, Redirect } from 'react-router-dom';
 import GuestHelp from './GuestHelp';
 
 export const ProfileCreateGuest = props => {
   const history = useHistory();
-  const activeRequests = new ActiveRequestsService();
+  //const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
   const [title, setTitle] = useState('');
   const [age, setAge] = useState('');
@@ -21,7 +21,7 @@ export const ProfileCreateGuest = props => {
 
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFileData, setSelectedFileData] = useState([]);
-  const [fid, setFid] = useState();
+  //const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
   const [fileSizeError, setFileSizeError] = useState();
   const [fileTypeError, setFileTypeError] = useState();
@@ -31,20 +31,20 @@ export const ProfileCreateGuest = props => {
   const [additionalInfo, setAdditionalInfo] = useState('');
 
   const [framework, setFramework] = useState();
-  const [frameworkLogoData, setFrameworkLogoData] = useState([]);
+  //const [frameworkLogoData, setFrameworkLogoData] = useState([]);
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
 
   const [profile, setProfile] = useState();
 
-  const [errorMsgTitle, setErrorMsgTitle] = useState();
-  const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
+  //const [errorMsgTitle, setErrorMsgTitle] = useState();
+  //const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
 
-  const [frameworkMoreData, setFrameworkMoreData] = useState();
+  //const [frameworkMoreData, setFrameworkMoreData] = useState();
 
-  const [modalOpen, setModelOpen] = useState(0);
+  const [modalOpen, setModelOpen] = useState(false);
 
-  let errors = [];
+  //let errors = [];
 
   var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
@@ -83,13 +83,13 @@ export const ProfileCreateGuest = props => {
           .get(`${apiUrl}/api/version_manager?_format=json`)
           .then(response2 => response2.data);
 
-        const [data1, data2] = await Promise.all([promise1, promise2]);
+        const [data1] = await Promise.all([promise1, promise2]);
         setFramework(data1);
-        setFrameworkMoreData(
-          data2.filter(item => {
-            return item.title.toLowerCase() === frameworkName;
-          })
-        );
+        // setFrameworkMoreData(
+        //   data2.filter(item => {
+        //     return item.title.toLowerCase() === frameworkName;
+        //   })
+        // );
       } catch (err) {
         console.log(err);
       }
@@ -97,22 +97,22 @@ export const ProfileCreateGuest = props => {
 
     bootstrap();
     fetchData();
-  }, [selectedFile]);
+  }, [selectedFile, frameworkName, frameworkVersion, http, storedProfile]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
     //let frameworkName = framework[0].title;
-    let frameworkUuid = framework[0].uuid;
+    //let frameworkUuid = framework[0].uuid;
     //console.log(frameworkMoreData);
-    let liveVersion = frameworkMoreData[0].versions.find(
-      ver => ver.status == 'live'
-    );
+    // let liveVersion = frameworkMoreData[0].versions.find(
+    //   ver => ver.status == 'live'
+    // );
 
     //let versionID = liveVersion.id;
     let versionNumber = frameworkVersion;
-    var arrayBuffer = '';
-    var fileid = null;
+    //var arrayBuffer = '';
+    //var fileid = null;
 
     // Do nothing if Form doesn't pass validation criteris above
     if (
@@ -127,13 +127,13 @@ export const ProfileCreateGuest = props => {
     }
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
-      setErrorMsgTitle('');
-      setErrorMsgJobTitle('');
+      //setErrorMsgTitle('');
+      //setErrorMsgJobTitle('');
 
       // Retrieve values from Local Storage if exist
-      let storedProfile = JSON.parse(
-        localStorage.getItem('ProfileDownloadData')
-      );
+      // let storedProfile = JSON.parse(
+      //   localStorage.getItem('ProfileDownloadData')
+      // );
 
       let current_role = currentRole ? currentRole : '';
       let job_title = jobTitle ? jobTitle : '';
@@ -160,21 +160,21 @@ export const ProfileCreateGuest = props => {
     }
   };
 
-  const setPreview = () => {
-    props.history.push(
-      `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
-      {
-        title: title
-      }
-    );
-  };
+  // const setPreview = () => {
+  //   props.history.push(
+  //     `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
+  //     {
+  //       title: title
+  //     }
+  //   );
+  // };
 
   const onSelectFile = e => {
     if (!e.target.files || e.target.files.length === 0) {
       setSelectedFile(undefined);
       return;
     } else {
-      const objectUrl = URL.createObjectURL(e.target.files[0]);
+      //const objectUrl = URL.createObjectURL(e.target.files[0]);
 
       if (e.target.files[0].size > 2097152) {
         setFileSizeError(1);
@@ -183,8 +183,8 @@ export const ProfileCreateGuest = props => {
       }
 
       if (
-        e.target.files[0].type != 'image/jpeg' &&
-        e.target.files[0].type != 'image/png'
+        e.target.files[0].type !== 'image/jpeg' &&
+        e.target.files[0].type !== 'image/png'
       ) {
         setFileTypeError(1);
       } else {
@@ -257,40 +257,40 @@ export const ProfileCreateGuest = props => {
   };
 
   // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
-  const getImageData = (url, callback) => {
-    var xhr = new XMLHttpRequest();
-    xhr.onload = function() {
-      var reader = new FileReader();
-      reader.onloadend = function() {
-        return callback(reader.result);
-      };
-      reader.readAsDataURL(xhr.response);
-    };
-    xhr.open('GET', url);
-    xhr.responseType = 'blob';
-    xhr.send();
-  };
+  // const getImageData = (url, callback) => {
+  //   var xhr = new XMLHttpRequest();
+  //   xhr.onload = function() {
+  //     var reader = new FileReader();
+  //     reader.onloadend = function() {
+  //       return callback(reader.result);
+  //     };
+  //     reader.readAsDataURL(xhr.response);
+  //   };
+  //   xhr.open('GET', url);
+  //   xhr.responseType = 'blob';
+  //   xhr.send();
+  // };
 
-  const toDataURL = (src, callback, outputFormat) => {
-    var img = new Image();
-    img.crossOrigin = 'Anonymous';
-    img.onload = function() {
-      var canvas = document.createElement('CANVAS');
-      var ctx = canvas.getContext('2d');
-      var dataURL;
-      canvas.height = this.naturalHeight;
-      canvas.width = this.naturalWidth;
-      ctx.drawImage(this, 0, 0);
-      dataURL = canvas.toDataURL(outputFormat);
-      callback(dataURL);
-    };
-    img.src = src;
-    if (img.complete || img.complete === undefined) {
-      img.src =
-        'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-      img.src = src;
-    }
-  };
+  // const toDataURL = (src, callback, outputFormat) => {
+  //   var img = new Image();
+  //   img.crossOrigin = 'Anonymous';
+  //   img.onload = function() {
+  //     var canvas = document.createElement('CANVAS');
+  //     var ctx = canvas.getContext('2d');
+  //     var dataURL;
+  //     canvas.height = this.naturalHeight;
+  //     canvas.width = this.naturalWidth;
+  //     ctx.drawImage(this, 0, 0);
+  //     dataURL = canvas.toDataURL(outputFormat);
+  //     callback(dataURL);
+  //   };
+  //   img.src = src;
+  //   if (img.complete || img.complete === undefined) {
+  //     img.src =
+  //       'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
+  //     img.src = src;
+  //   }
+  // };
 
   const placeholder = getWhoCreateProfile();
 
@@ -328,13 +328,14 @@ export const ProfileCreateGuest = props => {
     <div>
       <h2>Create / Edit {placeholder} profile</h2>
       <div className="callout warning">
-        <i class="icon icon-common icon-exclamation-triangle" /> Your profile
-        will be saved in your browser. Click{' '}
-        <a href="#" onClick={e => openModal(e)}>
-          {' '}
-          here{' '}
-        </a>{' '}
-        for help.
+        <i className="icon icon-common icon-exclamation-triangle" /> Your
+        profile will be saved in your browser.
+        <button
+          className="vf-button vf-button--secondary vf-button--sm"
+          onClick={e => openModal(e)}
+        >
+          Get help
+        </button>
         <GuestHelp modalOpen={modalOpen} closeModal={closeModal} />
       </div>
       <form
@@ -366,6 +367,7 @@ export const ProfileCreateGuest = props => {
             <div className="vf-u-margin__bottom--600" />
             <span>
               <img
+                alt=""
                 id="imgpreview_image"
                 width="100px"
                 src={imgpreview}
@@ -378,9 +380,13 @@ export const ProfileCreateGuest = props => {
               />
               {imgpreview ? (
                 <div>
-                  <a href="#" onClick={e => clearimgpreview(e)}>
+                  <button
+                    className="vf-button vf-button--secondary vf-button--sm"
+                    href="#"
+                    onClick={e => clearimgpreview(e)}
+                  >
                     Clear image x
-                  </a>
+                  </button>
                 </div>
               ) : (
                 ''

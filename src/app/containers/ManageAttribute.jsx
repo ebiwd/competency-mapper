@@ -1,8 +1,6 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
 import InlineEdit from '../../shared/components/edit-inline/EditInline';
-import ErrorLoading from '../components/error-loading/ErrorLoading';
 
 import { withSnackbar } from 'notistack';
 import CompetencyService from '../services/competency/competency';
@@ -171,7 +169,7 @@ class ManageAttribute extends React.Component {
   }
 
   saveSorting = async data => {
-    const { framework, frameworkData } = this.props;
+    const { framework } = this.props;
     const { sorting } = this.state;
     let items = sorting.map(d => d.id);
     try {
@@ -278,6 +276,7 @@ class ManageAttribute extends React.Component {
                       </div>
                     </li>
                   );
+                return null;
               })}
             </ul>
 
@@ -318,9 +317,9 @@ class ManageAttribute extends React.Component {
       editableFrm
     } = this.props;
     const {
-      parentID,
+      //parentID,
       parentTitle,
-      attributeType,
+      //attributeType,
       attributeTypeTitle
     } = this.state;
     return (
@@ -390,11 +389,12 @@ class ManageAttribute extends React.Component {
                         onDragEnd={this.dragEnd.bind(this)}
                         onDragStart={this.dragStart.bind(this)}
                       >
-                        <i class="icon icon-common icon-move" />{' '}
+                        <i className="icon icon-common icon-move" />{' '}
                         {attribute.title}
                       </li>
                     );
                   }
+                  return null;
                 })}
               </ul>
             </>

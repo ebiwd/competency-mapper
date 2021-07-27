@@ -4,7 +4,7 @@ import { apiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 
-const $ = window.$;
+//const $ = window.$;
 
 class AttributeDemap extends React.Component {
   activeRequests = new ActiveRequestsService();
@@ -36,7 +36,7 @@ class AttributeDemap extends React.Component {
 
   componentDidMount() {
     //fetch(`${apiUrl}`+'/api/resources/?_format=hal_json&id='+ this.state.resourceID)
-    fetch(`${apiUrl}` + '/node/' + this.state.resourceID + '?_format=hal_json')
+    fetch(`${apiUrl}/node/ ${this.state.resourceID}?_format=hal_json`)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({

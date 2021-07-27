@@ -17,15 +17,15 @@ const ProfileList = props => {
   const frameworkVersion = props.version;
   const [guestProfile, setGuestProfile] = useState();
   const [profiles, setProfiles] = useState();
-  const [framework, setFramework] = useState();
+  //const [framework, setFramework] = useState();
   const [userFrameworks, setUserFrameworks] = useState([]);
   //const [userRole, setUserRole] = useState();
 
   var profilesToCompare = [];
 
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+  // var user_roles = localStorage.getItem('roles')
+  //   ? localStorage.getItem('roles')
+  //   : '';
   var userName = localStorage.getItem('user')
     ? localStorage.getItem('user')
     : '';
@@ -41,19 +41,20 @@ const ProfileList = props => {
         .then(findresponse => {
           setProfiles(findresponse);
         });
-
-      await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
-        method: 'GET',
-        credentials: 'include'
-      })
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setUserFrameworks(findresponse);
-        });
+      if (userName) {
+        await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+          method: 'GET',
+          credentials: 'include'
+        })
+          .then(Response => Response.json())
+          .then(findresponse => {
+            setUserFrameworks(findresponse);
+          });
+      }
     };
 
     fetchData();
-  }, [framework, frameworkVersion, frameworkName, userName]);
+  }, [frameworkVersion, frameworkName, userName]);
 
   const checkUserAccess = () => {
     if (localStorage.getItem('roles')) {
@@ -139,7 +140,7 @@ const ProfileList = props => {
   const checkFMAccess = () => {
     var temp = [];
     if (userFrameworks.length > 0) {
-      userFrameworks.map(item => {
+      userFrameworks.forEach(item => {
         temp.push(item.toLowerCase().replace(/ /g, ''));
       });
       if (temp.includes(frameworkName)) {
@@ -154,14 +155,14 @@ const ProfileList = props => {
         <div className="vf-grid vf-grid__col-2">
           <div>
             <h5>
-              <i class="icon icon-common icon-search-document" /> Discover and
-              explore{' '}
+              <i className="icon icon-common icon-search-document" /> Discover
+              and explore{' '}
             </h5>
             <p>Explore career profiles within this competency framework</p>
           </div>
           <div>
             <h5>
-              <i class="icon icon-common icon-user-plus" /> Create your own
+              <i className="icon icon-common icon-user-plus" /> Create your own
               profile
             </h5>
             <p>
@@ -172,7 +173,7 @@ const ProfileList = props => {
 
           <div>
             <h5>
-              <i class="icon icon-common icon-compare" /> Compare profiles
+              <i className="icon icon-common icon-compare" /> Compare profiles
             </h5>
             <p>
               Compare your profile with other reference profiles to help you
@@ -181,7 +182,7 @@ const ProfileList = props => {
           </div>
           <div>
             <h5>
-              <i class="icon icon-common icon-tutorial" /> Identify training
+              <i className="icon icon-common icon-tutorial" /> Identify training
               oportunities
             </h5>
             <p>Training opportunities will help boost your career</p>
@@ -238,13 +239,13 @@ const ProfileList = props => {
         <hr />
         <div className="vf-grid vf-grid__col-3">
           {guestProfile ? (
-            <div class="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+            <div className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
               <img
                 alt="profile"
                 src={
                   guestProfile.image[0] ? guestProfile.image[0].url : user_icon
                 }
-                class="vf-profile__image"
+                className="vf-profile__image"
               />
               <div>
                 <h3 className="vf-profile__title">
@@ -277,28 +278,32 @@ const ProfileList = props => {
                   }}
                 >
                   <span>
-                    <hr class="vf-divider | vf-u-fullbleed" />
+                    <hr className="vf-divider | vf-u-fullbleed" />
                     {/* Your profile {guestProfile.frameworkName} -{' '}
                     {guestProfile.versionNumber} */}
                   </span>
 
                   <Link onClick={e => handleDelete(e)} to={`#`}>
                     Delete your profile{' '}
-                    <i class="icon icon-common icon-trash-alt" />
+                    <i className="icon icon-common icon-trash-alt" />
                   </Link>
                 </div>
               </div>
             </div>
           ) : (
-            <article class="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
-              <img alt="profile" src={user_icon} class="vf-profile__image" />
+            <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+              <img
+                alt="profile"
+                src={user_icon}
+                className="vf-profile__image"
+              />
 
               <Link
                 className="vf-button vf-button--primary vf-button--sm"
                 to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
               >
                 Create your profile{' '}
-                <i class="icon icon-common icon-user-plus" />
+                <i className="icon icon-common icon-user-plus" />
               </Link>
             </article>
           )}
@@ -308,8 +313,8 @@ const ProfileList = props => {
                 if (!checkUserAccess()) {
                   if (profile.publishing_status === 'Live') {
                     return (
-                      <div>
-                        <article class="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+                      <div key={index}>
+                        <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
                           {profile.image[0] ? (
                             <div className={profile.publishing_status}>
                               <img
@@ -346,7 +351,7 @@ const ProfileList = props => {
                             }${profile.url_alias}`}
                           >
                             View profile{' '}
-                            <i class="icon icon-common icon-angle-right" />
+                            <i className="icon icon-common icon-angle-right" />
                           </Link> */}
                           <span>
                             {' '}
@@ -406,7 +411,7 @@ const ProfileList = props => {
                               }${profile.url_alias}`}
                             >
                               View profile{' '}
-                              <i class="icon icon-common icon-angle-right" />
+                              <i className="icon icon-common icon-angle-right" />
                             </Link>
                             <p>&nbsp;</p>
                           </div>
@@ -415,6 +420,7 @@ const ProfileList = props => {
                     </div>
                   );
                 }
+                return null;
               })
             : ''}
         </div>

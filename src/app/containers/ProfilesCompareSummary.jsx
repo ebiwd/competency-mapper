@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useLocation } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
-import { Link, Redirect } from 'react-router-dom';
+//import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 //import summary from './bioexcel_2_profiles_compare_summary.json';
 
@@ -19,12 +19,12 @@ export const ProfilesCompareSummary = props => {
   let includeSummary = location.state.includeSummary;
   var competencyView = '';
   var attribute_types = [];
-  var frameworkFullName = '';
-  var frameworkLogo = '';
-  var frameworkDesc = '';
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+  // var frameworkFullName = '';
+  // var frameworkLogo = '';
+  // var frameworkDesc = '';
+  // var user_roles = localStorage.getItem('roles')
+  //   ? localStorage.getItem('roles')
+  //   : '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,7 +51,7 @@ export const ProfilesCompareSummary = props => {
         });
     };
     fetchData();
-  }, [profileId]);
+  }, [profileId, frameworkVersion, frameworkName]);
 
   if (summary) {
     console.log(summary);
@@ -60,11 +60,15 @@ export const ProfilesCompareSummary = props => {
   const findResources = competency_id => {
     if (summary) {
       let test = summary.map(item => {
-        if (item.id == competency_id) {
+        if (item.id === competency_id) {
           return item.resources.map(resource => {
             return (
               <li>
-                <a href={resource.resourceLink} target="_blank">
+                <a
+                  href={resource.resourceLink}
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
                   {' '}
                   {resource.resourceName}{' '}
                 </a>
@@ -72,6 +76,7 @@ export const ProfilesCompareSummary = props => {
             );
           });
         }
+        return null;
       });
       return test;
     }
@@ -81,20 +86,18 @@ export const ProfilesCompareSummary = props => {
     if (frameworkInfo) {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
-          frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
+          //frameworkFullName = info.title;
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
           info.attribute_types.map(
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
     if (framework) {
-      {
-        console.log(includeSummary);
-      }
       competencyView = framework.map(item =>
         item.domains.map(domain => (
           <div>
@@ -107,7 +110,7 @@ export const ProfilesCompareSummary = props => {
               </div>
             </div>
             {domain.competencies.map(competency =>
-              includeSummary.indexOf(competency.id) != -1 ? (
+              includeSummary.indexOf(competency.id) !== -1 ? (
                 <div>
                   <div id={competency.id} className="row">
                     <div className="column medium-8">
@@ -142,7 +145,7 @@ export const ProfilesCompareSummary = props => {
                                   {competency.attributes
                                     .filter(
                                       attribute =>
-                                        attribute.type == attribute_type
+                                        attribute.type === attribute_type
                                     )
                                     .map(attribute => {
                                       return (
@@ -175,9 +178,9 @@ export const ProfilesCompareSummary = props => {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
 
   return (
     <div>

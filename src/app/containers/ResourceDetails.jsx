@@ -89,8 +89,8 @@ class ResourceDetails extends React.Component {
               {this.state.frameworks.map((item, id) => {
                 return (
                   <li style={{ display: 'inline', margin: '5px' }}>
-                    <a
-                      href={
+                    <Link
+                      to={
                         '/training-resources/' +
                         this.state.resourcePath[2] +
                         '/map/' +
@@ -99,7 +99,7 @@ class ResourceDetails extends React.Component {
                     >
                       {' '}
                       <i className="fas fa-tags" /> {item.title}{' '}
-                    </a>
+                    </Link>
                   </li>
                 );
               })}
@@ -252,50 +252,20 @@ class ResourceDetails extends React.Component {
         <h2>{item.title}</h2>
         <div className="vf-grid  vf-grid__col-4">
           <div className="vf-grid__col--span-3">
-            <div className={'callout'}>
-              {item.dates ? (
-                <span>
-                  <strong>Dates:</strong>{' '}
-                  {this.formatDates(item.dates, item.end_date)}
-                </span>
-              ) : (
-                ''
-              )}
-
-              {item.keywords ? (
-                <p>
-                  <strong>Keywords:</strong> {item.keywords}
-                </p>
-              ) : (
-                ''
-              )}
-              {item.location ? (
-                <p>
-                  <strong>Location:</strong> {item.location}
-                </p>
-              ) : (
-                ''
-              )}
-              {item.type ? (
-                <p>
-                  <strong>Type:</strong> {item.type}
-                </p>
-              ) : (
-                ''
-              )}
-              {item.url ? (
-                <p>
-                  <strong> URL: </strong>{' '}
-                  <a href={item.url} target={'_blank'}>
-                    {item.url}
-                  </a>
-                </p>
-              ) : (
-                ''
-              )}
-            </div>
             <h3>Overview</h3>
             {item.description ? Parser(item.description) : ''}
+
+            {item.url ? (
+              <p>
+                <a href={item.url} target={'_blank'}>
+                  <button className="vf-button vf-button--primary vf-button--sm">
+                    Go to resource
+                  </button>
+                </a>
+              </p>
+            ) : (
+              ''
+            )}
 
             {item.target_audience
               ? Parser('<h3>Target Audience</h3>' + item.target_audience)
@@ -308,36 +278,38 @@ class ResourceDetails extends React.Component {
               : ''}
 
             {item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}
-            <h3>Competency Profile</h3>
 
-            <table className={'hover'}>
-              <tbody>
-                {check_array
-                  ? item.competency_profile.map(profile => {
-                      return (
-                        <tr>
-                          {this.state.frameworks.map(framework => {
-                            if (framework.nid === profile.id) {
-                              framework.attribute_types.map(type =>
-                                attribute_types.push(type.title)
-                              );
-                              frameworkLiveVersion = framework.versions.find(
-                                version => version.status === 'live'
-                              );
-                            }
+            <div>
+              <h3>Competency Profile</h3>
 
-                            return null;
-                          })}
-                          <td>
-                            <h4>{profile.title}</h4>
-                          </td>
-                          <td>
-                            {profile.domains.map(domain => (
-                              <div>
-                                <h5>{domain.title}</h5>
-                                <ul>
-                                  {domain.competencies.map(competency => (
-                                    <li>
+              <div>
+                {check_array ? (
+                  item.competency_profile.map((profile, index) => {
+                    return (
+                      <div className="vf-grid" key={index}>
+                        {this.state.frameworks.map(framework => {
+                          if (framework.nid === profile.id) {
+                            framework.attribute_types.map(type =>
+                              attribute_types.push(type.title)
+                            );
+                            frameworkLiveVersion = framework.versions.find(
+                              version => version.status === 'live'
+                            );
+                          }
+
+                          return null;
+                        })}
+                        <div>
+                          <h3>{profile.title}</h3>
+                        </div>
+                        <div>
+                          {profile.domains.map((domain, index) => (
+                            <div key={index}>
+                              <h3>{domain.title}</h3>
+                              <ul className="vf-list">
+                                {domain.competencies.map(
+                                  (competency, index) => (
+                                    <li className="vf-list__item" key={index}>
                                       <span
                                         className={
                                           competency.archived === 'archived'
@@ -345,7 +317,7 @@ class ResourceDetails extends React.Component {
                                             : ''
                                         }
                                       >
-                                        {competency.title}
+                                        <h4> {competency.title} </h4>
                                         {competency.archived === 'archived' ? (
                                           <ItemVersions
                                             framework="bioexcel"
@@ -355,75 +327,97 @@ class ResourceDetails extends React.Component {
                                           ''
                                         )}
                                       </span>
-                                      <ul>
-                                        {attribute_types.map(type => (
-                                          <span>
-                                            {competency.attributes.map(
-                                              attribute => {
-                                                if (attribute.type === type) {
-                                                  return (
-                                                    <li>
-                                                      {' '}
-                                                      <em>{type}</em> -{' '}
-                                                      <span
-                                                        className={
-                                                          attribute.archived ===
-                                                          'archived'
-                                                            ? 'archived'
-                                                            : ''
-                                                        }
-                                                      >
-                                                        {attribute.title}
-                                                        {attribute.archived ===
-                                                        'archived' ? (
-                                                          <ItemVersions
-                                                            framework={
-                                                              profile.title
-                                                            }
-                                                            version={
-                                                              frameworkLiveVersion.number
-                                                            }
-                                                          />
-                                                        ) : (
-                                                          ''
-                                                        )}
-                                                        {attribute.archived ===
-                                                        'archived' ? (
-                                                          <a
-                                                            href={
-                                                              '/training-resources/' +
-                                                              item.id +
-                                                              '/demap/' +
-                                                              attribute.id
+                                      <ul
+                                        className="vf-list"
+                                        style={{ marginLeft: '2rem' }}
+                                      >
+                                        {attribute_types.map((type, index) => (
+                                          <span key={index}>
+                                            <li className="vf-list__item vf-u-type__text-body--2">
+                                              {competency.attributes.find(
+                                                attribute =>
+                                                  attribute.type === type
+                                              )
+                                                ? type
+                                                : ''}
+                                              <div class="vf-u-margin__top--500" />
+                                              <ul className="vf-list vf-list--unordered">
+                                                {competency.attributes.map(
+                                                  (attribute, index) => {
+                                                    if (
+                                                      attribute.type === type
+                                                    ) {
+                                                      return (
+                                                        <li
+                                                          className="vf-list__item vf-u-type__text-body--2"
+                                                          key={index}
+                                                        >
+                                                          <span
+                                                            className={
+                                                              attribute.archived ===
+                                                              'archived'
+                                                                ? 'archived'
+                                                                : ''
                                                             }
                                                           >
-                                                            <i class="fas fa-times-circle" />
-                                                          </a>
-                                                        ) : (
-                                                          ''
-                                                        )}
-                                                      </span>
-                                                    </li>
-                                                  );
-                                                }
-                                                return null;
-                                              }
-                                            )}
+                                                            {attribute.title}
+                                                            {attribute.archived ===
+                                                            'archived' ? (
+                                                              <ItemVersions
+                                                                framework={
+                                                                  profile.title
+                                                                }
+                                                                version={
+                                                                  frameworkLiveVersion.number
+                                                                }
+                                                              />
+                                                            ) : (
+                                                              ''
+                                                            )}
+                                                            {attribute.archived ===
+                                                            'archived' ? (
+                                                              <a
+                                                                href={
+                                                                  '/training-resources/' +
+                                                                  item.id +
+                                                                  '/demap/' +
+                                                                  attribute.id
+                                                                }
+                                                              >
+                                                                <i className="fas fa-times-circle" />
+                                                              </a>
+                                                            ) : (
+                                                              ''
+                                                            )}
+                                                          </span>
+                                                        </li>
+                                                      );
+                                                    }
+                                                    return null;
+                                                  }
+                                                )}
+                                              </ul>
+                                            </li>
                                           </span>
                                         ))}
                                       </ul>
                                     </li>
-                                  ))}
-                                </ul>
-                              </div>
-                            ))}
-                          </td>
-                        </tr>
-                      );
-                    })
-                  : ''}
-              </tbody>
-            </table>
+                                  )
+                                )}
+                              </ul>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <tr>
+                    <td />
+                  </tr>
+                )}
+              </div>
+            </div>
           </div>
           <div className="vf-grid__col--span-1">
             {this.checkUser() ? (
@@ -432,7 +426,7 @@ class ResourceDetails extends React.Component {
                   <Link
                     to={'/training-resource/edit/' + this.state.resourcePath[2]}
                   >
-                    <i class="fas fa-edit" /> Edit this resource{' '}
+                    <i className="fas fa-edit" /> Edit this resource{' '}
                   </Link>
                 </div>
                 {item.archived === 'archived' ? (
@@ -458,8 +452,39 @@ class ResourceDetails extends React.Component {
             ) : (
               ''
             )}
-            <h3>More information</h3>
-            <p>No data available</p>
+
+            <p />
+
+            {item.dates ? (
+              <span>
+                <strong>Dates:</strong>{' '}
+                {this.formatDates(item.dates, item.end_date)}
+              </span>
+            ) : (
+              ''
+            )}
+
+            {item.location ? (
+              <p>
+                <strong>Location:</strong> {item.location}
+              </p>
+            ) : (
+              ''
+            )}
+            {item.type ? (
+              <p>
+                <strong>Type:</strong> {item.type}
+              </p>
+            ) : (
+              ''
+            )}
+            {item.keywords ? (
+              <p>
+                <strong>Keywords:</strong> {item.keywords}
+              </p>
+            ) : (
+              ''
+            )}
           </div>
         </div>
       </>

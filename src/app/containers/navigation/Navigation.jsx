@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { apiUrl } from '../../services/http/http';
-import HttpService from '../../services/http/http';
+//import HttpService from '../../services/http/http';
 //import ManageFrameworks from './ManageFrameworks';
 
-const http = new HttpService();
+//const http = new HttpService();
 
-const $ = window.$;
+//const $ = window.$;
 
 class Navigation extends Component {
   navRef = React.createRef();
@@ -39,7 +39,7 @@ class Navigation extends Component {
   };
 
   render() {
-    const { roles, user } = this.props;
+    const { roles } = this.props;
     const frameworkResources = (
       <>
         <li className="vf-list__item" key="navigation">
@@ -91,13 +91,14 @@ class Navigation extends Component {
           </Link>
         </li>
         <li className="vf-list__item" style={{ padding: '5px' }}>
-          <a
+          <span
             className="vf-link"
             href="#" // eslint-disable-line jsx-a11y/anchor-is-valid
             onClick={this.logout}
+            style={{ cursor: 'pointer' }}
           >
             Logout
-          </a>
+          </span>
         </li>
       </>
     );

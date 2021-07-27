@@ -1,6 +1,6 @@
 import HttpService from '../http/http';
 import Body from './body';
-import Download from './download';
+//import Download from './download';
 import jsPDF from 'jspdf';
 import moment from 'moment';
 
@@ -121,7 +121,7 @@ class ProfileService {
 
     let doc = new jsPDF('p', 'pt', 'a4');
     doc.setFont('helvetica');
-    const margin = 0.5;
+    //const margin = 0.5;
 
     let currentDate = moment().format('MMMM D, Y');
     let currentTime = moment().format('hh:mm:ss');
@@ -137,7 +137,7 @@ class ProfileService {
     let marginright = doc.internal.pageSize.getWidth() - 20;
     let col = pdfWidth * 0.07383;
     let gutter = pdfWidth * 0.01036727272;
-    let fourthCol = col * 4 + gutter * 3;
+    //let fourthCol = col * 4 + gutter * 3;
     let fifthCol = col * 5 + gutter * 4;
 
     const profileBody = pdfWidth - fifthCol - 20;
@@ -243,12 +243,12 @@ class ProfileService {
       );
       // Adjust yAxis based on text height
       qDim = doc.getTextDimensions(qualification);
-      let margins = {
-        top: 70,
-        bottom: 40,
-        left: 30,
-        width: 550
-      };
+      //let margins = {
+      //   top: 70,
+      //   bottom: 40,
+      //   left: 30,
+      //   width: 550
+      // };
 
       doc.fromHTML(options.qualification, fifthCol, currentYAxis, {
         // y coord
@@ -268,7 +268,7 @@ class ProfileService {
       doc.setFontSize(12);
       let currentRole = doc.splitTextToSize(options.currentRole, profileBody);
       // Adjust yAxis based on text height
-      let cDim = doc.getTextDimensions(currentRole);
+      //let cDim = doc.getTextDimensions(currentRole);
       currentYAxis = qDim.h + currentYAxis;
 
       doc.text(fifthCol, currentYAxis, currentRole);

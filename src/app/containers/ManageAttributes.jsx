@@ -270,7 +270,7 @@ class ManageAttributes extends React.Component {
                     this.state.competencyId
                   }/attribute/${attribute.id}/settings`}
                 >
-                  <i class="fas fa-cog" />
+                  <i className="fas fa-cog" />
                 </Link>
               </td>
             </tr>

@@ -16,7 +16,7 @@ import ChangePassword from './ChangePassword';
 import UserView from './UserView';
 import About from '../components/about/About';
 import Frameworks from './Frameworks';
-import ArticleCreate from './ArticleCreate';
+//import ArticleCreate from './ArticleCreate';
 import AttributeMap from './AttributeMap';
 import CompetencySettings from './CompetencySettings';
 import AttributeSettings from './AttributeSettings';
@@ -34,7 +34,7 @@ import ProfilesCompareSummary from './ProfilesCompareSummary';
 import Documentation from './Documentation';
 import Login from './Login';
 import ManageFrameworks from '../containers/navigation/ManageFrameworks';
-import Navigation from '../containers/navigation/Navigation';
+//import Navigation from '../containers/navigation/Navigation';
 import Footer from '../components/Footer';
 import Breadcrumbs from '../containers/Breadcrumbs';
 
@@ -42,7 +42,7 @@ import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 
-const $ = window.$;
+//const $ = window.$;
 
 class Root extends Component {
   state = {
@@ -130,7 +130,7 @@ class Root extends Component {
           preventDuplicate
         >
           <Breadcrumbs />
-          <div class="vf-u-margin__top--200" />
+          <div className="vf-u-margin__top--200" />
           <Masthead
             roles={roles}
             user={user}

@@ -2,8 +2,6 @@ import React from 'react';
 
 import FrameworkButton from '../framework-button/FrameworkButton';
 
-const $ = window.$;
-
 function FrameworkButtons({ frameworks }) {
   const selfRef = new React.createRef();
 

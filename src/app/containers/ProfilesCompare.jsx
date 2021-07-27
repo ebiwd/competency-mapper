@@ -3,24 +3,24 @@ import { Switch, Route } from 'react-router-dom';
 
 import { apiUrl } from '../services/http/http';
 
-import { Link, Redirect } from 'react-router-dom';
-import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import { Link } from 'react-router-dom';
+//import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
 //import ProfilesCompareTable from './ProfilesCompareTable';
 //import ProfilesCompareGraph from './ProfilesCompareGraph';
 import ProfilesCompareButterfly from './ProfilesCompareButterfly';
 import user_icon from './user_icon.png';
-import Stars from './Stars';
+//import Stars from './Stars';
 import ReactTooltip from 'react-tooltip';
 
-const $ = window.$;
+//const $ = window.$;
 
 export const ProfilesCompare = props => {
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profile1Id = props.location.pathname.split('/')[6];
   const profile2Id = props.location.pathname.split('/')[7];
-  var expertise_levels = [];
+  //var expertise_levels = [];
   var expertise_levels_legend = [];
 
   const [profile1, setProfile1] = useState();
@@ -34,7 +34,7 @@ export const ProfilesCompare = props => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        if (profile1Id == 'guest') {
+        if (profile1Id === 'guest') {
           await setProfile1(JSON.parse(localStorage.getItem('guestProfile')));
           setIsGuestProfile(1);
           setLink1(
@@ -53,7 +53,7 @@ export const ProfilesCompare = props => {
             });
         }
 
-        if (profile2Id == 'guest') {
+        if (profile2Id === 'guest') {
           await setProfile2(JSON.parse(localStorage.getItem('guestProfile')));
           setIsGuestProfile(1);
           setLink2(
@@ -90,14 +90,18 @@ export const ProfilesCompare = props => {
       }
     };
     fetchData();
-  }, []);
+  }, [frameworkName, frameworkVersion, profile1Id, profile2Id]);
 
   if (frameworkInfo) {
-    frameworkInfo.map(info => {
+    frameworkInfo.forEach((info, index) => {
       if (info.title.toLowerCase() === frameworkName) {
-        info.expertise_levels.map(level =>
+        info.expertise_levels.map((level, levelIndex) =>
           expertise_levels_legend.push(
-            <li className="vf-list__item" style={{ textAlign: 'center' }}>
+            <li
+              key={levelIndex}
+              className="vf-list__item"
+              style={{ textAlign: 'center' }}
+            >
               <div
                 data-tip={level.description ? level.description : 'NA'}
                 data-html={true}
@@ -110,7 +114,7 @@ export const ProfilesCompare = props => {
                 </span>{' '}
                 <span> {level.title}</span>
               </div>
-              <ReactTooltip class="tooltip-custom" />
+              <ReactTooltip className="tooltip-custom" />
             </li>
           )
         );
@@ -139,7 +143,7 @@ export const ProfilesCompare = props => {
                 width="120px"
                 className="vf-profile__image"
               />
-              <Link to={link1}>
+              <Link to={link1 ? link1 : '#'}>
                 <h5>{profile1.job_title}</h5>
               </Link>
             </div>

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -9,6 +9,7 @@ import ErrorLoading from '../components/error-loading/ErrorLoading';
 import DomainList from '../components/domain-list/DomainList';
 import Courses from './courses/Courses';
 import ProfileList from './ProfileList';
+import PathwaysList from './PathwaysList';
 import FrameworkVersions from '../containers/framework-versions/FrameworkVersions';
 
 import CompetencyService from '../services/competency/competency';
@@ -39,6 +40,7 @@ class CompetencyList extends Component {
     filteredDomains: [],
     loadingError: false,
     profileCount: 0,
+    pathwayCount: 0,
     attributeTypes: []
   };
 
@@ -70,6 +72,7 @@ class CompetencyList extends Component {
       ]);
 
       this.fetchProfiles();
+      this.fetchPathways();
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -94,6 +97,7 @@ class CompetencyList extends Component {
         }
       }
       this.fetchProfiles();
+      this.fetchPathways();
     }
   }
 
@@ -108,6 +112,22 @@ class CompetencyList extends Component {
           profileCount: findResponse.filter(
             item => item.publishing_status === 'Live'
           ).length
+        });
+      });
+  }
+
+  fetchPathways() {
+    const { framework } = this.state;
+    fetch(
+      `${apiUrl}/api/${framework}/pathways?_format=json&timestamp=${Date.now()}`
+    )
+      .then(Response => Response.json())
+      .then(findResponse => {
+        this.setState({
+          pathwayCount: findResponse.filter(
+            item => item.publishing_status === true
+          ).length
+          //pathwayCount: findResponse.length
         });
       });
   }
@@ -224,10 +244,18 @@ class CompetencyList extends Component {
             ) : (
               ''
             )}
+            {localStorage.getItem('roles') ? (
+              <Tab>Learning pathways</Tab>
+            ) : this.state.pathwayCount > 0 ? (
+              <Tab>Learning pathways</Tab>
+            ) : (
+              ''
+            )}
 
+            {/* <Tab>Learning pathways</Tab> */}
             <Tab>Competencies</Tab>
-            <Tab>Export</Tab>
             <Tab>Training resources</Tab>
+            <Tab>Export</Tab>
           </TabList>
 
           {localStorage.getItem('roles') ? (
@@ -244,12 +272,26 @@ class CompetencyList extends Component {
             ''
           )}
 
+          {localStorage.getItem('roles') ? (
+            <TabPanel>
+              <PathwaysList framework={framework} />
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
+          ) : this.state.pathwayCount > 0 ? (
+            <TabPanel>
+              <PathwaysList framework={framework} />
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
+          ) : (
+            ''
+          )}
+
           <TabPanel>
-            <form action="#" class="vf-form | vf-search vf-search--inline">
+            <form action="#" className="vf-form | vf-search vf-search--inline">
               <div className="vf-form__item | vf-search__item">
                 <label
                   className="vf-form__label vf-u-sr-only | vf-search__label"
-                  for="inlinesearchitem"
+                  htmlFor="inlinesearchitem"
                 >
                   Inline search
                 </label>
@@ -267,67 +309,13 @@ class CompetencyList extends Component {
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
           <TabPanel>
+            <Courses framework={framework} version={frameworkVersion} />
+          </TabPanel>
+          <TabPanel>
             <FAIRDownload />
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
-          <TabPanel>
-            <Courses framework={framework} version={frameworkVersion} />
-          </TabPanel>
         </Tabs>
-        {/* <div className="vf-tabs">
-          <ul className="vf-tabs__list ch_tabs__list" data-vf-js-tabs>
-              <li className="vf-tabs__item">
-                <a
-                  className="vf-tabs__link"
-                  href="#vf-tabs__section--career_profiles"
-                >
-                  Career profiles
-                </a>
-              </li>
-            <li className="vf-tabs__item">
-              <a
-                className="vf-tabs__link"
-                href="#vf-tabs__section--competencies"
-              >
-                Competencies
-              </a>
-            </li>
-            <li className="vf-tabs__item">
-              <a className="vf-tabs__link" href="#vf-tabs__section--export">
-                Export
-              </a>
-            </li>
-            <li className="vf-tabs__item">
-              <a
-                className="vf-tabs__link"
-                href="#vf-tabs__section--training_resources"
-              >
-                Training resources
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div class="vf-tabs-content" data-vf-js-tabs-content>
-          <section
-            class="vf-tabs__section"
-            id="vf-tabs__section--career_profiles"
-          >
-            <ProfileList framework={framework} version={frameworkVersion} />
-            <FrameworkVersions framework={framework} versions={versions} />
-          </section>
-          <section class="vf-tabs__section" id="vf-tabs__section--competencies">
-            competencies
-          </section>
-          <section class="vf-tabs__section" id="vf-tabs__section--export">
-            export
-          </section>
-          <section
-            class="vf-tabs__section"
-            id="vf-tabs__section--training_resources"
-          >
-            training_resources
-          </section>
-        </div> */}
       </>
     );
   }

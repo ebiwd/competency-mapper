@@ -1,12 +1,8 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+
 import Dropzone from 'react-dropzone';
 
 class FileUpload extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <Dropzone
@@ -29,7 +25,7 @@ class FileUpload extends React.Component {
           <section>
             <div {...getRootProps()}>
               <input {...getInputProps()} />
-              <a href="#">Click to upload image</a>
+              <button href="#">Click to upload image</button>
             </div>
           </section>
         )}

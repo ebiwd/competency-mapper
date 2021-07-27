@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 import HttpService from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
+// import ProfileService from '../services/profile/profile';
+// import ActiveRequestsService from '../services/active-requests/active-requests';
+// import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
-import Parser from 'html-react-parser';
+//import Parser from 'html-react-parser';
 
 import jsPDF from 'jspdf';
-import moment from 'moment';
+//import moment from 'moment';
 
 const $ = window.$;
 
@@ -24,7 +24,7 @@ export const ProfileMapDownload = props => {
   const [frameworkInfo, setFrameworkInfo] = useState();
 
   // const [ksa, setKsa] = useState();
-  const [profileAttributes, setProfileAttributes] = useState([]);
+  //const [profileAttributes, setProfileAttributes] = useState([]);
 
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
@@ -34,8 +34,8 @@ export const ProfileMapDownload = props => {
   var expertise_not_applicable = '';
   var attribute_types = [];
   var frameworkFullName = '';
-  var frameworkDesc = '';
-  var frameworkLogo = '';
+  //var frameworkDesc = '';
+  //var frameworkLogo = '';
 
   var mapping = [];
   let mappingAttributes = [];
@@ -80,7 +80,7 @@ export const ProfileMapDownload = props => {
 
       fetchData();
     }
-  }, []);
+  }, [frameworkVersion, frameworkName, http]);
 
   const handleSubmit = async e => {
     e.preventDefault();
@@ -100,7 +100,7 @@ export const ProfileMapDownload = props => {
     );
     let expertise = event.target[event.target.selectedIndex].text;
 
-    if (expertise_id == expertise_not_applicable) {
+    if (expertise_id === expertise_not_applicable) {
       $('input:checkbox[data-competency=' + competency_id + ']').prop(
         'checked',
         false
@@ -117,7 +117,7 @@ export const ProfileMapDownload = props => {
 
       if (tempMap.find(o => o.competency_id === competency_id)) {
         // Update stored Competencies only if existing levels of expertise is updated
-        if (tempMap.expertise_id != expertise_id) {
+        if (tempMap.expertise_id !== expertise_id) {
           var index = tempMap.findIndex(
             item => item.competency_id === competency_id
           );
@@ -169,44 +169,44 @@ export const ProfileMapDownload = props => {
     // let selectedAttributes = new Array();
 
     let mappingAttributes = storedProfile['mappingAttributes'];
-    let attributes = $(
-      'input:checkbox[data-competency=' + competency + ']'
-    ).each(function() {
-      if (
-        mappingAttributes.find(attr => attr.attribute_id === $(this).attr('id'))
-      ) {
-        // Do nothing if attributes are in LocalStorage already
-      } else {
-        mappingAttributes.push({
-          attribute_id: $(this).attr('id'),
-          competency_id: competency
-        });
-      }
-    }, mappingAttributes);
+    // let attributes = $(
+    //   'input:checkbox[data-competency=' + competency + ']'
+    // ).each(function() {
+    //   if (
+    //     mappingAttributes.find(attr => attr.attribute_id === $(this).attr('id'))
+    //   ) {
+    //     // Do nothing if attributes are in LocalStorage already
+    //   } else {
+    //     mappingAttributes.push({
+    //       attribute_id: $(this).attr('id'),
+    //       competency_id: competency
+    //     });
+    //   }
+    // }, mappingAttributes);
 
     storedProfile['mappingAttributes'] = mappingAttributes;
     localStorage.setItem('ProfileDownloadData', JSON.stringify(storedProfile));
-    setProfileAttributes(storedProfile);
+    //setProfileAttributes(storedProfile);
   };
 
   // Remove current attributes if Competency is deselected
   const removeCompetencyAttributes = competency => {
     let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
     let mappingAttributes = storedProfile['mappingAttributes'];
-    let attributes = $(
-      'input:checkbox[data-competency=' + competency + ']'
-    ).each(function() {
-      let index = mappingAttributes.findIndex(
-        item => item.attribute_id === $(this).attr('id')
-      );
-      // Remove current attributes if Competency is deselected
-      mappingAttributes.splice(index, 1);
-    }, mappingAttributes);
+    // let attributes = $(
+    //   'input:checkbox[data-competency=' + competency + ']'
+    // ).each(function() {
+    //   let index = mappingAttributes.findIndex(
+    //     item => item.attribute_id === $(this).attr('id')
+    //   );
+    //   // Remove current attributes if Competency is deselected
+    //   mappingAttributes.splice(index, 1);
+    // }, mappingAttributes);
 
     // localStorage.setItem('mappingAttributes', JSON.stringify(mappingAttributes));
     storedProfile['mappingAttributes'] = mappingAttributes;
     localStorage.setItem('ProfileDownloadData', JSON.stringify(storedProfile));
-    setProfileAttributes(storedProfile);
+    //setProfileAttributes(storedProfile);
   };
 
   // Manage single Attributes check/uncheck event
@@ -245,7 +245,7 @@ export const ProfileMapDownload = props => {
         JSON.stringify(storedProfile)
       );
     }
-    setProfileAttributes(storedProfile);
+    //setProfileAttributes(storedProfile);
   };
 
   // Set Expertise Level.
@@ -261,22 +261,24 @@ export const ProfileMapDownload = props => {
     frameworkInfo.map(info => {
       if (info.title.toLowerCase() === frameworkName) {
         frameworkFullName = info.title;
-        frameworkLogo = info.logo[0].url;
-        frameworkDesc = info.description;
+        //frameworkLogo = info.logo[0].url;
+        //frameworkDesc = info.description;
         info.expertise_levels.map(
           level => (expertise_levels[level.rating_level] = level.title)
         );
       }
+      return null;
     });
 
-    let index = 0;
+    //let index = 0;
     expertise_levels.map((level, key) => {
       expertise_levels_legend.push(
         <li style={{ textAlign: 'center' }}>
           <span className="badge secondary"> {key} </span> <span> {level}</span>
         </li>
       );
-      index++;
+      //index++;
+      return null;
     });
   }
 
@@ -294,35 +296,35 @@ export const ProfileMapDownload = props => {
   const downloadProfileFromHtml = options => {
     let doc = new jsPDF('p', 'pt', 'a4');
     doc.setFont('helvetica');
-    const margin = 0.5;
+    //const margin = 0.5;
 
-    let currentDate = moment().format('MMMM D, Y');
-    let currentTime = moment().format('hh:mm:ss');
+    //let currentDate = moment().format('MMMM D, Y');
+    //let currentTime = moment().format('hh:mm:ss');
 
-    let pdfWidth = doc.internal.pageSize.getWidth();
-    let pdfHeight = doc.internal.pageSize.getHeight();
+    //let pdfWidth = doc.internal.pageSize.getWidth();
+    //let pdfHeight = doc.internal.pageSize.getHeight();
 
     const startHeight = 30;
     const marginleft = 20;
-    const pdfProfileImgWidth = 180;
-    const pageLogoWidth = 100;
+    //const pdfProfileImgWidth = 180;
+    //const pageLogoWidth = 100;
 
     let marginright = doc.internal.pageSize.getWidth() - 20;
-    let col = pdfWidth * 0.07383;
-    let gutter = pdfWidth * 0.01036727272;
-    let fourthCol = col * 4 + gutter * 3;
-    let fifthCol = col * 5 + gutter * 4;
+    //let col = pdfWidth * 0.07383;
+    //let gutter = pdfWidth * 0.01036727272;
+    //let fourthCol = col * 4 + gutter * 3;
+    //let fifthCol = col * 5 + gutter * 4;
 
-    const profileBody = pdfWidth - fifthCol - 20;
+    //const profileBody = pdfWidth - fifthCol - 20;
 
-    let selectedFileWidth = options.selectedFile
-      ? options.selectedFileData[0].width
-      : 180;
-    let selectedFileHeight = options.selectedFile
-      ? options.selectedFileData[0].height
-      : 150;
-    let ratio = selectedFileWidth / selectedFileHeight;
-    let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
+    // let selectedFileWidth = options.selectedFile
+    //   ? options.selectedFileData[0].width
+    //   : 180;
+    // let selectedFileHeight = options.selectedFile
+    //   ? options.selectedFileData[0].height
+    //   : 150;
+    //let ratio = selectedFileWidth / selectedFileHeight;
+    //let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
 
     let currentYAxis = startHeight;
 
@@ -381,17 +383,18 @@ export const ProfileMapDownload = props => {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          frameworkLogo = info.logo[0].url;
-          frameworkDesc = info.description;
+          //frameworkLogo = info.logo[0].url;
+          //frameworkDesc = info.description;
           info.expertise_levels.map(
             level => (
               (expertise_levels[level.id] = level.title),
-              level.title == 'Not applicable'
+              level.title === 'Not applicable'
                 ? (expertise_not_applicable = level.id)
                 : ''
             )
           );
         }
+        return null;
       });
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
@@ -399,6 +402,7 @@ export const ProfileMapDownload = props => {
             attribute => (attribute_types[attribute.id] = attribute.title)
           );
         }
+        return null;
       });
     }
 
@@ -460,7 +464,7 @@ export const ProfileMapDownload = props => {
                                     {competency.attributes
                                       .filter(
                                         attribute =>
-                                          attribute.type == attribute_type
+                                          attribute.type === attribute_type
                                       )
                                       .map((attribute, jIndex) => (
                                         <li
@@ -479,7 +483,7 @@ export const ProfileMapDownload = props => {
                                                 checked={
                                                   mappingAttributes.find(
                                                     attr =>
-                                                      attr.attribute_id ==
+                                                      attr.attribute_id ===
                                                       attribute.id
                                                   )
                                                     ? true
@@ -492,7 +496,7 @@ export const ProfileMapDownload = props => {
                                                 className={
                                                   mappingAttributes.find(
                                                     attr =>
-                                                      attr.attribute_id ==
+                                                      attr.attribute_id ===
                                                       attribute.id
                                                   )
                                                     ? 'attribute_label checked'
@@ -519,9 +523,9 @@ export const ProfileMapDownload = props => {
                         <select
                           onChange={e => handleMapping(e)}
                           defaultValue={
-                            mapping.find(o => o.competency_id == competency.id)
+                            mapping.find(o => o.competency_id === competency.id)
                               ? mapping.find(
-                                  o => o.competency_id == competency.id
+                                  o => o.competency_id === competency.id
                                 ).expertise_id
                               : expertise_not_applicable
                           }
@@ -549,9 +553,9 @@ export const ProfileMapDownload = props => {
     }
   };
 
-  const handlePrint = () => {
-    window.print();
-  };
+  // const handlePrint = () => {
+  //   window.print();
+  // };
 
   return (
     <div>
@@ -582,6 +586,7 @@ export const ProfileMapDownload = props => {
                           : user_icon
                       }
                       width="250px"
+                      alt=""
                     />
                   ) : (
                     ''

@@ -62,7 +62,7 @@ class Courses extends Component {
 
   filterCourses(allCourses) {
     const { framework } = this.state;
-    const { version } = this.state;
+    //const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
       if (course.archived === 'archived') {
@@ -126,7 +126,7 @@ class Courses extends Component {
     const {
       filteredCourses,
       framework,
-      filter,
+      //filter,
       loadingError,
       version
     } = this.state;
@@ -137,7 +137,7 @@ class Courses extends Component {
 
     //let unique = [...new Set(course.competencies.map(item => item.id))];
 
-    let duplicates = [];
+    //let duplicates = [];
 
     const competencyList = competencies =>
       competencies
@@ -146,8 +146,8 @@ class Courses extends Component {
             all.findIndex(c => c.competency_id === competency.competency_id) ===
             index
         )
-        .map(competency => (
-          <li key={competency.id}>
+        .map((competency, index) => (
+          <li key={index}>
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.competency_id
