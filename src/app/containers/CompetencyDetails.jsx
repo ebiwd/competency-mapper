@@ -62,14 +62,16 @@ class CompetencyDetails extends React.Component {
 
   async getResources() {
     try {
-      const allResources = await this.coursesService.getCourses(0, '', '');
-      const resources = allResources.filter(
-        resource =>
-          resource.archived === 'no' &&
-          !!resource.competency_profile.find(
-            profile => profile.competency_id === this.state.competencyId
-          )
+      const resources = await this.coursesService.getByCompetency(
+        this.state.competencyId
       );
+      // const resources = allResources.filter(
+      //   resource =>
+      //     resource.archived === 'no' &&
+      //     !!resource.competency_profile.find(
+      //       profile => profile.competency_id === this.state.competencyId
+      //     )
+      // );
 
       this.setState({ resources });
       /*const resources = [{"id":1, "title":this.state.version[3]}];*/

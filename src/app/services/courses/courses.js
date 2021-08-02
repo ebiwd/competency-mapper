@@ -18,7 +18,22 @@ class CoursesService {
   async getCourses(page, filter, filterType) {
     const response = await this.http.get(
       //`${apiUrl}/api/resources?_format=json`
+      // `${apiUrl}/api/resources?_format=json&page=${page}&title=${filter}&type=${filterType}`
       `${apiUrl}/api/resources?_format=json&page=${page}&title=${filter}&type=${filterType}`
+    );
+    return response.data;
+  }
+
+  async getByFramework(page, filter, filterType, $framework) {
+    const response = await this.http.get(
+      `${apiUrl}/api/resources?_format=json&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
+    );
+    return response.data;
+  }
+
+  async getByCompetency($competencyID) {
+    const response = await this.http.get(
+      `${apiUrl}/api/competency-resources?field_competency_target_id=${$competencyID}`
     );
     return response.data;
   }

@@ -34,6 +34,7 @@ class CompetencyService {
     const response = await this.http.get(
       `/api/${framework}/${version}?_format=json&timestamp=${Date.now()}`
     );
+    console.log('framework returned', response.data);
     return response.data;
   }
 

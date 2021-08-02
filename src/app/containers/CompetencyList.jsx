@@ -146,7 +146,8 @@ class CompetencyList extends Component {
       //frameworkStatus: frameworkData[0].status,
       frameworkDescription,
       domains,
-      filteredDomains: domains
+      filteredDomains: domains,
+      frameWorkId: frameworkData[0].nid
     });
 
     const allFrameworks = await this.competencyService.getAllVersionedFrameworks();
@@ -200,6 +201,7 @@ class CompetencyList extends Component {
       framework,
       frameworkVersion,
       frameworkName,
+      frameWorkId,
       frameworkStatus,
       frameworkDescription,
       filteredDomains,
@@ -309,7 +311,11 @@ class CompetencyList extends Component {
             <FrameworkVersions framework={framework} versions={versions} />
           </TabPanel>
           <TabPanel>
-            <Courses framework={framework} version={frameworkVersion} />
+            <Courses
+              framework={framework}
+              version={frameworkVersion}
+              frameworkId={frameWorkId}
+            />
           </TabPanel>
           <TabPanel>
             <FAIRDownload />

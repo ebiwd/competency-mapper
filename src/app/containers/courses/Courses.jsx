@@ -7,30 +7,52 @@ import ErrorLoading from '../../components/error-loading/ErrorLoading';
 import ActiveRequestsService from '../../services/active-requests/active-requests';
 import CoursesService from '../../services/courses/courses';
 import { safeFlat } from '../../services/util/util';
+import Pagination from 'react-js-pagination';
 
 class Courses extends Component {
   static propTypes = {
     framework: PropTypes.string,
+    frameworkId: PropTypes.string,
     version: PropTypes.string
   };
-
-  state = {
-    courses: [],
-    filteredCourses: [],
-    filter: '',
-    filterType: '',
-    loadingError: false,
-    activePage: 0
-  };
+  //
+  // state = {
+  //     courses: [],
+  //     filteredCourses: [],
+  //     filter: '',
+  //     filterType: '',
+  //     loadingError: false,
+  //     activePage: 0,
+  //     totalItemsCount: 0,
+  // };
+  coursesService = new CoursesService();
+  activeRequests = new ActiveRequestsService();
 
   constructor(props) {
     super(props);
+    this.state = {
+      courses: [],
+      filteredCourses: [],
+      filter: '',
+      filterType: '',
+      loadingError: false,
+      activePage: 0,
+      totalItemsCount: 0
+    };
     this.state.framework = props.framework;
+    this.state.frameworkId = props.frameworkId;
     this.state.version = props.version;
+    this.state.totalItemsCount = 0;
   }
 
-  coursesService = new CoursesService();
-  activeRequests = new ActiveRequestsService();
+  async handlePageChange(pageNumber) {
+    await this.setState({ courses: null });
+    await this.setState({ activePage: pageNumber });
+    await this.fetchData();
+    setTimeout(function() {
+      window.scrollTo(0, 0);
+    }, 700);
+  }
 
   async componentDidMount() {
     this.fetchData();
@@ -39,13 +61,42 @@ class Courses extends Component {
   async fetchData() {
     try {
       this.activeRequests.startRequest();
-      const allCourses = await this.coursesService.getCourses(
-        0,
+      let frameworkName = '';
+      switch (this.props.framework) {
+        case 'bioexcel':
+          frameworkName = 'BioExcel';
+          break;
+        case 'corbel':
+          frameworkName = 'CORBEL';
+          break;
+        case 'ritrain':
+          frameworkName = 'RITrain';
+          break;
+        case 'iscb':
+          frameworkName = 'ISCB';
+          break;
+        case 'nhs':
+          frameworkName = 'NHS';
+          break;
+        case 'cineca':
+          frameworkName = 'CINECA';
+          break;
+        case 'datasteward':
+          frameworkName = 'Data Steward';
+          break;
+        case 'permedcoe':
+          frameworkName = 'PerMedCoE';
+          break;
+      }
+      const allCourses = await this.coursesService.getByFramework(
+        this.state.activePage,
         this.state.filter,
-        this.state.filterType
+        this.state.filterType,
+        frameworkName
       );
       const courses = this.filterCourses(allCourses);
       this.setState({ courses, filteredCourses: courses });
+      this.setState({ totalItemsCount: courses[0].hitcount });
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -62,7 +113,7 @@ class Courses extends Component {
 
   filterCourses(allCourses) {
     const { framework } = this.state;
-    //const { version } = this.state;
+    const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
       if (course.archived === 'archived') {
@@ -95,7 +146,6 @@ class Courses extends Component {
           )
         )
       };
-
       filteredCourses.push(modifiedCourse);
     });
     //console.log(filteredCourses);
@@ -126,7 +176,7 @@ class Courses extends Component {
     const {
       filteredCourses,
       framework,
-      //filter,
+      filter,
       loadingError,
       version
     } = this.state;
@@ -137,7 +187,7 @@ class Courses extends Component {
 
     //let unique = [...new Set(course.competencies.map(item => item.id))];
 
-    //let duplicates = [];
+    let duplicates = [];
 
     const competencyList = competencies =>
       competencies
@@ -146,8 +196,8 @@ class Courses extends Component {
             all.findIndex(c => c.competency_id === competency.competency_id) ===
             index
         )
-        .map((competency, index) => (
-          <li key={index}>
+        .map(competency => (
+          <li key={competency.id}>
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.competency_id
@@ -170,6 +220,16 @@ class Courses extends Component {
         </td>
       </tr>
     ));
+
+    // function getSerialNo(activePage, itemIndex) {
+    //     // activePage += itemIndex;
+    //     if (activePage == 0) {
+    //         return activePage;
+    //     } else {
+    //         return activePage + 15;
+    //     }
+    //
+    // }
 
     return (
       <>
@@ -219,6 +279,23 @@ class Courses extends Component {
           </thead>
           <tbody>{resources}</tbody>
         </table>
+        <nav className="vf-pagination" aria-label="Pagination">
+          <Pagination
+            activePage={this.state.activePage}
+            itemsCountPerPage={15}
+            totalItemsCount={this.state.totalItemsCount}
+            pageRangeDisplayed={10}
+            onChange={e => this.handlePageChange(e)}
+            innerClass="vf-pagination__list"
+            itemClass="vf-pagination__item"
+            itemClassPrev="vf-pagination__item--previous-page"
+            itemClassNext="vf-pagination__item--next-page"
+            linkClass="vf-pagination__link vf-pagination__label"
+            activeClass="vf-pagination__item--is-active"
+            prevPageText="Previous"
+            nextPageText="Next"
+          />
+        </nav>
       </>
     );
   }
