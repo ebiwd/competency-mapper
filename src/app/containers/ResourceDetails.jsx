@@ -40,7 +40,6 @@ class ResourceDetails extends React.Component {
       setTimeout(() => {
         this.setState({ updateFlag: false });
       }, 1000);
-      console.log('componentDidUpdate');
     }
   }
 
@@ -59,6 +58,7 @@ class ResourceDetails extends React.Component {
     //&timestamp=${Date.now()}
 
     /*let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=hal_json`;*/
+    console.log('res path', this.state);
     let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
       this.state.resourcePath[2]
     }&timestamp=${Date.now()}`;
@@ -277,7 +277,7 @@ class ResourceDetails extends React.Component {
               ? Parser('<h3>Organisers</h3>' + item.organisers)
               : ''}
 
-            {item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}
+            {/*{item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}*/}
 
             <div>
               <h3>Competency Profile</h3>
@@ -454,6 +454,10 @@ class ResourceDetails extends React.Component {
             )}
 
             <p />
+
+            <p>
+              {item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}
+            </p>
 
             {item.dates ? (
               <span>

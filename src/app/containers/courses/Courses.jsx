@@ -15,16 +15,6 @@ class Courses extends Component {
     frameworkId: PropTypes.string,
     version: PropTypes.string
   };
-  //
-  // state = {
-  //     courses: [],
-  //     filteredCourses: [],
-  //     filter: '',
-  //     filterType: '',
-  //     loadingError: false,
-  //     activePage: 0,
-  //     totalItemsCount: 0,
-  // };
   coursesService = new CoursesService();
   activeRequests = new ActiveRequestsService();
 
@@ -121,7 +111,6 @@ class Courses extends Component {
       }
 
       const filteredProfiles = course.competency_profile.filter(
-        //profile => (profile.title || '').toLowerCase() === framework
         profile => (profile.framework_label || '').toLowerCase() === framework
       );
 
@@ -148,7 +137,6 @@ class Courses extends Component {
       };
       filteredCourses.push(modifiedCourse);
     });
-    //console.log(filteredCourses);
     return filteredCourses;
   }
 
