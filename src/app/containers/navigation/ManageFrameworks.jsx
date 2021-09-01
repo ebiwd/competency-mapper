@@ -5,6 +5,7 @@ import { apiUrl } from '../../services/http/http';
 const ManageFrameworks = props => {
   const [frameworks, setFrameworks] = useState();
   let user = localStorage.getItem('user');
+  let token = localStorage.getItem('csrf_token');
 
   useEffect(() => {
     const fetchData = () => {
@@ -18,7 +19,7 @@ const ManageFrameworks = props => {
         });
     };
     fetchData();
-  }, [user]);
+  }, [user, token]);
 
   return (
     <div className="vf-activity">

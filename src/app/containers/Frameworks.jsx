@@ -61,6 +61,7 @@ class Frameworks extends Component {
             If you have any questions, comments or suggestions, please contact
             us: competency [at] ebi.ac.uk
           </p>
+          {console.log(document.cookie)}
         </div>
       </div>
     );

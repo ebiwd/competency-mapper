@@ -21,9 +21,13 @@ class Navigation extends Component {
 
   componentDidMount() {
     //$(this.navRef.current).foundation();
+    let token = localStorage.getItem('csrf_token');
     fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
       method: 'GET',
-      credentials: 'include'
+      credentials: 'include',
+      headers: {
+        'X-CSRF-Token': token
+      }
     })
       .then(Response => Response.json())
       .then(findresponse => {

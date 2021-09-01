@@ -31,6 +31,13 @@ const PathwaysList = props => {
 
   return (
     <>
+      <div>
+        <p>
+          Learning pathways are collections of training courses and material to
+          help you learn about a specific topic. Note that some of these
+          resources are external to the EBI Competency Hub.
+        </p>
+      </div>
       {checkUserAccess() === true ? (
         <a
           style={{ float: 'right' }}
