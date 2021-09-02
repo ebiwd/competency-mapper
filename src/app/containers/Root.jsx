@@ -95,7 +95,7 @@ class Root extends Component {
         user: localStorage.getItem('user'),
         roles: localStorage.getItem('roles')
       });
-      // document.location.reload();
+      document.location.reload();
     } catch (error) {
       window.console.error(error);
       if (error.response) {

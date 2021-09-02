@@ -36,7 +36,7 @@ class ProfileService {
     fileid
   ) {
     const response = await this.http.patch(
-      `/node/${profileId}?_format=hal_json`,
+      `node/${profileId}?_format=hal_json`,
       Body.editProfile(
         profileId,
         title,

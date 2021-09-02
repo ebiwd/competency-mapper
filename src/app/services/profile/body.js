@@ -118,10 +118,10 @@ class BodyService {
     return {
       _links: {
         self: {
-          href: `${apiUrl}/node/${profileId}?_format=hal_json`
+          href: `http://cms.competency.ebi.ac.uk/node/${profileId}?_format=json`
         },
         type: {
-          href: `${apiUrl}/rest/type/node/profile`
+          href: `http://cms.competency.ebi.ac.uk/rest/type/node/profile`
         }
       },
       title: [
