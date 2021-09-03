@@ -17,10 +17,10 @@ class BodyService {
     return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/profile`
+          href: `http://cms.competency.ebi.ac.uk/rest/type/node/profile`
         },
-        [`${apiUrl}/rest/relation/node/profile/field_competency_framework`]: {
-          href: `${apiUrl}/node/${frameworkId}?_format=hal_json`
+        [`http://cms.competency.ebi.ac.uk/rest/relation/node/profile/field_competency_framework`]: {
+          href: `http://cms.competency.ebi.ac.uk/node/${frameworkId}?_format=hal_json`
         }
       },
       title: [
@@ -81,14 +81,14 @@ class BodyService {
         }
       ],
       _embedded: {
-        [`${apiUrl}/rest/relation/node/profile/field_competency_framework`]: [
+        [`http://cms.competency.ebi.ac.uk/rest/relation/node/profile/field_competency_framework`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${frameworkId}?_format=hal_json`
+                href: `http://cms.competency.ebi.ac.uk/node/${frameworkId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/competency_framework`
+                href: `http://cms.competency.ebi.ac.uk/rest/type/node/competency_framework`
               }
             },
             uuid: [

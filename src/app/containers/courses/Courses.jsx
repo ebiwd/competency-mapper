@@ -26,7 +26,7 @@ class Courses extends Component {
       filter: '',
       filterType: '',
       loadingError: false,
-      activePage: 0,
+      activePage: 1,
       totalItemsCount: 0
     };
     this.state.framework = props.framework;
@@ -198,7 +198,11 @@ class Courses extends Component {
 
     const resources = filteredCourses.map((course, index) => (
       <tr key={course.id}>
-        <td>{index + 1} </td>
+        <td>
+          {index +
+            1 +
+            (this.state.activePage ? (this.state.activePage - 1) * 15 : 0)}{' '}
+        </td>
         <td>
           <Link to={`/training-resources/${course.id}`}>{course.title}</Link>
         </td>

@@ -119,8 +119,9 @@ export const ProfileEdit = props => {
       let token = localStorage.getItem('csrf_token');
       var fileid = fid;
       if (selectedFile) {
+        console.log(selectedFile);
         await fetch(
-          apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
+          apiUrl + '/file/upload/node/profile/field_image?_format=json',
           {
             credentials: 'include',
             method: 'POST',
@@ -136,6 +137,7 @@ export const ProfileEdit = props => {
         )
           .then(resp => resp.json())
           .then(function(data) {
+            console.log(data);
             fileid = data.fid[0].value;
           });
       }
