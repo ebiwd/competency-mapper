@@ -85,9 +85,10 @@ class CompetencyDetails extends React.Component {
 
   resourceBlock() {
     const { resources } = this.state;
+    console.log(resources);
     return resources.map(resource => (
-      <li key={resource.id}>
-        <Link to={`/training-resources/${resource.id}`}>{resource.title}</Link>
+      <li key={resource.nid}>
+        <Link to={`/training-resources/${resource.nid}`}>{resource.title}</Link>
       </li>
     ));
   }
