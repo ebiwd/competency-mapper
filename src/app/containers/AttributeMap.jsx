@@ -16,6 +16,7 @@ class AttributeMap extends React.Component {
       //framework: this.props.selectedFramework,
       //resourceID: this.props.resourceID,
       framework: this.props.location.pathname.split('/')[4].replace(/ /g, ''),
+      framework_id: '',
       resourceID: this.props.location.pathname.split('/')[2],
       frameworkdetails: [],
       csrf: '',
@@ -34,6 +35,7 @@ class AttributeMap extends React.Component {
 
   async handleSelect() {
     let checkedAttributes = this.state.selectedAttributes;
+    let framework_id = this.state.framework_id;
     let attributeIDs = [];
     //let token = localStorage.getItem('csrf_token');
     for (let i = 0; i < checkedAttributes.length; i++) {
@@ -43,7 +45,11 @@ class AttributeMap extends React.Component {
     try {
       this.activeRequests.startRequest();
       await Promise.all([
-        this.competencyService.attrmap(this.state.resourceID, attributeIDs)
+        this.competencyService.attrmap(
+          this.state.resourceID,
+          attributeIDs,
+          framework_id
+        )
       ]);
     } catch (error) {
       this.setState({ loadingError: true });
@@ -177,6 +183,8 @@ class AttributeMap extends React.Component {
         detail.versions.map(version => {
           if (version.status === 'live') {
             latest_version = version.number;
+            this.state.framework_id = detail.nid;
+            console.log(detail.nid);
           }
           return null;
         });

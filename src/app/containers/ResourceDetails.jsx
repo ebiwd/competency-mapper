@@ -289,9 +289,12 @@ class ResourceDetails extends React.Component {
                       <div className="vf-grid" key={index}>
                         {this.state.frameworks.map(framework => {
                           if (framework.nid === profile.id) {
-                            framework.attribute_types.map(type =>
-                              attribute_types.push(type.title)
-                            );
+                            framework.attribute_types.map(type => {
+                              if (attribute_types.indexOf(type.title) === -1) {
+                                attribute_types.push(type.title);
+                              }
+                              return null;
+                            });
                             frameworkLiveVersion = framework.versions.find(
                               version => version.status === 'live'
                             );

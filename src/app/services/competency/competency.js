@@ -226,12 +226,14 @@ class CompetencyService {
     return response.data;
   }
 
-  async attrmap(resource, attributes) {
+  async attrmap(resource, attributes, framework_id) {
     const response = await this.http.get(
       `/api/mapping?_format=hal_json&resource=` +
         resource +
         `&attributes=` +
         attributes +
+        `&framework_id=` +
+        framework_id +
         `&timestamp=${Date.now()}`
     );
     return response.data;
