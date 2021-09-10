@@ -46,16 +46,16 @@ export const ProfileCreateGuest = props => {
 
   //let errors = [];
 
-  var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
+  // var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
   const http = new HttpService();
+  const storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
   useEffect(() => {
     // Set variables from Local Storage to populate form fields onload
     let bootstrap = async () => {
-      await setProfile(storedProfile);
-
       if (storedProfile) {
+        setProfile(storedProfile);
         setTitle(storedProfile.title);
         setJobTitle(storedProfile.job_title);
         setAge(parseInt(storedProfile.age));
@@ -68,6 +68,20 @@ export const ProfileCreateGuest = props => {
           setImgpreview(storedProfile.image[0].url);
         }
       }
+
+      // if (storedProfile) {
+      //   setTitle(storedProfile.title);
+      //   setJobTitle(storedProfile.job_title);
+      //   setAge(parseInt(storedProfile.age));
+      //   setGender(storedProfile.gender);
+      //   setQualification(storedProfile.qualification_background);
+      //   setCurrentRole(storedProfile.current_role);
+      //   setAdditionalInfo(storedProfile.additional_information);
+      //   if (storedProfile.image[0]) {
+      //     setSelectedFileData(storedProfile.image);
+      //     setImgpreview(storedProfile.image[0].url);
+      //   }
+      // }
     };
 
     // Calling multiple APIs, since data Framework are in two different endpoints
@@ -97,7 +111,7 @@ export const ProfileCreateGuest = props => {
 
     bootstrap();
     fetchData();
-  }, [selectedFile, frameworkName, frameworkVersion, http, storedProfile]);
+  }, [selectedFile, frameworkName, frameworkVersion, http]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
@@ -330,10 +344,7 @@ export const ProfileCreateGuest = props => {
       <div className="callout warning">
         <i className="icon icon-common icon-exclamation-triangle" /> Your
         profile will be saved in your browser.
-        <button
-          className="vf-button vf-button--secondary vf-button--sm"
-          onClick={e => openModal(e)}
-        >
+        <button className="vf-button vf-button--sm" onClick={e => openModal(e)}>
           Get help
         </button>
         <GuestHelp modalOpen={modalOpen} closeModal={closeModal} />

@@ -28,15 +28,15 @@ export const ProfileMapGuest = props => {
   var attribute_types = [];
   var frameworkFullName = '';
 
-  var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
-
   useEffect(() => {
     const fetchData = async () => {
-      await setProfile(storedProfile);
-
-      await setMapping(
-        storedProfile.profile_mapping ? storedProfile.profile_mapping : []
-      );
+      const storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
+      if (storedProfile) {
+        setProfile(storedProfile);
+        setMapping(
+          storedProfile.profile_mapping ? storedProfile.profile_mapping : []
+        );
+      }
 
       await fetch(`${apiUrl}/api/version_manager?_format=json`)
         .then(Response => Response.json())
@@ -52,15 +52,19 @@ export const ProfileMapGuest = props => {
           setFramework(findresponse);
         });
     };
-    fetchData();
+    // fetchData();
 
-    if (mapping) {
-      let checkBoxes = $('input:checkbox');
-      checkBoxes.each(function(index, item, arr) {
-        console.log('test ' + item.dataset);
-      });
+    if (!mapping) {
+      fetchData();
     }
-  }, [frameworkName, frameworkVersion, mapping, storedProfile]);
+
+    // if (mapping) {
+    //   let checkBoxes = $('input:checkbox');
+    //   checkBoxes.each(function(index, item, arr) {
+    //     console.log('test ' + item.dataset);
+    //   });
+    // }
+  }, [frameworkName, frameworkVersion, mapping]);
 
   const handleSubmit = async e => {
     e.preventDefault();
