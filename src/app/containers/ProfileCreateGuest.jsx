@@ -12,7 +12,6 @@ import GuestHelp from './GuestHelp';
 
 export const ProfileCreateGuest = props => {
   const history = useHistory();
-  //const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
   const [title, setTitle] = useState('');
   const [age, setAge] = useState('');
@@ -21,7 +20,6 @@ export const ProfileCreateGuest = props => {
 
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFileData, setSelectedFileData] = useState([]);
-  //const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
   const [fileSizeError, setFileSizeError] = useState();
   const [fileTypeError, setFileTypeError] = useState();
@@ -31,22 +29,11 @@ export const ProfileCreateGuest = props => {
   const [additionalInfo, setAdditionalInfo] = useState('');
 
   const [framework, setFramework] = useState();
-  //const [frameworkLogoData, setFrameworkLogoData] = useState([]);
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
 
   const [profile, setProfile] = useState();
-
-  //const [errorMsgTitle, setErrorMsgTitle] = useState();
-  //const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
-
-  //const [frameworkMoreData, setFrameworkMoreData] = useState();
-
   const [modalOpen, setModelOpen] = useState(false);
-
-  //let errors = [];
-
-  // var storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
   const http = new HttpService();
   const storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
@@ -54,34 +41,18 @@ export const ProfileCreateGuest = props => {
   useEffect(() => {
     // Set variables from Local Storage to populate form fields onload
     let bootstrap = async () => {
-      if (storedProfile) {
-        setProfile(storedProfile);
-        setTitle(storedProfile.title);
-        setJobTitle(storedProfile.job_title);
-        setAge(parseInt(storedProfile.age));
-        setGender(storedProfile.gender);
-        setQualification(storedProfile.qualification_background);
-        setCurrentRole(storedProfile.current_role);
-        setAdditionalInfo(storedProfile.additional_information);
-        if (storedProfile.image[0]) {
-          setSelectedFileData(storedProfile.image);
-          setImgpreview(storedProfile.image[0].url);
-        }
+      setProfile(storedProfile);
+      setTitle(storedProfile.title);
+      setJobTitle(storedProfile.job_title);
+      setAge(parseInt(storedProfile.age));
+      setGender(storedProfile.gender);
+      setQualification(storedProfile.qualification_background);
+      setCurrentRole(storedProfile.current_role);
+      setAdditionalInfo(storedProfile.additional_information);
+      if (storedProfile.image[0]) {
+        setSelectedFileData(storedProfile.image);
+        setImgpreview(storedProfile.image[0].url);
       }
-
-      // if (storedProfile) {
-      //   setTitle(storedProfile.title);
-      //   setJobTitle(storedProfile.job_title);
-      //   setAge(parseInt(storedProfile.age));
-      //   setGender(storedProfile.gender);
-      //   setQualification(storedProfile.qualification_background);
-      //   setCurrentRole(storedProfile.current_role);
-      //   setAdditionalInfo(storedProfile.additional_information);
-      //   if (storedProfile.image[0]) {
-      //     setSelectedFileData(storedProfile.image);
-      //     setImgpreview(storedProfile.image[0].url);
-      //   }
-      // }
     };
 
     // Calling multiple APIs, since data Framework are in two different endpoints
@@ -99,34 +70,32 @@ export const ProfileCreateGuest = props => {
 
         const [data1] = await Promise.all([promise1, promise2]);
         setFramework(data1);
-        // setFrameworkMoreData(
-        //   data2.filter(item => {
-        //     return item.title.toLowerCase() === frameworkName;
-        //   })
-        // );
       } catch (err) {
         console.log(err);
       }
     };
 
-    bootstrap();
-    fetchData();
-  }, [selectedFile, frameworkName, frameworkVersion, http]);
+    if (storedProfile && !profile) {
+      bootstrap();
+    }
+
+    if (!framework) {
+      fetchData();
+    }
+  }, [
+    selectedFile,
+    frameworkName,
+    frameworkVersion,
+    http,
+    storedProfile,
+    framework,
+    profile
+  ]);
 
   const handleSubmit = async evt => {
     evt.preventDefault();
     let frameworkId = framework[0].nid;
-    //let frameworkName = framework[0].title;
-    //let frameworkUuid = framework[0].uuid;
-    //console.log(frameworkMoreData);
-    // let liveVersion = frameworkMoreData[0].versions.find(
-    //   ver => ver.status == 'live'
-    // );
-
-    //let versionID = liveVersion.id;
     let versionNumber = frameworkVersion;
-    //var arrayBuffer = '';
-    //var fileid = null;
 
     // Do nothing if Form doesn't pass validation criteris above
     if (
@@ -141,14 +110,6 @@ export const ProfileCreateGuest = props => {
     }
     // Check if is Anonymous/Authenticated
     else if (!localStorage.getItem('roles')) {
-      //setErrorMsgTitle('');
-      //setErrorMsgJobTitle('');
-
-      // Retrieve values from Local Storage if exist
-      // let storedProfile = JSON.parse(
-      //   localStorage.getItem('ProfileDownloadData')
-      // );
-
       let current_role = currentRole ? currentRole : '';
       let job_title = jobTitle ? jobTitle : '';
       let qualification_background = qualification ? qualification : '';
@@ -173,15 +134,6 @@ export const ProfileCreateGuest = props => {
       );
     }
   };
-
-  // const setPreview = () => {
-  //   props.history.push(
-  //     `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
-  //     {
-  //       title: title
-  //     }
-  //   );
-  // };
 
   const onSelectFile = e => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -269,42 +221,6 @@ export const ProfileCreateGuest = props => {
     }
     return placeholder;
   };
-
-  // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
-  // const getImageData = (url, callback) => {
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.onload = function() {
-  //     var reader = new FileReader();
-  //     reader.onloadend = function() {
-  //       return callback(reader.result);
-  //     };
-  //     reader.readAsDataURL(xhr.response);
-  //   };
-  //   xhr.open('GET', url);
-  //   xhr.responseType = 'blob';
-  //   xhr.send();
-  // };
-
-  // const toDataURL = (src, callback, outputFormat) => {
-  //   var img = new Image();
-  //   img.crossOrigin = 'Anonymous';
-  //   img.onload = function() {
-  //     var canvas = document.createElement('CANVAS');
-  //     var ctx = canvas.getContext('2d');
-  //     var dataURL;
-  //     canvas.height = this.naturalHeight;
-  //     canvas.width = this.naturalWidth;
-  //     ctx.drawImage(this, 0, 0);
-  //     dataURL = canvas.toDataURL(outputFormat);
-  //     callback(dataURL);
-  //   };
-  //   img.src = src;
-  //   if (img.complete || img.complete === undefined) {
-  //     img.src =
-  //       'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-  //     img.src = src;
-  //   }
-  // };
 
   const placeholder = getWhoCreateProfile();
 
