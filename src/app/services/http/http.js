@@ -2,6 +2,7 @@ import Headers from './headers';
 import axios from 'axios';
 
 export const apiUrl = process.env.REACT_APP_API_URL;
+export const editApiUrl = process.env.REACT_APP_EDIT_API_URL;
 
 axios.defaults.baseURL = apiUrl;
 

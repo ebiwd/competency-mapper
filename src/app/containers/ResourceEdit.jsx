@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl } from '../services/http/http';
+import { editApiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 
@@ -329,7 +330,7 @@ class EditForm extends React.Component {
         body: JSON.stringify({
           _links: {
             type: {
-              href: `${apiUrl}/rest/type/node/training_resource`
+              href: `${editApiUrl}/rest/type/node/training_resource`
             }
           },
           title: [
