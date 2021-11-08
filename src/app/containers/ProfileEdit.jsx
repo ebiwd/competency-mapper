@@ -4,6 +4,7 @@ import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 //import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
+import { editApiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 //import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link } from 'react-router-dom';

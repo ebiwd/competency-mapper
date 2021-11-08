@@ -1,4 +1,5 @@
-import { apiUrl } from '../http/http';
+//import { apiUrl } from '../http/http';
+let apiUrl = 'http://cms.competency.ebi.ac.uk';
 
 class BodyService {
   static createCompetency({

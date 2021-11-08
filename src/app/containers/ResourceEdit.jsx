@@ -330,7 +330,7 @@ class EditForm extends React.Component {
         body: JSON.stringify({
           _links: {
             type: {
-              href: `${editApiUrl}/rest/type/node/training_resource`
+              href: `${editApiUrl}rest/type/node/training_resource`
             }
           },
           title: [

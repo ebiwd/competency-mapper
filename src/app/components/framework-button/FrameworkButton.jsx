@@ -50,6 +50,10 @@ function FrameworkButton({ framework }) {
     {
       title: 'permedcoe',
       desc: 'Professionals in computational biomedicine'
+    },
+    {
+      title: 'arise',
+      desc: 'Research Infrastructure scientists'
     }
   ];
 
@@ -105,6 +109,13 @@ function FrameworkButton({ framework }) {
     },
     {
       title: 'permedcoe',
+      width: '340px',
+      left: '10%',
+      position: 'relative',
+      objectFit: 'contain'
+    },
+    {
+      title: 'arise',
       width: '340px',
       left: '10%',
       position: 'relative',
