@@ -86,7 +86,9 @@ class Courses extends Component {
       );
       const courses = this.filterCourses(allCourses);
       this.setState({ courses, filteredCourses: courses });
-      this.setState({ totalItemsCount: courses[0].hitcount });
+      this.setState({
+        totalItemsCount: courses.length > 0 ? courses[0].hitcount : 0
+      });
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {

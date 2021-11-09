@@ -28,6 +28,7 @@ class CoursesService {
     const response = await this.http.get(
       `${apiUrl}/api/competency_framework_resources?_format=json&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
     );
+    console.log('resp data', response.data);
     return response.data;
   }
 
