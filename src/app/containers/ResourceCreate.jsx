@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl } from '../services/http/http';
+import { editApiUrl } from '../services/http/http';
 
 class ResourceCreate extends React.Component {
   constructor(props) {
@@ -130,7 +131,7 @@ class ResourceCreate extends React.Component {
         body: JSON.stringify({
           _links: {
             type: {
-              href: `${apiUrl}/rest/type/node/training_resource`
+              href: `${editApiUrl}/rest/type/node/training_resource`
             }
           },
           title: [
