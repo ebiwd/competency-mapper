@@ -154,7 +154,7 @@ export const ProfileCreate = props => {
       if (selectedFile) {
         let token = localStorage.getItem('csrf_token');
         await fetch(
-          apiUrl + '/file/upload/node/profile/field_image?_format=hal_json',
+          apiUrl + 'file/upload/node/profile/field_image?_format=hal_json',
           {
             credentials: 'include',
             method: 'POST',
