@@ -5,6 +5,7 @@ import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
 import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
+import { editApiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 
 class ResourceDetails extends React.Component {
@@ -217,7 +218,7 @@ class ResourceDetails extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
+            href: `${editApiUrl}/rest/type/node/training_resource`
           }
         },
         field_archived: [

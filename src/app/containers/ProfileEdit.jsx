@@ -121,7 +121,7 @@ export const ProfileEdit = props => {
       if (selectedFile) {
         console.log(selectedFile);
         await fetch(
-          apiUrl + 'file/upload/node/profile/field_image?_format=json',
+          apiUrl + '/file/upload/node/profile/field_image?_format=json',
           {
             credentials: 'include',
             method: 'POST',

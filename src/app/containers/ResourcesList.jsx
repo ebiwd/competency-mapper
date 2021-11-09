@@ -4,6 +4,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import { apiUrl } from '../services/http/http';
+import { editApiUrl } from '../services/http/http';
 
 class ResourcesList extends React.Component {
   constructor(props) {
@@ -136,7 +137,7 @@ class ResourcesList extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
+            href: `${editApiUrl}/rest/type/node/training_resource`
           }
         },
         field_archived: [
