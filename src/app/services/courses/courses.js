@@ -26,7 +26,7 @@ class CoursesService {
 
   async getByFramework(page, filter, filterType, $framework) {
     const response = await this.http.get(
-      `${apiUrl}/api/competency_framework_resources?_format=json&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
+      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
     );
     console.log('resp data', response.data);
     return response.data;

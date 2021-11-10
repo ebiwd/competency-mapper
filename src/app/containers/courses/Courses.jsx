@@ -28,7 +28,8 @@ class Courses extends Component {
       loadingError: false,
       activePage: 1,
       totalItemsCount: 0,
-      noResultsFound: false
+      noResultsFound: false,
+      loading: false
     };
     this.state.framework = props.framework;
     this.state.frameworkId = props.frameworkId;
@@ -50,6 +51,9 @@ class Courses extends Component {
   }
 
   async fetchData() {
+    this.setState({
+      loading: true
+    });
     try {
       this.activeRequests.startRequest();
       let frameworkName = '';
@@ -99,6 +103,9 @@ class Courses extends Component {
       }
       this.setState({
         totalItemsCount: courses.length > 0 ? courses[0].hitcount : 0
+      });
+      this.setState({
+        loading: false
       });
     } catch (error) {
       this.setState({ loadingError: true });
@@ -249,82 +256,96 @@ class Courses extends Component {
 
     return (
       <>
-        {this.state.noResultsFound ? (
-          <>
-            <p className="vf-text-body vf-text-body--2">No results found</p>
-            <button
-              className="vf-button vf-button--primary vf-button--sm "
-              onClick={this.showAllTrainingResources}
-            >
-              Show all training resources
-            </button>
-          </>
-        ) : (
+        {this.state.loading ? (
           <div>
-            <form
-              className="vf-form | vf-search"
-              onSubmit={e => this.searchSubmit(e)}
-            >
-              <div className="vf-grid vf-grid__col-4">
-                <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
-                  <input
-                    type="search"
-                    onChange={this.filter.bind(this)}
-                    placeholder="Type to search"
-                    className="vf-form__input | vf-search__item"
-                  />
-                </div>
-                <div className="vf-form__item vf-grid__col--span-1">
-                  <select
-                    ref={'type'}
-                    onChange={this.filterTypeHandle.bind(this)}
-                    className="vf-form__select"
-                  >
-                    <option value={'All'}>All</option>
-                    <option value={'Online'}>Online</option>
-                    <option value={'Face-to-Face'}>Face-to-Face</option>
-                    <option value={'Webinar'}>Webinar</option>
-                    <option value={'Hackathon'}>Hackathon</option>
-                  </select>
-                </div>
-                <div className="vf-form__item vf-grid__col--span-1">
-                  <input
-                    type="submit"
-                    className="vf-search__button | vf-button vf-button--primary vf-button--sm"
-                    value="Search"
-                  />
-                </div>
-              </div>
-            </form>
-            <table>
-              <thead>
-                <tr>
-                  <th>S. No.</th>
-                  <th>Training resource(s)</th>
-                  <th>Type</th>
-                  <th>Competencies</th>
-                </tr>
-              </thead>
-              <tbody>{resources}</tbody>
-            </table>
-            <nav className="vf-pagination" aria-label="Pagination">
-              <Pagination
-                activePage={this.state.activePage}
-                itemsCountPerPage={15}
-                totalItemsCount={this.state.totalItemsCount}
-                pageRangeDisplayed={10}
-                onChange={e => this.handlePageChange(e)}
-                innerClass="vf-pagination__list"
-                itemClass="vf-pagination__item"
-                itemClassPrev="vf-pagination__item--previous-page"
-                itemClassNext="vf-pagination__item--next-page"
-                linkClass="vf-pagination__link vf-pagination__label"
-                activeClass="vf-pagination__item--is-active"
-                prevPageText="Previous"
-                nextPageText="Next"
-              />
-            </nav>
+            <div className="vf-u-margin__top--200" />
+            <span>Fetching data...</span>
+            <img
+              alt="progress"
+              style={{ width: '7%' }}
+              src="../progressbar.gif"
+            />
           </div>
+        ) : (
+          <>
+            {this.state.noResultsFound ? (
+              <>
+                <p className="vf-text-body vf-text-body--2">No results found</p>
+                <button
+                  className="vf-button vf-button--primary vf-button--sm "
+                  onClick={this.showAllTrainingResources}
+                >
+                  Show all training resources
+                </button>
+              </>
+            ) : (
+              <div>
+                <form
+                  className="vf-form | vf-search"
+                  onSubmit={e => this.searchSubmit(e)}
+                >
+                  <div className="vf-grid vf-grid__col-4">
+                    <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
+                      <input
+                        type="search"
+                        onChange={this.filter.bind(this)}
+                        placeholder="Type to search"
+                        className="vf-form__input | vf-search__item"
+                      />
+                    </div>
+                    <div className="vf-form__item vf-grid__col--span-1">
+                      <select
+                        ref={'type'}
+                        onChange={this.filterTypeHandle.bind(this)}
+                        className="vf-form__select"
+                      >
+                        <option value={'All'}>All</option>
+                        <option value={'Online'}>Online</option>
+                        <option value={'Face-to-Face'}>Face-to-Face</option>
+                        <option value={'Webinar'}>Webinar</option>
+                        <option value={'Hackathon'}>Hackathon</option>
+                      </select>
+                    </div>
+                    <div className="vf-form__item vf-grid__col--span-1">
+                      <input
+                        type="submit"
+                        className="vf-search__button | vf-button vf-button--primary vf-button--sm"
+                        value="Search"
+                      />
+                    </div>
+                  </div>
+                </form>
+                <table>
+                  <thead>
+                    <tr>
+                      <th>S. No.</th>
+                      <th>Training resource(s)</th>
+                      <th>Type</th>
+                      <th>Competencies</th>
+                    </tr>
+                  </thead>
+                  <tbody>{resources}</tbody>
+                </table>
+                <nav className="vf-pagination" aria-label="Pagination">
+                  <Pagination
+                    activePage={this.state.activePage}
+                    itemsCountPerPage={15}
+                    totalItemsCount={this.state.totalItemsCount}
+                    pageRangeDisplayed={10}
+                    onChange={e => this.handlePageChange(e)}
+                    innerClass="vf-pagination__list"
+                    itemClass="vf-pagination__item"
+                    itemClassPrev="vf-pagination__item--previous-page"
+                    itemClassNext="vf-pagination__item--next-page"
+                    linkClass="vf-pagination__link vf-pagination__label"
+                    activeClass="vf-pagination__item--is-active"
+                    prevPageText="Previous"
+                    nextPageText="Next"
+                  />
+                </nav>
+              </div>
+            )}
+          </>
         )}
       </>
     );
