@@ -263,7 +263,7 @@ class Courses extends Component {
             <img
               alt="progress"
               style={{ width: '7%' }}
-              src="../progressbar.gif"
+              src="/progressbar.gif"
             />
           </div>
         ) : (
