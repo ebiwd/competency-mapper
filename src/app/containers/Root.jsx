@@ -258,7 +258,7 @@ class Root extends Component {
                 />
 
                 <Route
-                  path="/training-resources/:id"
+                  path="/training-resources/:slug"
                   component={ResourceDetails}
                 />
 
