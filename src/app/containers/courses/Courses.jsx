@@ -91,6 +91,7 @@ class Courses extends Component {
       );
       const courses = this.filterCourses(allCourses);
       this.showAllTrainingResources = this.showAllTrainingResources.bind(this);
+      this.slugify = this.slugify.bind(this);
       this.setState({ courses, filteredCourses: courses });
       if (courses.length > 0) {
         this.setState({
@@ -112,6 +113,13 @@ class Courses extends Component {
     } finally {
       this.activeRequests.finishRequest();
     }
+  }
+
+  slugify(string) {
+    return string
+      .toLowerCase()
+      .replace(/[^\w ]+/g, '')
+      .replace(/ +/g, '-');
   }
 
   async showAllTrainingResources() {
@@ -226,7 +234,7 @@ class Courses extends Component {
             </Link>
           </li>
         ));
-
+    console.log('courses', filteredCourses[0]);
     const resources = filteredCourses.map((course, index) => (
       <tr key={course.id}>
         <td>
@@ -235,7 +243,16 @@ class Courses extends Component {
             (this.state.activePage ? (this.state.activePage - 1) * 15 : 0)}{' '}
         </td>
         <td>
-          <Link to={`/training-resources/${course.id}`}>{course.title}</Link>
+          <Link
+            to={{
+              pathname: `/training-resources/${this.slugify(course.title)}`,
+              state: {
+                training_resource_id: course.id
+              }
+            }}
+          >
+            {course.title}
+          </Link>
         </td>
         <td>{course.type}</td>
         <td>
@@ -299,7 +316,7 @@ class Courses extends Component {
                         onChange={this.filterTypeHandle.bind(this)}
                         className="vf-form__select"
                       >
-                        <option value={'All'}>All</option>
+                        <option value={'All'}>All types</option>
                         <option value={'Online'}>Online</option>
                         <option value={'Face-to-Face'}>Face-to-Face</option>
                         <option value={'Webinar'}>Webinar</option>

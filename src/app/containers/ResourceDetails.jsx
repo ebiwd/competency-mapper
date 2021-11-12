@@ -60,9 +60,13 @@ class ResourceDetails extends React.Component {
 
     /*let resourcesURL = `${apiUrl}/api/v1/training-resources/all?_format=hal_json`;*/
     console.log('res path', this.state);
+    console.log('props', this.props);
     let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
-      this.state.resourcePath[2]
+      this.props.location.state.training_resource_id
+      // this.state.resourcePath[2]
     }&timestamp=${Date.now()}`;
+    console.log('res path', this.state.resourcePath);
+    console.log(this.state.resourcePath[2]);
     console.log(resourcesURL);
     fetch(resourcesURL)
       .then(Response => Response.json())
