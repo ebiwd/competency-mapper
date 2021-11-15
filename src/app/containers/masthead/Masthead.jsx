@@ -29,7 +29,7 @@ class Masthead extends Component {
       backgroundImage:
         'url(' +
         JSON.stringify(
-          'https://acxngcvroo.cloudimg.io/v7/https://dev-competency-mapper.pantheonsite.io/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg'
+          'https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg'
         ) +
         ')'
     };

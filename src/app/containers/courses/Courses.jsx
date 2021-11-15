@@ -234,7 +234,6 @@ class Courses extends Component {
             </Link>
           </li>
         ));
-    console.log('courses', filteredCourses[0]);
     const resources = filteredCourses.map((course, index) => (
       <tr key={course.id}>
         <td>
@@ -273,65 +272,65 @@ class Courses extends Component {
 
     return (
       <>
-        {this.state.loading ? (
-          <div>
-            <div className="vf-u-margin__top--200" />
-            <span>Fetching data...</span>
-            <img
-              alt="progress"
-              style={{ width: '7%' }}
-              src="/progressbar.gif"
-            />
-          </div>
-        ) : (
+        {this.state.noResultsFound ? (
           <>
-            {this.state.noResultsFound ? (
-              <>
-                <p className="vf-text-body vf-text-body--2">No results found</p>
-                <button
-                  className="vf-button vf-button--primary vf-button--sm "
-                  onClick={this.showAllTrainingResources}
-                >
-                  Show all training resources
-                </button>
-              </>
-            ) : (
+            <p className="vf-text-body vf-text-body--2">No results found</p>
+            <button
+              className="vf-button vf-button--primary vf-button--sm "
+              onClick={this.showAllTrainingResources}
+            >
+              Show all training resources
+            </button>
+          </>
+        ) : (
+          <div>
+            <form
+              className="vf-form | vf-search"
+              onSubmit={e => this.searchSubmit(e)}
+            >
+              <div className="vf-grid vf-grid__col-4">
+                <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
+                  <input
+                    type="search"
+                    onChange={this.filter.bind(this)}
+                    placeholder="Type to search"
+                    className="vf-form__input | vf-search__item"
+                  />
+                </div>
+                <div className="vf-form__item vf-grid__col--span-1">
+                  <select
+                    ref={'type'}
+                    onChange={this.filterTypeHandle.bind(this)}
+                    className="vf-form__select"
+                  >
+                    <option value={'All'}>All types</option>
+                    <option value={'Online'}>Online</option>
+                    <option value={'Face-to-Face'}>Face-to-Face</option>
+                    <option value={'Webinar'}>Webinar</option>
+                    <option value={'Hackathon'}>Hackathon</option>
+                  </select>
+                </div>
+                <div className="vf-form__item vf-grid__col--span-1">
+                  <input
+                    type="submit"
+                    className="vf-search__button | vf-button vf-button--primary vf-button--sm"
+                    value="Search"
+                  />
+                </div>
+              </div>
+            </form>
+            {this.state.loading ? (
               <div>
-                <form
-                  className="vf-form | vf-search"
-                  onSubmit={e => this.searchSubmit(e)}
-                >
-                  <div className="vf-grid vf-grid__col-4">
-                    <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
-                      <input
-                        type="search"
-                        onChange={this.filter.bind(this)}
-                        placeholder="Type to search"
-                        className="vf-form__input | vf-search__item"
-                      />
-                    </div>
-                    <div className="vf-form__item vf-grid__col--span-1">
-                      <select
-                        ref={'type'}
-                        onChange={this.filterTypeHandle.bind(this)}
-                        className="vf-form__select"
-                      >
-                        <option value={'All'}>All types</option>
-                        <option value={'Online'}>Online</option>
-                        <option value={'Face-to-Face'}>Face-to-Face</option>
-                        <option value={'Webinar'}>Webinar</option>
-                        <option value={'Hackathon'}>Hackathon</option>
-                      </select>
-                    </div>
-                    <div className="vf-form__item vf-grid__col--span-1">
-                      <input
-                        type="submit"
-                        className="vf-search__button | vf-button vf-button--primary vf-button--sm"
-                        value="Search"
-                      />
-                    </div>
-                  </div>
-                </form>
+                <div className="vf-u-margin__top--200" />
+                <span>Fetching data...</span>
+                <img
+                  alt="progress"
+                  style={{ width: '7%' }}
+                  src="/progressbar.gif"
+                />
+              </div>
+            ) : (
+              <>
                 <table>
                   <thead>
                     <tr>
@@ -360,9 +359,9 @@ class Courses extends Component {
                     nextPageText="Next"
                   />
                 </nav>
-              </div>
+              </>
             )}
-          </>
+          </div>
         )}
       </>
     );
