@@ -69,6 +69,14 @@ const Footer = () => {
           </figure>
         </div>
       </div>
+      <div>
+        <a
+          className="vf-footer__link"
+          href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
+        >
+          Privacy notice
+        </a>{' '}
+      </div>
     </footer>
   );
 };
