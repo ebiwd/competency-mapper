@@ -15,10 +15,17 @@ class CompetencyDetails extends React.Component {
     framework: this.props.match.params.framework,
     version: this.props.location.pathname.split('/'),
     frameworkData: [],
-    competencyId: this.props.match.params.cid,
+    competencyId: this.props.location.state.cid,
     attributeDefs: [],
     resources: []
   };
+
+  slugify(string) {
+    return string
+      .toLowerCase()
+      .replace(/[^\w ]+/g, '')
+      .replace(/ +/g, '-');
+  }
 
   async componentDidMount() {
     try {
@@ -85,10 +92,19 @@ class CompetencyDetails extends React.Component {
 
   resourceBlock() {
     const { resources } = this.state;
-    console.log(resources);
     return resources.map(resource => (
       <li key={resource.nid}>
-        <Link to={`/training-resources/${resource.nid}`}>{resource.title}</Link>
+        <Link
+          to={{
+            pathname: `/training-resources/${this.slugify(resource.title)}`,
+            state: {
+              training_resource_id: resource.nid
+            }
+          }}
+        >
+          {resource.title}
+        </Link>
+        {/*<Link to={`/training-resources/${resource.nid}`}>{resource.title}</Link>*/}
       </li>
     ));
   }

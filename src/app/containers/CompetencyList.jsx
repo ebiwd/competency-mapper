@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-//import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -17,6 +16,7 @@ import { apiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 import FAIRDownload from '../components/FAIRDownload';
+import CoursesService from '../services/courses/courses';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -27,6 +27,7 @@ class CompetencyList extends Component {
 
   competencyService = new CompetencyService();
   activeRequests = new ActiveRequestsService();
+  coursesService = new CoursesService();
 
   state = {
     framework: '',
@@ -39,9 +40,11 @@ class CompetencyList extends Component {
     filter: '',
     filteredDomains: [],
     loadingError: false,
+    trainingResourcesExist: false,
     profileCount: 0,
     pathwayCount: 0,
-    attributeTypes: []
+    attributeTypes: [],
+    allResourcesFetched: false
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -67,12 +70,27 @@ class CompetencyList extends Component {
     try {
       this.activeRequests.startRequest();
       await Promise.all([
-        this.fetchFramework(framework, frameworkVersion),
-        this.fetchVersions(framework)
-      ]);
+        await this.fetchFramework(framework, frameworkVersion),
+        await this.fetchVersions(framework),
+        await this.fetchProfiles(),
+        await this.fetchPathways(),
+        await this.coursesService
+          .checkForTrainingResources(1, '', 'All', framework)
+          .then(count => {
+            if (count > 0) {
+              this.setState({
+                trainingResourcesExist: true
+              });
+            }
+          })
+      ]).then(() => {
+        this.setState({
+          allResourcesFetched: true
+        });
+      });
 
-      this.fetchProfiles();
-      this.fetchPathways();
+      // this.fetchProfiles();
+      // this.fetchPathways();
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
@@ -237,91 +255,116 @@ class CompetencyList extends Component {
         </p>
         <p>{frameworkDescription}</p>
 
-        <Tabs className="vf-tabs ch_tabs__list">
-          <TabList className="vf-tabs__list">
+        {this.state.allResourcesFetched ? (
+          <Tabs className="vf-tabs ch_tabs__list">
+            <TabList className="vf-tabs__list">
+              {localStorage.getItem('roles') ? (
+                <Tab>Career profiles</Tab>
+              ) : this.state.profileCount > 0 ? (
+                <Tab>Career profiles</Tab>
+              ) : (
+                ''
+              )}
+              {localStorage.getItem('roles') ? (
+                <Tab>Learning pathways</Tab>
+              ) : this.state.pathwayCount > 0 ? (
+                <Tab>Learning pathways</Tab>
+              ) : (
+                ''
+              )}
+
+              <Tab>Competencies</Tab>
+
+              {this.state.trainingResourcesExist ? (
+                <Tab>Training resources</Tab>
+              ) : (
+                ''
+              )}
+              <Tab>Export</Tab>
+            </TabList>
+
             {localStorage.getItem('roles') ? (
-              <Tab>Career profiles</Tab>
+              <TabPanel>
+                <ProfileList framework={framework} version={frameworkVersion} />
+                <FrameworkVersions framework={framework} versions={versions} />
+              </TabPanel>
             ) : this.state.profileCount > 0 ? (
-              <Tab>Career profiles</Tab>
+              <TabPanel>
+                <ProfileList framework={framework} version={frameworkVersion} />
+                <FrameworkVersions framework={framework} versions={versions} />
+              </TabPanel>
             ) : (
               ''
             )}
+
             {localStorage.getItem('roles') ? (
-              <Tab>Learning pathways</Tab>
+              <TabPanel>
+                <PathwaysList framework={framework} />
+                <FrameworkVersions framework={framework} versions={versions} />
+              </TabPanel>
             ) : this.state.pathwayCount > 0 ? (
-              <Tab>Learning pathways</Tab>
+              <TabPanel>
+                <PathwaysList framework={framework} />
+                <FrameworkVersions framework={framework} versions={versions} />
+              </TabPanel>
             ) : (
               ''
             )}
 
-            {/* <Tab>Learning pathways</Tab> */}
-            <Tab>Competencies</Tab>
-            <Tab>Training resources</Tab>
-            <Tab>Export</Tab>
-          </TabList>
+            <TabPanel>
+              <form
+                action="#"
+                className="vf-form | vf-search vf-search--inline"
+              >
+                <div className="vf-form__item | vf-search__item">
+                  <label
+                    className="vf-form__label vf-u-sr-only | vf-search__label"
+                    htmlFor="inlinesearchitem"
+                  >
+                    Inline search
+                  </label>
+                  <input
+                    type="search"
+                    placeholder="Filter competencies"
+                    id="inlinesearchitem"
+                    className="vf-form__input | vf-search__input"
+                    onChange={event => this.onFilter(event.target.value)}
+                    value={filter}
+                  />
+                </div>
+              </form>
+              <table>{domainList}</table>
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
 
-          {localStorage.getItem('roles') ? (
-            <TabPanel>
-              <ProfileList framework={framework} version={frameworkVersion} />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-          ) : this.state.profileCount > 0 ? (
-            <TabPanel>
-              <ProfileList framework={framework} version={frameworkVersion} />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-          ) : (
-            ''
-          )}
-
-          {localStorage.getItem('roles') ? (
-            <TabPanel>
-              <PathwaysList framework={framework} />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-          ) : this.state.pathwayCount > 0 ? (
-            <TabPanel>
-              <PathwaysList framework={framework} />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-          ) : (
-            ''
-          )}
-
-          <TabPanel>
-            <form action="#" className="vf-form | vf-search vf-search--inline">
-              <div className="vf-form__item | vf-search__item">
-                <label
-                  className="vf-form__label vf-u-sr-only | vf-search__label"
-                  htmlFor="inlinesearchitem"
-                >
-                  Inline search
-                </label>
-                <input
-                  type="search"
-                  placeholder="Filter competencies"
-                  id="inlinesearchitem"
-                  className="vf-form__input | vf-search__input"
-                  onChange={event => this.onFilter(event.target.value)}
-                  value={filter}
+            {this.state.trainingResourcesExist ? (
+              <TabPanel>
+                <Courses
+                  framework={framework}
+                  version={frameworkVersion}
+                  frameworkId={frameWorkId}
                 />
-              </div>
-            </form>
-            <table>{domainList}</table>
-            <FrameworkVersions framework={framework} versions={versions} />
-          </TabPanel>
-          <TabPanel>
-            <Courses
-              framework={framework}
-              version={frameworkVersion}
-              frameworkId={frameWorkId}
+              </TabPanel>
+            ) : (
+              ''
+            )}
+
+            <TabPanel>
+              <FAIRDownload />
+              <FrameworkVersions framework={framework} versions={versions} />
+            </TabPanel>
+          </Tabs>
+        ) : (
+          <div>
+            <div className="vf-u-margin__top--200" />
+            <span>Fetching data...</span>
+            <img
+              alt="progress"
+              style={{ width: '7%' }}
+              src="/progressbar.gif"
             />
-          </TabPanel>
-          <TabPanel>
-            <FAIRDownload />
-            <FrameworkVersions framework={framework} versions={versions} />
-          </TabPanel>
-        </Tabs>
+          </div>
+        )}
       </>
     );
   }

@@ -176,8 +176,13 @@ class Root extends Component {
                   component={ManageData}
                 />
 
+                {/*<Route*/}
+                {/*  path="/framework/:framework/:version/competency/details/:cid"*/}
+                {/*  component={CompetencyDetails}*/}
+                {/*/>*/}
+
                 <Route
-                  path="/framework/:framework/:version/competency/details/:cid"
+                  path="/framework/:framework/:version/competency/details/:slug"
                   component={CompetencyDetails}
                 />
 

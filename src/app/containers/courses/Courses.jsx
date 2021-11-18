@@ -35,6 +35,7 @@ class Courses extends Component {
     this.state.frameworkId = props.frameworkId;
     this.state.version = props.version;
     this.state.totalItemsCount = 0;
+    this.slugify = this.slugify.bind(this);
   }
 
   async handlePageChange(pageNumber) {
@@ -91,7 +92,6 @@ class Courses extends Component {
       );
       const courses = this.filterCourses(allCourses);
       this.showAllTrainingResources = this.showAllTrainingResources.bind(this);
-      this.slugify = this.slugify.bind(this);
       this.setState({ courses, filteredCourses: courses });
       if (courses.length > 0) {
         this.setState({
@@ -159,20 +159,7 @@ class Courses extends Component {
 
       const modifiedCourse = {
         ...course,
-        competencies: safeFlat(
-          filteredProfiles.map(
-            profile =>
-              // safeFlat(
-              //   profile.domains.map(domain =>
-              //     domain.competencies.map(competency => ({
-              //       ...competency,
-              //       domain: domain.title
-              //     }))
-              //   )
-              // )
-              profile
-          )
-        )
+        competencies: safeFlat(filteredProfiles.map(profile => profile))
       };
       filteredCourses.push(modifiedCourse);
     });
@@ -212,8 +199,6 @@ class Courses extends Component {
       return <ErrorLoading />;
     }
 
-    //let unique = [...new Set(course.competencies.map(item => item.id))];
-
     let duplicates = [];
 
     const competencyList = competencies =>
@@ -226,9 +211,14 @@ class Courses extends Component {
         .map(competency => (
           <li key={competency.id}>
             <Link
-              to={`/framework/${framework}/${version}/competency/details/${
-                competency.competency_id
-              }`}
+              to={{
+                pathname: `/framework/${framework}/${version}/competency/details/${this.slugify(
+                  competency.competency_label
+                )}`,
+                state: {
+                  cid: competency.competency_id
+                }
+              }}
             >
               {competency.competency_label}
             </Link>
@@ -259,16 +249,6 @@ class Courses extends Component {
         </td>
       </tr>
     ));
-
-    // function getSerialNo(activePage, itemIndex) {
-    //     // activePage += itemIndex;
-    //     if (activePage == 0) {
-    //         return activePage;
-    //     } else {
-    //         return activePage + 15;
-    //     }
-    //
-    // }
 
     return (
       <>

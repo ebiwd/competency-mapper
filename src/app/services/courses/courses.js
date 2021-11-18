@@ -15,6 +15,13 @@ class CoursesService {
     CoursesService.instance = this;
   }
 
+  async checkForTrainingResources(page, filter, filterType, $framework) {
+    const response = await this.http.get(
+      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}&checkForTrainingResources=${true}`
+    );
+    return response.data;
+  }
+
   async getCourses(page, filter, filterType) {
     const response = await this.http.get(
       //`${apiUrl}/api/resources?_format=json`
@@ -28,7 +35,6 @@ class CoursesService {
     const response = await this.http.get(
       `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
     );
-    console.log('resp data', response.data);
     return response.data;
   }
 

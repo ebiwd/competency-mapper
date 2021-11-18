@@ -15,9 +15,7 @@ function CompetencyList({
   attributeTypes
 }) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
-  //const attributesTypes = ["Knowledge", "Skill", "Attitude"]; //  Object.keys(attributesGrouped)
   const attrTypes = attributeTypes;
-  //console.log(attributesTypes)
   const attributes = attrTypes.map(type => {
     const attributes = attributesGrouped[type]
       ? attributesGrouped[type].map(attribute => (
@@ -37,6 +35,13 @@ function CompetencyList({
       ''
     );
   });
+
+  const slugify = string => {
+    return string
+      .toLowerCase()
+      .replace(/[^\w ]+/g, '')
+      .replace(/ +/g, '-');
+  };
 
   if (competency.archived === '1') {
     return null;
@@ -61,9 +66,14 @@ function CompetencyList({
         >
           <div>
             <Link
-              to={`/framework/${framework}/${version}/competency/details/${
-                competency.id
-              }`}
+              to={{
+                pathname: `/framework/${framework}/${version}/competency/details/${slugify(
+                  competency.title
+                )}`,
+                state: {
+                  cid: competency.id
+                }
+              }}
             >
               <span style={{ float: 'right' }}>
                 <i className="icon icon-spacer icon-common icon-info" />
