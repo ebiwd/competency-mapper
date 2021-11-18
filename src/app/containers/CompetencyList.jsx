@@ -17,6 +17,8 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 import FAIRDownload from '../components/FAIRDownload';
 import CoursesService from '../services/courses/courses';
+import ProfilePanel from './competency-nested-components/ProfilePanel';
+import { Switch, Route, Link } from 'react-router-dom';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -259,9 +261,13 @@ class CompetencyList extends Component {
           <Tabs className="vf-tabs ch_tabs__list">
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
-                <Tab>Career profiles</Tab>
+                <Tab>
+                  <Link to="my-link">Career profiles</Link>
+                </Tab>
               ) : this.state.profileCount > 0 ? (
-                <Tab>Career profiles</Tab>
+                <Tab>
+                  <Link to="/1/1/1/1/1my-link">Career profiles</Link>
+                </Tab>
               ) : (
                 ''
               )}
@@ -283,76 +289,87 @@ class CompetencyList extends Component {
               <Tab>Export</Tab>
             </TabList>
 
-            {localStorage.getItem('roles') ? (
-              <TabPanel>
-                <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : this.state.profileCount > 0 ? (
-              <TabPanel>
-                <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : (
-              ''
-            )}
+            <Switch>
+              <Route
+                path="/1/1/1/1/1my-link"
+                component={
+                  <ProfilePanel>
+                    <h1>proffiiillle</h1>
+                  </ProfilePanel>
+                }
+              />
+            </Switch>
 
-            {localStorage.getItem('roles') ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : this.state.pathwayCount > 0 ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : (
-              ''
-            )}
+            {/*{localStorage.getItem('roles') ? (*/}
+            {/*  <TabPanel>*/}
+            {/*    <ProfileList framework={framework} version={frameworkVersion} />*/}
+            {/*    <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*  </TabPanel>*/}
+            {/*) : this.state.profileCount > 0 ? (*/}
+            {/*  <TabPanel>*/}
+            {/*    <ProfileList framework={framework} version={frameworkVersion} />*/}
+            {/*    <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*  </TabPanel>*/}
+            {/*) : (*/}
+            {/*  ''*/}
+            {/*)}*/}
 
-            <TabPanel>
-              <form
-                action="#"
-                className="vf-form | vf-search vf-search--inline"
-              >
-                <div className="vf-form__item | vf-search__item">
-                  <label
-                    className="vf-form__label vf-u-sr-only | vf-search__label"
-                    htmlFor="inlinesearchitem"
-                  >
-                    Inline search
-                  </label>
-                  <input
-                    type="search"
-                    placeholder="Filter competencies"
-                    id="inlinesearchitem"
-                    className="vf-form__input | vf-search__input"
-                    onChange={event => this.onFilter(event.target.value)}
-                    value={filter}
-                  />
-                </div>
-              </form>
-              <table>{domainList}</table>
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
+            {/*{localStorage.getItem('roles') ? (*/}
+            {/*  <TabPanel>*/}
+            {/*    <PathwaysList framework={framework} />*/}
+            {/*    <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*  </TabPanel>*/}
+            {/*) : this.state.pathwayCount > 0 ? (*/}
+            {/*  <TabPanel>*/}
+            {/*    <PathwaysList framework={framework} />*/}
+            {/*    <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*  </TabPanel>*/}
+            {/*) : (*/}
+            {/*  ''*/}
+            {/*)}*/}
 
-            {this.state.trainingResourcesExist ? (
-              <TabPanel>
-                <Courses
-                  framework={framework}
-                  version={frameworkVersion}
-                  frameworkId={frameWorkId}
-                />
-              </TabPanel>
-            ) : (
-              ''
-            )}
+            {/*<TabPanel>*/}
+            {/*  <form*/}
+            {/*    action="#"*/}
+            {/*    className="vf-form | vf-search vf-search--inline"*/}
+            {/*  >*/}
+            {/*    <div className="vf-form__item | vf-search__item">*/}
+            {/*      <label*/}
+            {/*        className="vf-form__label vf-u-sr-only | vf-search__label"*/}
+            {/*        htmlFor="inlinesearchitem"*/}
+            {/*      >*/}
+            {/*        Inline search*/}
+            {/*      </label>*/}
+            {/*      <input*/}
+            {/*        type="search"*/}
+            {/*        placeholder="Filter competencies"*/}
+            {/*        id="inlinesearchitem"*/}
+            {/*        className="vf-form__input | vf-search__input"*/}
+            {/*        onChange={event => this.onFilter(event.target.value)}*/}
+            {/*        value={filter}*/}
+            {/*      />*/}
+            {/*    </div>*/}
+            {/*  </form>*/}
+            {/*  <table>{domainList}</table>*/}
+            {/*  <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*</TabPanel>*/}
 
-            <TabPanel>
-              <FAIRDownload />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
+            {/*{this.state.trainingResourcesExist ? (*/}
+            {/*  <TabPanel>*/}
+            {/*    <Courses*/}
+            {/*      framework={framework}*/}
+            {/*      version={frameworkVersion}*/}
+            {/*      frameworkId={frameWorkId}*/}
+            {/*    />*/}
+            {/*  </TabPanel>*/}
+            {/*) : (*/}
+            {/*  ''*/}
+            {/*)}*/}
+
+            {/*<TabPanel>*/}
+            {/*  <FAIRDownload />*/}
+            {/*  <FrameworkVersions framework={framework} versions={versions} />*/}
+            {/*</TabPanel>*/}
           </Tabs>
         ) : (
           <div>
