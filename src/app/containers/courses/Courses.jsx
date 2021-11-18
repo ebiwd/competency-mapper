@@ -211,14 +211,9 @@ class Courses extends Component {
         .map(competency => (
           <li key={competency.id}>
             <Link
-              to={{
-                pathname: `/framework/${framework}/${version}/competency/details/${this.slugify(
-                  competency.competency_label
-                )}`,
-                state: {
-                  cid: competency.competency_id
-                }
-              }}
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.competency_id
+              }`}
             >
               {competency.competency_label}
             </Link>

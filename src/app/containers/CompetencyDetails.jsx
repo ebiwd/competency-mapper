@@ -15,7 +15,7 @@ class CompetencyDetails extends React.Component {
     framework: this.props.match.params.framework,
     version: this.props.location.pathname.split('/'),
     frameworkData: [],
-    competencyId: this.props.location.state.cid,
+    competencyId: this.props.match.params.cid,
     attributeDefs: [],
     resources: []
   };

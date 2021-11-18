@@ -176,15 +176,15 @@ class Root extends Component {
                   component={ManageData}
                 />
 
-                {/*<Route*/}
-                {/*  path="/framework/:framework/:version/competency/details/:cid"*/}
-                {/*  component={CompetencyDetails}*/}
-                {/*/>*/}
-
                 <Route
-                  path="/framework/:framework/:version/competency/details/:slug"
+                  path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
+
+                {/*<Route*/}
+                {/*  path="/framework/:framework/:version/competency/details/:slug"*/}
+                {/*  component={CompetencyDetails}*/}
+                {/*/>*/}
 
                 <ProtectedRoute
                   condition={!!user && roles.includes('framework_manager')}
