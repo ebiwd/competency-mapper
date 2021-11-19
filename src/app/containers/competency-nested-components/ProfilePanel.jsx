@@ -3,6 +3,7 @@ import { TabPanel } from 'react-tabs';
 
 class ProfilePanel extends Component {
   render() {
+    alert(123);
     return (
       <TabPanel>
         <Children />

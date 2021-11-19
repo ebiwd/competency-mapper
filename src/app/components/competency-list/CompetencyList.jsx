@@ -67,7 +67,7 @@ function CompetencyList({
           <div>
             <Link
               to={{
-                pathname: `/framework/${framework}/${version}/competency/details/${slugify(
+                pathname: `/framework/${framework}{version}/competency/details/${slugify(
                   competency.title
                 )}`,
                 state: {

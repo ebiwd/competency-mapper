@@ -533,3 +533,8 @@ code {
 .ReactModal__Overlay {
   z-index: 11000 !important;
 }
+
+.customTabLinks {
+  text-decoration: none !important;
+  color: black !important;
+}
