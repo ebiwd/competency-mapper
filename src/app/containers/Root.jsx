@@ -182,7 +182,7 @@ class Root extends Component {
                 {/*/>*/}
 
                 <Route
-                  path="/framework/:framework/:version/competency/details/:slug"
+                  path="/framework/:framework/:version/competency/details/:cid"
                   component={CompetencyDetails}
                 />
 

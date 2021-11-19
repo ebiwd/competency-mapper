@@ -66,14 +66,9 @@ function CompetencyList({
         >
           <div>
             <Link
-              to={{
-                pathname: `/framework/${framework}{version}/competency/details/${slugify(
-                  competency.title
-                )}`,
-                state: {
-                  cid: competency.id
-                }
-              }}
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.id
+              }`}
             >
               <span style={{ float: 'right' }}>
                 <i className="icon icon-spacer icon-common icon-info" />
