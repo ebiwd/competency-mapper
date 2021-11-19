@@ -36,13 +36,6 @@ function CompetencyList({
     );
   });
 
-  const slugify = string => {
-    return string
-      .toLowerCase()
-      .replace(/[^\w ]+/g, '')
-      .replace(/ +/g, '-');
-  };
-
   if (competency.archived === '1') {
     return null;
   }
