@@ -330,7 +330,7 @@ export const ProfilesCompareButterfly = props => {
     history.push({
       pathname: `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/guest/summary`,
       state: {
-        profileJobTitle: profile1.job_title,
+        profileJobTitle: profile2.job_title,
         includeSummary: includeSummary
       }
     });

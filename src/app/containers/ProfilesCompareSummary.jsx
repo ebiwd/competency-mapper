@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Route, Switch, useLocation } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 //import { Link, Redirect } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
@@ -19,12 +19,11 @@ export const ProfilesCompareSummary = props => {
   let includeSummary = location.state.includeSummary;
   var competencyView = '';
   var attribute_types = [];
-  // var frameworkFullName = '';
-  // var frameworkLogo = '';
-  // var frameworkDesc = '';
-  // var user_roles = localStorage.getItem('roles')
-  //   ? localStorage.getItem('roles')
-  //   : '';
+
+  const getAorAn = () => {
+    const vowels = 'aeiouAEIOU';
+    return vowels.indexOf(profileJobTitle[0]) === -1 ? 'a' : 'an';
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -189,7 +188,7 @@ export const ProfilesCompareSummary = props => {
       <p className="lead">
         Based on the comparison of your profile, the following are the suggested
         learning resources to help develop your career, if you want to become{' '}
-        {profileJobTitle}
+        {getAorAn()} {profileJobTitle}
       </p>
       {competencyView}
     </div>
