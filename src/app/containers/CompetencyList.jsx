@@ -296,7 +296,14 @@ class CompetencyList extends Component {
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
                 <Tab>
-                  <Link to="my-link">Career profiles</Link>
+                  <Link
+                    to={`/framework/${framework}/${
+                      this.props.match.params.version
+                    }/career-profiles`}
+                    className="customTabLinks"
+                  >
+                    Career profiles
+                  </Link>
                 </Tab>
               ) : this.state.profileCount > 0 ? (
                 <Tab>
@@ -313,7 +320,16 @@ class CompetencyList extends Component {
                 ''
               )}
               {localStorage.getItem('roles') ? (
-                <Tab>Learning pathways</Tab>
+                <Tab>
+                  <Link
+                    to={`/framework/${framework}/${
+                      this.props.match.params.version
+                    }/learning-pathways`}
+                    className="customTabLinks"
+                  >
+                    Learning pathways
+                  </Link>
+                </Tab>
               ) : this.state.pathwayCount > 0 ? (
                 <Tab>
                   <Link
