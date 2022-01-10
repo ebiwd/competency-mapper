@@ -57,33 +57,6 @@ class Courses extends Component {
     });
     try {
       this.activeRequests.startRequest();
-      // let frameworkName = '';
-      // switch (this.props.framework) {
-      //   case 'bioexcel':
-      //     frameworkName = 'BioExcel';
-      //     break;
-      //   case 'corbel':
-      //     frameworkName = 'CORBEL';
-      //     break;
-      //   case 'ritrain':
-      //     frameworkName = 'RITrain';
-      //     break;
-      //   case 'iscb':
-      //     frameworkName = 'ISCB';
-      //     break;
-      //   case 'nhs':
-      //     frameworkName = 'NHS';
-      //     break;
-      //   case 'cineca':
-      //     frameworkName = 'CINECA';
-      //     break;
-      //   case 'datasteward':
-      //     frameworkName = 'Data Steward';
-      //     break;
-      //   case 'permedcoe':
-      //     frameworkName = 'PerMedCoE';
-      //     break;
-      // }
       const allCourses = await this.coursesService.getByFramework(
         this.state.activePage,
         this.state.filter,
