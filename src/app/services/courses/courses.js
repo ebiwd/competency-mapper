@@ -16,8 +16,36 @@ class CoursesService {
   }
 
   async checkForTrainingResources(page, filter, filterType, $framework) {
+    console.log('given framework', $framework);
+    let frameworkName = '';
+    switch ($framework) {
+      case 'bioexcel':
+        frameworkName = 'BioExcel';
+        break;
+      case 'corbel':
+        frameworkName = 'CORBEL';
+        break;
+      case 'ritrain':
+        frameworkName = 'RITrain';
+        break;
+      case 'iscb':
+        frameworkName = 'ISCB';
+        break;
+      case 'nhs':
+        frameworkName = 'NHS';
+        break;
+      case 'cineca':
+        frameworkName = 'CINECA';
+        break;
+      case 'datasteward':
+        frameworkName = 'Data Steward';
+        break;
+      case 'permedcoe':
+        frameworkName = 'PerMedCoE';
+        break;
+    }
     const response = await this.http.get(
-      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}&checkForTrainingResources=${true}`
+      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${frameworkName}&checkForTrainingResources=${true}`
     );
     return response.data;
   }
