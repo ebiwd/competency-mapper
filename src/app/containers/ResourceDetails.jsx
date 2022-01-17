@@ -55,9 +55,20 @@ class ResourceDetails extends React.Component {
         this.setState({ csrf: findresponse2 });
       });
 
-    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
-      this.props.location.state.training_resource_id
-    }&timestamp=${Date.now()}`;
+    console.log('location', window.location.href);
+
+    let training_resource_id = '';
+    if (this.props.location.state) {
+      training_resource_id = this.props.location.state.training_resource_id;
+    } else {
+      const url = new URL(window.location.href);
+      training_resource_id = url.searchParams.get('id');
+    }
+    console.log('tr id', training_resource_id);
+    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}`;
+    // let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
+    //     this.props.location.state.training_resource_id
+    // }&timestamp=${Date.now()}`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse3 => {
