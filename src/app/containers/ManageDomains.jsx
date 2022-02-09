@@ -148,15 +148,18 @@ class ManageDomains extends React.Component {
       this.activeRequests.startRequest();
       await this.competencyService.patchDomain(domain, 'title', title);
       await this.props.loadData(framework);
+      await this.props.enqueueSnackbar('Domain updated', {
+        variant: 'success'
+      });
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
       });
     } finally {
       this.activeRequests.finishRequest();
-      this.props.enqueueSnackbar('Domain updated', {
-        variant: 'success'
-      });
+      // this.props.enqueueSnackbar('Domain updated', {
+      //   variant: 'success'
+      // });
     }
   }
 
