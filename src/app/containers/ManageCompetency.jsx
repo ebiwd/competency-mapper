@@ -59,15 +59,15 @@ class ManageCompetency extends React.Component {
       this.activeRequests.startRequest();
       await this.competencyService.patchCompetency(competency, 'title', title);
       await this.props.loadData(framework);
+      this.props.enqueueSnackbar('Competency updated', {
+        variant: 'success'
+      });
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
       });
     } finally {
       this.activeRequests.finishRequest();
-      this.props.enqueueSnackbar('Competency updated', {
-        variant: 'success'
-      });
     }
   }
 

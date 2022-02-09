@@ -190,11 +190,15 @@ class BodyService {
   }
   // https://cms.competency.ebi.ac.uk
   static mutate(key, value, target) {
+    //request fails when https is included in _links.type.href below
+    //so we moved changed the value of apiUrl to exclude the s and only have http
+    let httpApiURl = apiUrl.replace('https', 'http');
+
     return {
       _links: {
         type: {
-          // href: `${apiUrl}/rest/type/node/${target}`
-          href: `http://cms.competency.ebi.ac.uk/rest/type/node/${target}`
+          href: `${httpApiURl}/rest/type/node/${target}`
+          // href: `http://cms.competency.ebi.ac.uk/rest/type/node/${target}`
         }
       },
       [key]: [
