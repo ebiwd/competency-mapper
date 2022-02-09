@@ -188,12 +188,13 @@ class BodyService {
   static mutateDomain(key, value) {
     return BodyService.mutate(key, value, 'domain');
   }
-
+  // https://cms.competency.ebi.ac.uk
   static mutate(key, value, target) {
     return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/${target}`
+          // href: `${apiUrl}/rest/type/node/${target}`
+          href: `http://cms.competency.ebi.ac.uk/rest/type/node/${target}`
         }
       },
       [key]: [
