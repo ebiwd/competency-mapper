@@ -1,4 +1,7 @@
 import { apiUrl } from '../http/http';
+//requests fail when https is included in _links.type.href below
+//so we moved changed the value of apiUrl to exclude the s and only have http
+const httpApiURl = apiUrl.replace('https', 'http');
 
 class BodyService {
   static createCompetency({
@@ -12,12 +15,12 @@ class BodyService {
     return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/competency`
+          href: `${httpApiURl}/rest/type/node/competency`
         },
-        [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
-          href: `${apiUrl}/node/${domainId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/competency/field_domain`]: {
+          href: `${httpApiURl}/node/${domainId}?_format=hal_json`
         },
-        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_versions`]: [
           {
             href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
           }
@@ -39,14 +42,14 @@ class BodyService {
         }
       ],
       _embedded: {
-        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_versions`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+                href: `${httpApiURl}/taxonomy/term/${draftId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/taxonomy_term/version`
+                href: `${httpApiURl}/rest/type/taxonomy_term/version`
               }
             },
             uuid: [
@@ -56,14 +59,14 @@ class BodyService {
             ]
           }
         ],
-        [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_domain`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${domainId}?_format=hal_json`
+                href: `${httpApiURl}/node/${domainId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/domain`
+                href: `${httpApiURl}/rest/type/node/domain`
               }
             },
             uuid: [
@@ -90,15 +93,15 @@ class BodyService {
     return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/attribute`
+          href: `${httpApiURl}/rest/type/node/attribute`
         },
-        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: {
-          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/attribute/field_competency`]: {
+          href: `${httpApiURl}/node/${competencyId}?_format=hal_json`
         },
-        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
-          href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/attribute/field_attribute_type`]: {
+          href: `${httpApiURl}/node/${attributeTypeId}?_format=hal_json`
         },
-        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_versions`]: [
           {
             href: `http://local.competency-mapper/taxonomy/term/${draftId}?_format=hal_json`
           }
@@ -116,14 +119,14 @@ class BodyService {
       ],
 
       _embedded: {
-        [`${apiUrl}/rest/relation/node/competency/field_versions`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_versions`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/taxonomy/term/${draftId}?_format=hal_json`
+                href: `${httpApiURl}/taxonomy/term/${draftId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/taxonomy_term/version`
+                href: `${httpApiURl}/rest/type/taxonomy_term/version`
               }
             },
             uuid: [
@@ -133,14 +136,14 @@ class BodyService {
             ]
           }
         ],
-        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
+        [`${httpApiURl}/rest/relation/node/attribute/field_competency`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+                href: `${httpApiURl}/node/${competencyId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/competency`
+                href: `${httpApiURl}/rest/type/node/competency`
               }
             },
             uuid: [
@@ -151,14 +154,14 @@ class BodyService {
             lang: 'en'
           }
         ],
-        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
+        [`${httpApiURl}/rest/relation/node/attribute/field_attribute_type`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+                href: `${httpApiURl}/node/${attributeTypeId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/attribute_type`
+                href: `${httpApiURl}/rest/type/node/attribute_type`
               }
             },
             uuid: [
@@ -190,10 +193,6 @@ class BodyService {
   }
   // https://cms.competency.ebi.ac.uk
   static mutate(key, value, target) {
-    //request fails when https is included in _links.type.href below
-    //so we moved changed the value of apiUrl to exclude the s and only have http
-    let httpApiURl = apiUrl.replace('https', 'http');
-
     return {
       _links: {
         type: {
@@ -290,7 +289,7 @@ class BodyService {
         type: {
           href:
             //'https://dev-competency-mapper.pantheonsite.io/rest/type/taxonomy_term/version'
-            `${apiUrl}/rest/type/taxonomy_term/version`
+            `${httpApiURl}/rest/type/taxonomy_term/version`
         }
       },
       vid: [
@@ -312,13 +311,13 @@ class BodyService {
     return {
       _links: {
         self: {
-          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+          href: `${httpApiURl}/node/${competencyId}?_format=hal_json`
         },
         type: {
-          href: `${apiUrl}/rest/type/node/competency`
+          href: `${httpApiURl}/rest/type/node/competency`
         },
-        [`${apiUrl}/rest/relation/node/competency/field_domain`]: {
-          href: `${apiUrl}/node/${domainId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/competency/field_domain`]: {
+          href: `${httpApiURl}/node/${domainId}?_format=hal_json`
         }
       },
       field_map_other_competency: [
@@ -330,14 +329,14 @@ class BodyService {
         target_id: 'competency'
       },
       _embedded: {
-        [`${apiUrl}/rest/relation/node/competency/field_domain`]: [
+        [`${httpApiURl}/rest/relation/node/competency/field_domain`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${domainId}?_format=hal_json`
+                href: `${httpApiURl}/node/${domainId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/domain`
+                href: `${httpApiURl}/rest/type/node/domain`
               }
             },
             uuid: [
@@ -363,30 +362,30 @@ class BodyService {
     return {
       _links: {
         self: {
-          href: `${apiUrl}/node/${attribuiteId}?_format=hal_json`
+          href: `${httpApiURl}/node/${attribuiteId}?_format=hal_json`
         },
         type: {
-          href: `${apiUrl}/rest/type/node/attribute`
+          href: `${httpApiURl}/rest/type/node/attribute`
         },
-        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: {
-          href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/attribute/field_competency`]: {
+          href: `${httpApiURl}/node/${competencyId}?_format=hal_json`
         },
-        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: {
-          href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/attribute/field_attribute_type`]: {
+          href: `${httpApiURl}/node/${attributeTypeId}?_format=hal_json`
         }
       },
       type: {
         target_id: 'attribute'
       },
       _embedded: {
-        [`${apiUrl}/rest/relation/node/attribute/field_competency`]: [
+        [`${httpApiURl}/rest/relation/node/attribute/field_competency`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${competencyId}?_format=hal_json`
+                href: `${httpApiURl}/node/${competencyId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/competency`
+                href: `${httpApiURl}/rest/type/node/competency`
               }
             },
             uuid: [
@@ -396,14 +395,14 @@ class BodyService {
             ]
           }
         ],
-        [`${apiUrl}/rest/relation/node/attribute/field_attribute_type`]: [
+        [`${httpApiURl}/rest/relation/node/attribute/field_attribute_type`]: [
           {
             _links: {
               self: {
-                href: `${apiUrl}/node/${attributeTypeId}?_format=hal_json`
+                href: `${httpApiURl}/node/${attributeTypeId}?_format=hal_json`
               },
               type: {
-                href: `${apiUrl}/rest/type/node/attribute_type`
+                href: `${httpApiURl}/rest/type/node/attribute_type`
               }
             },
             uuid: [
@@ -435,7 +434,7 @@ class BodyService {
     return {
       _links: {
         type: {
-          href: `${apiUrl}/rest/type/node/training_resource`
+          href: `${httpApiURl}/rest/type/node/training_resource`
         }
       },
       title: [
