@@ -1,7 +1,7 @@
 import { apiUrl } from '../http/http';
 //requests fail when https is included in _links.type.href below
 //so we moved changed the value of apiUrl to exclude the s and only have http
-// const httpApiURl = apiUrl.replace('https', 'http');
+const httpApiURl = apiUrl.replace('https', 'http');
 class BodyService {
   static createProfile({
     title,
