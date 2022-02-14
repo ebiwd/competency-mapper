@@ -1,7 +1,6 @@
 import Headers from './headers';
 import axios from 'axios';
 
-console.log('env', process.env);
 export const apiUrl = process.env.REACT_APP_API_URL;
 
 axios.defaults.baseURL = apiUrl;

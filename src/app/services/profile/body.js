@@ -1,5 +1,7 @@
 import { apiUrl } from '../http/http';
-
+//requests fail when https is included in _links.type.href below
+//so we moved changed the value of apiUrl to exclude the s and only have http
+// const httpApiURl = apiUrl.replace('https', 'http');
 class BodyService {
   static createProfile({
     title,
@@ -17,10 +19,10 @@ class BodyService {
     return {
       _links: {
         type: {
-          href: `http://cms.competency.ebi.ac.uk/rest/type/node/profile`
+          href: `${httpApiURl}/rest/type/node/profile`
         },
-        [`http://cms.competency.ebi.ac.uk/rest/relation/node/profile/field_competency_framework`]: {
-          href: `http://cms.competency.ebi.ac.uk/node/${frameworkId}?_format=hal_json`
+        [`${httpApiURl}/rest/relation/node/profile/field_competency_framework`]: {
+          href: `${httpApiURl}/node/${frameworkId}?_format=hal_json`
         }
       },
       title: [
@@ -81,14 +83,14 @@ class BodyService {
         }
       ],
       _embedded: {
-        [`http://cms.competency.ebi.ac.uk/rest/relation/node/profile/field_competency_framework`]: [
+        [`${httpApiURl}/rest/relation/node/profile/field_competency_framework`]: [
           {
             _links: {
               self: {
-                href: `http://cms.competency.ebi.ac.uk/node/${frameworkId}?_format=hal_json`
+                href: `${httpApiURl}/node/${frameworkId}?_format=hal_json`
               },
               type: {
-                href: `http://cms.competency.ebi.ac.uk/rest/type/node/competency_framework`
+                href: `${httpApiURl}/rest/type/node/competency_framework`
               }
             },
             uuid: [
@@ -118,10 +120,10 @@ class BodyService {
     return {
       _links: {
         self: {
-          href: `http://cms.competency.ebi.ac.uk/node/${profileId}?_format=json`
+          href: `${httpApiURl}/node/${profileId}?_format=json`
         },
         type: {
-          href: `http://cms.competency.ebi.ac.uk/rest/type/node/profile`
+          href: `${httpApiURl}/rest/type/node/profile`
         }
       },
       title: [
