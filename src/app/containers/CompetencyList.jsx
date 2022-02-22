@@ -270,6 +270,7 @@ class CompetencyList extends Component {
           disable={true}
           version={frameworkVersion}
           attributeTypes={attributeTypes}
+          trainingResourcesExist={this.state.trainingResourcesExist}
         />
       )
     );

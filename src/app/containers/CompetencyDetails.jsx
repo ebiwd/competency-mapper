@@ -34,7 +34,19 @@ class CompetencyDetails extends React.Component {
         this.getFramework(),
         this.getAttributes(),
         this.getResources()
-      ]);
+      ]).then(() => {
+        let element = document.getElementById('training-resources-block');
+        if (element) {
+          element.scrollIntoView();
+          element.scrollIntoView(false);
+          element.scrollIntoView({ block: 'start' });
+          element.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start',
+            inline: 'nearest'
+          });
+        }
+      });
     } finally {
       this.activeRequests.finishRequest();
     }
@@ -163,23 +175,23 @@ class CompetencyDetails extends React.Component {
                 );
               })}
             </ul>
-          </div>
 
-          <div>
-            <h4>Competency derived from:</h4>
-            <p>
-              {' '}
-              {competency.mapped_other_competency
-                ? Parser(competency.mapped_other_competency)
-                : 'No data available'}{' '}
-            </p>
+            <div>
+              <h4>Competency derived from:</h4>
+              <p>
+                {' '}
+                {competency.mapped_other_competency
+                  ? Parser(competency.mapped_other_competency)
+                  : 'No data available'}{' '}
+              </p>
 
-            {resources.length === 0 ? null : (
-              <div>
-                <h4>Training resources mapped to this competency</h4>
-                <ul>{this.resourceBlock()}</ul>
-              </div>
-            )}
+              {resources.length === 0 ? null : (
+                <div id="training-resources-block">
+                  <h4>Training resources mapped to this competency</h4>
+                  <ul>{this.resourceBlock()}</ul>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>

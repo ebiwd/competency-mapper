@@ -12,7 +12,8 @@ function CompetencyList({
   competency,
   disable,
   version,
-  attributeTypes
+  attributeTypes,
+  trainingResourcesExist
 }) {
   const attributesGrouped = groupBy(competency.attributes, 'type');
   const attrTypes = attributeTypes;
@@ -61,11 +62,11 @@ function CompetencyList({
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.id
-              }`}
+              }#training-resources-header`}
             >
               <span style={{ float: 'right' }}>
                 <i className="icon icon-spacer icon-common icon-info" />
-                More details
+                {trainingResourcesExist ? 'View Training Resources' : 'About'}
               </span>
             </Link>
             {attributes}
@@ -79,7 +80,8 @@ function CompetencyList({
 CompetencyList.defaultProps = {
   parentIndex: 0,
   index: 0,
-  disable: true
+  disable: true,
+  trainingResourcesExist: false
 };
 
 CompetencyList.propTypes = {

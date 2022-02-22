@@ -9,7 +9,8 @@ function DomainList({
   domain,
   disable,
   version,
-  attributeTypes
+  attributeTypes,
+  trainingResourcesExist
 }) {
   const competencies = domain.competencies.map((competency, childIndex) => (
     <CompetencyList
@@ -20,6 +21,7 @@ function DomainList({
       disable={disable}
       version={version}
       attributeTypes={attributeTypes}
+      trainingResourcesExist={trainingResourcesExist}
     />
   ));
 
@@ -37,7 +39,8 @@ function DomainList({
 
 DomainList.defaultProps = {
   domain: { title: '', competencies: [] },
-  disable: true
+  disable: true,
+  trainingResourcesExist: false
 };
 
 DomainList.propTypes = {
