@@ -72,7 +72,6 @@ class ManageCompetency extends React.Component {
   }
 
   async editMapping(e, competency, mapping) {
-    console.log(competency);
     e.preventDefault();
     const { framework } = this.props;
     try {
@@ -84,15 +83,15 @@ class ManageCompetency extends React.Component {
       );
       await this.props.loadData(framework);
       this.CloseModalMapping();
+      this.props.enqueueSnackbar('Record updated', {
+        variant: 'success'
+      });
     } catch (e) {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
       });
     } finally {
       this.activeRequests.finishRequest();
-      this.props.enqueueSnackbar('Record updated', {
-        variant: 'success'
-      });
     }
   }
 
@@ -246,20 +245,16 @@ class ManageCompetency extends React.Component {
           }
         >
           <em>
-            {competency.mapped_other_competency ? (
-              <span>
-                This competency maps to:
-                {Parser(competency.mapped_other_competency)}
-                <button
-                  className="ch_link"
-                  onClick={e => this.OpenModalMapping(e, competency)}
-                >
-                  <span className="fas fa-edit icon-left-spacer" />
-                </button>
-              </span>
-            ) : (
-              ''
-            )}
+            <span>
+              This competency maps to:
+              {Parser(competency.mapped_other_competency || '')}
+              <button
+                className="ch_link"
+                onClick={e => this.OpenModalMapping(e, competency)}
+              >
+                <span className="fas fa-edit icon-left-spacer" />
+              </button>
+            </span>
           </em>
           <ul>
             <ManageAttribute
