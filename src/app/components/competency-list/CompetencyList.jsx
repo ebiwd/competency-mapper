@@ -59,17 +59,19 @@ function CompetencyList({
           }
         >
           <div>
+            {attributes}
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.id
-              }#training-resources-header`}
+              }`}
             >
-              <span style={{ float: 'right' }}>
+              <span>
                 <i className="icon icon-spacer icon-common icon-info" />
-                {trainingResourcesExist ? 'View Training Resources' : 'About'}
+                {trainingResourcesExist
+                  ? 'View training resources mapped to this competency'
+                  : 'View more information about this competency'}
               </span>
             </Link>
-            {attributes}
           </div>
         </Collapsible>
       </td>
