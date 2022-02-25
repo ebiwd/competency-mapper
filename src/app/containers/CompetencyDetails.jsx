@@ -154,16 +154,17 @@ class CompetencyDetails extends React.Component {
 
         <div className="vf-grid">
           <div>
-            <h3>{competency.title}</h3>
+            <h1>{competency.title}</h1>
+            <br />
+            <br />
+            <h2>Competency attributes</h2>
             <ul>
               {attributeDefs.map(def => {
                 return (
                   <div key={def}>
                     <div className="margin-top-medium">
                       {' '}
-                      <strong>
-                        <em>{def}</em>
-                      </strong>
+                      <h3>{def}</h3>
                     </div>
                     {competency.attributes.map(attribute => {
                       if (attribute.type === def) {
@@ -177,7 +178,7 @@ class CompetencyDetails extends React.Component {
             </ul>
 
             <div>
-              <h4>Competency derived from:</h4>
+              <h2>Competency derived from:</h2>
               <p>
                 {' '}
                 {competency.mapped_other_competency
@@ -187,7 +188,7 @@ class CompetencyDetails extends React.Component {
 
               {resources.length === 0 ? null : (
                 <div id="training-resources-block">
-                  <h4>Training resources mapped to this competency</h4>
+                  <h2>Training resources mapped to this competency</h2>
                   <ul>{this.resourceBlock()}</ul>
                 </div>
               )}
