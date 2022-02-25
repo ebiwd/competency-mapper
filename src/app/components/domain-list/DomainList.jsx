@@ -29,7 +29,7 @@ function DomainList({
     <tbody style={{ border: 'none' }}>
       <tr>
         <td>
-          <h2> {domain.title}</h2>
+          <h2 style={{ marginBottom: 0 }}> {domain.title}</h2>
         </td>
       </tr>
       {competencies}
