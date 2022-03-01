@@ -32,9 +32,8 @@ class CompetencyService {
   // TODO: change name
   async getVersionedFramework(framework, version) {
     const response = await this.http.get(
-      `/api/${framework}/${version}?_format=json&timestamp=${Date.now()}`
+      `/api/${framework}/${version}?_format=json`
     );
-    console.log('framework returned', response.data);
     return response.data;
   }
 
@@ -45,9 +44,10 @@ class CompetencyService {
 
   // TODO: change name
   async getAllVersionedFrameworks() {
-    const response = await this.http.get(
-      `/api/version_manager?_format=json&timestamp=${Date.now()}`
-    );
+    // const response = await this.http.get(
+    //   `/api/version_manager?_format=json&timestamp=${Date.now()}`
+    // );
+    const response = await this.http.get(`/api/version_manager?_format=json`);
     return response.data;
   }
 

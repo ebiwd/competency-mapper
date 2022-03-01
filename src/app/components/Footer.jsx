@@ -77,6 +77,11 @@ const Footer = () => {
           Privacy notice
         </a>
       </div>
+      <div className="vf-u-margin__top--200" />
+      <p className="vf-footer__notice">
+        Contact us at competency [at] ebi.ac.uk if you have any questions,
+        comments or suggestions.
+      </p>
     </footer>
   );
 };

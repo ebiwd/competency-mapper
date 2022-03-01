@@ -47,7 +47,12 @@ const FAIRDownload = () => {
   return (
     <>
       <div>
-        <div className="vf-u-margin__top--400" />
+        <p>
+          Download the information of this framework as a csv file. Choose which
+          identifiers and reference profiles (if available) to include in the
+          table.
+        </p>
+        <div className="vf-u-margin__top--800" />
         <h3>Filter columns</h3>
       </div>
       <div className="vf-grid">
@@ -178,7 +183,10 @@ const FAIRDownload = () => {
             ) : (
               <tr>
                 <td>
-                  <img alt="progress" src="progressbar.gif" />
+                  <img
+                    alt="progress"
+                    src="/dev-competency-mapper/progressbar.gif"
+                  />
                   <h4>Loading data...</h4>
                 </td>
               </tr>

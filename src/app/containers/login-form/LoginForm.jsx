@@ -37,6 +37,7 @@ class LoginForm extends Component {
   }
 
   submit = () => {
+    console.log('this.submit');
     const { onSubmit } = this.props;
     const { username, password } = this.state;
     if (username && password) {
@@ -47,9 +48,9 @@ class LoginForm extends Component {
   render() {
     const { username, password } = this.state;
     return (
-      <nav>
+      <>
         {/* The wrapping in an `ul.menu.float-left > li` is necessary for the sticky header to work */}
-        <button
+        {/*<button
           style={{ float: 'right' }}
           href={'#'}
           //id="loginSwitch"
@@ -57,7 +58,15 @@ class LoginForm extends Component {
           className="vf-button vf-button--sm vf-button--tertiary vf-button--outline"
         >
           Admin login <i className="fa fa-key" aria-hidden="true" />
-        </button>
+        </button>*/}
+        <div>
+          <h3>
+            <a href="#" onClick={e => this.OpenModal(e)}>
+              Login as administrator
+            </a>
+          </h3>
+          <p>Manage frameworks and competencies.</p>
+        </div>
         <Modal
           open={this.state.showModal}
           onClose={e => this.CloseModal()}
@@ -67,7 +76,7 @@ class LoginForm extends Component {
             modal: 'customModal'
           }}
         >
-          <div className="columns small-12 medium-12 large-12 margin-top-large">
+          <div>
             <h3>Admin login</h3>
             <p>
               If you are a framework manager or content manager, please login to
@@ -105,7 +114,7 @@ class LoginForm extends Component {
             </button>
           </div>
         </Modal>
-      </nav>
+      </>
     );
   }
 }

@@ -1,213 +1,144 @@
 import React from 'react';
 
 const About = () => (
-  <React.Fragment>
+  <>
     <h2>About Competency Hub</h2>
     <p className="lead">
-      Competency Hub is a web-based tool to support the creation and management
-      of competency frameworks. A competency is an observable ability of any
-      professional, integrating multiple components such as knowledge, skills
-      and behaviours. A competency framework lists and defines all the
-      competencies that an individual might need to fulfil a particular role, or
-      that define specific user groups.
+      The Competency Hub is a repository of competency frameworks that define
+      the abilities required by professionals in a specific field and relate
+      them to training resources and career profiles, so that you can:
     </p>
-    <h3>Anyone can..</h3>
-    <p>
-      <ul>
-        <li>
-          Explore the competency frameworks that we currently have in the system
-        </li>
-        <li>
-          Click on any competency to find the knowledge, skills and attitudes
-          (KSAs) associated with it
-        </li>
-        <li>
-          Explore career profiles associated with a competency framework when
-          available
-        </li>
-        <li>
-          See the relationships between different competency frameworks; for
-          example, if a competency in framework 2 is derived from one in
-          framework 1, this information is captured
-        </li>
-        <li>
-          Access a list of courses that have been mapped to a particular
-          competency
-        </li>
-        <li>
-          View summary information on each of these courses, including a link
-          through to the course website
-        </li>
-      </ul>
-    </p>
-    <h3>In addition to the above, content editors can...</h3>
     <ul>
-      <li>Map courses to any competency in the Hub</li>
-      <li>Map courses to any combination of knowledge, skills and attitudes</li>
-    </ul>
-    <h3>In addition to the above, administrators can...</h3>
-    <ul>
-      <li>Build a completely new competency framework from a blank template</li>
-      <li>Make minor updates to an existing competency framework</li>
       <li>
-        If a competency framework has undergone major updates such as merging,
-        splitting or deprecation of competencies, create and publish a new
-        version of the framework without overwriting the previous version, and
-        without losing links to pre-existing mappings
+        Assess your abilities against a professional standard and example career
+        profiles{' '}
       </li>
       <li>
-        Create and edit multiple personas or roles associated with a competency
-        framework
+        Find training resources to develop specific competencies and progress in
+        your career
       </li>
       <li>
-        For each competency in an associated framework, define the level of
-        competency required by any of the personas/roles associated with it,
-        using an administrator-defined list of variables.
+        Design training courses and programmes that help your learners develop
+        specific competencies
       </li>
     </ul>
 
-    <h3>What is competency?</h3>
+    <h3>Career profiles</h3>
     <p>
-      By definition, competency is an observable ability of any professional,
-      integrating multiple components such as knowledge, skills, values and
-      attitudes. It is observable, so its acquisition can be validated
-      objectively.
+      In this section, you will find a series of reference personas, example
+      descriptions of professional roles.
     </p>
-    <h4>Why is it relevant?</h4>
+    <p>Each profile shows:</p>
+    <ul>
+      <li>
+        The level at which each competency is required to fulfil that role
+      </li>
+      <li>Qualifications and background</li>
+      <li>Activities of the role</li>
+    </ul>
+
     <p>
-      Competency provides a shared ‘currency’ applicable to learning of all
-      types and at all career stages.
+      You can create your own profile by assessing yourself against the list of
+      competencies and then compare your profile to the existing ones. This
+      allows you to see which competencies you need to develop further to
+      perform that role.
+    </p>
+
+    <p>The profile that you create is saved on your own browser.</p>
+
+    <p>
+      Not all the competency frameworks on the site contain career profiles.
+    </p>
+
+    <h3>Find training resources</h3>
+    <p>
+      Training resources are presented associated with the competencies that
+      they contribute to develop. You can find this information on:
     </p>
     <ul>
       <li>
-        Individual professionals can use competency as a career development
-        tool: by documenting the competencies that you have gained, and the
-        evidence that you have gained them, in a competency portfolio you can
-        seek further training to fill gaps in your portfolio, or map your
-        existing portfolio to roles that you might not previously have
-        considered.
+        The page for each training resource, which shows a list of related
+        competencies
       </li>
       <li>
-        Professional bodies and employers can use competency to define
-        competency frameworks for different roles or professions. These provide
-        useful guidance when hiring and promoting individuals, and can also
-        provide the basis for professional recognition in regulated professions.
-      </li>
-      <li>
-        Course providers can use competency to develop training (by asking what
-        competencies their trainees need to gain) and, where appropriate, to
-        assess whether training has been effective.
+        The page for each competency, which shows a list of related training
+        resources
       </li>
     </ul>
 
-    <h3>What is a competency framework?</h3>
     <p>
-      A competency framework defines the competencies required to fulfil a
-      particular role. competency frameworks are typically defined by
-      professional bodies or learned societies in collaboration with employers.
-      Several projects under the EU’s Horizon 2020 framework have developed
-      competency frameworks to support emerging professions.
+      Not all the competency frameworks on the site contain training resources.
     </p>
 
-    <h3>Who is developing the Competency Hub?</h3>
+    <h3>Design training</h3>
     <p>
-      The Competency Hub is being developed by the{' '}
-      <a
-        href={'https://www.ebi.ac.uk/about/people/cath-brooksbank'}
-        target={'_blank'}
-      >
-        {' '}
-        EMBL-EBI training team{' '}
-      </a>{' '}
-      with the{' '}
-      <a href={'https://bioexcel.eu/'} target={'_blank'}>
-        {' '}
-        BioExcel{' '}
-      </a>{' '}
-      competency framework as its primary use case.{' '}
+      You can design competency-based courses and course programmes using the
+      Competency Hub. For more information on how to do this, visit the{' '}
+      <a href="design-your-training"> design training</a> section of the site.
     </p>
+
+    <h3>Competency</h3>
     <p>
-      EMBL-EBI’s Training programme uses a competency-based approach to
-      developing new courses: put simply, we ask ourselves ‘What competency or
-      competencies does our audience for this course need to develop?’ before we
-      create the programme and content for a new course, and before we make a
-      significant update to an existing course.
+      A competency is an observable ability of any professional. A competency
+      can be defined as a combination of knowledge, skills and attitudes to make
+      it more concrete and useful for individual professionals. It is
+      observable, so its acquisition can be validated objectively.
     </p>
+
+    <h3>Competency framework</h3>
     <p>
-      The team has contributed to, and helped to steer, a number of initiatives
-      to develop new training programmes by defining competency requirements in
-      relation to a specific target audience and building a competency framework
-      for that audience. Competency-based projects that we have been involved in
-      include:
+      A competency framework defines a core set of competencies required by
+      professionals working in a specific field. In the Competency Hub, the
+      professionals covered by the framework are specified on the entry card for
+      each competency framework.
     </p>
+
+    <p>
+      A competency framework can specify which competencies are especially
+      relevant for professionals in different roles or at different career
+      stages, which is what is done in the Competency Hub for the frameworks
+      that include career profiles.
+    </p>
+
+    <h3>Competency-based practices</h3>
+
     <ul>
       <li>
-        The ISCB education committee’s{' '}
-        <a href={'https://europepmc.org/articles/PMC5794068'} target={'_blank'}>
-          {' '}
-          competency framework for bioinformatics professionals{' '}
-        </a>{' '}
+        Competency allows individual professionals to assess themselves against
+        a professional standard, and seek appropriate continuing professional
+        development and/or develop their own careers.
       </li>
       <li>
-        A clinical bioinformatics competency framework to support Health
-        Education England to prepare clinical practitioners for the application
-        of genomics in the healthcare service
+        Professional bodies can use competency to define competency frameworks
+        for different roles or professions. These can form the basis of
+        recognised professional standards, especially in regulated professions,
+        for example healthcare and engineering.
       </li>
       <li>
-        The{' '}
-        <a
-          href={
-            'https://drive.google.com/file/d/0B3BA3KSKGOoQb0hvUkx3a3lMS00/view'
-          }
-          target={'_blank'}
-        >
-          {' '}
-          RItrain competency framework{' '}
-        </a>{' '}
-        for managers and leaders of research infrastructure
+        Learning professionals can use competencies to develop training or other
+        learning interventions, by asking what competencies their learners need
+        to gain.
       </li>
       <li>
-        The{' '}
-        <a
-          href={'https://zenodo.org/record/154085#.WbUNUhNSwUE'}
-          target={'_blank'}
-        >
-          {' '}
-          CORBEL competency framework{' '}
-        </a>{' '}
-        for technical operators of research infrastructure
+        Learning professionals can ascertain whether training delivered has
+        enabled learners to gain a competency or a set of competencies, by
+        assessing whether knowledge has been transferred, skills have been
+        developed, and/or behaviours/attitudes have changed as a result of the
+        training.
       </li>
       <li>
-        The{' '}
-        <a
-          href={'https://zenodo.org/record/264231#.WbUNoRNSwUE'}
-          target={'_blank'}
-        >
-          {' '}
-          BioExcel competency framework{' '}
-        </a>
-        for scientists working on biomolecular modelling and simulation
+        Competency can be used to determine whether curricula or training
+        materials meet professional standards, identify course providers who can
+        deliver training of the required quality, and support trainers to meet
+        or exceed the required standards.
       </li>
       <li>
-        The CINECA competency framework for professionals working with human
-        data for disease research
+        Competency can be used by employers to assess skills requirements, write
+        job descriptions, determine whether candidates are appropriate for
+        roles, and support employees to develop further in their roles.
       </li>
-      <p />
-      <p>
-        These competency frameworks were designed to be used by the training
-        communities who developed them, and openly available to anyone who might
-        find them useful, yet all too often they end up buried in a PDF file as
-        part of a project deliverable. This made us long for a web-based tool
-        that would make these frameworks, and the training associated with them,
-        readily discoverable. We therefore decided to build that tool, and
-        although it’s still in the early stages of development we’ve decided to
-        make it openly available now so that we can seek broad input to improve
-        it and make it as useful as possible to the education and training
-        community at large. If you have comments or suggestions, please{' '}
-        <a href={'mailto:competency@ebi.ac.uk'}> contact us </a>.
-      </p>
     </ul>
-  </React.Fragment>
+  </>
 );
 
 export default About;

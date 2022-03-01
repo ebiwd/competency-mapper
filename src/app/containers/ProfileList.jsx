@@ -34,8 +34,9 @@ const ProfileList = props => {
     const fetchData = async () => {
       await setGuestProfile(JSON.parse(localStorage.getItem('guestProfile')));
 
+      // Removed timestamp
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&timestamp=${Date.now()}`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -316,13 +317,11 @@ const ProfileList = props => {
                       <div key={index}>
                         <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
                           {profile.image[0] ? (
-                            <div className={profile.publishing_status}>
-                              <img
-                                alt="profile"
-                                src={profile.image[0].url}
-                                className="vf-profile__image"
-                              />
-                            </div>
+                            <img
+                              alt="profile"
+                              src={profile.image[0].url}
+                              className="vf-profile__image"
+                            />
                           ) : (
                             <img
                               alt="profile"
