@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "license": "Apache-2.0",
   "private": true,
-  "homepage": "https://competency.ebi.ac.uk/",
+  "homepage": "https://mgs-sails.github.io/dev-competency-mapper/",
   "dependencies": {
     "@ckeditor/ckeditor5-build-classic": "^16.0.0",
     "@ckeditor/ckeditor5-react": "^2.1.0",

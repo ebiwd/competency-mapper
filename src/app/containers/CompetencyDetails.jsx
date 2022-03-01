@@ -147,11 +147,6 @@ class CompetencyDetails extends React.Component {
 
     const competencyDetails = competencies.map(competency => (
       <div key={competency.id}>
-        <h4>
-          {' '}
-          {competency.framework} / {competency.domain}
-        </h4>
-
         <div className="vf-grid">
           <div>
             <h1>{competency.title}</h1>
@@ -226,8 +221,6 @@ class CompetencyDetails extends React.Component {
           ) : (
             ''
           )}
-
-          <h3>Competency details</h3>
 
           {competencyDetails}
         </div>
