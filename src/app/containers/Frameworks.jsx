@@ -6,63 +6,142 @@ import { Link } from 'react-router-dom';
 import { withSnackbar } from 'notistack';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
+import PropTypes from 'prop-types';
+
+import Navigation from './navigation/Navigation';
+import LoginForm from './login-form/LoginForm';
+
+import { login, logout } from '../services/auth/auth';
+
+import Association from './Association';
+
+import masterList from './masterList.json';
 
 class Frameworks extends Component {
-  activeRequests = new ActiveRequestsService();
-  competencyService = new CompetencyService();
+  // function Frameworks () {
+  // activeRequests = new ActiveRequestsService();
+  // competencyService = new CompetencyService();
 
   state = {
-    frameworks: []
+    frameworks: [],
+    user: localStorage.getItem('user'),
+    roles: localStorage.getItem('roles')
+  };
+  // const { roles, user } = this.props;
+  static propTypes = {
+    user: PropTypes.string.isRequired,
+    roles: PropTypes.string.isRequired,
+    onLogin: PropTypes.func.isRequired,
+    onLogout: PropTypes.func.isRequired
   };
 
-  async componentDidMount() {
+  onLogin = (username, password) => {
+    // this.props.onLogin(username, password);
+    this.handleLogin(username, password);
+    // login(username, password);
+  };
+
+  onLogout = () => {
+    this.props.onLogout();
+  };
+
+  handleLogin = async (username, password) => {
     try {
-      this.activeRequests.startRequest();
-      const frameworks = await this.competencyService.getAllVersionedFrameworks();
-      this.setState({ frameworks });
-    } catch (error) {
-      this.props.enqueueSnackbar('Unable to fetch framework data', {
-        variant: 'error'
+      await login(username, password);
+      this.setState({
+        user: localStorage.getItem('user'),
+        roles: localStorage.getItem('roles')
       });
-      console.error(error);
-    } finally {
-      this.activeRequests.finishRequest();
+      document.location.reload();
+    } catch (error) {
+      window.console.error(error);
+      if (error.response) {
+        switch (error.response.status) {
+          case 400:
+            window.alert(error.response.data.message);
+            return;
+          default:
+            window.alert(
+              'Sorry, there was an unknown login problem, please try again.'
+            );
+        }
+        window.alert(
+          'Sorry, there was an unknown login problem, please try again.'
+        );
+      }
     }
-  }
+  };
+
+  // async componentDidMount() {
+  //   try {
+  //     // this.activeRequests.startRequest();
+  //     // const frameworks = await this.competencyService.getAllVersionedFrameworks();
+  //     // this.setState({ frameworks });
+  //   } catch (error) {
+  //     this.props.enqueueSnackbar('Unable to fetch framework data', {
+  //       variant: 'error'
+  //     });
+  //     console.error(error);
+  //   } finally {
+  //     this.activeRequests.finishRequest();
+  //   }
+  // }
 
   render() {
-    const { frameworks } = this.state;
+    const { roles, user } = this.props;
+    console.log(masterList);
 
     return (
       <div>
-        <h3>Overview</h3>
-        <p className="lead">
-          Competency Hub is a web-based tool to support the creation and
-          management of competency frameworks{' '}
-          <Link to="/about" className="readmore">
-            read more{' '}
-          </Link>
-        </p>
+        <section className="vf-u-fullbleed vf-u-background-color-ui--grey--light vf-u-padding__top--800">
+          <h2>Who is the Competency Hub for?</h2>
+          <FrameworkButtons frameworkDetails={masterList} />
 
-        <FrameworkButtons frameworks={frameworks} />
-        <div style={{ padding: '20px' }}>
-          <hr className="vf-divider" />
-          <p>
-            <span>
-              <Link
-                to="/documentation"
-                className="vf-button vf-button--outline vf-button--primary vf-button--sm"
-              >
-                API documentation{' '}
-              </Link>
-            </span>
-          </p>
-          <p>
-            If you have any questions, comments or suggestions, please contact
-            us: competency [at] ebi.ac.uk
-          </p>
-          {console.log(document.cookie)}
+          <div className="vf-u-padding__top--800" />
+        </section>
+        <div className="vf-u-margin__top--1200" />
+        <div>
+          <h2>Do more with the Competency Hub</h2>
+          <div className="vf-grid">
+            <div>
+              <h3>
+                <Link to="/design-your-training">Design your training</Link>
+              </h3>
+              <p>
+                Use competency frameworks and career profiles to develop your
+                courses.
+              </p>
+            </div>
+            <div>
+              <h3>
+                <a href="/documentation">Review API Documentation</a>
+              </h3>
+              <p>
+                Learn how to list frameworks and query framework data with out
+                API.
+              </p>
+            </div>
+            <div>
+              {this.state.user && this.state.roles ? (
+                <div>
+                  <h3>You are logged-in</h3>
+                  <p>You can manage frameworks and competencies.</p>
+                </div>
+              ) : (
+                <LoginForm onSubmit={this.onLogin} />
+              )}
+            </div>
+          </div>
         </div>
+
+        <div className="vf-u-margin__top--1200" />
+        <h2>In association with</h2>
+        <div className="vf-grid vf-grid__col-3">
+          {masterList.map(framework => {
+            return <Association framework={framework} />;
+          })}
+        </div>
+        <div className="vf-u-margin__top--800" />
       </div>
     );
   }

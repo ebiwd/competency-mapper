@@ -37,6 +37,7 @@ import ManageFrameworks from '../containers/navigation/ManageFrameworks';
 //import Navigation from '../containers/navigation/Navigation';
 import Footer from '../components/Footer';
 import Breadcrumbs from '../containers/Breadcrumbs';
+import DesignYourTraining from '../containers/DesignYourTraining';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -118,6 +119,7 @@ class Root extends Component {
   handleLogout = () => {
     this.setState({ user: '', roles: '' });
     logout();
+    document.location.reload();
   };
 
   render() {
@@ -290,7 +292,10 @@ class Root extends Component {
                 />
 
                 <Route path="/documentation" component={Documentation} />
-
+                <Route
+                  path="/design-your-training"
+                  component={DesignYourTraining}
+                />
                 <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />
                 <Route path="/" component={Frameworks} />

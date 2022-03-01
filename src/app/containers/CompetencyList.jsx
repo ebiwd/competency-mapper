@@ -147,10 +147,11 @@ class CompetencyList extends Component {
     }
   }
 
+  // Removed timestamp
   fetchProfiles() {
     const { framework, frameworkVersion } = this.state;
     fetch(
-      `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json&timestamp=${Date.now()}`
+      `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json`
     )
       .then(Response => Response.json())
       .then(findResponse => {
@@ -162,11 +163,10 @@ class CompetencyList extends Component {
       });
   }
 
+  // Removed timestamp
   fetchPathways() {
     const { framework } = this.state;
-    fetch(
-      `${apiUrl}/api/${framework}/pathways?_format=json&timestamp=${Date.now()}`
-    )
+    fetch(`${apiUrl}/api/${framework}/pathways?_format=json`)
       .then(Response => Response.json())
       .then(findResponse => {
         this.setState({
@@ -460,7 +460,7 @@ class CompetencyList extends Component {
             <img
               alt="progress"
               style={{ width: '7%' }}
-              src="/progressbar.gif"
+              src="/dev-competency-mapper/progressbar.gif"
             />
           </div>
         )}

@@ -9,9 +9,8 @@ const PathwaysList = props => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/pathways/?_format=json&timestamp=${Date.now()}`
-      )
+      // Removed timestamp
+      await fetch(`${apiUrl}/api/${frameworkName}/pathways/?_format=json`)
         .then(Response => Response.json())
         .then(findresponse => {
           setPathways(findresponse);
@@ -33,9 +32,9 @@ const PathwaysList = props => {
     <>
       <div>
         <p>
-          Learning pathways are collections of training courses and material to
+          Learning pathways are collections of training courses and materials to
           help you learn about a specific topic. Note that some of these
-          resources are external to the EBI Competency Hub.
+          resources are external to the EMBL-EBI Competency Hub.
         </p>
       </div>
       {checkUserAccess() === true ? (

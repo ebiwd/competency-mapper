@@ -15,9 +15,10 @@ class CoursesService {
     CoursesService.instance = this;
   }
 
+  // removed timestamp
   async checkForTrainingResources(page, filter, filterType, $framework) {
     const response = await this.http.get(
-      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}&checkForTrainingResources=${true}`
+      `${apiUrl}/api/competency_framework_resources?_format=json&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}&checkForTrainingResources=${true}`
     );
     return response.data;
   }
@@ -33,7 +34,7 @@ class CoursesService {
 
   async getByFramework(page, filter, filterType, $framework) {
     const response = await this.http.get(
-      `${apiUrl}/api/competency_framework_resources?_format=json&timestamp=${Date.now()}&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
+      `${apiUrl}/api/competency_framework_resources?_format=json&page=${page}&title=${filter}&type=${filterType}&framework=${$framework}`
     );
     return response.data;
   }
