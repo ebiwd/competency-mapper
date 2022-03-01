@@ -2,7 +2,7 @@
   {
     "title": "iscb",
     "desc": "Students and professionals in computational biology",
-    "sub_text": "<div class=\"vf-card__text\">Explore the ISCB competencies and:<ul><li>career profiles</li></ul></div>",
+    "sub_text": "<div class=\"vf-card__text\">Explore the ISCB competencies and:<ul><li>Career profiles</li></ul></div>",
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-09/iscb_logo.png?w=180",
     "alt": "ISCB - International Society for Computational Biology home ",
     "link": "https://www.iscb.org/",
@@ -11,7 +11,7 @@
   {
     "title": "bioexcel",
     "desc": "Professionals in computational biomolecular research",
-    "sub_text": "<div class=\"vf-card__text\">Explore the BioExcel competencies and:<ul><li>career profiles</li><li>training resources</li></ul></div>",
+    "sub_text": "<div class=\"vf-card__text\">Explore the BioExcel competencies and:<ul><li>Career profiles</li><li>Training resources</li></ul></div>",
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2020-10/Bioexcel_logo_no_subheading_updated_RGB.png?w=220",
     "alt": "BioExcel - Centre of Excellence for Computational Biomolecular Research home",
     "link": "https://bioexcel.eu/",
@@ -20,7 +20,7 @@
   {
     "title": "permedcoe",
     "desc": "Professionals in computational personalised medicine",
-    "sub_text": "<div class=\"vf-card__text\">Explore the PerMedCoE competencies and:<ul><li>career profiles</li><li>training resources</li></ul></div>",
+    "sub_text": "<div class=\"vf-card__text\">Explore the PerMedCoE competencies and:<ul><li>Career profiles</li><li>Training resources</li></ul></div>",
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2021-04/PerMedCoE_WHITE%20background.jpg?w=250",
     "alt": "PerMedCoE - HPC/Exascale Centre of Excellence for Personalised Medicine in Europe home",
     "link": "https://permedcoe.eu/",
@@ -47,7 +47,7 @@
   {
     "title": "corbel",
     "desc": "Technical operators of research infrastructures",
-    "sub_text": "<div class=\"vf-card__text\">Explore the CORBEL competencies and:<ul><li>training resources</li></ul></div>",
+    "sub_text": "<div class=\"vf-card__text\">Explore the CORBEL competencies and:<ul><li>Training resources</li></ul></div>",
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-06/corbel_logo.png?w=200",
     "alt": "CORBEL: Coordinated Research Infrastructures Building Enduring Life-science Services home",
     "link": "https://www.corbel-project.eu/home.html",

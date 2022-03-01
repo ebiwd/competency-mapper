@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-//import { Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 //import ProgressBar from '../../../shared/components/progress-bar/progress-bar';
@@ -51,7 +51,7 @@ class Masthead extends Component {
               Browse competencies, career profiles and training resources to
               advance your career.
             </p>{' '}
-            <a className="vf-hero__link" href="about">
+            <Link className="vf-hero__link" to="/about">
               Learn more about the Competency Hub
               <svg width="24" height="24" xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -60,7 +60,7 @@ class Masthead extends Component {
                   fillRule="nonzero"
                 />
               </svg>
-            </a>
+            </Link>
           </div>
         </section>
         <div className="vf-grid">
