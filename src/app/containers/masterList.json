@@ -48,7 +48,7 @@
     "title": "corbel",
     "desc": "Technical operators of research infrastructures",
     "sub_text": "<div class=\"vf-card__text\">Explore the CORBEL competencies and:<ul><li>Training resources</li></ul></div>",
-    "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-06/corbel_logo.png?w=200",
+    "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2022-03/CORBEL-Logo.jpg?w=200?w=200",
     "alt": "CORBEL: Coordinated Research Infrastructures Building Enduring Life-science Services home",
     "link": "https://www.corbel-project.eu/home.html",
     "card_link": "./framework/corbel/1.1"
@@ -64,12 +64,12 @@
   },
   {
     "title": "cineca",
-    "desc": "Professionals in working with clinical human data",
+    "desc": "Professionals working with clinical human data",
     "sub_text": "<div class=\"vf-card__text\">Explore the CINECA competencies</div>",
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2019-12/cineca.png?w=200",
     "alt": "CINECA - Common Infrastructure for National Cohorts in Europe, Canada, and Africa home",
     "link": "https://www.cineca-project.eu/",
-    "card_link": "/framework/cineca/1.0"
+    "card_link": "./framework/cineca/1.0"
   },
   {
     "title": "nhs",
