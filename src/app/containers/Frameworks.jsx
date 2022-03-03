@@ -117,7 +117,7 @@ class Frameworks extends Component {
                 <Link to="/documentation">Review API Documentation</Link>
               </h3>
               <p>
-                Learn how to list frameworks and query framework data with out
+                Learn how to list frameworks and query framework data with our
                 API.
               </p>
             </div>
