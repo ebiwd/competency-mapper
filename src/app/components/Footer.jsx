@@ -43,7 +43,6 @@ const Footer = () => {
             <img
               className="vf-figure__image"
               src={EU}
-              alt="European union"
               loading="lazy"
               width="120px"
             />
@@ -52,7 +51,6 @@ const Footer = () => {
             <img
               className="vf-figure__image"
               src={PerMed}
-              alt="European union"
               loading="lazy"
               width="170px"
             />
@@ -61,7 +59,6 @@ const Footer = () => {
             <img
               className="vf-figure__image"
               src={BioExcel}
-              alt="Bioexcel"
               loading="lazy"
               width="180px"
               style={{ backgroundColor: '#fff', padding: '7px' }}
