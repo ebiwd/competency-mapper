@@ -242,7 +242,6 @@ const ProfileList = props => {
           {guestProfile ? (
             <div className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
               <img
-                alt="profile"
                 src={
                   guestProfile.image[0] ? guestProfile.image[0].url : user_icon
                 }
@@ -293,11 +292,7 @@ const ProfileList = props => {
             </div>
           ) : (
             <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
-              <img
-                alt="profile"
-                src={user_icon}
-                className="vf-profile__image"
-              />
+              <img src={user_icon} className="vf-profile__image" />
 
               <Link
                 className="vf-button vf-button--primary vf-button--sm"
@@ -318,13 +313,11 @@ const ProfileList = props => {
                         <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
                           {profile.image[0] ? (
                             <img
-                              alt="profile"
                               src={profile.image[0].url}
                               className="vf-profile__image"
                             />
                           ) : (
                             <img
-                              alt="profile"
                               src={user_icon}
                               className="vf-profile__image"
                             />
@@ -384,16 +377,11 @@ const ProfileList = props => {
                         <p className={profile.publishing_status}>
                           {profile.image[0] ? (
                             <img
-                              alt="profile"
                               src={profile.image[0].url}
                               className="profile_img"
                             />
                           ) : (
-                            <img
-                              alt="profile"
-                              src={user_icon}
-                              className="profile_img"
-                            />
+                            <img src={user_icon} className="profile_img" />
                           )}
                         </p>
 
