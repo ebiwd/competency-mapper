@@ -10,7 +10,9 @@ const PathwaysList = props => {
   useEffect(() => {
     const fetchData = async () => {
       // Removed timestamp
-      await fetch(`${apiUrl}/api/${frameworkName}/pathways/?_format=json`)
+      await fetch(
+        `${apiUrl}/api/${frameworkName}/pathways/?_format=json&source=competencyhub`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setPathways(findresponse);

@@ -118,6 +118,14 @@ const Breadcrumbs = () => {
           </li>
         </>
       );
+    } else if (pathname.includes('design-your-training')) {
+      return (
+        <>
+          <li className="vf-breadcrumbs__item" aria-current="location">
+            Design your training
+          </li>
+        </>
+      );
     }
   };
 

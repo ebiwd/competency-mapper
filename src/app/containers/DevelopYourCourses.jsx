@@ -1,9 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
-const DesignYourTraining = () => {
+const DevelopYourCourses = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    console.log('scrolled');
+  }, []);
+
   return (
     <>
-      <h2>Design your own training</h2>
+      <h2>Develop your courses</h2>
       <p>
         Competencies can be used to develop training or other learning
         interventions, by asking what competencies the learners need to gain.{' '}
@@ -15,7 +20,10 @@ const DesignYourTraining = () => {
 
       <h3>Define your audience:</h3>
       <ul>
-        <li>Find the competency framework appropriate for your audience</li>
+        <li>
+          Find the competency framework appropriate for your audience on our
+          home page
+        </li>
         <li>
           If career profiles are available, check the roles of your audience and
           the levels at which competencies are expected for those roles
@@ -43,8 +51,26 @@ const DesignYourTraining = () => {
           achieved{' '}
         </li>
       </ul>
+      <div className="vf-u-padding__top--400">
+        <p>
+          EMBL-EBI provides{' '}
+          <a href="https://www.ebi.ac.uk/training/trainer-support">
+            additional support for trainers
+          </a>{' '}
+          with openly accessible resources and opportunities for skills
+          development.
+        </p>
+        <p>
+          The{' '}
+          <a href="https://zenodo.org/record/5418103#.YhiW3ZPP30o">
+            ISCB guidelines
+          </a>{' '}
+          provide information on how the ISCB competency framework can be used
+          to develop courses and courses programmes
+        </p>
+      </div>
     </>
   );
 };
 
-export default DesignYourTraining;
+export default DevelopYourCourses;

@@ -20,7 +20,7 @@ const FAIRDownload = () => {
     const fetchData = async () => {
       const response = await http
         .get(
-          `${apiUrl}/api/export/${frameworkName}/${frameworkVersion}?_format=json&filters=${facets}&timestamp=${Date.now()}`
+          `${apiUrl}/api/export/${frameworkName}/${frameworkVersion}?_format=json&filters=${facets}&source=competencyhub`
         )
         .then(response => response.data);
       setData(response.data);

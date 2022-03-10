@@ -36,7 +36,7 @@ const ProfileList = props => {
 
       // Removed timestamp
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
       )
         .then(Response => Response.json())
         .then(findresponse => {

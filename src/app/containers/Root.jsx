@@ -37,7 +37,7 @@ import ManageFrameworks from '../containers/navigation/ManageFrameworks';
 //import Navigation from '../containers/navigation/Navigation';
 import Footer from '../components/Footer';
 import Breadcrumbs from '../containers/Breadcrumbs';
-import DesignYourTraining from '../containers/DesignYourTraining';
+import DevelopYourCourses from '../containers/DevelopYourCourses';
 
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
@@ -293,8 +293,8 @@ class Root extends Component {
 
                 <Route path="/documentation" component={Documentation} />
                 <Route
-                  path="/design-your-training"
-                  component={DesignYourTraining}
+                  path="/develop-your-courses"
+                  component={DevelopYourCourses}
                 />
                 <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />

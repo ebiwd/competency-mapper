@@ -40,9 +40,9 @@ class Masthead extends Component {
         <section className="vf-hero | vf-u-fullbleed" style={bgStyle}>
           <div className="vf-hero__content | vf-box | vf-stack vf-stack--400">
             <h1 className="vf-hero__heading">
-              <a className="vf-hero__heading_link" href="/">
-                Competency Hub
-              </a>
+              {/*<a className="vf-hero__heading_link" href="/">*/}
+              Competency Hub
+              {/*</a>*/}
             </h1>
             <p className="vf-hero__subheading">
               Supporting competency-based training and professional development.

@@ -105,11 +105,11 @@ class Frameworks extends Component {
           <div className="vf-grid">
             <div>
               <h3>
-                <Link to="/design-your-training">Design your training</Link>
+                <Link to="/develop-your-courses">Develop your courses</Link>
               </h3>
               <p>
-                Use competency frameworks and career profiles to develop your
-                courses.
+                Use competency frameworks and career profiles to design your
+                training.
               </p>
             </div>
             <div>

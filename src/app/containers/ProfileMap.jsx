@@ -40,21 +40,23 @@ export const ProfileMap = props => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&timestamp=${Date.now()}`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub`
       )
         .then(Response => Response.json())
         .then(findresponse => {
           setProfile(findresponse);
         });
 
-      await fetch(`${apiUrl}/api/version_manager?_format=json`)
+      await fetch(
+        `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setFrameworkInfo(findresponse);
         });
 
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub`
       )
         .then(Response => Response.json())
         .then(findresponse => {

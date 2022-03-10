@@ -45,7 +45,7 @@ export const ProfilesCompare = props => {
             `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profile1Id}/alias`
           );
           await fetch(
-            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&timestamp=${Date.now()}`
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile1Id}&source=competencyhub`
           )
             .then(Response => Response.json())
             .then(findresponse => {
@@ -64,7 +64,7 @@ export const ProfilesCompare = props => {
             `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profile2Id}/alias`
           );
           await fetch(
-            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&timestamp=${Date.now()}`
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profile2Id}&source=competencyhub`
           )
             .then(Response => Response.json())
             .then(findresponse => {
@@ -72,14 +72,16 @@ export const ProfilesCompare = props => {
             });
         }
 
-        await fetch(`${apiUrl}/api/version_manager?_format=json`)
+        await fetch(
+          `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
+        )
           .then(Response => Response.json())
           .then(findresponse => {
             setFrameworkInfo(findresponse);
           });
 
         await fetch(
-          `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub`
         )
           .then(Response => Response.json())
           .then(findresponse => {

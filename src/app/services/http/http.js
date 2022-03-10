@@ -1,7 +1,11 @@
 import Headers from './headers';
 import axios from 'axios';
 
-export const apiUrl = process.env.REACT_APP_API_URL;
+const checkUser = localStorage.getItem('userid');
+
+export const apiUrl = checkUser
+  ? process.env.REACT_APP_CMS_API_URL
+  : process.env.REACT_APP_API_URL;
 
 axios.defaults.baseURL = apiUrl;
 
@@ -24,18 +28,18 @@ class HttpService {
         withCredentials: true
       });
     }
-    return axios.get(url);
+    return axios.get(url + '&source=competencyhub');
   }
 
   post(url, body, option = 'hal+json') {
-    return axios.post(url, body, {
+    return axios.post(process.env.REACT_APP_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
   }
 
   patch(url, body, option = 'hal+json') {
-    return axios.patch(url, body, {
+    return axios.patch(process.env.REACT_APP_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });

@@ -151,7 +151,7 @@ class CompetencyList extends Component {
   fetchProfiles() {
     const { framework, frameworkVersion } = this.state;
     fetch(
-      `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json`
+      `${apiUrl}/api/${framework}/${frameworkVersion}/profiles?_format=json&source=competencyhub`
     )
       .then(Response => Response.json())
       .then(findResponse => {
@@ -166,7 +166,9 @@ class CompetencyList extends Component {
   // Removed timestamp
   fetchPathways() {
     const { framework } = this.state;
-    fetch(`${apiUrl}/api/${framework}/pathways?_format=json`)
+    fetch(
+      `${apiUrl}/api/${framework}/pathways?_format=json&source=competencyhub`
+    )
       .then(Response => Response.json())
       .then(findResponse => {
         this.setState({
