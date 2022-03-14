@@ -9,6 +9,8 @@ export const apiUrl = checkUser
 
 axios.defaults.baseURL = apiUrl;
 
+const needTimeStamp = checkUser ? '&timestamp=' + Date.now() : '';
+
 class HttpService {
   static instance;
   headers = new Headers();
@@ -28,7 +30,7 @@ class HttpService {
         withCredentials: true
       });
     }
-    return axios.get(url + '&source=competencyhub');
+    return axios.get(url + '&source=competencyhub' + needTimeStamp);
   }
 
   post(url, body, option = 'hal+json') {
