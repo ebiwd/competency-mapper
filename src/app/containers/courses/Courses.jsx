@@ -8,6 +8,7 @@ import ActiveRequestsService from '../../services/active-requests/active-request
 import CoursesService from '../../services/courses/courses';
 import { safeFlat } from '../../services/util/util';
 import Pagination from 'react-js-pagination';
+import { slugify } from '../../services/util/slugifier';
 
 class Courses extends Component {
   static propTypes = {
@@ -35,7 +36,6 @@ class Courses extends Component {
     this.state.frameworkId = props.frameworkId;
     this.state.version = props.version;
     this.state.totalItemsCount = 0;
-    this.slugify = this.slugify.bind(this);
   }
 
   async handlePageChange(pageNumber) {
@@ -86,13 +86,6 @@ class Courses extends Component {
     } finally {
       this.activeRequests.finishRequest();
     }
-  }
-
-  slugify(string) {
-    return string
-      .toLowerCase()
-      .replace(/[^\w ]+/g, '')
-      .replace(/ +/g, '-');
   }
 
   async showAllTrainingResources() {
@@ -202,7 +195,7 @@ class Courses extends Component {
         <td>
           <Link
             to={{
-              pathname: `/training-resources/${this.slugify(course.title)}`,
+              pathname: `/training-resources/${slugify(course.title)}`,
               state: {
                 training_resource_id: course.id
               }
