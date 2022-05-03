@@ -64,7 +64,7 @@ class ResourceDetails extends React.Component {
       const url = new URL(window.location.href);
       training_resource_id = url.searchParams.get('id');
     }
-    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}&source=competencyhub`;
+    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}`;
     // let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
     //     this.props.location.state.training_resource_id
     // }&timestamp=${Date.now()}`;

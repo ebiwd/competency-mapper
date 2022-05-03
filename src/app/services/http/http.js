@@ -3,9 +3,11 @@ import axios from 'axios';
 
 const checkUser = localStorage.getItem('userid');
 
-export const apiUrl = checkUser
-  ? process.env.REACT_APP_CMS_API_URL
-  : process.env.REACT_APP_API_URL;
+// export const apiUrl = checkUser
+//   ? process.env.REACT_APP_CMS_API_URL
+//   : process.env.REACT_APP_API_URL;
+
+export const apiUrl = process.env.REACT_APP_CMS_API_URL;
 
 axios.defaults.baseURL = apiUrl;
 
