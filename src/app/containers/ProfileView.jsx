@@ -391,20 +391,11 @@ export const ProfileView = props => {
               <ul>
                 <li className="profile_navigation">
                   <Link
-                    className="vf-button vf-button--primary vf-button--sm"
+                    className="vf-link"
                     to={`/framework/${frameworkName}/${frameworkVersion}/profile/edit/${profileId}`}
                   >
-                    Edit overview
+                    Edit profile{' '}
                     <i className="icon icon-common icon-pencil-alt" />
-                  </Link>
-                </li>
-                <li className="profile_navigation">
-                  <Link
-                    className="vf-button vf-button--primary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/${profileId}`}
-                  >
-                    Map competencies <i className="icon icon-common icon-cog" />{' '}
-                    {console.log(localStorage.getItem('roles'))}
                   </Link>
                 </li>
               </ul>

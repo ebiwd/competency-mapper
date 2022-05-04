@@ -36,14 +36,16 @@ export const ProfileViewGuest = props => {
     const fetchData = async () => {
       await setProfile(JSON.parse(localStorage.getItem('guestProfile')));
 
-      await fetch(`${apiUrl}/api/version_manager?_format=json`)
+      await fetch(
+        `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setFrameworkInfo(findresponse);
         });
 
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -270,19 +272,11 @@ export const ProfileViewGuest = props => {
             <ul>
               <li className="profile_navigation">
                 <Link
-                  className="vf-button vf-button--sm vf-button--primary"
+                  className="vf-link"
                   to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
                 >
-                  Edit overview
+                  Edit profile{' '}
                   <i className="icon icon-common icon-pencil-alt" />
-                </Link>
-              </li>
-              <li className="profile_navigation">
-                <Link
-                  className="vf-button vf-button--sm vf-button--primary"
-                  to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/guest`}
-                >
-                  Map competencies <i className="icon icon-common icon-cog" />{' '}
                 </Link>
               </li>
             </ul>
@@ -340,6 +334,21 @@ export const ProfileViewGuest = props => {
             <p />
           </div>
           <p>&nbsp;</p>
+          {/* <div className="vf-grid vf-grid__col-4">
+            <div className="vf-grid__col--span-3" />
+            <div className="vf-grid__col--span-1" >
+              <Link
+                // className="vf-button vf-button--sm vf-button--primary"
+                className='vf-link'
+                to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/guest`}
+                style={{float:'right'}}
+              >
+                Map competencies <i className="icon icon-common icon-cog" />{' '}
+              </Link>
+              <div class="vf-u-margin__bottom--800"> </div>
+            </div>
+
+          </div> */}
 
           <div className="vf-grid vf-grid__col-4">
             <div className="vf-grid__col--span-1">

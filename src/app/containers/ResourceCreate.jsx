@@ -1,7 +1,8 @@
 import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
-import { apiUrl } from '../services/http/http';
+import { apiUrl, apiUrlWithHTTP } from '../services/http/http';
+import { slugify } from '../services/util/slugifier';
 
 class ResourceCreate extends React.Component {
   constructor(props) {
@@ -130,7 +131,7 @@ class ResourceCreate extends React.Component {
         body: JSON.stringify({
           _links: {
             type: {
-              href: `${apiUrl}/rest/type/node/training_resource`
+              href: `${apiUrlWithHTTP}/rest/type/node/training_resource`
             }
           },
           title: [
@@ -208,7 +209,12 @@ class ResourceCreate extends React.Component {
       })
         .then(response => response.json())
         .then(data =>
-          this.props.history.push(`/training-resources/${data.nid[0].value}`)
+          this.props.history.push({
+            pathname: `/training-resources/${slugify(title)}`,
+            state: {
+              training_resource_id: data.nid[0].value
+            }
+          })
         );
     } else {
       alert('Incorrect dates');

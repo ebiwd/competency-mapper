@@ -20,6 +20,8 @@ import CoursesService from '../services/courses/courses';
 import ProfilePanel from './competency-nested-components/ProfilePanel';
 import { Switch, Route, Link } from 'react-router-dom';
 
+import jsonData from './masterList.json';
+
 class CompetencyList extends Component {
   static propTypes = {
     match: PropTypes.shape({
@@ -279,7 +281,14 @@ class CompetencyList extends Component {
 
     return (
       <>
-        <h1 style={{ color: '#000000' }}>{frameworkName}</h1>
+        <div className="vf-u-margin__top--400" />
+        <h2>
+          {' '}
+          {
+            jsonData.filter(item => item.title === this.state.framework)[0].desc
+          }{' '}
+        </h2>
+        <h3>{frameworkName}</h3>
         <p>
           <span className="vf-badge">{frameworkVersion}</span>
           <span className="vf-badge vf-badge--primary"> {frameworkStatus}</span>

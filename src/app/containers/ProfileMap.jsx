@@ -8,6 +8,7 @@ import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
 
 import ReactTooltip from 'react-tooltip';
+import jsonData from './masterList.json';
 
 const $ = window.$;
 
@@ -333,20 +334,15 @@ export const ProfileMap = props => {
   return (
     <div>
       {generateForm()}
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkFullName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       {profile ? (
         <div>
           <div className="row">
-            <h2>
-              Competency mapping: {frameworkFullName} {frameworkVersion} -{' '}
-              {profile.job_title}{' '}
-            </h2>
+            <div className="vf-u-margin__top--400" />
+            <h2> Competency mapping</h2>
+            <h3>
+              {jsonData.filter(item => item.title === frameworkName)[0].desc} (
+              {frameworkFullName} {frameworkVersion}) - {profile.job_title}{' '}
+            </h3>
 
             <div className="column medium-12">
               <div className="row">

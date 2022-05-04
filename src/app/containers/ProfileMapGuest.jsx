@@ -8,6 +8,7 @@ import Collapsible from 'react-collapsible';
 import user_icon from './user_icon.png';
 
 import ReactTooltip from 'react-tooltip';
+import jsonData from './masterList.json';
 
 const $ = window.$;
 
@@ -38,14 +39,17 @@ export const ProfileMapGuest = props => {
         );
       }
 
-      await fetch(`${apiUrl}/api/version_manager?_format=json`)
+      await fetch(
+        `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
+      )
         .then(Response => Response.json())
         .then(findresponse => {
           setFrameworkInfo(findresponse);
         });
+      console.log(apiUrl);
 
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -346,20 +350,15 @@ export const ProfileMapGuest = props => {
   return (
     <div>
       {generateForm()}
-      <nav>
-        <Link to={'/'}>Home</Link> /{' '}
-        <Link to={`/framework/${frameworkName}/${frameworkVersion}`}>
-          {' '}
-          {frameworkFullName} {frameworkVersion}{' '}
-        </Link>{' '}
-      </nav>
       {profile ? (
         <div key={'div123'}>
           <div key={'div567'} className="row">
-            <h2>
-              Competency mapping: {frameworkFullName} {frameworkVersion} -{' '}
-              {profile.job_title}{' '}
-            </h2>
+            <div className="vf-u-margin__top--400" />
+            <h2> Competency mapping</h2>
+            <h3>
+              {jsonData.filter(item => item.title === frameworkName)[0].desc} (
+              {frameworkFullName} {frameworkVersion}) - {profile.job_title}{' '}
+            </h3>
 
             <div key={'div350'} className="column medium-12">
               <div className="vf-grid vf-grid__col-5">

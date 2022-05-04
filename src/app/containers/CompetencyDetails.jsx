@@ -5,6 +5,7 @@ import { withSnackbar } from 'notistack';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 import CoursesService from '../services/courses/courses';
+import { slugify } from '../services/util/slugifier';
 
 class CompetencyDetails extends React.Component {
   activeRequests = new ActiveRequestsService();
@@ -20,12 +21,12 @@ class CompetencyDetails extends React.Component {
     resources: []
   };
 
-  slugify(string) {
-    return string
-      .toLowerCase()
-      .replace(/[^\w ]+/g, '')
-      .replace(/ +/g, '-');
-  }
+  // slugify(string) {
+  //   return string
+  //     .toLowerCase()
+  //     .replace(/[^\w ]+/g, '')
+  //     .replace(/ +/g, '-');
+  // }
 
   async componentDidMount() {
     try {
@@ -108,7 +109,7 @@ class CompetencyDetails extends React.Component {
       <li key={resource.nid}>
         <Link
           to={{
-            pathname: `/training-resources/${this.slugify(resource.title)}`,
+            pathname: `/training-resources/${slugify(resource.title)}`,
             state: {
               training_resource_id: resource.nid
             }

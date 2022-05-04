@@ -188,8 +188,13 @@ export const ProfileCreate = props => {
         fileid
       });
 
+      // props.history.push(
+      //   `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/view/${
+      //     response.nid[0].value
+      //   }/${response.path[0].alias}`
+      // );
       props.history.push(
-        `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/view/${
+        `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/map/${
           response.nid[0].value
         }/${response.path[0].alias}`
       );
@@ -271,15 +276,15 @@ export const ProfileCreate = props => {
   };
 
   function ButtonLabel() {
-    let submitButtonLabel = 'Save and continue';
+    let submitButtonLabel = 'Map Competencies';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = 'Add Competencies';
+      submitButtonLabel = 'Map Competencies';
     }
 
     return (
       <input
         type="submit"
-        className="vf-button vf-button--sm vf-button-primary"
+        className="vf-button vf-button--sm vf-button--primary"
         value={submitButtonLabel}
       />
     );

@@ -129,8 +129,11 @@ export const ProfileCreateGuest = props => {
         additional_information,
         image
       );
+      // history.push(
+      //   `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest/`
+      // );
       history.push(
-        `/framework/${frameworkName}/${frameworkVersion}/profile/view/guest/`
+        `/framework/${frameworkName}/${frameworkVersion}/profile/map/guest/`
       );
     }
   };
@@ -202,7 +205,7 @@ export const ProfileCreateGuest = props => {
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
     if (!localStorage.getItem('roles')) {
-      submitButtonLabel = 'Save and Map Competencies';
+      submitButtonLabel = 'Map Competencies';
     }
 
     return (

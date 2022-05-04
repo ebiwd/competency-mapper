@@ -157,7 +157,7 @@ export const ProfileEdit = props => {
 
       if (response.nid[0].value) {
         props.history.push(
-          `/framework/${frameworkName}/${frameworkVersion}/profile/view/${
+          `/framework/${frameworkName}/${frameworkVersion}/profile/map/${
             response.nid[0].value
           }/alias`
         );
@@ -166,7 +166,7 @@ export const ProfileEdit = props => {
   };
 
   function ButtonLabel() {
-    let submitButtonLabel = 'Save and continue';
+    let submitButtonLabel = 'Map competencies';
     if (!localStorage.getItem('roles')) {
       submitButtonLabel = 'Download';
     }
