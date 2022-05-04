@@ -46,14 +46,14 @@ class HttpService {
   }
 
   post(url, body, option = 'hal+json') {
-    return axios.post(process.env.REACT_APP_CMS_API_URL + url, body, {
+    return axios.post(apiUrl + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
   }
 
   patch(url, body, option = 'hal+json') {
-    return axios.patch(process.env.REACT_APP_CMS_API_URL + url, body, {
+    return axios.patch(apiUrl + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
