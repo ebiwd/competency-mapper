@@ -263,7 +263,10 @@ export const ProfileCreateGuest = props => {
       <div className="callout warning">
         <i className="icon icon-common icon-exclamation-triangle" /> Your
         profile will be saved in your browser.
-        <button className="vf-button vf-button--sm" onClick={e => openModal(e)}>
+        <button
+          className="vf-button vf-button--secondary vf-button--sm"
+          onClick={e => openModal(e)}
+        >
           Get help
         </button>
         <GuestHelp modalOpen={modalOpen} closeModal={closeModal} />

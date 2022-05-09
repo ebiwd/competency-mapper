@@ -89,7 +89,6 @@ class Frameworks extends Component {
 
   render() {
     const { roles, user } = this.props;
-    console.log(masterList);
 
     return (
       <div>

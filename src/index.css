@@ -98,7 +98,7 @@ input[type='checkbox']:checked + div > .attribute_label {
 
 .submit_fixed {
   padding: 10px;
-  background: #f1f1f1;
+  /* background: #f1f1f1; */
   text-align: center;
   bottom: 0px;
 }
@@ -361,12 +361,12 @@ table tbody tr:nth-child(even) {
     margin-top: 0px;
   }
 
-  #main-content-area:before {
+  /* #main-content-area:before {
     content: 'Competency Mapper';
     font-size: 40px;
     position: absolute;
     top: 50px;
-  }
+  } */
 
   .button {
     display: none;
@@ -380,6 +380,8 @@ table tbody tr:nth-child(even) {
   /* filters and fills */
   .fillerbg {
     background-color: #ccc !important;
+    width: 100px !important;
+    float: right;
   }
 
   .fillerRight {
@@ -389,10 +391,26 @@ table tbody tr:nth-child(even) {
   .fillerLeft {
     background-color: rgb(233, 180, 0) !important;
   }
+
+  .vf-grid__col--span-3 {
+    float: left;
+  }
+
+  .competency_title {
+    font-size: 14px;
+  }
+  .vf-text-heading--5 {
+    font-weight: normal;
+  }
+
+  .vf-grid__col-4 {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }
 
-.tooltip-custom {
+.tooltip-custom p {
   font-size: 18px !important ;
+  color: #fff !important;
 }
 
 .my-profile-card {

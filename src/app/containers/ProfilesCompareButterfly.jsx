@@ -343,15 +343,15 @@ export const ProfilesCompareButterfly = props => {
       <p>&nbsp; </p>
       <div className="vf-grid vf-grid__col-5">
         <div className="vf-grid__col--span-3">
-          <h5>
+          <h3>
             {frameworkFullName} {frameworkVersion} / Competencies
-          </h5>
+          </h3>
         </div>
         <div className="vf-grid__col--span-1">
-          <h5>{profile1.job_title}</h5>
+          <h3>{profile1.job_title}</h3>
         </div>
         <div className="vf-grid__col--span-1">
-          <h5>{profile2.job_title}</h5>
+          <h3>{profile2.job_title}</h3>
         </div>
       </div>
 
@@ -383,7 +383,11 @@ export const ProfilesCompareButterfly = props => {
           )}
         </div>
         <div style={{ textAling: 'center' }}>
-          <button href="#" className="vf-button" onClick={e => handlePrint(e)}>
+          <button
+            href="#"
+            className="vf-button vf-button--secondary"
+            onClick={e => handlePrint(e)}
+          >
             Print <i className="icon icon-common icon-print" />
           </button>
         </div>

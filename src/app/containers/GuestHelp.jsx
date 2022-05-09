@@ -31,31 +31,26 @@ const GuestHelp = props => {
         <h2>Help</h2>
         <h4>Create/edit your profile</h4>
         <p className="lead">
-          You may fill the Create/Edit Profile form in order to create your own
-          user profile. The profile will be saved in your browser.
+          Fill the Create/Edit Profile form in order to create your own user
+          profile. The profile will be saved in your browser so that you can
+          print it or compare it with other profiles.
         </p>
 
         <h4>Map competencies to your profile</h4>
         <p className="lead">
-          After creating your profile, the next step is to map it with the
-          competencies. In the mapping form, you may select the level of
-          expertise from the dropdown and choose the attributes that are
-          applicable in your case.
+          In the second step, select your level of expertise in each competency
+          and choose the knowledge, skills and attitudes that are applicable to
+          you.
         </p>
 
         <h4>Compare your profile</h4>
         <p className="lead">
-          After creating your profile and mapping it to competencies. You can
-          compare your profile with another reference profile and see the
-          summary of differences between the two.
+          Compare the profile that you created with one of the reference
+          profiles in the site.
         </p>
 
-        <h4>Save / download your profile</h4>
-        <p className="lead">
-          After creating your profile and mapping it to competencies, you may
-          click the print button and download the profile in your desired
-          format.
-        </p>
+        <h4>Download your profile</h4>
+        <p className="lead">Click the print button and download the profile</p>
       </ReactModal>
     </div>
   );
