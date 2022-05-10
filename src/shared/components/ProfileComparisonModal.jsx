@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route, useHistory } from 'react-router-dom';
 import ReactModal from 'react-modal';
 
 const customStyles = {
@@ -31,11 +30,7 @@ const customStyles = {
 };
 
 export const ProfileComparisonModal = props => {
-  let history = useHistory();
-  // const [profiles, setProfiles] = useState();
   const [showModal, setShowModal] = useState(false);
-  const [selectedProfileId, setSelectedProfileId] = useState();
-  const [comparisonError, setComparisonError] = useState(null);
   const currentProfile = props.profile;
   const profiles = props.profiles;
 

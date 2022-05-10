@@ -50,7 +50,8 @@ const FAIRDownload = () => {
         <p>
           Download the information of this framework as a csv file. Choose which
           identifiers and reference profiles (if available) to include in the
-          table.
+          table. This option enables you to create derivative works of the
+          competency framework.
         </p>
         <div className="vf-u-margin__top--800" />
         <h3>Filter columns</h3>

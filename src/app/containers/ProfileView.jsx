@@ -308,69 +308,6 @@ export const ProfileView = props => {
       {generateProfileView()}
       {profile ? (
         <>
-          {/*<div>*/}
-          {/*  <ReactModal*/}
-          {/*    isOpen={showModal}*/}
-          {/*    contentLabel="Example Modal"*/}
-          {/*    className="Modal"*/}
-          {/*    overlayClassName="Overlay"*/}
-          {/*    style={customStyles}*/}
-          {/*    onRequestClose={() => {*/}
-          {/*      setShowModal(false);*/}
-          {/*    }}*/}
-          {/*  >*/}
-          {/*    <h2>*/}
-          {/*      Compare profile{' '}*/}
-          {/*      <span*/}
-          {/*        style={{*/}
-          {/*          float: 'right',*/}
-          {/*          cursor: 'pointer',*/}
-          {/*          fontWeight: 'normal'*/}
-          {/*        }}*/}
-          {/*        onClick={() => {*/}
-          {/*          setShowModal(false);*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        X*/}
-          {/*      </span>*/}
-          {/*    </h2>*/}
-
-          {/*    <p>*/}
-          {/*      Select a profile to compare{' '}*/}
-          {/*      <strong>{profile.job_title} with:</strong>*/}
-          {/*    </p>*/}
-          {/*    <form>*/}
-          {/*      <select*/}
-          {/*        className="vf-form__select"*/}
-          {/*        id="vf-form__select"*/}
-          {/*        onChange={e => {*/}
-          {/*          setSelectedProfileId(e.target.value);*/}
-          {/*        }}*/}
-          {/*      >*/}
-          {/*        <option value="0">Select role</option>*/}
-          {/*        {profiles*/}
-          {/*          ? profiles.map((profile, index) => {*/}
-          {/*              return (*/}
-          {/*                <>*/}
-          {/*                  <option value={profile.id}>*/}
-          {/*                    {profile.job_title}*/}
-          {/*                  </option>*/}
-          {/*                </>*/}
-          {/*              );*/}
-          {/*            })*/}
-          {/*          : ''}*/}
-          {/*      </select>*/}
-          {/*      <span style={{ color: 'red' }}>{comparisonError}</span>*/}
-          {/*    </form>*/}
-          {/*    <div className="vf-u-margin__top--200" />*/}
-          {/*    <button*/}
-          {/*      className="vf-button vf-button--primary vf-button--sm"*/}
-          {/*      onClick={e => redirectToCompare(e)}*/}
-          {/*    >*/}
-          {/*      Compare*/}
-          {/*    </button>*/}
-          {/*  </ReactModal>*/}
-          {/*</div>*/}
           <div key={profileId} id="profile">
             <div style={{ float: 'right' }}>
               {user_roles.search('framework_manager') !== -1 &&
@@ -397,21 +334,6 @@ export const ProfileView = props => {
                   </li>
                 </ul>
               ) : (
-                // <Link
-                //   className="vf-button vf-button--primary vf-button--sm"
-                //   to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
-                // >
-                //   Create your profile <i className="icon icon-common icon-plus" />
-                // </Link>
-
-                // <button
-                //   className="vf-button vf-button--primary vf-button--sm"
-                //   onClick={() => {
-                //     setShowModal(true);
-                //   }}
-                // >
-                //   Compare profile
-                // </button>
                 <ProfileComparisonModal
                   profiles={profiles}
                   profile={profile}
