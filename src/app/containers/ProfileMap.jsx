@@ -368,13 +368,10 @@ export const ProfileMap = props => {
                 </div>
                 <div className="column medium-9 form_intro">
                   <p>
-                    The form below is listing competencies from{' '}
-                    {frameworkFullName} competency framework. A competency is an
-                    observable ability of any professional, integrating multiple
-                    components such as knowledge, skills and behaviours. A
-                    competency profile lists and defines all the competencies
-                    that an individual might need to fulfil a particular role,
-                    or that define specific user groups.
+                    Select the level of expertise in each competency from the
+                    dropdown menu. Choose the knowledge, skills and attitudes
+                    that are applicable to you by clicking on each competency to
+                    view them
                   </p>
                 </div>
               </div>

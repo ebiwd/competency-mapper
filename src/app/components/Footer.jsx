@@ -45,6 +45,7 @@ const Footer = () => {
               src={EU}
               loading="lazy"
               width="120px"
+              alt=""
             />
           </figure>
           <figure className="vf-figure" style={{ margin: '10px' }}>
@@ -53,6 +54,7 @@ const Footer = () => {
               src={PerMed}
               loading="lazy"
               width="170px"
+              alt=""
             />
           </figure>
           <figure className="vf-figure" style={{ margin: '10px' }}>
@@ -62,6 +64,7 @@ const Footer = () => {
               loading="lazy"
               width="180px"
               style={{ backgroundColor: '#fff', padding: '7px' }}
+              alt=""
             />
           </figure>
         </div>

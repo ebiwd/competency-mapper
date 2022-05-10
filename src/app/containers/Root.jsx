@@ -134,13 +134,15 @@ class Root extends Component {
         >
           <Breadcrumbs />
           <div className="vf-u-margin__top--200" />
-          <Masthead
-            roles={roles}
-            user={user}
-            isActive={isActive}
-            onLogin={this.handleLogin}
-            onLogout={this.handleLogout}
-          />
+          <Switch>
+            <Masthead
+              roles={roles}
+              user={user}
+              isActive={isActive}
+              onLogin={this.handleLogin}
+              onLogout={this.handleLogout}
+            />
+          </Switch>
 
           <section id="main-content-area" className="row" role="main">
             <main className="column">

@@ -36,7 +36,6 @@ function FrameworkButtons({ frameworkDetails }) {
       style={{ margin: '0' }}
     >
       <div className="vf-card-container__inner">
-        {console.log(frameworkDetails)}
         {frameworkDetails.map(framework => (
           <FrameworkButton
             desc={framework.desc}

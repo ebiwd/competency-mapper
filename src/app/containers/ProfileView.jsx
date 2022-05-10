@@ -184,7 +184,10 @@ export const ProfileView = props => {
                   </span>{' '}
                   <span> {level.title}</span>
                 </div>
-                <ReactTooltip className="tooltip-custom" />
+                <ReactTooltip
+                  className="tooltip-custom"
+                  style={{ color: 'fff' }}
+                />
               </li>
             )
           );
@@ -421,9 +424,9 @@ export const ProfileView = props => {
                 </button>
               )}
             </div>
-            <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
+            <h1 style={{ marginTop: '1em', marginBottom: '1em' }}>
               {profile.title} - {profile.job_title}
-            </h2>
+            </h1>
 
             <div className={profile.publishing_status + ' embl-grid'}>
               <div>
@@ -462,14 +465,14 @@ export const ProfileView = props => {
                 </p>
               </div>
               <div>
-                <h3>Qualification and background</h3>
+                <h2>Qualification and background</h2>
                 <div>
                   {profile.qualification_background
                     ? Parser(profile.qualification_background)
                     : ''}
                 </div>
 
-                <h3>Activities of current role</h3>
+                <h2>Activities of current role</h2>
                 <div>
                   {profile.current_role ? Parser(profile.current_role) : ''}
                 </div>
@@ -485,9 +488,9 @@ export const ProfileView = props => {
             <div className="row">
               <div className="column medium-3">
                 {' '}
-                <h5 style={{ marginTop: '25px' }}>
+                <h3 style={{ marginTop: '25px' }}>
                   {frameworkFullName} {frameworkVersion} / Competencies
-                </h5>
+                </h3>
               </div>
               <div className="column medium-9 " />
             </div>
@@ -511,9 +514,13 @@ export const ProfileView = props => {
 
       <form onSubmit={e => handlePrint(e)}>
         <div className="submit_fixed">
-          <button className="vf-button" type="submit">
+          <button className="vf-button vf-button--secondary" type="submit">
             Print <i className="icon icon-common icon-print" />
           </button>
+          <p style={{ paddingTop: '30px' }}>
+            [Please enable background graphics in the print preview in order to
+            get better print output]
+          </p>
         </div>
       </form>
     </div>

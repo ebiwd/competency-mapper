@@ -120,7 +120,7 @@ export const ProfilesCompare = props => {
 
   return (
     <div>
-      <h3>Compare career profiles</h3>
+      <h1>Compare career profiles</h1>
       <span className="lead">
         Compare profile with other reference profiles to help you make career
         choices based on your competency
@@ -139,7 +139,7 @@ export const ProfilesCompare = props => {
                 className="vf-profile__image"
               />
               <Link to={link1 ? link1 : '#'}>
-                <h5>{profile1.job_title}</h5>
+                <h2>{profile1.job_title}</h2>
               </Link>
             </div>
           ) : (
@@ -158,7 +158,7 @@ export const ProfilesCompare = props => {
                 className="vf-profile__image"
               />
               <Link to={link2}>
-                <h5>{profile2.job_title}</h5>
+                <h2>{profile2.job_title}</h2>
               </Link>
 
               {/*<a*/}

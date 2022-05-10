@@ -135,7 +135,7 @@ const Breadcrumbs = () => {
     <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
       <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
         <li className="vf-breadcrumbs__item">
-          <Link to={`/`}>Home</Link>
+          <Link to={`/`}>Competency Hub</Link>
         </li>
         {getBreadcrumbs()}
       </ul>

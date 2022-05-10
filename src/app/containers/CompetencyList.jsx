@@ -20,6 +20,7 @@ import CoursesService from '../services/courses/courses';
 import { Switch, Route, Link } from 'react-router-dom';
 
 import jsonData from './masterList.json';
+import Copyright from './Copyright';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -397,11 +398,15 @@ class CompetencyList extends Component {
               <TabPanel>
                 <ProfileList framework={framework} version={frameworkVersion} />
                 <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--800" />
+                <Copyright />
               </TabPanel>
             ) : this.state.profileCount > 0 ? (
               <TabPanel>
                 <ProfileList framework={framework} version={frameworkVersion} />
                 <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--800" />
+                <Copyright />
               </TabPanel>
             ) : (
               ''
@@ -444,7 +449,18 @@ class CompetencyList extends Component {
                 </div>
               </form>
               <table>{domainList}</table>
-              <FrameworkVersions framework={framework} versions={versions} />
+              <div className="vf-u-margin__top--800" />
+              <div className="vf-grid">
+                <div>
+                  <FrameworkVersions
+                    framework={framework}
+                    versions={versions}
+                  />
+                </div>
+                <div>
+                  <Copyright framework={framework} />
+                </div>
+              </div>
             </TabPanel>
 
             {this.state.trainingResourcesExist ? (
