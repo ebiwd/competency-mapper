@@ -17,15 +17,10 @@ const ProfileList = props => {
   const frameworkVersion = props.version;
   const [guestProfile, setGuestProfile] = useState();
   const [profiles, setProfiles] = useState();
-  //const [framework, setFramework] = useState();
   const [userFrameworks, setUserFrameworks] = useState([]);
-  //const [userRole, setUserRole] = useState();
 
   var profilesToCompare = [];
 
-  // var user_roles = localStorage.getItem('roles')
-  //   ? localStorage.getItem('roles')
-  //   : '';
   var userName = localStorage.getItem('user')
     ? localStorage.getItem('user')
     : '';
@@ -97,20 +92,6 @@ const ProfileList = props => {
   const handleDelete = e => {
     e.preventDefault();
     confirmAlert({
-      //   title: 'Delete my profile',
-      //   message: 'Are you sure you want to delete your profile? This action cannot be undone!!',
-      //   buttons: [
-      //     {
-      //       label: 'Yes',
-      //       onClick: () => localStorage.removeItem('guestProfile')
-      //     },
-      //     {
-      //       label: 'No',
-      //       onClick: () => alert('Profile not deleted')
-      //     }
-      //   ]
-      // });
-
       customUI: ({ onClose }) => {
         return (
           <div className="react-confirm-alert-body">
@@ -171,23 +152,6 @@ const ProfileList = props => {
               competencies
             </p>
           </div>
-
-          {/*<div>*/}
-          {/*  <h5>*/}
-          {/*    <i className="icon icon-common icon-compare" /> Compare profiles*/}
-          {/*  </h5>*/}
-          {/*  <p>*/}
-          {/*    Compare your profile with other reference profiles to help you*/}
-          {/*    make career choices based on your competencies and interests*/}
-          {/*  </p>*/}
-          {/*</div>*/}
-          {/*<div>*/}
-          {/*  <h5>*/}
-          {/*    <i className="icon icon-common icon-tutorial" /> Identify training*/}
-          {/*    oportunities*/}
-          {/*  </h5>*/}
-          {/*  <p>Training opportunities will help boost your career</p>*/}
-          {/*</div>*/}
         </div>
       </div>
       <div className="wrapper">
@@ -195,52 +159,52 @@ const ProfileList = props => {
           <div>
             <h3>Career profiles</h3>
           </div>
-          <div>
-            <span style={{ float: 'right' }}>
-              {localStorage.getItem('roles') && checkFMAccess() ? (
-                <span>
-                  <Link
-                    className="vf-button vf-button--primary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/`}
-                  >
-                    {' '}
-                    Create reference profile{' '}
-                    <i className="icon icon-common icon-user-plus" />
-                  </Link>
-                  <Link
-                    onClick={e => redirectToCompare(e)}
-                    className="vf-button vf-button--tertiary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-                      profilesToCompare[0]
-                    }/${profilesToCompare[1]}`}
-                  >
-                    {' '}
-                    Compare selected profiles{' '}
-                    <i className="icon icon-common icon-compare" />
-                  </Link>
-                </span>
-              ) : (
-                <span>
-                  <Link
-                    onClick={e => redirectToCompare(e)}
-                    className="vf-button vf-button--tertiary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-                      profilesToCompare[0]
-                    }/${profilesToCompare[1]}`}
-                  >
-                    {' '}
-                    Compare selected profiles{' '}
-                    <i className="icon icon-common icon-compare" />
-                  </Link>
-                </span>
-              )}
-            </span>
-          </div>
+          {/*<div>*/}
+          {/*  <span style={{ float: 'right' }}>*/}
+          {/*    {localStorage.getItem('roles') && checkFMAccess() ? (*/}
+          {/*      <span>*/}
+          {/*        <Link*/}
+          {/*          className="vf-button vf-button--primary vf-button--sm"*/}
+          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/`}*/}
+          {/*        >*/}
+          {/*          {' '}*/}
+          {/*          Create reference profile{' '}*/}
+          {/*          <i className="icon icon-common icon-user-plus" />*/}
+          {/*        </Link>*/}
+          {/*        <Link*/}
+          {/*          onClick={e => redirectToCompare(e)}*/}
+          {/*          className="vf-button vf-button--tertiary vf-button--sm"*/}
+          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${*/}
+          {/*            profilesToCompare[0]*/}
+          {/*          }/${profilesToCompare[1]}`}*/}
+          {/*        >*/}
+          {/*          {' '}*/}
+          {/*          Compare selected profiles{' '}*/}
+          {/*          <i className="icon icon-common icon-compare" />*/}
+          {/*        </Link>*/}
+          {/*      </span>*/}
+          {/*    ) : (*/}
+          {/*      <span>*/}
+          {/*        <Link*/}
+          {/*          onClick={e => redirectToCompare(e)}*/}
+          {/*          className="vf-button vf-button--tertiary vf-button--sm"*/}
+          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${*/}
+          {/*            profilesToCompare[0]*/}
+          {/*          }/${profilesToCompare[1]}`}*/}
+          {/*        >*/}
+          {/*          {' '}*/}
+          {/*          Compare selected profiles{' '}*/}
+          {/*          <i className="icon icon-common icon-compare" />*/}
+          {/*        </Link>*/}
+          {/*      </span>*/}
+          {/*    )}*/}
+          {/*  </span>*/}
+          {/*</div>*/}
         </div>
         <hr />
         <div className="vf-grid vf-grid__col-3">
           {guestProfile ? (
-            <div className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+            <div className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--block">
               <img
                 src={
                   guestProfile.image[0] ? guestProfile.image[0].url : user_icon
@@ -248,7 +212,7 @@ const ProfileList = props => {
                 className="vf-profile__image"
               />
               <div>
-                <h3 className="vf-profile__title">
+                <h4 className="vf-profile__title">
                   <Link
                     className="vf-profile__link"
                     to={`/framework/${guestProfile.frameworkName}/${
@@ -257,18 +221,18 @@ const ProfileList = props => {
                   >
                     {guestProfile.job_title}
                   </Link>
-                </h3>
+                </h4>
 
-                <span>
-                  <label>
-                    <input
-                      type="checkbox"
-                      onClick={e => setProfilesToCompare(e)}
-                      data-profileid="guest"
-                    />
-                    Click to compare
-                  </label>
-                </span>
+                {/*<span>*/}
+                {/*  <label>*/}
+                {/*    <input*/}
+                {/*      type="checkbox"*/}
+                {/*      onClick={e => setProfilesToCompare(e)}*/}
+                {/*      data-profileid="guest"*/}
+                {/*    />*/}
+                {/*    Click to compare*/}
+                {/*  </label>*/}
+                {/*</span>*/}
 
                 <div
                   style={{
@@ -291,15 +255,14 @@ const ProfileList = props => {
               </div>
             </div>
           ) : (
-            <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+            <article className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--inline">
               <img src={user_icon} className="vf-profile__image" />
 
               <Link
                 className="vf-button vf-button--primary vf-button--sm"
                 to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
               >
-                Create your profile{' '}
-                <i className="icon icon-common icon-user-plus" />
+                Add your profile{' '}
               </Link>
             </article>
           )}
@@ -310,7 +273,7 @@ const ProfileList = props => {
                   if (profile.publishing_status === 'Live') {
                     return (
                       <div key={index}>
-                        <article className="vf-profile vf-profile--very-easy vf-profile--large vf-profile--block">
+                        <article className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--inline">
                           {profile.image[0] ? (
                             <img
                               src={profile.image[0].url}
@@ -322,7 +285,7 @@ const ProfileList = props => {
                               className="vf-profile__image"
                             />
                           )}
-                          <h3 className="vf-profile__title">
+                          <h4 className="vf-profile__title">
                             {profile.job_title ? (
                               <Link
                                 className="vf-profile__link"
@@ -335,27 +298,7 @@ const ProfileList = props => {
                             ) : (
                               'Job title'
                             )}
-                          </h3>
-                          {/* <Link
-                            className="vf-profile__link"
-                            to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${
-                              profile.id
-                            }${profile.url_alias}`}
-                          >
-                            View profile{' '}
-                            <i className="icon icon-common icon-angle-right" />
-                          </Link> */}
-                          <span>
-                            {' '}
-                            <label>
-                              <input
-                                type="checkbox"
-                                onClick={e => setProfilesToCompare(e)}
-                                data-profileid={profile.id}
-                              />
-                              Click to compare
-                            </label>
-                          </span>
+                          </h4>
                         </article>
                       </div>
                     );
@@ -364,16 +307,16 @@ const ProfileList = props => {
                   return (
                     <div>
                       <div className="profile_badge">
-                        <span>
-                          <label>
-                            <input
-                              type="checkbox"
-                              onClick={e => setProfilesToCompare(e)}
-                              data-profileid={profile.id}
-                            />
-                            Click to compare
-                          </label>
-                        </span>
+                        {/*<span>*/}
+                        {/*  <label>*/}
+                        {/*    <input*/}
+                        {/*      type="checkbox"*/}
+                        {/*      onClick={e => setProfilesToCompare(e)}*/}
+                        {/*      data-profileid={profile.id}*/}
+                        {/*    />*/}
+                        {/*    Click to compare*/}
+                        {/*  </label>*/}
+                        {/*</span>*/}
                         <p className={profile.publishing_status}>
                           {profile.image[0] ? (
                             <img

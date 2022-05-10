@@ -516,7 +516,7 @@ code {
 }
 
 .ch_tabs__list .react-tabs__tab--selected {
-  border-bottom: 3px solid #307fe2 !important;
+  border-bottom: 6px solid #307fe2 !important;
 }
 
 .ch_link {

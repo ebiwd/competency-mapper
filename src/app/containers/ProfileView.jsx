@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Switch, Route, useHistory } from 'react-router-dom';
-//import CKEditor from 'react-ckeditor-component';
 import Parser from 'html-react-parser';
-// import CKEditor from '@ckeditor/ckeditor5-react';
-// import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-// import FileUpload from './FileUpload';
 import { apiUrl } from '../services/http/http';
-// import ProfileService from '../services/profile/profile';
-// import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
@@ -26,7 +20,10 @@ const customStyles = {
     WebkitOverflowScrolling: 'touch',
     borderRadius: '4px',
     outline: 'none',
-    padding: '20px'
+    padding: '20px',
+    width: '500px',
+    height: '250px',
+    margin: 'auto'
   },
   overlay: {
     position: 'fixed',
@@ -38,52 +35,37 @@ const customStyles = {
   }
 };
 
-//import jsPDF from 'jspdf';
-//import moment from 'moment';
-
-//const $ = window.$;
-
 export const ProfileView = props => {
   let history = useHistory();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
-  //const alias = props.location.pathname.split('/')[7];
 
   const [profile, setProfile] = useState();
   const [profiles, setProfiles] = useState();
-  const [selectedProfile, setSelectedProfile] = useState();
+  const [selectedProfileId, setSelectedProfileId] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [comparisonError, setComparisonError] = useState(null);
   const [userFrameworks, setUserFrameworks] = useState([]);
 
   const redirectToCompare = e => {
-    history.push(
-      `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-        profile.id
-      }/${profile.id}`
-    );
-    // e.preventDefault();
-    // if (profilesToCompare.length !== 2) {
-    //   alert('You have to select two profiles to compare.');
-    //   return;
-    // } else {
-    //   history.push(
-    //     `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-    //       profilesToCompare[0]
-    //     }/${profilesToCompare[1]}`
-    //   );
-    // }
+    if (selectedProfileId) {
+      history.push(
+        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+          profile.id
+        }/${selectedProfileId}`
+      );
+    } else {
+      setComparisonError('Select a role to compare');
+    }
   };
 
   var competencyView = '';
-  //var expertise_levels = [];
   var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
-  //var frameworkLogo = '';
-  //var frameworkDesc = '';
   var mapping = [];
   var user_roles = localStorage.getItem('roles')
     ? localStorage.getItem('roles')
@@ -92,9 +74,7 @@ export const ProfileView = props => {
     ? localStorage.getItem('user')
     : '';
 
-  //let profile2Expertise = '';
   let width2 = '';
-  //let floatRight = '';
 
   useEffect(() => {
     const fetchData = async () => {
@@ -103,7 +83,11 @@ export const ProfileView = props => {
       )
         .then(Response => Response.json())
         .then(findresponse => {
-          setProfiles(findresponse);
+          const profilesExcludingCurrentProfile = findresponse.filter(
+            p =>
+              p.id !== props.match.params.id && p.publishing_status === 'Live'
+          );
+          setProfiles(profilesExcludingCurrentProfile);
         });
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub`
@@ -143,18 +127,6 @@ export const ProfileView = props => {
     fetchData();
   }, [profileId, frameworkVersion, frameworkName, userName, showModal]);
 
-  // const checkAlias = () => {
-  //   if (profile) {
-  //     let url_alias = profile.url_alias;
-
-  //     if (profile.url_alias != alias) {
-  //       props.history.push(
-  //         `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}${url_alias}`
-  //       );
-  //     }
-  //   }
-  // };
-
   const getExpertise = competency => {
     if (mapping) {
       let obj = mapping.find(o => o.competency === competency);
@@ -193,8 +165,6 @@ export const ProfileView = props => {
       frameworkInfo.map((info, infoIndex) => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          //frameworkLogo = info.logo[0].url;
-          //frameworkDesc = info.description;
           info.expertise_levels.map((level, levelIndex) =>
             expertise_levels_legend.push(
               <li
@@ -354,83 +324,6 @@ export const ProfileView = props => {
     }
   };
 
-  // const handleDownload = e => {
-  //   e.preventDefault();
-
-  //   // Download Profile
-  //   let storedProfile = JSON.parse(localStorage.getItem('ProfileDownloadData'));
-  //   downloadProfileFromHtml(storedProfile);
-  // };
-  // const downloadProfileFromHtml = options => {
-  //   let doc = new jsPDF('p', 'pt', 'a4');
-  //   doc.setFont('helvetica');
-  //   const margin = 0.5;
-
-  //   let currentDate = moment().format('MMMM D, Y');
-  //   let currentTime = moment().format('hh:mm:ss');
-
-  //   let pdfWidth = doc.internal.pageSize.getWidth();
-  //   let pdfHeight = doc.internal.pageSize.getHeight();
-
-  //   const startHeight = 30;
-  //   const marginleft = 20;
-  //   const pdfProfileImgWidth = 180;
-  //   const pageLogoWidth = 100;
-
-  //   let marginright = doc.internal.pageSize.getWidth() - 20;
-  //   let col = pdfWidth * 0.07383;
-  //   let gutter = pdfWidth * 0.01036727272;
-  //   let fourthCol = col * 4 + gutter * 3;
-  //   let fifthCol = col * 5 + gutter * 4;
-
-  //   const profileBody = pdfWidth - fifthCol - 20;
-
-  //   let selectedFileWidth = options.selectedFile
-  //     ? options.selectedFileData[0].width
-  //     : 180;
-  //   let selectedFileHeight = options.selectedFile
-  //     ? options.selectedFileData[0].height
-  //     : 150;
-  //   let ratio = selectedFileWidth / selectedFileHeight;
-  //   let pdfProfileImgHeight = pdfProfileImgWidth / ratio;
-
-  //   let currentYAxis = startHeight;
-
-  //   var specialElementHandlers = {
-  //     '#editor': function(element, renderer) {
-  //       return true;
-  //     }
-  //   };
-
-  //   let margins = {
-  //     top: startHeight,
-  //     bottom: 60,
-  //     left: marginleft,
-  //     right: marginright,
-  //     width: 490
-  //   };
-  //   var sourceFull = document.getElementById('profile');
-  //   var source = sourceFull;
-
-  //   let profileTitle = options.jobTitle.split(' ').join('_');
-  //   doc.fromHTML(
-  //     source,
-  //     marginleft,
-  //     currentYAxis,
-  //     {
-  //       // y coord
-  //       width: margins.width, // max width of content on PDF
-  //       elementHandlers: specialElementHandlers
-  //     },
-  //     function(dispose) {
-  //       // dispose: object with X, Y of the last line add to the PDF
-  //       //          this allow the insertion of new lines after html
-  //       doc.save(profileTitle.toLowerCase() + '.pdf');
-  //     }
-  //     // margins
-  //   );
-  // };
-
   const handlePrint = () => {
     window.print();
   };
@@ -454,18 +347,19 @@ export const ProfileView = props => {
                 <strong>{profile.job_title} with:</strong>
               </p>
               <form>
-                <select className="vf-form__select" id="vf-form__select">
-                  <option value="cat">Select role</option>
+                <select
+                  className="vf-form__select"
+                  id="vf-form__select"
+                  onChange={e => {
+                    setSelectedProfileId(e.target.value);
+                  }}
+                >
+                  <option value="0">Select role</option>
                   {profiles
                     ? profiles.map((profile, index) => {
                         return (
                           <>
-                            <option
-                              value={profile.id}
-                              onClick={() => {
-                                setSelectedProfile(profile.id);
-                              }}
-                            >
+                            <option value={profile.id}>
                               {profile.job_title}
                             </option>
                           </>
@@ -473,6 +367,7 @@ export const ProfileView = props => {
                       })
                     : ''}
                 </select>
+                <span style={{ color: 'red' }}>{comparisonError}</span>
               </form>
               <div className="vf-u-margin__top--200" />
               <button

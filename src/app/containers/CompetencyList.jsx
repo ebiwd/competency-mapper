@@ -17,7 +17,6 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 import FAIRDownload from '../components/FAIRDownload';
 import CoursesService from '../services/courses/courses';
-import ProfilePanel from './competency-nested-components/ProfilePanel';
 import { Switch, Route, Link } from 'react-router-dom';
 
 class CompetencyList extends Component {
