@@ -343,8 +343,26 @@ export const ProfileView = props => {
               className="Modal"
               overlayClassName="Overlay"
               style={customStyles}
+              onRequestClose={() => {
+                setShowModal(false);
+              }}
             >
-              <h2>Compare profile</h2>
+              <h2>
+                Compare profile{' '}
+                <span
+                  style={{
+                    float: 'right',
+                    cursor: 'pointer',
+                    fontWeight: 'normal'
+                  }}
+                  onClick={() => {
+                    setShowModal(false);
+                  }}
+                >
+                  X
+                </span>
+              </h2>
+
               <p>
                 Select a profile to compare{' '}
                 <strong>{profile.job_title} with:</strong>
