@@ -3,11 +3,11 @@ import axios from 'axios';
 
 const checkUser = localStorage.getItem('userid');
 
-// export const apiUrl = checkUser
-//   ? process.env.REACT_APP_CMS_API_URL
-//   : process.env.REACT_APP_API_URL;
+export const apiUrl = checkUser
+  ? process.env.REACT_APP_HTTPS_CMS_API_URL
+  : process.env.REACT_APP_API_URL;
 
-export const apiUrl = process.env.REACT_APP_HTTPS_CMS_API_URL;
+// export const apiUrl = process.env.REACT_APP_HTTPS_CMS_API_URL;
 
 /* note that for API requests that include the _links: {type: {href:''}} parameter, the request fails if the href value
 is preceded with HTTPS. it only works if HTTP is used instead. Drupal responds with an error message such as:

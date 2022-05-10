@@ -172,22 +172,22 @@ const ProfileList = props => {
             </p>
           </div>
 
-          <div>
-            <h5>
-              <i className="icon icon-common icon-compare" /> Compare profiles
-            </h5>
-            <p>
-              Compare your profile with other reference profiles to help you
-              make career choices based on your competencies and interests
-            </p>
-          </div>
-          <div>
-            <h5>
-              <i className="icon icon-common icon-tutorial" /> Identify training
-              oportunities
-            </h5>
-            <p>Training opportunities will help boost your career</p>
-          </div>
+          {/*<div>*/}
+          {/*  <h5>*/}
+          {/*    <i className="icon icon-common icon-compare" /> Compare profiles*/}
+          {/*  </h5>*/}
+          {/*  <p>*/}
+          {/*    Compare your profile with other reference profiles to help you*/}
+          {/*    make career choices based on your competencies and interests*/}
+          {/*  </p>*/}
+          {/*</div>*/}
+          {/*<div>*/}
+          {/*  <h5>*/}
+          {/*    <i className="icon icon-common icon-tutorial" /> Identify training*/}
+          {/*    oportunities*/}
+          {/*  </h5>*/}
+          {/*  <p>Training opportunities will help boost your career</p>*/}
+          {/*</div>*/}
         </div>
       </div>
       <div className="wrapper">

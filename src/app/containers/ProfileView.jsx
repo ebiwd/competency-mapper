@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 //import CKEditor from 'react-ckeditor-component';
 import Parser from 'html-react-parser';
 // import CKEditor from '@ckeditor/ckeditor5-react';
@@ -11,6 +11,32 @@ import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
+import ReactModal from 'react-modal';
+
+const customStyles = {
+  content: {
+    position: 'absolute',
+    top: '40px',
+    left: '40px',
+    right: '40px',
+    bottom: '40px',
+    border: '1px solid #ccc',
+    background: '#fff',
+    overflow: 'auto',
+    WebkitOverflowScrolling: 'touch',
+    borderRadius: '4px',
+    outline: 'none',
+    padding: '20px'
+  },
+  overlay: {
+    position: 'fixed',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)'
+  }
+};
 
 //import jsPDF from 'jspdf';
 //import moment from 'moment';
@@ -18,15 +44,38 @@ import ReactTooltip from 'react-tooltip';
 //const $ = window.$;
 
 export const ProfileView = props => {
+  let history = useHistory();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profileId = props.location.pathname.split('/')[6];
   //const alias = props.location.pathname.split('/')[7];
 
   const [profile, setProfile] = useState();
+  const [profiles, setProfiles] = useState();
+  const [selectedProfile, setSelectedProfile] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
+  const [showModal, setShowModal] = useState(false);
   const [userFrameworks, setUserFrameworks] = useState([]);
+
+  const redirectToCompare = e => {
+    history.push(
+      `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+        profile.id
+      }/${profile.id}`
+    );
+    // e.preventDefault();
+    // if (profilesToCompare.length !== 2) {
+    //   alert('You have to select two profiles to compare.');
+    //   return;
+    // } else {
+    //   history.push(
+    //     `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+    //       profilesToCompare[0]
+    //     }/${profilesToCompare[1]}`
+    //   );
+    // }
+  };
 
   var competencyView = '';
   //var expertise_levels = [];
@@ -49,6 +98,13 @@ export const ProfileView = props => {
 
   useEffect(() => {
     const fetchData = async () => {
+      await fetch(
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
+      )
+        .then(Response => Response.json())
+        .then(findresponse => {
+          setProfiles(findresponse);
+        });
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub`
       )
@@ -85,7 +141,7 @@ export const ProfileView = props => {
       }
     };
     fetchData();
-  }, [profileId, frameworkVersion, frameworkName, userName]);
+  }, [profileId, frameworkVersion, frameworkName, userName, showModal]);
 
   // const checkAlias = () => {
   //   if (profile) {
@@ -383,118 +439,177 @@ export const ProfileView = props => {
     <div key={'unique'}>
       {generateProfileView()}
       {profile ? (
-        <div key={profileId} id="profile">
-          <div style={{ float: 'right' }}>
-            {user_roles.search('framework_manager') !== -1 &&
-            userFrameworks.length > 0 &&
-            userFrameworks.includes(frameworkFullName) ? (
-              <ul>
-                <li className="profile_navigation">
-                  <Link
-                    className="vf-button vf-button--primary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/edit/${profileId}`}
-                  >
-                    Edit overview
-                    <i className="icon icon-common icon-pencil-alt" />
-                  </Link>
-                </li>
-                <li className="profile_navigation">
-                  <Link
-                    className="vf-button vf-button--primary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/${profileId}`}
-                  >
-                    Map competencies <i className="icon icon-common icon-cog" />{' '}
-                    {console.log(localStorage.getItem('roles'))}
-                  </Link>
-                </li>
-              </ul>
-            ) : (
-              <Link
-                className="vf-button vf-button--primary vf-button--sm"
-                to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
-              >
-                Create your profile <i className="icon icon-common icon-plus" />
-              </Link>
-            )}
-          </div>
-          <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
-            {profile.title} - {profile.job_title}
-          </h2>
-
-          <div className={profile.publishing_status + ' embl-grid'}>
-            <div>
-              <center>
-                <img
-                  alt=""
-                  style={{ display: 'block', maxWidth: '200px' }}
-                  src={profile.image[0] ? profile.image[0].url : ''}
-                />
-              </center>
-              <p />
-              <p style={{ textAlign: 'center' }}>
-                {profile.gender !== 'None' ? (
-                  <div>
-                    <p>
-                      {profile.gender && profile.gender === 'Prefernottosay' ? (
-                        <p> Gender: Prefer not to say </p>
-                      ) : (
-                        ''
-                      )}
-                    </p>
-                    <p>
-                      {profile.gender && profile.gender !== 'Prefernottosay' ? (
-                        <p> Gender: {profile.gender} </p>
-                      ) : (
-                        ''
-                      )}
-                    </p>
-                  </div>
-                ) : (
-                  ''
-                )}
-                {profile.age ? profile.age + ' years' : ''}
+        <>
+          <div>
+            <ReactModal
+              isOpen={showModal}
+              contentLabel="Example Modal"
+              className="Modal"
+              overlayClassName="Overlay"
+              style={customStyles}
+            >
+              <h2>Compare profile</h2>
+              <p>
+                Select a profile to compare{' '}
+                <strong>{profile.job_title} with:</strong>
               </p>
-            </div>
-            <div>
-              <h3>Qualification and background</h3>
-              <div>
-                {profile.qualification_background
-                  ? Parser(profile.qualification_background)
-                  : ''}
-              </div>
-
-              <h3>Activities of current role</h3>
-              <div>
-                {profile.current_role ? Parser(profile.current_role) : ''}
-              </div>
-
-              <div>
-                {profile.additional_information
-                  ? Parser(profile.additional_information)
-                  : ''}
-              </div>
-            </div>
+              <form>
+                <select className="vf-form__select" id="vf-form__select">
+                  <option value="cat">Select role</option>
+                  {profiles
+                    ? profiles.map((profile, index) => {
+                        return (
+                          <>
+                            <option
+                              value={profile.id}
+                              onClick={() => {
+                                setSelectedProfile(profile.id);
+                              }}
+                            >
+                              {profile.job_title}
+                            </option>
+                          </>
+                        );
+                      })
+                    : ''}
+                </select>
+              </form>
+              <div className="vf-u-margin__top--200" />
+              <button
+                className="vf-button vf-button--primary vf-button--sm"
+                onClick={e => redirectToCompare(e)}
+              >
+                Compare
+              </button>
+            </ReactModal>
           </div>
+          <div key={profileId} id="profile">
+            <div style={{ float: 'right' }}>
+              {user_roles.search('framework_manager') !== -1 &&
+              userFrameworks.length > 0 &&
+              userFrameworks.includes(frameworkFullName) ? (
+                <ul>
+                  <li className="profile_navigation">
+                    <Link
+                      className="vf-button vf-button--primary vf-button--sm"
+                      to={`/framework/${frameworkName}/${frameworkVersion}/profile/edit/${profileId}`}
+                    >
+                      Edit overview
+                      <i className="icon icon-common icon-pencil-alt" />
+                    </Link>
+                  </li>
+                  <li className="profile_navigation">
+                    <Link
+                      className="vf-button vf-button--primary vf-button--sm"
+                      to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/${profileId}`}
+                    >
+                      Map competencies{' '}
+                      <i className="icon icon-common icon-cog" />{' '}
+                    </Link>
+                  </li>
+                </ul>
+              ) : (
+                // <Link
+                //   className="vf-button vf-button--primary vf-button--sm"
+                //   to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/guest`}
+                // >
+                //   Create your profile <i className="icon icon-common icon-plus" />
+                // </Link>
 
-          <div className="row">
-            <div className="column medium-3">
-              {' '}
-              <h5 style={{ marginTop: '25px' }}>
-                {frameworkFullName} {frameworkVersion} / Competencies
-              </h5>
+                <button
+                  className="vf-button vf-button--primary vf-button--sm"
+                  onClick={() => {
+                    setShowModal(true);
+                  }}
+                >
+                  Compare profile
+                </button>
+              )}
             </div>
-            <div className="column medium-9 " />
-          </div>
-          <div className="row">
-            <div className="column medium-12">
-              <ul className="vf-list legend-inline" style={{ float: 'right' }}>
-                {expertise_levels_legend}
-              </ul>
+            <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
+              {profile.title} - {profile.job_title}
+            </h2>
+
+            <div className={profile.publishing_status + ' embl-grid'}>
+              <div>
+                <center>
+                  <img
+                    alt=""
+                    style={{ display: 'block', maxWidth: '200px' }}
+                    src={profile.image[0] ? profile.image[0].url : ''}
+                  />
+                </center>
+                <p />
+                <p style={{ textAlign: 'center' }}>
+                  {profile.gender !== 'None' ? (
+                    <div>
+                      <p>
+                        {profile.gender &&
+                        profile.gender === 'Prefernottosay' ? (
+                          <p> Gender: Prefer not to say </p>
+                        ) : (
+                          ''
+                        )}
+                      </p>
+                      <p>
+                        {profile.gender &&
+                        profile.gender !== 'Prefernottosay' ? (
+                          <p> Gender: {profile.gender} </p>
+                        ) : (
+                          ''
+                        )}
+                      </p>
+                    </div>
+                  ) : (
+                    ''
+                  )}
+                  {profile.age ? profile.age + ' years' : ''}
+                </p>
+              </div>
+              <div>
+                <h3>Qualification and background</h3>
+                <div>
+                  {profile.qualification_background
+                    ? Parser(profile.qualification_background)
+                    : ''}
+                </div>
+
+                <h3>Activities of current role</h3>
+                <div>
+                  {profile.current_role ? Parser(profile.current_role) : ''}
+                </div>
+
+                <div>
+                  {profile.additional_information
+                    ? Parser(profile.additional_information)
+                    : ''}
+                </div>
+              </div>
             </div>
+
+            <div className="row">
+              <div className="column medium-3">
+                {' '}
+                <h5 style={{ marginTop: '25px' }}>
+                  {frameworkFullName} {frameworkVersion} / Competencies
+                </h5>
+              </div>
+              <div className="column medium-9 " />
+            </div>
+            <div className="row">
+              <div className="column medium-12">
+                <ul
+                  className="vf-list legend-inline"
+                  style={{ float: 'right' }}
+                >
+                  {expertise_levels_legend}
+                </ul>
+              </div>
+            </div>
+            <hr />
+            {competencyView}
           </div>
-          <hr />
-          {competencyView}
-        </div>
+        </>
       ) : (
         'Loading profile'
       )}
