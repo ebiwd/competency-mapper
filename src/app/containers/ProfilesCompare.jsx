@@ -161,7 +161,12 @@ export const ProfilesCompare = props => {
                 <h5>{profile2.job_title}</h5>
               </Link>
 
-              {/*<a href="/">Compare another profile</a>*/}
+              {/*<a*/}
+              {/*  href="JavaScript:Void(0);"*/}
+              {/*  className="vf-button vf-button--link"*/}
+              {/*>*/}
+              {/*  Compare another profile*/}
+              {/*</a>*/}
             </div>
           ) : (
             'loading profiles'
