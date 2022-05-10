@@ -4,16 +4,10 @@ import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 
 import { Link } from 'react-router-dom';
-//import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
-//import ProfilesCompareTable from './ProfilesCompareTable';
-//import ProfilesCompareGraph from './ProfilesCompareGraph';
 import ProfilesCompareButterfly from './ProfilesCompareButterfly';
 import user_icon from './user_icon.png';
-//import Stars from './Stars';
 import ReactTooltip from 'react-tooltip';
-
-//const $ = window.$;
 
 export const ProfilesCompare = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -130,7 +124,6 @@ export const ProfilesCompare = props => {
       <span className="lead">
         Compare profile with other reference profiles to help you make career
         choices based on your competency
-        {console.log(isGuestProfile)}
       </span>
 
       <div className="vf-grid">
@@ -167,6 +160,13 @@ export const ProfilesCompare = props => {
               <Link to={link2}>
                 <h5>{profile2.job_title}</h5>
               </Link>
+
+              {/*<a*/}
+              {/*  href="JavaScript:Void(0);"*/}
+              {/*  className="vf-button vf-button--link"*/}
+              {/*>*/}
+              {/*  Compare another profile*/}
+              {/*</a>*/}
             </div>
           ) : (
             'loading profiles'

@@ -7,6 +7,7 @@ import ManageCompetencies from './ManageCompetencies';
 import ManageData from './ManageData';
 import CompetencyDetails from './CompetencyDetails';
 import CompetencyList from './CompetencyList';
+import VFTabsCompetencyList from './VFTabsCompetencyList';
 import ResourceEdit from './ResourceEdit';
 import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
@@ -246,6 +247,11 @@ class Root extends Component {
                   path="/framework/:framework/:version"
                   component={CompetencyList}
                 />
+
+                {/*<Route*/}
+                {/*  path="/framework/:framework/:version"*/}
+                {/*  component={VFTabsCompetencyList}*/}
+                {/*/>*/}
 
                 <ProtectedRoute
                   condition={!!user && roles.includes('content_manager')}

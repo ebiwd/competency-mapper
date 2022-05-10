@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+// import {vfTabs} from "@visual-framework/vf-tabs";
+import { vfTabs } from '@visual-framework/vf-tabs/vf-tabs.js';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import 'react-tabs/style/react-tabs.css';
@@ -17,11 +19,10 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 import FAIRDownload from '../components/FAIRDownload';
 import CoursesService from '../services/courses/courses';
+import ProfilePanel from './competency-nested-components/ProfilePanel';
 import { Switch, Route, Link } from 'react-router-dom';
 
-import jsonData from './masterList.json';
-
-class CompetencyList extends Component {
+class VFTabsCompetencyList extends Component {
   static propTypes = {
     match: PropTypes.shape({
       match: PropTypes.shape({ framework: PropTypes.string })
@@ -128,6 +129,7 @@ class CompetencyList extends Component {
   }
 
   async componentDidUpdate(prevProps, prevState) {
+    // vfTabs();
     const { framework, frameworkVersion, domains, loadingError } = this.state;
     if (
       framework !== prevState.framework ||
@@ -280,14 +282,7 @@ class CompetencyList extends Component {
 
     return (
       <>
-        <div className="vf-u-margin__top--400" />
-        <h2>
-          {' '}
-          {
-            jsonData.filter(item => item.title === this.state.framework)[0].desc
-          }{' '}
-        </h2>
-        <h3>{frameworkName}</h3>
+        <h1 style={{ color: '#000000' }}>{frameworkName}</h1>
         <p>
           <span className="vf-badge">{frameworkVersion}</span>
           <span className="vf-badge vf-badge--primary"> {frameworkStatus}</span>
@@ -295,175 +290,70 @@ class CompetencyList extends Component {
         <p>{frameworkDescription}</p>
 
         {this.state.allResourcesFetched ? (
-          <Tabs
-            className="vf-tabs ch_tabs__list"
-            selectedIndex={this.state.selectedTabIndex}
-            onSelect={index =>
-              this.setState({
-                selectedTabIndex: index
-              })
-            }
-          >
-            <TabList className="vf-tabs__list">
-              {localStorage.getItem('roles') ? (
-                <Tab>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/career-profiles`}
-                    className="customTabLinks"
-                  >
-                    Career profiles
-                  </Link>
-                </Tab>
-              ) : this.state.profileCount > 0 ? (
-                <Tab>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/career-profiles`}
-                    className="customTabLinks"
-                  >
-                    Career profiles
-                  </Link>
-                </Tab>
-              ) : (
-                ''
-              )}
-              {localStorage.getItem('roles') ? (
-                <Tab>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/learning-pathways`}
-                    className="customTabLinks"
-                  >
-                    Learning pathways
-                  </Link>
-                </Tab>
-              ) : this.state.pathwayCount > 0 ? (
-                <Tab>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/learning-pathways`}
-                    className="customTabLinks"
-                  >
-                    Learning pathways
-                  </Link>
-                </Tab>
-              ) : (
-                ''
-              )}
+          <div>
+            <div className="vf-tabs">
+              <ul className="vf-tabs__list" data-vf-js-tabs>
+                {localStorage.getItem('roles') ? (
+                  <li className="vf-tabs__item">
+                    <a className="vf-tabs__link" href="#career-profiles">
+                      Section
+                    </a>
+                  </li>
+                ) : this.state.profileCount > 0 ? (
+                  <li className="vf-tabs__item">
+                    <a className="vf-tabs__link" href="#career-profiles">
+                      Section
+                    </a>
+                  </li>
+                ) : (
+                  ''
+                )}
+                <li className="vf-tabs__item">
+                  <a className="vf-tabs__link" href="#vf-tabs__section--2">
+                    A Short Section
+                  </a>
+                </li>
+                <li className="vf-tabs__item">
+                  <a className="vf-tabs__link" href="#vf-tabs__section--3">
+                    A 3rd Section
+                  </a>
+                </li>
+              </ul>
+            </div>
 
-              <Tab>
-                <Link
-                  to={`/framework/${framework}/${
-                    this.props.match.params.version
-                  }/competencies`}
-                  className="customTabLinks"
-                >
-                  Competencies
-                </Link>
-              </Tab>
-
-              {this.state.trainingResourcesExist ? (
-                <Tab>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/training-resources`}
-                    className="customTabLinks"
-                  >
-                    Training resources
-                  </Link>
-                </Tab>
-              ) : (
-                ''
-              )}
-              <Tab>
-                <Link
-                  to={`/framework/${framework}/${
-                    this.props.match.params.version
-                  }/export`}
-                  className="customTabLinks"
-                >
-                  Export
-                </Link>
-              </Tab>
-            </TabList>
-
-            {localStorage.getItem('roles') ? (
-              <TabPanel>
-                <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : this.state.profileCount > 0 ? (
-              <TabPanel>
-                <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : (
-              ''
-            )}
-
-            {localStorage.getItem('roles') ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : this.state.pathwayCount > 0 ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-              </TabPanel>
-            ) : (
-              ''
-            )}
-
-            <TabPanel>
-              <form
-                action="#"
-                className="vf-form | vf-search vf-search--inline"
-              >
-                <div className="vf-form__item | vf-search__item">
-                  <label
-                    className="vf-form__label vf-u-sr-only | vf-search__label"
-                    htmlFor="inlinesearchitem"
-                  >
-                    Inline search
-                  </label>
-                  <input
-                    type="search"
-                    placeholder="Filter competencies"
-                    id="inlinesearchitem"
-                    className="vf-form__input | vf-search__input"
-                    onChange={event => this.onFilter(event.target.value)}
-                    value={filter}
-                  />
-                </div>
-              </form>
-              <table>{domainList}</table>
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-
-            {this.state.trainingResourcesExist ? (
-              <TabPanel>
-                <Courses
-                  framework={framework}
-                  version={frameworkVersion}
-                  frameworkId={frameWorkId}
-                />
-              </TabPanel>
-            ) : (
-              ''
-            )}
-
-            <TabPanel>
-              <FAIRDownload />
-              <FrameworkVersions framework={framework} versions={versions} />
-            </TabPanel>
-          </Tabs>
+            <div className="vf-tabs-content" data-vf-js-tabs-content>
+              <section className="vf-tabs__section" id="career-profiles">
+                <h2>Section 1</h2>
+                <p>
+                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
+                  euismod, tortor nec pharetra ultricies, ante erat imperdiet
+                  velit, nec laoreet enim lacus a velit.{' '}
+                  <a className="vf-link" href="#">
+                    Nam luctus
+                  </a>
+                  , enim in interdum condimentum, nisl diam iaculis lorem, vel
+                  volutpat mi leo sit amet lectus. Praesent non odio bibendum
+                  magna bibendum accumsan.
+                </p>
+              </section>
+              <section className="vf-tabs__section" id="vf-tabs__section--2">
+                <h2>Section 2</h2>
+                <p>
+                  Nullam at diam nec arcu suscipit auctor non a erat. Sed et
+                  magna semper, eleifend magna non, facilisis nisl. Proin et est
+                  et lorem dictum finibus ut nec turpis. Aenean nisi tortor,
+                  euismod a mauris a, mattis scelerisque tortor. Sed dolor
+                  risus, varius a nibh id, condimentum lacinia est. In lacinia
+                  cursus odio a aliquam. Curabitur tortor magna, laoreet ut
+                  rhoncus at, sodales consequat tellus.
+                </p>
+              </section>
+              <section className="vf-tabs__section" id="vf-tabs__section--3">
+                <h2>Section 3</h2>
+                <p>3rd section</p>
+              </section>
+            </div>
+          </div>
         ) : (
           <div>
             <div className="vf-u-margin__top--200" />
@@ -480,4 +370,4 @@ class CompetencyList extends Component {
   }
 }
 
-export default CompetencyList;
+export default VFTabsCompetencyList;
