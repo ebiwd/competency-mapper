@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 
 import { apiUrl } from '../services/http/http';
 
@@ -8,8 +8,10 @@ import 'react-tabs/style/react-tabs.css';
 import ProfilesCompareButterfly from './ProfilesCompareButterfly';
 import user_icon from './user_icon.png';
 import ReactTooltip from 'react-tooltip';
+import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 
 export const ProfilesCompare = props => {
+  let history = useHistory();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
   const profile1Id = props.location.pathname.split('/')[6];
@@ -19,11 +21,26 @@ export const ProfilesCompare = props => {
 
   const [profile1, setProfile1] = useState();
   const [profile2, setProfile2] = useState();
+  const [profiles, setProfiles] = useState();
+  const [selectedProfileId, setSelectedProfileId] = useState();
+  const [comparisonError, setComparisonError] = useState(null);
   const [framework, setFramework] = useState();
   const [isGuestProfile, setIsGuestProfile] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
   const [link1, setLink1] = useState();
   const [link2, setLink2] = useState();
+
+  const redirectToCompare = e => {
+    if (selectedProfileId) {
+      history.push(
+        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+          profile1.id
+        }/${selectedProfileId}`
+      );
+    } else {
+      setComparisonError('Select a role to compare');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -65,6 +82,19 @@ export const ProfilesCompare = props => {
               setProfile2(findresponse);
             });
         }
+
+        await fetch(
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
+        )
+          .then(Response => Response.json())
+          .then(findresponse => {
+            const profilesExcludingCurrentProfile = findresponse.filter(
+              p =>
+                p.id !== props.match.params.profile1 &&
+                p.publishing_status === 'Live'
+            );
+            setProfiles(profilesExcludingCurrentProfile);
+          });
 
         await fetch(
           `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
@@ -167,6 +197,18 @@ export const ProfilesCompare = props => {
               {/*>*/}
               {/*  Compare another profile*/}
               {/*</a>*/}
+              <ProfileComparisonModal
+                profiles={profiles}
+                profile={profile1}
+                comparisonError={comparisonError}
+                linkVariant={true}
+                setSelectedProfileId={id => {
+                  setSelectedProfileId(id);
+                }}
+                redirectToCompare={() => {
+                  redirectToCompare();
+                }}
+              />
             </div>
           ) : (
             'loading profiles'
