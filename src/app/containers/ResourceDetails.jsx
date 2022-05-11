@@ -96,7 +96,9 @@ class ResourceDetails extends React.Component {
                     <Link
                       to={
                         '/training-resources/' +
-                        this.state.resourcePath[2] +
+                        (this.props.location.state
+                          ? this.props.location.state.training_resource_id
+                          : this.state.resourcePath[2]) +
                         '/map/' +
                         item.title.toLowerCase().replace(/ /g, '')
                       }
