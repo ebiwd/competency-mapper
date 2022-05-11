@@ -50,7 +50,7 @@ class HttpService {
     //   headers: this.headers.get(option),
     //   withCredentials: true
     // });
-    return axios.post('https://cms.competency.ebi.ac.uk' + url, body, {
+    return axios.post(process.env.REACT_APP_HTTPS_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
@@ -61,7 +61,7 @@ class HttpService {
     //   headers: this.headers.get(option),
     //   withCredentials: true
     // });
-    return axios.patch('https://cms.competency.ebi.ac.uk' + url, body, {
+    return axios.patch(process.env.REACT_APP_HTTPS_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
