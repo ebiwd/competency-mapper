@@ -32,5 +32,10 @@ export function logout() {
   localStorage.removeItem('logout_token');
   localStorage.removeItem('userid');
   localStorage.removeItem('user');
-  return http.get(`${logoutUrl}?_format=json&token=${logout_token}`, true);
+  return http.get(
+    `${
+      process.env.REACT_APP_HTTPS_CMS_API_URL
+    }/user/logout?_format=json&token=${logout_token}`,
+    true
+  );
 }

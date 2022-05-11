@@ -19,8 +19,8 @@ class Masthead extends Component {
     this.props.onLogin(username, password);
   };
 
-  onLogout = () => {
-    this.props.onLogout();
+  onLogout = async () => {
+    await this.props.onLogout();
   };
 
   render() {
@@ -28,7 +28,7 @@ class Masthead extends Component {
 
     const { roles, user, location } = this.props;
     const avoidPath = location.pathname;
-    console.log(location.pathname);
+
     const bgStyle = {
       backgroundImage:
         'url(' +

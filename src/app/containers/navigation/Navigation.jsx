@@ -37,9 +37,9 @@ class Navigation extends Component {
       });
   }
 
-  logout = () => {
+  logout = async () => {
     const { onLogout } = this.props;
-    onLogout();
+    await onLogout();
   };
 
   render() {
