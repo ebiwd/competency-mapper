@@ -84,16 +84,17 @@ const Footer = () => {
               Terms of use
             </a>
           </span>
+          <span className="vf-footer__legal-text">
+            <a
+              className="vf-footer__link"
+              href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
+            >
+              Privacy notice
+            </a>
+          </span>
         </p>
       </div>
-      <div>
-        <a
-          className="vf-footer__link"
-          href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
-        >
-          Privacy notice
-        </a>
-      </div>
+
       <div className="vf-u-margin__top--200" />
       <p className="vf-footer__notice">
         Contact us at competency [at] ebi.ac.uk if you have any questions,

@@ -46,14 +46,22 @@ class HttpService {
   }
 
   post(url, body, option = 'hal+json') {
-    return axios.post(apiUrl + url, body, {
+    // return axios.post(apiUrl + url, body, {
+    //   headers: this.headers.get(option),
+    //   withCredentials: true
+    // });
+    return axios.post(process.env.REACT_APP_HTTPS_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
   }
 
   patch(url, body, option = 'hal+json') {
-    return axios.patch(apiUrl + url, body, {
+    // return axios.patch(apiUrl + url, body, {
+    //   headers: this.headers.get(option),
+    //   withCredentials: true
+    // });
+    return axios.patch(process.env.REACT_APP_HTTPS_CMS_API_URL + url, body, {
       headers: this.headers.get(option),
       withCredentials: true
     });
