@@ -68,6 +68,23 @@ const Footer = () => {
             />
           </figure>
         </div>
+        <p className="vf-footer__legal">
+          <span className="vf-footer__legal-text">Copyright © EMBL 2022</span>
+          {/*<span className="vf-footer__legal-text">*/}
+          {/*  EMBL-EBI is part of the*/}
+          {/*  <a className="vf-footer__link" href="//www.embl.org">*/}
+          {/*    European Molecular Biology Laboratory*/}
+          {/*  </a>*/}
+          {/*</span>*/}
+          <span className="vf-footer__legal-text">
+            <a
+              className="vf-footer__link"
+              href="//www.ebi.ac.uk/about/terms-of-use"
+            >
+              Terms of use
+            </a>
+          </span>
+        </p>
       </div>
       <div>
         <a
