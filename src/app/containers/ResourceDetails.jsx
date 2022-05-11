@@ -55,9 +55,8 @@ class ResourceDetails extends React.Component {
         this.setState({ csrf: findresponse2 });
       });
 
-    console.log('location', window.location.href);
-
     let training_resource_id = '';
+    console.log('this.props.location.state', this.props.location.state);
     if (this.props.location.state) {
       training_resource_id = this.props.location.state.training_resource_id;
     } else {
