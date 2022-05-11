@@ -338,27 +338,37 @@ table tbody tr:nth-child(even) {
   footer {
     display: none;
   }
+
   .vf-button {
     display: none;
   }
-  .profile_navigation {
-    /*display: none*/
-  }
+
   .submit_fixed {
     display: none;
   }
+
   nav {
     display: none;
   }
-  a {
-    display: none;
+
+  .vf-content h2:not([class*='vf-']) {
+    font-size: 20px;
   }
+
+  .vf-content h3:not([class*='vf-']) {
+    font-size: 18px;
+  }
+
   .masthead-inner {
     display: none;
   }
 
   #main-content-area {
     margin-top: 0px;
+  }
+
+  .profile_navigation {
+    display: none;
   }
 
   /* #main-content-area:before {
@@ -392,13 +402,22 @@ table tbody tr:nth-child(even) {
     background-color: rgb(233, 180, 0) !important;
   }
 
-  .vf-grid__col--span-3 {
+  /* .vf-grid__col--span-3 {
     float: left;
+  }
+
+  .vf-grid__col-5 {
+    float: left;
+  } */
+
+  .vf-grid__col--span-1 {
+    float: right;
   }
 
   .competency_title {
     font-size: 14px;
   }
+
   .vf-text-heading--5 {
     font-weight: normal;
   }
@@ -406,10 +425,18 @@ table tbody tr:nth-child(even) {
   .vf-grid__col-4 {
     grid-template-columns: repeat(4, 1fr);
   }
+
+  .vf-grid__col-5 {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .vf-grid {
+    grid-auto-flow: column;
+  }
 }
 
 .tooltip-custom p {
-  font-size: 18px !important ;
+  font-size: 18px !important;
   color: #fff !important;
 }
 
@@ -442,6 +469,7 @@ table tbody tr:nth-child(even) {
 .customOverlay {
   background: rgba(36, 123, 160, 0.7);
 }
+
 .customModal {
   background: #b2dbbf;
   max-width: 500px;

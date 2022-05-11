@@ -375,9 +375,13 @@ export const ProfileViewGuest = props => {
 
       <form onSubmit={e => handlePrint(e)}>
         <div className="submit_fixed">
-          <button className="button" type="submit">
+          <button className="vf-button vf-button--secondary" type="submit">
             Print <i className="icon icon-common icon-print" />
           </button>
+          <p style={{ paddingTop: '30px' }}>
+            [Please enable background graphics in the print preview in order to
+            get better print output]
+          </p>
         </div>
       </form>
     </div>

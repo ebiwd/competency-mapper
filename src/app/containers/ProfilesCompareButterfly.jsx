@@ -382,7 +382,7 @@ export const ProfilesCompareButterfly = props => {
             ''
           )}
         </div>
-        <div style={{ textAling: 'center' }}>
+        <div style={{ textAling: 'center' }} className="submit_fixed">
           <button
             href="#"
             className="vf-button vf-button--secondary"
@@ -390,6 +390,10 @@ export const ProfilesCompareButterfly = props => {
           >
             Print <i className="icon icon-common icon-print" />
           </button>
+          <p style={{ paddingTop: '30px' }}>
+            [Please enable background graphics in the print preview in order to
+            get better print output]
+          </p>
         </div>
         <div />
       </div>
