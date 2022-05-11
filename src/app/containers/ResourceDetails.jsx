@@ -54,9 +54,7 @@ class ResourceDetails extends React.Component {
       .then(findresponse2 => {
         this.setState({ csrf: findresponse2 });
       });
-
     let training_resource_id = '';
-    console.log('this.props.location.state', this.props.location.state);
     if (this.props.location.state) {
       training_resource_id = this.props.location.state.training_resource_id;
     } else {
@@ -64,16 +62,11 @@ class ResourceDetails extends React.Component {
       training_resource_id = url.searchParams.get('id');
     }
     let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}`;
-    // let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${
-    //     this.props.location.state.training_resource_id
-    // }&timestamp=${Date.now()}`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse3 => {
         this.setState({ resource: findresponse3 });
       });
-
-    //fetch(`${apiUrl}/api/v1/framework?_format=json`)
     fetch(`${apiUrl}/api/version_manager?_format=json`)
       .then(Response => Response.json())
       .then(findresponse => {

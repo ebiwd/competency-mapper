@@ -1,9 +1,9 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
-//import Parser from 'html-react-parser';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import { apiUrl } from '../services/http/http';
+import { slugify } from '../services/util/slugifier';
 
 class ResourcesList extends React.Component {
   constructor(props) {
@@ -243,7 +243,16 @@ class ResourcesList extends React.Component {
           <td className="vf-table__cell">{index + 1} </td>
           <td className="vf-table__cell">
             <div style={{ maxWidth: '500px' }}>
-              <Link to={'/training-resources/' + item.id}>{item.title} </Link>
+              <Link
+                to={{
+                  pathname: `/training-resources/${slugify(item.title)}`,
+                  state: {
+                    training_resource_id: item.id
+                  }
+                }}
+              >
+                {item.title}
+              </Link>
             </div>
           </td>
           <td className="vf-table__cell">
