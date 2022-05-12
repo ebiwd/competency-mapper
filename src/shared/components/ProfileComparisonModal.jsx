@@ -98,6 +98,16 @@ export const ProfileComparisonModal = props => {
                   }}
                 >
                   <option value="0">Select role</option>
+                  {localStorage.getItem('guestProfile') ? (
+                    <option value={'guest'}>
+                      {
+                        JSON.parse(localStorage.getItem('guestProfile'))
+                          .job_title
+                      }
+                    </option>
+                  ) : (
+                    ''
+                  )}
                   {profiles
                     ? profiles.map((profile, index) => {
                         return (

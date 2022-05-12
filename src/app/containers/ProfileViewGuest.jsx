@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useHistory } from 'react-router-dom';
 import Parser from 'html-react-parser';
 
 import { apiUrl } from '../services/http/http';
@@ -9,13 +9,18 @@ import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import user_icon from './user_icon.png';
+import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 //const $ = window.$;
 
 export const ProfileViewGuest = props => {
+  let history = useHistory();
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
 
   const [profile, setProfile] = useState();
+  const [profiles, setProfiles] = useState();
+  const [selectedProfileId, setSelectedProfileId] = useState();
+  const [comparisonError, setComparisonError] = useState(null);
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
 
@@ -31,6 +36,16 @@ export const ProfileViewGuest = props => {
   //let profile2Expertise = '';
   let width2 = '';
   //let floatRight = '';
+
+  const redirectToCompare = e => {
+    if (selectedProfileId) {
+      history.push(
+        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${'guest'}/${selectedProfileId}`
+      );
+    } else {
+      setComparisonError('Select a role to compare');
+    }
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -50,6 +65,17 @@ export const ProfileViewGuest = props => {
         .then(Response => Response.json())
         .then(findresponse => {
           setFramework(findresponse);
+        });
+      await fetch(
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
+      )
+        .then(Response => Response.json())
+        .then(findresponse => {
+          const profilesExcludingCurrentProfile = findresponse.filter(
+            p =>
+              p.id !== props.match.params.id && p.publishing_status === 'Live'
+          );
+          setProfiles(profilesExcludingCurrentProfile);
         });
     };
     fetchData();
@@ -269,6 +295,17 @@ export const ProfileViewGuest = props => {
           </h2>
 
           <div style={{ float: 'right' }}>
+            <ProfileComparisonModal
+              profiles={profiles}
+              profile={profile}
+              comparisonError={comparisonError}
+              setSelectedProfileId={id => {
+                setSelectedProfileId(id);
+              }}
+              redirectToCompare={() => {
+                redirectToCompare();
+              }}
+            />
             <ul>
               <li className="profile_navigation">
                 <Link
@@ -334,21 +371,6 @@ export const ProfileViewGuest = props => {
             <p />
           </div>
           <p>&nbsp;</p>
-          {/* <div className="vf-grid vf-grid__col-4">
-            <div className="vf-grid__col--span-3" />
-            <div className="vf-grid__col--span-1" >
-              <Link
-                // className="vf-button vf-button--sm vf-button--primary"
-                className='vf-link'
-                to={`/framework/${frameworkName}/${frameworkVersion}/profile/map/guest`}
-                style={{float:'right'}}
-              >
-                Map competencies <i className="icon icon-common icon-cog" />{' '}
-              </Link>
-              <div class="vf-u-margin__bottom--800"> </div>
-            </div>
-
-          </div> */}
 
           <div className="vf-grid vf-grid__col-4">
             <div className="vf-grid__col--span-1">
