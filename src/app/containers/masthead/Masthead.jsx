@@ -44,7 +44,8 @@ class Masthead extends Component {
         {!avoidPath.includes('profile/view') &&
         !avoidPath.includes('profile/create') &&
         !avoidPath.includes('profiles/compare') &&
-        !avoidPath.includes('profile/edit') ? (
+        !avoidPath.includes('profile/edit') &&
+        !avoidPath.includes('profile/map') ? (
           <>
             <section className="vf-hero | vf-u-fullbleed" style={bgStyle}>
               <div className="vf-hero__content | vf-box | vf-stack vf-stack--400">
