@@ -48,7 +48,7 @@ class ResourceDetails extends React.Component {
   }
 
   fetchData() {
-    let csrfURL = `${apiUrl}/rest/session/token`;
+    let csrfURL = `${apiUrl}/rest/session/token?source=competencyhub`;
     fetch(csrfURL)
       .then(Response => Response)
       .then(findresponse2 => {
@@ -61,13 +61,13 @@ class ResourceDetails extends React.Component {
       const url = new URL(window.location.href);
       training_resource_id = url.searchParams.get('id');
     }
-    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}`;
+    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}&source=competencyhub`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse3 => {
         this.setState({ resource: findresponse3 });
       });
-    fetch(`${apiUrl}/api/version_manager?_format=json`)
+    fetch(`${apiUrl}/api/version_manager?_format=json&source=competencyhub`)
       .then(Response => Response.json())
       .then(findresponse => {
         this.setState({
@@ -196,7 +196,6 @@ class ResourceDetails extends React.Component {
   }
 
   archiveHandle(rid, status, event) {
-    console.log(status);
     let archivedStatus = '';
     if (status === 1) {
       archivedStatus = false;
@@ -204,7 +203,7 @@ class ResourceDetails extends React.Component {
       archivedStatus = true;
     }
     let token = localStorage.getItem('csrf_token');
-    fetch(`${apiUrl}/node/` + rid + '?_format=hal_json', {
+    fetch(`${apiUrl}/node/` + rid + '?_format=hal_json&source=competencyhub', {
       credentials: 'include',
       method: 'PATCH',
       cookies: 'x-access-token',
