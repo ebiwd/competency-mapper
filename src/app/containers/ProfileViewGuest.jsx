@@ -71,11 +71,7 @@ export const ProfileViewGuest = props => {
       )
         .then(Response => Response.json())
         .then(findresponse => {
-          const profilesExcludingCurrentProfile = findresponse.filter(
-            p =>
-              p.id !== props.match.params.id && p.publishing_status === 'Live'
-          );
-          setProfiles(profilesExcludingCurrentProfile);
+          setProfiles(findresponse);
         });
     };
     fetchData();

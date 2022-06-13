@@ -30,6 +30,7 @@ const customStyles = {
 };
 
 export const ProfileComparisonModal = props => {
+  const includeGuestProfile = props.includeGuestProfile;
   const [showModal, setShowModal] = useState(false);
   const currentProfile = props.profile;
   const profiles = props.profiles;
@@ -98,7 +99,8 @@ export const ProfileComparisonModal = props => {
                   }}
                 >
                   <option value="0">Select role</option>
-                  {localStorage.getItem('guestProfile') ? (
+                  {localStorage.getItem('guestProfile') &&
+                  includeGuestProfile ? (
                     <option value={'guest'}>
                       {
                         JSON.parse(localStorage.getItem('guestProfile'))

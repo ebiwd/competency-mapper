@@ -337,6 +337,7 @@ export const ProfileView = props => {
                 <ProfileComparisonModal
                   profiles={profiles}
                   profile={profile}
+                  includeGuestProfile={true}
                   comparisonError={comparisonError}
                   setSelectedProfileId={id => {
                     setSelectedProfileId(id);
