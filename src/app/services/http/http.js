@@ -5,7 +5,7 @@ const checkUser = localStorage.getItem('userid');
 
 export const apiUrl = checkUser
   ? process.env.REACT_APP_HTTPS_CMS_API_URL
-  : process.env.REACT_APP_API_URL;
+  : process.env.REACT_APP_PROXY_API_URL;
 
 // export const apiUrl = process.env.REACT_APP_HTTPS_CMS_API_URL;
 
