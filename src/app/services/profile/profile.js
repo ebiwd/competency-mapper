@@ -36,7 +36,7 @@ class ProfileService {
     fileid
   ) {
     const response = await this.http.patch(
-      `node/${profileId}?_format=hal_json`,
+      `/node/${profileId}?_format=hal_json`,
       Body.editProfile(
         profileId,
         title,
@@ -56,7 +56,7 @@ class ProfileService {
 
   async mapProfile(profileId, mapping) {
     const response = await this.http.patch(
-      `/api/bioexcel/2.0/profiles?_format=json`,
+      `/api/permedcoe/2.0/profiles?_format=json`,
       Body.mapProfile(profileId, mapping),
       'json'
     );

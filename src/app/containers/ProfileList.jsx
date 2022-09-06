@@ -20,6 +20,8 @@ const ProfileList = props => {
   const [userFrameworks, setUserFrameworks] = useState([]);
 
   var profilesToCompare = [];
+  const checkUser = localStorage.getItem('userid');
+  const needTimeStamp = checkUser ? '&timestamp=' + Date.now() : '';
 
   var userName = localStorage.getItem('user')
     ? localStorage.getItem('user')
@@ -31,7 +33,7 @@ const ProfileList = props => {
 
       // Removed timestamp
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -159,47 +161,47 @@ const ProfileList = props => {
           <div>
             <h3>Career profiles</h3>
           </div>
-          {/*<div>*/}
-          {/*  <span style={{ float: 'right' }}>*/}
-          {/*    {localStorage.getItem('roles') && checkFMAccess() ? (*/}
-          {/*      <span>*/}
-          {/*        <Link*/}
-          {/*          className="vf-button vf-button--primary vf-button--sm"*/}
-          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/`}*/}
-          {/*        >*/}
-          {/*          {' '}*/}
-          {/*          Create reference profile{' '}*/}
-          {/*          <i className="icon icon-common icon-user-plus" />*/}
-          {/*        </Link>*/}
-          {/*        <Link*/}
-          {/*          onClick={e => redirectToCompare(e)}*/}
-          {/*          className="vf-button vf-button--tertiary vf-button--sm"*/}
-          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${*/}
-          {/*            profilesToCompare[0]*/}
-          {/*          }/${profilesToCompare[1]}`}*/}
-          {/*        >*/}
-          {/*          {' '}*/}
-          {/*          Compare selected profiles{' '}*/}
-          {/*          <i className="icon icon-common icon-compare" />*/}
-          {/*        </Link>*/}
-          {/*      </span>*/}
-          {/*    ) : (*/}
-          {/*      <span>*/}
-          {/*        <Link*/}
-          {/*          onClick={e => redirectToCompare(e)}*/}
-          {/*          className="vf-button vf-button--tertiary vf-button--sm"*/}
-          {/*          to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${*/}
-          {/*            profilesToCompare[0]*/}
-          {/*          }/${profilesToCompare[1]}`}*/}
-          {/*        >*/}
-          {/*          {' '}*/}
-          {/*          Compare selected profiles{' '}*/}
-          {/*          <i className="icon icon-common icon-compare" />*/}
-          {/*        </Link>*/}
-          {/*      </span>*/}
-          {/*    )}*/}
-          {/*  </span>*/}
-          {/*</div>*/}
+          <div>
+            <span style={{ float: 'right' }}>
+              {localStorage.getItem('roles') && checkFMAccess() ? (
+                <span>
+                  <Link
+                    className="vf-button vf-button--primary vf-button--sm"
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profile/create/`}
+                  >
+                    {' '}
+                    Create reference profile{' '}
+                    <i className="icon icon-common icon-user-plus" />
+                  </Link>
+                  <Link
+                    onClick={e => redirectToCompare(e)}
+                    className="vf-button vf-button--tertiary vf-button--sm"
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+                      profilesToCompare[0]
+                    }/${profilesToCompare[1]}`}
+                  >
+                    {' '}
+                    Compare selected profiles{' '}
+                    <i className="icon icon-common icon-compare" />
+                  </Link>
+                </span>
+              ) : (
+                <span>
+                  <Link
+                    onClick={e => redirectToCompare(e)}
+                    className="vf-button vf-button--tertiary vf-button--sm"
+                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+                      profilesToCompare[0]
+                    }/${profilesToCompare[1]}`}
+                  >
+                    {' '}
+                    Compare selected profiles{' '}
+                    <i className="icon icon-common icon-compare" />
+                  </Link>
+                </span>
+              )}
+            </span>
+          </div>
         </div>
         <hr />
         <div className="vf-grid vf-grid__col-3">

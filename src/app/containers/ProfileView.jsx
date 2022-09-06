@@ -34,6 +34,9 @@ export const ProfileView = props => {
     }
   };
 
+  const checkUser = localStorage.getItem('userid');
+  const needTimeStamp = checkUser ? '&timestamp=' + Date.now() : '';
+
   var competencyView = '';
   var expertise_levels_legend = [];
   var attribute_types = [];
@@ -51,7 +54,7 @@ export const ProfileView = props => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -62,7 +65,7 @@ export const ProfileView = props => {
           setProfiles(profilesExcludingCurrentProfile);
         });
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub&timestamp=${needTimeStamp}`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -70,7 +73,7 @@ export const ProfileView = props => {
         });
 
       await fetch(
-        `${apiUrl}/api/version_manager?_format=json&source=competencyhub`
+        `${apiUrl}/api/version_manager?_format=json&source=competencyhub&${needTimeStamp}`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -78,7 +81,7 @@ export const ProfileView = props => {
         });
 
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
       )
         .then(Response => Response.json())
         .then(findresponse => {

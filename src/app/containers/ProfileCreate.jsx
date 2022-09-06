@@ -196,7 +196,7 @@ export const ProfileCreate = props => {
       props.history.push(
         `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/map/${
           response.nid[0].value
-        }/${response.path[0].alias}`
+        }`
       );
     }
   };

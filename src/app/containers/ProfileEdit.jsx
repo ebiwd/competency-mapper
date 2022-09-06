@@ -159,7 +159,7 @@ export const ProfileEdit = props => {
         props.history.push(
           `/framework/${frameworkName}/${frameworkVersion}/profile/map/${
             response.nid[0].value
-          }/alias`
+          }`
         );
       }
     }
