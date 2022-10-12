@@ -12,7 +12,7 @@
     "axios": "^0.21.1",
     "html-react-parser": "^0.7.1",
     "json-2-csv": "^3.10.2",
-    "jspdf": "^1.5.3",
+    "jspdf": "^2.5.1",
     "lodash-es": "^4.17.11",
     "moment": "^2.24.0",
     "notistack": "^0.8.6",
