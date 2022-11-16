@@ -103,6 +103,13 @@
       crossorigin="anonymous"
     />
 
+    <link
+      rel="stylesheet"
+      href="https://assets.emblstatic.net/vf/v2.5.0-beta.5/assets/ebi-header-footer/ebi-header-footer.css"
+      type="text/css"
+      media="all"
+    />
+
     <!-- Start Single Page Apps for GitHub Pages -->
     <script type="text/javascript">
       // Single Page Apps for GitHub Pages
@@ -136,12 +143,20 @@
     <!-- End Single Page Apps for GitHub Pages -->
   </head>
   <body class="vf-body">
+    <header
+      id="masthead-black-bar"
+      class="clearfix masthead-black-bar | ebi-header-footer vf-content vf-u-fullbleed"
+    ></header>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root" class="vf-content"></div>
 
     <!--<link rel="import" href="https://www.embl.org/api/v1/pattern.html?filter-content-type=article&filter-id=106902&pattern=node-body&source=contenthub" data-target="self" data-embl-js-content-hub-loader> -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script
+      defer="defer"
+      src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/js/script.js"
+    ></script>
     <!--<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
     <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/libraries/foundation-6/js/foundation.min.js"></script>
     <script src="https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.3/js/foundationExtendEBI.min.js"></script>
@@ -158,9 +173,28 @@
       });
     </script> -->
     <!-- new js from VF -->
-    <script
+    <!-- <script
       defer
       src="https://assets.emblstatic.net/vf/v2.4.5/scripts/scripts.js"
-    ></script>
+    ></script> -->
+    <section class="vf-u-fullbleed | vf-u-background-color-ui--grey--light">
+      <div class="vf-body">
+        <div
+          class="vf-banner-elixir vf-banner"
+          data-vf-js-banner-elixir
+          data-vf-js-banner-elixir-logo=""
+          data-vf-js-banner-elixir-name="EMBL-EBI Training"
+          data-vf-js-banner-elixir-description="The EMBL-EBI Training Programme contributes to the ELIXIR Training Platform"
+          data-vf-js-banner-elixir-link="https://www.elixir-europe.org/platforms/training"
+        ></div>
+      </div>
+    </section>
+    <link
+      rel="import"
+      href="https://www.embl.org/api/v1/pattern.html?filter-content-type=article&filter-id=106902&pattern=node-body&source=contenthub"
+      data-target="self"
+      data-embl-js-content-hub-loader
+    />
+    <script src="https://assets.emblstatic.net/vf/v2.5.0-beta.5/scripts/scripts.js"></script>
   </body>
 </html>

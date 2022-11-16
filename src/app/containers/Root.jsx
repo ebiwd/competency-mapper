@@ -36,7 +36,7 @@ import Documentation from './Documentation';
 import Login from './Login';
 import ManageFrameworks from '../containers/navigation/ManageFrameworks';
 //import Navigation from '../containers/navigation/Navigation';
-import Footer from '../components/Footer';
+// import Footer from '../components/Footer';
 import Breadcrumbs from '../containers/Breadcrumbs';
 import DevelopYourCourses from '../containers/DevelopYourCourses';
 
@@ -133,7 +133,7 @@ class Root extends Component {
           preventDuplicate
         >
           <Breadcrumbs />
-          <div className="vf-u-margin__top--200" />
+          {/* <div className="vf-u-margin__top--200" /> */}
           <Switch>
             <Masthead
               roles={roles}
@@ -310,7 +310,7 @@ class Root extends Component {
               </Switch>
             </main>
           </section>
-          <Footer />
+          {/* <Footer /> */}
         </SnackbarProvider>
       </>
     );
