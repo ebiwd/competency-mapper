@@ -5,26 +5,29 @@ import BioExcel from '../components/assets/Bioexcel.png';
 
 const Footer = () => {
   return (
-    <footer className="vf-footer">
-      <div className="vf-footer__inner">
+    <div>
+      <div className="vf-u-margin__top--1600" />
+      <hr class="vf-divider" />
+      <div className="vf-u-margin__top--1600" />
+      <div>
         <div className="vf-grid">
-          <p className="vf-footer__notice">
+          <p>
             The Competency Hub's web infrastructure is developed by the
-            <a className="vf-footer__link" href="http://www.ebi.ac.uk/training">
+            <a className="vf-link" href="http://www.ebi.ac.uk/training">
               {' '}
               EMBL-EBI Training Team
             </a>{' '}
             with support from the{' '}
-            <a className="vf-footer__link" href="https://bioexcel.eu/">
+            <a className="vf-link" href="https://bioexcel.eu/">
               BioExcel
             </a>{' '}
             and{' '}
-            <a href="https://permedcoe.eu/" className="vf-footer__link">
+            <a href="https://permedcoe.eu/" className="vf-link">
               PerMedCoE Centres of Excellence
             </a>
             . BioExcel and PerMedCoE are funded by the{' '}
             <a
-              className="vf-footer__link"
+              className="vf-link"
               href="https://ec.europa.eu/programmes/horizon2020/en"
             >
               {' '}
@@ -32,7 +35,7 @@ const Footer = () => {
             </a>{' '}
             under grant agreements 823830, 675728, 951773. Both projects are
             part of{' '}
-            <a className="vf-footer__link" href="https://www.hpccoe.eu/">
+            <a className="vf-link" href="https://www.hpccoe.eu/">
               {' '}
               the EU HPC CoE Initiative
             </a>
@@ -68,25 +71,16 @@ const Footer = () => {
             />
           </figure>
         </div>
-        <p className="vf-footer__legal">
-          <span className="vf-footer__legal-text">Copyright © EMBL 2022</span>
-          {/*<span className="vf-footer__legal-text">*/}
-          {/*  EMBL-EBI is part of the*/}
-          {/*  <a className="vf-footer__link" href="//www.embl.org">*/}
-          {/*    European Molecular Biology Laboratory*/}
-          {/*  </a>*/}
-          {/*</span>*/}
-          <span className="vf-footer__legal-text">
-            <a
-              className="vf-footer__link"
-              href="//www.ebi.ac.uk/about/terms-of-use"
-            >
+        <p>
+          <span>Copyright © EMBL 2022</span>
+          <span>
+            <a className="vf-link" href="//www.ebi.ac.uk/about/terms-of-use">
               Terms of use
             </a>
           </span>
-          <span className="vf-footer__legal-text">
+          <span>
             <a
-              className="vf-footer__link"
+              className="vf-link"
               href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
             >
               Privacy notice
@@ -96,11 +90,12 @@ const Footer = () => {
       </div>
 
       <div className="vf-u-margin__top--200" />
-      <p className="vf-footer__notice">
+      <p>
         Contact us at competency [at] ebi.ac.uk if you have any questions,
         comments or suggestions.
       </p>
-    </footer>
+      <div className="vf-u-margin__top--1600" />
+    </div>
   );
 };
 

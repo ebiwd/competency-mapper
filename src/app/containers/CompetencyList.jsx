@@ -397,16 +397,34 @@ class CompetencyList extends Component {
             {localStorage.getItem('roles') ? (
               <TabPanel>
                 <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-                <div className="vf-u-margin__top--800" />
-                <Copyright />
+                <div className="vf-grid">
+                  <div>
+                    <FrameworkVersions
+                      framework={framework}
+                      versions={versions}
+                    />
+                  </div>
+                  <div>
+                    <Copyright framework={framework} />
+                  </div>
+                </div>
               </TabPanel>
             ) : this.state.profileCount > 0 ? (
               <TabPanel>
                 <ProfileList framework={framework} version={frameworkVersion} />
-                <FrameworkVersions framework={framework} versions={versions} />
-                <div className="vf-u-margin__top--800" />
-                <Copyright />
+                <div className="vf-u-margin__top--1600" />
+                <div className="vf-grid">
+                  <div>
+                    <FrameworkVersions
+                      framework={framework}
+                      versions={versions}
+                    />
+                  </div>
+                  <div>
+                    <Copyright framework={framework} />
+                  </div>
+                </div>
+                <div className="vf-u-margin__top--1600" />
               </TabPanel>
             ) : (
               ''
@@ -416,11 +434,13 @@ class CompetencyList extends Component {
               <TabPanel>
                 <PathwaysList framework={framework} />
                 <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--1600" />
               </TabPanel>
             ) : this.state.pathwayCount > 0 ? (
               <TabPanel>
                 <PathwaysList framework={framework} />
                 <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--1600" />
               </TabPanel>
             ) : (
               ''
@@ -461,6 +481,7 @@ class CompetencyList extends Component {
                   <Copyright framework={framework} />
                 </div>
               </div>
+              <div className="vf-u-margin__top--1600" />
             </TabPanel>
 
             {this.state.trainingResourcesExist ? (
@@ -478,6 +499,7 @@ class CompetencyList extends Component {
             <TabPanel>
               <FAIRDownload />
               <FrameworkVersions framework={framework} versions={versions} />
+              <div className="vf-u-margin__top--1600" />
             </TabPanel>
           </Tabs>
         ) : (

@@ -10,7 +10,7 @@ import PropTypes from 'prop-types';
 
 import Navigation from './navigation/Navigation';
 import LoginForm from './login-form/LoginForm';
-
+import Footer from '../components/Footer';
 import { login, logout } from '../services/auth/auth';
 
 import Association from './Association';
@@ -141,6 +141,7 @@ class Frameworks extends Component {
           })}
         </div>
         <div className="vf-u-margin__top--800" />
+        <Footer />
       </div>
     );
   }
