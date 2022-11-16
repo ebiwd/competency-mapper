@@ -173,7 +173,7 @@ const ProfileList = props => {
                     Create reference profile{' '}
                     <i className="icon icon-common icon-user-plus" />
                   </Link>
-                  <Link
+                  {/* <Link
                     onClick={e => redirectToCompare(e)}
                     className="vf-button vf-button--tertiary vf-button--sm"
                     to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
@@ -183,11 +183,11 @@ const ProfileList = props => {
                     {' '}
                     Compare selected profiles{' '}
                     <i className="icon icon-common icon-compare" />
-                  </Link>
+                  </Link> */}
                 </span>
               ) : (
                 <span>
-                  <Link
+                  {/* <Link
                     onClick={e => redirectToCompare(e)}
                     className="vf-button vf-button--tertiary vf-button--sm"
                     to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
@@ -197,7 +197,7 @@ const ProfileList = props => {
                     {' '}
                     Compare selected profiles{' '}
                     <i className="icon icon-common icon-compare" />
-                  </Link>
+                  </Link> */}
                 </span>
               )}
             </span>
