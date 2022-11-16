@@ -22,6 +22,11 @@ class ResourceDetails extends React.Component {
     this.handleCloseModal = this.handleCloseModal.bind(this);
   }
 
+  getSlugFromURLBar() {
+    const url = new URL(window.location.href);
+    return url.pathname.split('training-resources/').pop();
+  }
+
   handleOpenModal(event, temp) {
     this.setState({ showModal: true });
     this.setState({ selectedFramework: event });
@@ -54,14 +59,8 @@ class ResourceDetails extends React.Component {
       .then(findresponse2 => {
         this.setState({ csrf: findresponse2 });
       });
-    let training_resource_id = '';
-    if (this.props.location.state) {
-      training_resource_id = this.props.location.state.training_resource_id;
-    } else {
-      const url = new URL(window.location.href);
-      training_resource_id = url.searchParams.get('id');
-    }
-    let resourcesURL = `${apiUrl}/api/resources/?_format=json&id=${training_resource_id}&timestamp=${Date.now()}&source=competencyhub`;
+    this.getSlugFromURLBar();
+    let resourcesURL = `${apiUrl}/api/resources/?_format=json&slug=${this.getSlugFromURLBar()}&timestamp=${Date.now()}&source=competencyhub`;
     fetch(resourcesURL)
       .then(Response => Response.json())
       .then(findresponse3 => {

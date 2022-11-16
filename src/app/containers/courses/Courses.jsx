@@ -186,7 +186,8 @@ class Courses extends Component {
           </li>
         ));
     const resources = filteredCourses.map((course, index) => (
-      <tr key={course.id}>
+      // <tr key={course.id}>
+      <tr key={course.slug}>
         <td>
           {index +
             1 +
@@ -195,7 +196,8 @@ class Courses extends Component {
         <td>
           <Link
             to={{
-              pathname: `/training-resources/${slugify(course.title)}`,
+              // pathname: `/training-resources/${slugify(course.title)}`,
+              pathname: `/training-resources/${course.slug}`,
               state: {
                 training_resource_id: course.id
               }
