@@ -319,7 +319,16 @@ class ResourceDetails extends React.Component {
                                         }
                                       >
                                         <p>
-                                          <a className="vf-link" href="#">
+                                          <a
+                                            className="vf-link"
+                                            href={`/framework/${profile.title
+                                              .toLowerCase()
+                                              .replace(/\s+/g, '')}/${
+                                              profile.version
+                                            }/competency/details/${
+                                              competency.id
+                                            }`}
+                                          >
                                             {' '}
                                             {competency.title}{' '}
                                           </a>

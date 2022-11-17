@@ -72,18 +72,12 @@ const Footer = () => {
           </figure>
         </div>
         <p>
-          <span>Copyright © EMBL 2022</span>
-          <span>
-            <a className="vf-link" href="//www.ebi.ac.uk/about/terms-of-use">
-              Terms of use
-            </a>
-          </span>
           <span>
             <a
               className="vf-link"
               href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
             >
-              Privacy notice
+              Privacy notice for competency hub
             </a>
           </span>
         </p>
