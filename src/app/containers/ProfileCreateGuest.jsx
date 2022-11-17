@@ -60,12 +60,14 @@ export const ProfileCreateGuest = props => {
       try {
         const promise1 = http
           .get(
-            `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json`
+            `${apiUrl}/api/${frameworkName}/${frameworkVersion}?_format=json&timestamp=${Date.now()}`
           )
           .then(response1 => response1.data);
 
         const promise2 = http
-          .get(`${apiUrl}/api/version_manager?_format=json`)
+          .get(
+            `${apiUrl}/api/version_manager?_format=json&timestamp=${Date.now()}`
+          )
           .then(response2 => response2.data);
 
         const [data1] = await Promise.all([promise1, promise2]);
