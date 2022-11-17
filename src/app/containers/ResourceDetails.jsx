@@ -307,7 +307,7 @@ class ResourceDetails extends React.Component {
                           {profile.domains.map((domain, index) => (
                             <div key={index}>
                               <h3>{domain.title}</h3>
-                              <ul className="vf-list">
+                              <ul className="vf-list vf-list--unordered">
                                 {domain.competencies.map(
                                   (competency, index) => (
                                     <li className="vf-list__item" key={index}>
@@ -318,17 +318,17 @@ class ResourceDetails extends React.Component {
                                             : ''
                                         }
                                       >
-                                        <h4> {competency.title} </h4>
-                                        {competency.archived === 'archived' ? (
+                                        <p> {competency.title} </p>
+                                        {/* {competency.archived === 'archived' ? (
                                           <ItemVersions
                                             framework="bioexcel"
                                             versions={link}
                                           />
                                         ) : (
                                           ''
-                                        )}
+                                        )} */}
                                       </span>
-                                      <ul
+                                      {/* <ul
                                         className="vf-list"
                                         style={{ marginLeft: '2rem' }}
                                       >
@@ -401,7 +401,7 @@ class ResourceDetails extends React.Component {
                                             </li>
                                           </span>
                                         ))}
-                                      </ul>
+                                      </ul> */}
                                     </li>
                                   )
                                 )}
