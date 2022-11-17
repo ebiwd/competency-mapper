@@ -55,15 +55,14 @@ class Masthead extends Component {
                   {/*</a>*/}
                 </h1>
                 <p className="vf-hero__subheading">
-                  Supporting competency-based training and professional
-                  development.
-                </p>
-                <p className="vf-hero__text">
                   Browse competencies, career profiles and training resources to
-                  advance your career.
-                </p>{' '}
+                  advance your career in the life sciences
+                </p>
+                {/* <p className="vf-hero__text">
+                  Browse competencies, career profiles and training resources to advance your career in the life sciences
+                </p>{' '} */}
                 <Link className="vf-hero__link" to="/about">
-                  Learn more about the Competency Hub
+                  Learn more about competencies and the Competency Hub
                   <svg
                     width="24"
                     height="24"
