@@ -63,7 +63,7 @@ function CompetencyList({
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.id
-              }`}
+              }?scroll=true`}
             >
               <span>
                 <i className="icon icon-spacer icon-common icon-info" />

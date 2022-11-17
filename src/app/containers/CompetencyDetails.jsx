@@ -36,16 +36,20 @@ class CompetencyDetails extends React.Component {
         this.getAttributes(),
         this.getResources()
       ]).then(() => {
-        let element = document.getElementById('training-resources-block');
-        if (element) {
-          element.scrollIntoView();
-          element.scrollIntoView(false);
-          element.scrollIntoView({ block: 'start' });
-          element.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start',
-            inline: 'nearest'
-          });
+        const params = new URLSearchParams(window.location.search);
+        let scroll = params.get('scroll');
+        if (scroll === 'true') {
+          let element = document.getElementById('training-resources-block');
+          if (element) {
+            element.scrollIntoView();
+            element.scrollIntoView(false);
+            element.scrollIntoView({ block: 'start' });
+            element.scrollIntoView({
+              behavior: 'smooth',
+              block: 'start',
+              inline: 'nearest'
+            });
+          }
         }
       });
     } finally {

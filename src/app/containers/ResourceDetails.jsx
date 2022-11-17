@@ -278,8 +278,11 @@ class ResourceDetails extends React.Component {
             {/*{item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}*/}
 
             <div>
-              <h3>Competency Profile</h3>
-
+              <h3>Associated competencies</h3>
+              <p>
+                This resource provides learning to support the development of
+                the following competencies
+              </p>
               <div>
                 {check_array ? (
                   item.competency_profile.map((profile, index) => {

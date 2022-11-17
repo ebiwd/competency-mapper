@@ -77,7 +77,7 @@ const Footer = () => {
               className="vf-link"
               href="https://www.ebi.ac.uk/data-protection/privacy-notice/competency-hub"
             >
-              Privacy notice for competency hub
+              Privacy notice for the Competency Hub
             </a>
           </span>
         </p>
