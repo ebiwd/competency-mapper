@@ -318,7 +318,12 @@ class ResourceDetails extends React.Component {
                                             : ''
                                         }
                                       >
-                                        <p> {competency.title} </p>
+                                        <p>
+                                          <a className="vf-link" href="#">
+                                            {' '}
+                                            {competency.title}{' '}
+                                          </a>
+                                        </p>
                                         {/* {competency.archived === 'archived' ? (
                                           <ItemVersions
                                             framework="bioexcel"
