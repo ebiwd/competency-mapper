@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, history } from 'react';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -21,6 +21,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 import jsonData from './masterList.json';
 import Copyright from './Copyright';
+// import "@visual-framework/vf-tabs/index.scss";
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -279,6 +280,11 @@ class CompetencyList extends Component {
       )
     );
 
+    const changeTabURL = url => {
+      console.log(url);
+      this.props.history.push(url);
+    };
+
     return (
       <>
         <div className="vf-u-margin__top--400" />
@@ -307,7 +313,7 @@ class CompetencyList extends Component {
           >
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`career-profiles`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -318,7 +324,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.profileCount > 0 ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`career-profiles`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -332,7 +338,7 @@ class CompetencyList extends Component {
                 ''
               )}
               {localStorage.getItem('roles') ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -343,7 +349,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.pathwayCount > 0 ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -357,7 +363,7 @@ class CompetencyList extends Component {
                 ''
               )}
 
-              <Tab>
+              <Tab onClick={e => changeTabURL(`competencies`)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
@@ -369,7 +375,7 @@ class CompetencyList extends Component {
               </Tab>
 
               {this.state.trainingResourcesExist ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`training-resources`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -382,7 +388,7 @@ class CompetencyList extends Component {
               ) : (
                 ''
               )}
-              <Tab>
+              <Tab onClick={e => changeTabURL(`export`)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
@@ -513,6 +519,29 @@ class CompetencyList extends Component {
             />
           </div>
         )}
+
+        {/* <div className="vf-tabs">
+          <ul className="vf-tabs__list" data-vf-js-tabs>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--1">Section</a>
+            </li>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--2">A Short Section</a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="vf-tabs-content" data-vf-js-tabs-content>
+          <section className="vf-tabs__section" id="vf-tabs__section--1">
+            <h2>Section 1</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod, tortor nec pharetra ultricies, ante erat imperdiet velit, nec laoreet enim lacus a velit. <a className="vf-link" href="#">Nam luctus</a>, enim in interdum condimentum, nisl diam iaculis lorem, vel volutpat mi leo sit amet lectus. Praesent non odio bibendum magna bibendum accumsan.</p>
+          </section>
+          <section className="vf-tabs__section" id="vf-tabs__section--2">
+            <h2>Section 2</h2>
+            <p>Nullam at diam nec arcu suscipit auctor non a erat. Sed et magna semper, eleifend magna non, facilisis nisl. Proin et est et lorem dictum finibus ut nec turpis. Aenean nisi tortor, euismod a mauris a, mattis scelerisque tortor. Sed dolor risus, varius a nibh id, condimentum lacinia est. In lacinia cursus odio a aliquam. Curabitur tortor magna, laoreet ut rhoncus at, sodales consequat tellus.</p>
+            <a href="http://localhost:3000/training-resources/abc-md-setup-pipeline-using-bioexcel-building-blocks-biobb">Click</a>
+          </section>
+        </div> */}
       </>
     );
   }
