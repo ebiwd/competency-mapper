@@ -189,6 +189,7 @@ export const ProfileView = props => {
           <React.Fragment key={itemIndex + domainIndex}>
             <div key={domainIndex}>
               <div>
+                <div class="vf-u-padding__top--800" />
                 <h4>{domain.title}</h4>{' '}
               </div>
             </div>
@@ -198,14 +199,53 @@ export const ProfileView = props => {
                   <React.Fragment key={compIndex}>
                     <div className="vf-grid vf-grid__col-4">
                       <div className="vf-grid__col--span-3">
-                        <span className="vf-text vf-text-heading--5 competency_title">
-                          {competency.title.length > 150
-                            ? competency.title
-                                .split(' ')
-                                .splice(0, 18)
-                                .join(' ') + ' ..'
-                            : competency.title}
-                        </span>
+                        <details className="vf-details" close>
+                          <summary className="vf-details--summary">
+                            {competency.title.length > 150
+                              ? competency.title
+                                  .split(' ')
+                                  .splice(0, 18)
+                                  .join(' ') + ' ..'
+                              : competency.title}
+                          </summary>
+                          {attribute_types.map((attribute_type, typeIndex) => {
+                            return (
+                              <div key={typeIndex}>
+                                <div />
+                                <ul className="vf-list">
+                                  <div>
+                                    <strong> {attribute_type} </strong>
+                                  </div>
+                                  {competency.attributes
+                                    .filter(
+                                      attribute =>
+                                        attribute.type === attribute_type
+                                    )
+                                    .map((attribute, attrIndex) => {
+                                      return (
+                                        <li
+                                          key={attrIndex}
+                                          className="vf-list__item"
+                                        >
+                                          <span style={{ marginRight: '20px' }}>
+                                            {getAttributeStatus(
+                                              attribute.id,
+                                              'profile1'
+                                            ) ? (
+                                              <i className="icon icon-common icon-check" />
+                                            ) : (
+                                              '-'
+                                            )}
+                                          </span>
+                                          <span>{attribute.title}</span>
+                                        </li>
+                                      );
+                                    })}
+                                </ul>
+                              </div>
+                            );
+                          })}
+                        </details>
                       </div>
                       <div className="vf-grid__col--span-1">
                         <div className="fillerbg">
@@ -234,7 +274,7 @@ export const ProfileView = props => {
                         </div>
                       </div>
                     </div>
-                    <div className="profile_collapsible">
+                    {/* <div className="profile_collapsible">
                       <Collapsible
                         trigger={
                           <div className="open-close-title">
@@ -291,7 +331,7 @@ export const ProfileView = props => {
                           );
                         })}
                       </Collapsible>
-                    </div>
+                    </div> */}
                   </React.Fragment>
                 ))}
               </div>
