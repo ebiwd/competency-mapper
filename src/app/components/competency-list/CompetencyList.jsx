@@ -44,7 +44,7 @@ function CompetencyList({
   return (
     <tr>
       <td>
-        <Collapsible
+        {/* <Collapsible
           trigger={
             <div className="open-close-title">
               <span className="icon icon-common icon-angle-right float-left icon-custom" />
@@ -73,7 +73,25 @@ function CompetencyList({
               </span>
             </Link>
           </div>
-        </Collapsible>
+        </Collapsible> */}
+        <details className="vf-details" close>
+          <summary className="vf-details--summary">{competency.title}</summary>
+          {attributes}
+          <div>
+            <Link
+              to={`/framework/${framework}/${version}/competency/details/${
+                competency.id
+              }?scroll=true`}
+            >
+              <span>
+                <i className="icon icon-spacer icon-common icon-info" />
+                {trainingResourcesExist
+                  ? 'View training resources mapped to this competency'
+                  : 'View more information about this competency'}
+              </span>
+            </Link>
+          </div>
+        </details>
       </td>
     </tr>
   );
