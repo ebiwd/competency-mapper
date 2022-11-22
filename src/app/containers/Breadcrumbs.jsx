@@ -21,6 +21,10 @@ const Breadcrumbs = () => {
       return 'ISCB';
     }
 
+    if (name === 'permedcoe') {
+      return 'PerMedCoE';
+    }
+
     if (name === 'ritrain') {
       return 'RItrain';
     }
@@ -35,6 +39,10 @@ const Breadcrumbs = () => {
 
     if (name === 'datasteward') {
       return 'Data steward';
+    }
+
+    if (name === 'arise') {
+      return 'ARISE';
     }
   };
 
