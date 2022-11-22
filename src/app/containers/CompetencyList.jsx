@@ -51,7 +51,9 @@ class CompetencyList extends Component {
     attributeTypes: [],
     allResourcesFetched: false,
     visibleTabs: [],
-    selectedTabIndex: 0
+    selectedTabIndex: 0,
+    pathnames: this.props.history.location.pathname,
+    pathnames_count: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -100,6 +102,7 @@ class CompetencyList extends Component {
 
   async componentDidMount() {
     const { framework, version: frameworkVersion } = this.props.match.params;
+    this.setState({ pathnames_count: this.state.pathnames.split('/').length });
     try {
       this.activeRequests.startRequest();
       await Promise.all([
@@ -281,8 +284,14 @@ class CompetencyList extends Component {
     );
 
     const changeTabURL = url => {
-      console.log(url);
-      this.props.history.push(url);
+      if (this.state.pathnames_count == 4) {
+        this.props.history.push(
+          `${this.props.history.location.pathname}/${url}`
+        );
+        this.setState({ pathnames_count: 5 });
+      } else {
+        this.props.history.push(url);
+      }
     };
 
     return (
