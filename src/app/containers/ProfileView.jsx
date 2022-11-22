@@ -201,12 +201,13 @@ export const ProfileView = props => {
                       <div className="vf-grid__col--span-3">
                         <details className="vf-details" close>
                           <summary className="vf-details--summary">
-                            {competency.title.length > 150
+                            {/* {competency.title.length > 150
                               ? competency.title
                                   .split(' ')
                                   .splice(0, 18)
                                   .join(' ') + ' ..'
-                              : competency.title}
+                              : competency.title} */}
+                            {competency.title}
                           </summary>
                           {attribute_types.map((attribute_type, typeIndex) => {
                             return (
