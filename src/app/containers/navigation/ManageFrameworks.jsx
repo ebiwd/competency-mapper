@@ -7,6 +7,9 @@ const ManageFrameworks = props => {
   let user = localStorage.getItem('user');
   let token = localStorage.getItem('csrf_token');
 
+  //API change needed here
+  // API should not need to be sent the user id
+
   useEffect(() => {
     const fetchData = () => {
       fetch(`${apiUrl}/api/authorisation/${user}?_format=json`, {

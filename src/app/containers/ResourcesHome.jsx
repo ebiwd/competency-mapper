@@ -15,18 +15,6 @@ class ResourcesHome extends React.Component {
     //this.archiveHandle = this.archiveHandle.bind(this);
   }
 
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
-    console.log(localStorage.getItem('roles'));
-  }
-
   // componentDidUpdate(prevProps, prevState) {
   //   if (this.state.updateFlag) {
   //     this.fetchData();
@@ -112,7 +100,6 @@ class ResourcesHome extends React.Component {
   // }
 
   render() {
-    this.checkUser();
     // let resources = this.state.resources;
     // if (this.state.filter) {
     //   resources = resources.filter(

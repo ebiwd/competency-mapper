@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
 import { apiUrl } from '../services/http/http';
-import { slugify } from '../services/util/slugifier';
+import auth from '../services/util/auth';
 
 class ResourcesList extends React.Component {
   constructor(props) {
@@ -37,17 +37,6 @@ class ResourcesList extends React.Component {
     await this.setState({ activePage: 1 });
     await this.setState({ totalItemsCount: 0 });
     await this.fetchData();
-  }
-
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -86,15 +75,6 @@ class ResourcesList extends React.Component {
     if (this.state.resources[0]) {
       let hitcount = this.state.resources[0].hitcount;
       this.setState({ totalItemsCount: hitcount });
-    }
-  }
-
-  checkAuthor(author_id) {
-    let userid = localStorage.getItem('userid');
-    if (userid === author_id) {
-      return true;
-    } else {
-      return false;
     }
   }
 
@@ -234,8 +214,8 @@ class ResourcesList extends React.Component {
   }
 
   render() {
-    this.checkUser();
     let resources = this.state.resources;
+    console.log('all resources', resources);
     var ListOfResources = '';
     if (resources) {
       ListOfResources = resources.map((item, index) => (
@@ -245,7 +225,7 @@ class ResourcesList extends React.Component {
             <div style={{ maxWidth: '500px' }}>
               <Link
                 to={{
-                  pathname: `/training-resources/${slugify(item.title)}`,
+                  pathname: `/training-resources/${item.slug}`,
                   state: {
                     training_resource_id: item.id
                   }
@@ -284,8 +264,8 @@ class ResourcesList extends React.Component {
             )}
           </td>
           <td className="vf-table__cell">
-            {this.checkAuthor(item.author) ? (
-              <Link to={`/training-resource/edit/${item.id}`}>
+            {auth.currently_logged_in_user.id == item.author ? (
+              <Link to={`/training-resource/edit/${item.slug}`}>
                 <i className="fas fa-edit" />{' '}
               </Link>
             ) : (

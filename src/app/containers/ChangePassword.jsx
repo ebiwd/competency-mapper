@@ -43,14 +43,7 @@ class ChangePassword extends React.Component {
     e.preventDefault();
   }
 
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    }
-  }
-
   render() {
-    this.checkUser();
     return (
       <div>
         <h3>Change password:</h3>

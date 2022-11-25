@@ -21,7 +21,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 
 import jsonData from './masterList.json';
 import Copyright from './Copyright';
-// import "@visual-framework/vf-tabs/index.scss";
+import auth from '../services/util/auth';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -76,11 +76,16 @@ class CompetencyList extends Component {
 
   async setCurrentTab() {
     let visibleTabs = [];
-    if (localStorage.getItem('roles') || this.state.profileCount > 0) {
+    if (auth.currently_logged_in_user.is_logged_in) {
       visibleTabs.push('career-profiles');
-    }
-    if (localStorage.getItem('roles') || this.state.pathwayCount > 0) {
       visibleTabs.push('learning-pathways');
+    } else {
+      if (this.state.profileCount > 0) {
+        visibleTabs.push('career-profiles');
+      }
+      if (this.state.pathwayCount > 0) {
+        visibleTabs.push('learning-pathways');
+      }
     }
     visibleTabs.push('competencies');
     if (this.state.trainingResourcesExist) {

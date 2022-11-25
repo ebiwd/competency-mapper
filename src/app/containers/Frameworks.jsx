@@ -1,33 +1,19 @@
 import React, { Component } from 'react';
-
 import FrameworkButtons from '../components/framework-buttons/FrameworkButtons';
 import { Link } from 'react-router-dom';
-
 import { withSnackbar } from 'notistack';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import CompetencyService from '../services/competency/competency';
 import PropTypes from 'prop-types';
-
-import Navigation from './navigation/Navigation';
 import LoginForm from './login-form/LoginForm';
 import Footer from '../components/Footer';
 import { login, logout } from '../services/auth/auth';
-
 import Association from './Association';
-
 import masterList from './masterList.json';
+import auth from '../services/util/auth';
 
 class Frameworks extends Component {
-  // function Frameworks () {
-  // activeRequests = new ActiveRequestsService();
-  // competencyService = new CompetencyService();
-
   state = {
-    frameworks: [],
-    user: localStorage.getItem('user'),
-    roles: localStorage.getItem('roles')
+    frameworks: []
   };
-  // const { roles, user } = this.props;
   static propTypes = {
     user: PropTypes.string.isRequired,
     roles: PropTypes.string.isRequired,
@@ -36,9 +22,7 @@ class Frameworks extends Component {
   };
 
   onLogin = (username, password) => {
-    // this.props.onLogin(username, password);
     this.handleLogin(username, password);
-    // login(username, password);
   };
 
   onLogout = () => {
@@ -48,10 +32,6 @@ class Frameworks extends Component {
   handleLogin = async (username, password) => {
     try {
       await login(username, password);
-      this.setState({
-        user: localStorage.getItem('user'),
-        roles: localStorage.getItem('roles')
-      });
       document.location.reload();
     } catch (error) {
       window.console.error(error);
@@ -72,24 +52,7 @@ class Frameworks extends Component {
     }
   };
 
-  // async componentDidMount() {
-  //   try {
-  //     // this.activeRequests.startRequest();
-  //     // const frameworks = await this.competencyService.getAllVersionedFrameworks();
-  //     // this.setState({ frameworks });
-  //   } catch (error) {
-  //     this.props.enqueueSnackbar('Unable to fetch framework data', {
-  //       variant: 'error'
-  //     });
-  //     console.error(error);
-  //   } finally {
-  //     this.activeRequests.finishRequest();
-  //   }
-  // }
-
   render() {
-    const { roles, user } = this.props;
-
     return (
       <div>
         <section className="vf-u-fullbleed vf-u-background-color-ui--grey--light vf-u-padding__top--800">
@@ -121,7 +84,7 @@ class Frameworks extends Component {
               </p>
             </div>
             <div>
-              {this.state.user && this.state.roles ? (
+              {auth.currently_logged_in_user.is_logged_in ? (
                 <div>
                   <h3>You are logged-in</h3>
                   <p>You can manage frameworks and competencies.</p>

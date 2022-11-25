@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
+import auth from '../services/util/auth';
 
 export const ProfileView = props => {
   let history = useHistory();
@@ -34,20 +35,17 @@ export const ProfileView = props => {
     }
   };
 
-  const checkUser = localStorage.getItem('userid');
-  const needTimeStamp = checkUser ? '&timestamp=' + Date.now() : '';
+  const needTimeStamp = auth.currently_logged_in_user.is_logged_in
+    ? '&timestamp=' + Date.now()
+    : '';
 
   var competencyView = '';
   var expertise_levels_legend = [];
   var attribute_types = [];
   var frameworkFullName = '';
   var mapping = [];
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
-  var userName = localStorage.getItem('user')
-    ? localStorage.getItem('user')
-    : '';
+  var user_roles = auth.currently_logged_in_user.roles;
+  var userName = auth.currently_logged_in_user.username;
 
   let width2 = '';
 
@@ -354,7 +352,7 @@ export const ProfileView = props => {
         <>
           <div key={profileId} id="profile">
             <div style={{ float: 'right' }}>
-              {user_roles.search('framework_manager') !== -1 &&
+              {user_roles.includes('framework_manager') &&
               userFrameworks.length > 0 &&
               userFrameworks.includes(frameworkFullName) ? (
                 <ul>

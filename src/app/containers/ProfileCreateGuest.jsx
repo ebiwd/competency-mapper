@@ -9,6 +9,7 @@ import ProfileService from '../services/profile/profile';
 //import ActiveRequestsService from '../services/active-requests/active-requests';
 //import { Link, Redirect } from 'react-router-dom';
 import GuestHelp from './GuestHelp';
+import auth from '../services/util/auth';
 
 export const ProfileCreateGuest = props => {
   const history = useHistory();
@@ -39,6 +40,9 @@ export const ProfileCreateGuest = props => {
   const storedProfile = JSON.parse(localStorage.getItem('guestProfile'));
 
   useEffect(() => {
+    // auth.getLoggedInUser().then(user => {
+    //   setUser(user);
+    // });
     // Set variables from Local Storage to populate form fields onload
     let bootstrap = async () => {
       setProfile(storedProfile);
@@ -111,7 +115,7 @@ export const ProfileCreateGuest = props => {
       return 0;
     }
     // Check if is Anonymous/Authenticated
-    else if (!localStorage.getItem('roles')) {
+    else if (auth.currently_logged_in_user.roles.length === 0) {
       let current_role = currentRole ? currentRole : '';
       let job_title = jobTitle ? jobTitle : '';
       let qualification_background = qualification ? qualification : '';
@@ -206,7 +210,7 @@ export const ProfileCreateGuest = props => {
 
   function ButtonLabel() {
     let submitButtonLabel = 'Save and continue';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length === 0) {
       submitButtonLabel = 'Map Competencies';
     }
 
@@ -221,7 +225,7 @@ export const ProfileCreateGuest = props => {
 
   const getWhoCreateProfile = () => {
     let placeholder = 'a reference';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length === 0) {
       placeholder = 'your';
     }
     return placeholder;

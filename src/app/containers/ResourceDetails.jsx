@@ -6,6 +6,7 @@ import Parser from 'html-react-parser';
 import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
+import auth from '../services/util/auth';
 
 class ResourceDetails extends React.Component {
   constructor(props) {
@@ -76,35 +77,33 @@ class ResourceDetails extends React.Component {
   }
 
   mappingBlock() {
-    if (localStorage.getItem('roles')) {
-      if (localStorage.getItem('roles').includes('content_manager')) {
-        return (
-          <div>
-            <strong> Manage competency profile </strong>
-            <ul>
-              {this.state.frameworks.map((item, id) => {
-                return (
-                  <li style={{ display: 'inline', margin: '5px' }}>
-                    <Link
-                      to={
-                        '/training-resources/' +
-                        (this.props.location.state
-                          ? this.props.location.state.training_resource_id
-                          : this.state.resourcePath[2]) +
-                        '/map/' +
-                        item.title.toLowerCase().replace(/ /g, '')
-                      }
-                    >
-                      {' '}
-                      <i className="fas fa-tags" /> {item.title}{' '}
-                    </Link>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        );
-      }
+    if (auth.currently_logged_in_user.roles.includes('content_manager')) {
+      return (
+        <div>
+          <strong> Manage competency profile </strong>
+          <ul>
+            {this.state.frameworks.map((item, id) => {
+              return (
+                <li style={{ display: 'inline', margin: '5px' }}>
+                  <Link
+                    to={
+                      '/training-resources/' +
+                      (this.props.location.state
+                        ? this.props.location.state.training_resource_id
+                        : this.state.resourcePath[2]) +
+                      '/map/' +
+                      item.title.toLowerCase().replace(/ /g, '')
+                    }
+                  >
+                    {' '}
+                    <i className="fas fa-tags" /> {item.title}{' '}
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      );
     }
   }
 
@@ -181,16 +180,6 @@ class ResourceDetails extends React.Component {
       }
     } else {
       return start_day + ' ' + months[start_month] + ' ' + start_year;
-    }
-  }
-
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      return false;
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      return false;
-    } else {
-      return true;
     }
   }
 
@@ -438,7 +427,7 @@ class ResourceDetails extends React.Component {
             </div>
           </div>
           <div className="vf-grid__col--span-1">
-            {this.checkUser() ? (
+            {auth.currently_logged_in_user.is_logged_in ? (
               <div className="float-right">
                 <div>
                   <Link

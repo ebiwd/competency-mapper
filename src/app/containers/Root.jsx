@@ -7,7 +7,6 @@ import ManageCompetencies from './ManageCompetencies';
 import ManageData from './ManageData';
 import CompetencyDetails from './CompetencyDetails';
 import CompetencyList from './CompetencyList';
-import VFTabsCompetencyList from './VFTabsCompetencyList';
 import ResourceEdit from './ResourceEdit';
 import ResourceCreate from './ResourceCreate';
 import ResourceDetails from './ResourceDetails';
@@ -17,7 +16,6 @@ import ChangePassword from './ChangePassword';
 import UserView from './UserView';
 import About from '../components/about/About';
 import Frameworks from './Frameworks';
-//import ArticleCreate from './ArticleCreate';
 import AttributeMap from './AttributeMap';
 import CompetencySettings from './CompetencySettings';
 import AttributeSettings from './AttributeSettings';
@@ -35,28 +33,30 @@ import ProfilesCompareSummary from './ProfilesCompareSummary';
 import Documentation from './Documentation';
 import Login from './Login';
 import ManageFrameworks from '../containers/navigation/ManageFrameworks';
-//import Navigation from '../containers/navigation/Navigation';
-// import Footer from '../components/Footer';
 import Breadcrumbs from '../containers/Breadcrumbs';
 import DevelopYourCourses from '../containers/DevelopYourCourses';
-
 import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
 import ActiveRequestsService from '../services/active-requests/active-requests';
-
-//const $ = window.$;
+import auth from '../services/util/auth';
 
 class Root extends Component {
   state = {
     isActive: false,
     roles: localStorage.getItem('roles') || '',
-    user: localStorage.getItem('user') || ''
+    user: {
+      is_logged_in: false,
+      roles: []
+    }
   };
   activeRequests = new ActiveRequestsService();
 
   componentDidMount() {
-    // $(document).foundation();
-    // $(document).foundationExtendEBI();
+    auth.getLoggedInUser().then(response => {
+      this.setState({
+        user: response
+      });
+    });
 
     this.setState({ isActive: this.activeRequests.isActive });
     this.subcription = this.activeRequests.addEventListener(
@@ -124,7 +124,7 @@ class Root extends Component {
   };
 
   render() {
-    const { isActive, roles, user } = this.state;
+    const { isActive, user } = this.state;
     return (
       <>
         <SnackbarProvider
@@ -136,8 +136,8 @@ class Root extends Component {
           {/* <div className="vf-u-margin__top--200" /> */}
           <Switch>
             <Masthead
-              roles={roles}
-              user={user}
+              roles={user.roles}
+              user={user.username}
               isActive={isActive}
               onLogin={this.handleLogin}
               onLogout={this.handleLogout}
@@ -148,35 +148,40 @@ class Root extends Component {
             <main className="column">
               <Switch>
                 <ProtectedRoute
-                  condition={!!user && roles.includes('content_manager')}
-                  path="/training-resource/edit/:nid"
+                  condition={user.roles.includes('content_manager')}
+                  path="/all-training-resources"
+                  component={ResourcesList}
+                />
+                <ProtectedRoute
+                  condition={user.roles.includes('content_manager')}
+                  path="/training-resource/edit/:slug"
                   component={ResourceEdit}
                 />
                 <ProtectedRoute
-                  condition={!!user && roles.includes('content_manager')}
+                  condition={user.roles.includes('content_manager')}
                   path="/training-resource/create"
                   component={ResourceCreate}
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/competency/:cid/attribute/:aid/settings"
                   component={AttributeSettings}
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/manage/competencies/:cid/manage-attributes"
                   component={ManageAttributes}
                 />
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/manage/competencies/:domainId?"
                   component={ManageCompetencies}
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/manage/data/:domainId?"
                   component={ManageData}
                 />
@@ -187,7 +192,7 @@ class Root extends Component {
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/competency/:id/settings"
                   component={CompetencySettings}
                 />
@@ -198,7 +203,7 @@ class Root extends Component {
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/create"
                   component={ProfileCreate}
                 />
@@ -234,13 +239,13 @@ class Root extends Component {
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/edit/:id"
                   component={ProfileEdit}
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('framework_manager')}
+                  condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/:version/profile/map/:id"
                   component={ProfileMap}
                 />
@@ -256,13 +261,13 @@ class Root extends Component {
                 {/*/>*/}
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('content_manager')}
+                  condition={user.roles.includes('content_manager')}
                   path="/training-resources/:id/map/:framework"
                   component={AttributeMap}
                 />
 
                 <ProtectedRoute
-                  condition={!!user && roles.includes('content_manager')}
+                  condition={user.roles.includes('content_manager')}
                   path="/training-resources/:resource/demap/:attribute"
                   component={AttributeDemap}
                 />
@@ -272,29 +277,26 @@ class Root extends Component {
                   component={ResourceDetails}
                 />
 
-                <Route
-                  path="/all-training-resources"
-                  component={ResourcesList}
-                />
-                <Route
+                <ProtectedRoute
+                  condition={user.roles.includes('content_manager')}
                   path="/training-resources-home"
                   component={ResourcesHome}
                 />
 
                 <ProtectedRoute
-                  condition={!!user}
+                  condition={user.is_logged_in}
                   path="/user/change/password"
                   component={ChangePassword}
                 />
 
                 <ProtectedRoute
-                  condition={!!user}
+                  condition={user.is_logged_in}
                   path="/user/view"
                   component={UserView}
                 />
 
                 <ProtectedRoute
-                  condition={!!user}
+                  condition={user.is_logged_in}
                   path="/manage-frameworks"
                   component={ManageFrameworks}
                 />

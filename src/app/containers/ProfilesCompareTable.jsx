@@ -1,16 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, Route } from 'react-router-dom';
-import Parser from 'html-react-parser';
-import CKEditor from '@ckeditor/ckeditor5-react';
-import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-import FileUpload from './FileUpload';
-import { apiUrl } from '../services/http/http';
-import ProfileService from '../services/profile/profile';
-import ActiveRequestsService from '../services/active-requests/active-requests';
-import { Link, Redirect } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
-import ReactTooltip from 'react-tooltip';
 import Stars from './Stars';
+import auth from '../services/util/auth';
 
 const ProfilesCompareTable = props => {
   const frameworkName = props.frameworkName;
@@ -32,9 +22,7 @@ const ProfilesCompareTable = props => {
   var frameworkDesc = '';
   var mapping1 = [];
   var mapping2 = [];
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+  var user_roles = auth.currently_logged_in_user.roles;
 
   const getExpertise = (competency, profileid) => {
     let mapping = '';

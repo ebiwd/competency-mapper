@@ -196,7 +196,6 @@ class Courses extends Component {
         <td>
           <Link
             to={{
-              // pathname: `/training-resources/${slugify(course.title)}`,
               pathname: `/training-resources/${course.slug}`,
               state: {
                 training_resource_id: course.id
