@@ -11,6 +11,8 @@ const UserView = () => {
   let uid = localStorage.getItem('userid');
   useEffect(() => {
     const fetchData = async () => {
+      //API change needed here
+      // API should not need to be sent the user id
       await fetch(`${apiUrl}/user/${uid}?_format=json`, {
         credentials: 'include',
         method: 'GET',

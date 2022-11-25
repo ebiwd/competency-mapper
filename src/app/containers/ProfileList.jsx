@@ -9,6 +9,7 @@ import user_icon from './user_icon.png';
 
 import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
+import auth from '../services/util/auth';
 
 const ProfileList = props => {
   let history = useHistory();
@@ -20,18 +21,21 @@ const ProfileList = props => {
   const [userFrameworks, setUserFrameworks] = useState([]);
 
   var profilesToCompare = [];
-  const checkUser = localStorage.getItem('userid');
-  const needTimeStamp = checkUser ? '&timestamp=' + Date.now() : '';
-
-  var userName = localStorage.getItem('user')
-    ? localStorage.getItem('user')
+  const needTimeStamp = auth.currently_logged_in_user.is_logged_in
+    ? '&timestamp=' + Date.now()
     : '';
+
+  var userName = auth.currently_logged_in_user.username;
 
   useEffect(() => {
     const fetchData = async () => {
       await setGuestProfile(JSON.parse(localStorage.getItem('guestProfile')));
 
-      // Removed timestamp
+      console.log(
+        'api call',
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
+      );
+
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
       )
@@ -53,14 +57,6 @@ const ProfileList = props => {
 
     fetchData();
   }, [frameworkVersion, frameworkName, userName]);
-
-  const checkUserAccess = () => {
-    if (localStorage.getItem('roles')) {
-      return true;
-    } else {
-      return false;
-    }
-  };
 
   const setProfilesToCompare = e => {
     if (profilesToCompare.length > 2) {
@@ -163,7 +159,8 @@ const ProfileList = props => {
           </div>
           <div>
             <span style={{ float: 'right' }}>
-              {localStorage.getItem('roles') && checkFMAccess() ? (
+              {auth.currently_logged_in_user.roles.length > 0 &&
+              checkFMAccess() ? (
                 <span>
                   <Link
                     className="vf-button vf-button--primary vf-button--sm"
@@ -271,7 +268,7 @@ const ProfileList = props => {
           {/* </div> */}
           {profiles
             ? profiles.map((profile, index) => {
-                if (!checkUserAccess()) {
+                if (!auth.currently_logged_in_user.is_logged_in) {
                   if (profile.publishing_status === 'Live') {
                     return (
                       <div key={index}>

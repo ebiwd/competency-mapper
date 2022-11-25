@@ -2,15 +2,12 @@ import React, { useState, useEffect } from 'react';
 import { Switch, Route } from 'react-router-dom';
 import CKEditor from '@ckeditor/ckeditor5-react';
 import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
-//import FileUpload from './FileUpload';
 import HttpService from '../services/http/http';
 import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
-//import ActiveRequestsService from '../services/active-requests/active-requests';
-//import { Link, Redirect } from 'react-router-dom';
+import auth from '../services/util/auth';
 
 export const ProfileCreate = props => {
-  //const activeRequests = new ActiveRequestsService();
   const profileService = new ProfileService();
   const [title, setTitle] = useState('');
   const [age, setAge] = useState('');
@@ -19,7 +16,6 @@ export const ProfileCreate = props => {
 
   const [selectedFile, setSelectedFile] = useState();
   const [selectedFileData, setSelectedFileData] = useState([]);
-  //const [fid, setFid] = useState();
   const [imgpreview, setImgpreview] = useState();
   const [fileSizeError, setFileSizeError] = useState();
   const [fileTypeError, setFileTypeError] = useState();
@@ -29,19 +25,12 @@ export const ProfileCreate = props => {
   const [additionalInfo, setAdditionalInfo] = useState('');
 
   const [framework, setFramework] = useState();
-  //const [frameworkLogoData, setFrameworkLogoData] = useState([]);
   const frameworkName = props.location.pathname.split('/')[2];
   const frameworkVersion = props.location.pathname.split('/')[3];
 
   const [profile, setProfile] = useState();
 
-  //const [errorMsgTitle, setErrorMsgTitle] = useState();
-  //const [errorMsgJobTitle, setErrorMsgJobTitle] = useState();
-
   const [frameworkMoreData, setFrameworkMoreData] = useState();
-
-  //let errors = [];
-
   const http = new HttpService();
 
   useEffect(() => {
@@ -113,7 +102,7 @@ export const ProfileCreate = props => {
 
     var fileid = null;
 
-    // Do nothing if Form doesn't pass validation criteris above
+    // Do nothing if Form doesn't pass validation criteria above
     if (
       !title ||
       !jobTitle ||
@@ -124,7 +113,7 @@ export const ProfileCreate = props => {
     ) {
     }
     // Check if is Anonymous/Authenticated
-    else if (!localStorage.getItem('roles')) {
+    else if (auth.currently_logged_in_user.roles.length === 0) {
       //setErrorMsgTitle('');
       //setErrorMsgJobTitle('');
 
@@ -152,7 +141,9 @@ export const ProfileCreate = props => {
         mappingAttributes: storedProfile ? storedProfile.mappingAttributes : []
       });
       //props.history.push('/framework/bioexcel/2.0/profile/map/download/');
-    } else if (localStorage.getItem('roles').includes('framework_manager')) {
+    } else if (
+      auth.currently_logged_in_user.roles.includes('framework_manager')
+    ) {
       if (selectedFile) {
         let token = localStorage.getItem('csrf_token');
         await fetch(
@@ -190,11 +181,6 @@ export const ProfileCreate = props => {
         fileid
       });
 
-      // props.history.push(
-      //   `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/view/${
-      //     response.nid[0].value
-      //   }/${response.path[0].alias}`
-      // );
       props.history.push(
         `/framework/${frameworkName.toLowerCase()}/${frameworkVersion}/profile/map/${
           response.nid[0].value
@@ -202,15 +188,6 @@ export const ProfileCreate = props => {
       );
     }
   };
-
-  // const setPreview = () => {
-  //   props.history.push(
-  //     `/framework/${frameworkName}/${frameworkVersion}/profile/preview`,
-  //     {
-  //       title: title
-  //     }
-  //   );
-  // };
 
   const onSelectFile = e => {
     if (!e.target.files || e.target.files.length === 0) {
@@ -279,7 +256,7 @@ export const ProfileCreate = props => {
 
   function ButtonLabel() {
     let submitButtonLabel = 'Map Competencies';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length > 0) {
       submitButtonLabel = 'Map Competencies';
     }
 
@@ -294,47 +271,11 @@ export const ProfileCreate = props => {
 
   const getWhoCreateProfile = () => {
     let placeholder = 'a reference';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length === 0) {
       placeholder = 'your';
     }
     return placeholder;
   };
-
-  // From https://stackoverflow.com/questions/6150289/how-to-convert-image-into-base64-string-using-javascript
-  // const getImageData = (url, callback) => {
-  //   var xhr = new XMLHttpRequest();
-  //   xhr.onload = function() {
-  //     var reader = new FileReader();
-  //     reader.onloadend = function() {
-  //       return callback(reader.result);
-  //     };
-  //     reader.readAsDataURL(xhr.response);
-  //   };
-  //   xhr.open('GET', url);
-  //   xhr.responseType = 'blob';
-  //   xhr.send();
-  // };
-
-  // const toDataURL = (src, callback, outputFormat) => {
-  //   var img = new Image();
-  //   img.crossOrigin = 'Anonymous';
-  //   img.onload = function() {
-  //     var canvas = document.createElement('CANVAS');
-  //     var ctx = canvas.getContext('2d');
-  //     var dataURL;
-  //     canvas.height = this.naturalHeight;
-  //     canvas.width = this.naturalWidth;
-  //     ctx.drawImage(this, 0, 0);
-  //     dataURL = canvas.toDataURL(outputFormat);
-  //     callback(dataURL);
-  //   };
-  //   img.src = src;
-  //   if (img.complete || img.complete === undefined) {
-  //     img.src =
-  //       'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==';
-  //     img.src = src;
-  //   }
-  // };
 
   const placeholder = getWhoCreateProfile();
 

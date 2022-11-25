@@ -14,6 +14,7 @@ import ReactTooltip from 'react-tooltip';
 
 import jsPDF from 'jspdf';
 import moment from 'moment';
+import auth from '../services/util/auth';
 
 const $ = window.$;
 
@@ -35,9 +36,8 @@ export const ProfileView = props => {
   var frameworkLogo = '';
   var frameworkDesc = '';
   var mapping = [];
-  var user_roles = localStorage.getItem('roles')
-    ? localStorage.getItem('roles')
-    : '';
+
+  var user_roles = auth.currently_logged_in_user.roles;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -351,7 +351,7 @@ export const ProfileView = props => {
           </h2>
 
           <div style={{ float: 'right' }}>
-            {user_roles.search('framework_manager') != -1 ? (
+            {user_roles.includes('framework_manager') ? (
               <ul>
                 <li className="profile_navigation">
                   <Link
@@ -364,7 +364,6 @@ export const ProfileView = props => {
                 <li className="profile_navigation">
                   <Link to={`/framework/bioexcel/2.0/profile/map/${profileId}`}>
                     Map competencies <i className="icon icon-common icon-cog" />{' '}
-                    {console.log(localStorage.getItem('roles'))}
                   </Link>
                 </li>
               </ul>

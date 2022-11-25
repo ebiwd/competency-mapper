@@ -63,18 +63,6 @@ class ResourceCreate extends React.Component {
     }
   }
 
-  checkUser() {
-    if (!localStorage.getItem('roles')) {
-      this.props.history.push('/');
-    } else if (!localStorage.getItem('roles').includes('content_manager')) {
-      alert(
-        'You are not authorised to access this page. Contact the administrator'
-      );
-      this.props.history.push('/');
-    }
-    console.log(localStorage.getItem('roles'));
-  }
-
   componentDidMount() {
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
@@ -219,13 +207,9 @@ class ResourceCreate extends React.Component {
     } else {
       alert('Incorrect dates');
     }
-
-    //event.target.reset();
-    //this.setState({ updateFlag: true });
   }
 
   render() {
-    this.checkUser();
     return (
       <div>
         <p>

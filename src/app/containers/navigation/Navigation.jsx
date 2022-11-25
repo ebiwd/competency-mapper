@@ -1,12 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { apiUrl } from '../../services/http/http';
-//import HttpService from '../../services/http/http';
-//import ManageFrameworks from './ManageFrameworks';
-
-//const http = new HttpService();
-
-//const $ = window.$;
 
 class Navigation extends Component {
   navRef = React.createRef();
@@ -20,7 +14,6 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    //$(this.navRef.current).foundation();
     let token = localStorage.getItem('csrf_token');
     fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
       method: 'GET',

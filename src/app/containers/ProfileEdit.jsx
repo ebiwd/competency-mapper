@@ -7,6 +7,7 @@ import { apiUrl } from '../services/http/http';
 import ProfileService from '../services/profile/profile';
 //import ActiveRequestsService from '../services/active-requests/active-requests';
 import { Link } from 'react-router-dom';
+import auth from '../services/util/auth';
 
 export const ProfileEdit = props => {
   const frameworkName = props.location.pathname.split('/')[2];
@@ -33,15 +34,8 @@ export const ProfileEdit = props => {
   const [additionalInfo, setAdditionalInfo] = useState();
   const [publishStatus, setPublishStatus] = useState();
   const [userFrameworks, setUserFrameworks] = useState([]);
-  // const [framework, setFramework] = useState();
 
-  var userName = localStorage.getItem('user')
-    ? localStorage.getItem('user')
-    : '';
-
-  //var user_roles = localStorage.getItem('roles')
-  //  ? localStorage.getItem('roles')
-  //  : '';
+  var userName = auth.currently_logged_in_user.username;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -167,7 +161,7 @@ export const ProfileEdit = props => {
 
   function ButtonLabel() {
     let submitButtonLabel = 'Map competencies';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length === 0) {
       submitButtonLabel = 'Download';
     }
 
@@ -182,7 +176,7 @@ export const ProfileEdit = props => {
 
   const getWhoCreateProfile = () => {
     let placeholder = 'a reference';
-    if (!localStorage.getItem('roles')) {
+    if (auth.currently_logged_in_user.roles.length === 0) {
       placeholder = 'your';
     }
     return placeholder;

@@ -1,4 +1,5 @@
 import HttpService from '../http/http';
+import axios from 'axios';
 
 const http = new HttpService();
 const loginUrl = '/user/login?_format=json';
@@ -38,4 +39,17 @@ export function logout() {
     }/user/logout?_format=json&token=${logout_token}`,
     true
   );
+}
+
+export async function getLoggedInUser() {
+  return new Promise((resolve, reject) => {
+    axios
+      .get(`${process.env.REACT_APP_HTTPS_CMS_API_URL}/api/users?_format=json`)
+      .then(response => {
+        resolve(response.data.user);
+      })
+      .catch(error => {
+        reject(error);
+      });
+  });
 }
