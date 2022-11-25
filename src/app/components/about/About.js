@@ -9,7 +9,27 @@ const About = () => {
 
   return (
     <>
-      <h2>About Competency Hub</h2>
+      <h2>About the Competency Hub</h2>
+      <h3>Competency</h3>
+      <p>
+        A competency is an observable ability of any professional. A competency
+        can be defined as a combination of knowledge, skills and attitudes. It
+        is observable, so its acquisition can be validated objectively.
+      </p>
+
+      <h3>Competency framework</h3>
+      <p>
+        A competency framework defines a core set of competencies required by
+        professionals working in a specific field.
+      </p>
+
+      <p>
+        A competency framework can specify which competencies are especially
+        relevant for professionals in different roles or at different career
+        stages.
+      </p>
+
+      <h3>Competency Hub</h3>
       <p className="lead">
         The Competency Hub is a repository of competency frameworks that define
         the abilities required by professionals in a specific field and relate
@@ -25,15 +45,15 @@ const About = () => {
           in your career
         </li>
         <li>
-          Design training courses and programmes that help your learners develop
+          Design training courses and programmes that help learners develop
           specific competencies
         </li>
       </ul>
 
       <h3>Career profiles</h3>
       <p>
-        In this section, you will find a series of career profiles, example
-        descriptions of professional roles.
+        In this section, you will find a series of career profiles, which are
+        example descriptions of professional roles.
       </p>
       <p>Each profile shows:</p>
       <ul>
@@ -46,8 +66,8 @@ const About = () => {
 
       <p>
         You can create your own profile by assessing yourself against the list
-        of competencies and then compare your profile to the existing ones. This
-        allows you to see which competencies you need to develop further to
+        of competencies, and then compare your profile to the existing ones.
+        This allows you to see which competencies you need to develop further to
         perform that role.
       </p>
 
@@ -82,29 +102,6 @@ const About = () => {
       <p>
         <Link to="/develop-your-courses">Develop your courses</Link> using the
         Competency Hub to design competency-based courses and course programmes.
-      </p>
-
-      <h3>Competency</h3>
-      <p>
-        A competency is an observable ability of any professional. A competency
-        can be defined as a combination of knowledge, skills and attitudes to
-        make it more concrete and useful for individual professionals. It is
-        observable, so its acquisition can be validated objectively.
-      </p>
-
-      <h3>Competency framework</h3>
-      <p>
-        A competency framework defines a core set of competencies required by
-        professionals working in a specific field. In the Competency Hub, the
-        professionals covered by the framework are specified on the entry card
-        for each competency framework.
-      </p>
-
-      <p>
-        A competency framework can specify which competencies are especially
-        relevant for professionals in different roles or at different career
-        stages, which is what is done in the Competency Hub for the frameworks
-        that include career profiles.
       </p>
 
       <h3>Additional documentation</h3>

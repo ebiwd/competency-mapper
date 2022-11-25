@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, history } from 'react';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -51,7 +51,9 @@ class CompetencyList extends Component {
     attributeTypes: [],
     allResourcesFetched: false,
     visibleTabs: [],
-    selectedTabIndex: 0
+    selectedTabIndex: 0,
+    pathnames: this.props.history.location.pathname,
+    pathnames_count: 0
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -105,6 +107,8 @@ class CompetencyList extends Component {
 
   async componentDidMount() {
     const { framework, version: frameworkVersion } = this.props.match.params;
+    this.setState({ pathnames_count: this.state.pathnames.split('/').length });
+    window.vfTabs();
     try {
       this.activeRequests.startRequest();
       await Promise.all([
@@ -285,6 +289,17 @@ class CompetencyList extends Component {
       )
     );
 
+    const changeTabURL = url => {
+      if (this.state.pathnames_count == 4) {
+        this.props.history.push(
+          `${this.props.history.location.pathname}/${url}`
+        );
+        this.setState({ pathnames_count: 5 });
+      } else {
+        this.props.history.push(url);
+      }
+    };
+
     return (
       <>
         <div className="vf-u-margin__top--400" />
@@ -313,7 +328,7 @@ class CompetencyList extends Component {
           >
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`career-profiles`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -324,7 +339,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.profileCount > 0 ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`career-profiles`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -338,7 +353,7 @@ class CompetencyList extends Component {
                 ''
               )}
               {localStorage.getItem('roles') ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -349,7 +364,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.pathwayCount > 0 ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -363,7 +378,7 @@ class CompetencyList extends Component {
                 ''
               )}
 
-              <Tab>
+              <Tab onClick={e => changeTabURL(`competencies`)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
@@ -375,7 +390,7 @@ class CompetencyList extends Component {
               </Tab>
 
               {this.state.trainingResourcesExist ? (
-                <Tab>
+                <Tab onClick={e => changeTabURL(`training-resources`)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -388,7 +403,7 @@ class CompetencyList extends Component {
               ) : (
                 ''
               )}
-              <Tab>
+              <Tab onClick={e => changeTabURL(`export`)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
@@ -519,6 +534,36 @@ class CompetencyList extends Component {
             />
           </div>
         )}
+
+        {/* <div className="vf-tabs">
+          <ul className="vf-tabs__list" data-vf-js-tabs>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--competencies">Competencies</a>
+            </li>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--training-resources">Training resources</a>
+            </li>
+            <li className="vf-tabs__item">
+              <a className="vf-tabs__link" href="#vf-tabs__section--export">Export</a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="vf-tabs-content" data-vf-js-tabs-content>
+          <section className="vf-tabs__section" id="vf-tabs__section--competencies">
+            <h2>Section 1</h2>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod, tortor nec pharetra ultricies, ante erat imperdiet velit, nec laoreet enim lacus a velit. <a className="vf-link" href="#">Nam luctus</a>, enim in interdum condimentum, nisl diam iaculis lorem, vel volutpat mi leo sit amet lectus. Praesent non odio bibendum magna bibendum accumsan.</p>
+          </section>
+          <section className="vf-tabs__section" id="vf-tabs__section--training-resources">
+            <h2>Section 2</h2>
+            <p>Nullam at diam nec arcu suscipit auctor non a erat. Sed et magna semper, eleifend magna non, facilisis nisl. Proin et est et lorem dictum finibus ut nec turpis. Aenean nisi tortor, euismod a mauris a, mattis scelerisque tortor. Sed dolor risus, varius a nibh id, condimentum lacinia est. In lacinia cursus odio a aliquam. Curabitur tortor magna, laoreet ut rhoncus at, sodales consequat tellus.</p>
+            <a className='vf-link' href="https://www.ebi.ac.uk/training/on-demand">Click to view the resource</a>
+          </section>
+          <section className="vf-tabs__section" id="vf-tabs__section--export">
+            <h2>Section 3</h2>
+            <p>Testing</p>
+          </section>
+        </div> */}
       </>
     );
   }
