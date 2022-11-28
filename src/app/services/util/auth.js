@@ -12,7 +12,10 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `${process.env.REACT_APP_HTTPS_CMS_API_URL}/api/users?_format=json`
+          `${process.env.REACT_APP_HTTPS_CMS_API_URL}/api/users?_format=json`,
+          {
+            withCredentials: true
+          }
         )
         .then(response => {
           this.currently_logged_in_user = response.data.user;
