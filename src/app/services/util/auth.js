@@ -1,6 +1,7 @@
 import axios from 'axios';
 
 export default {
+  csrf_token: localStorage.getItem('csrf_token'),
   currently_logged_in_user: {
     id: null,
     username: '',
@@ -12,7 +13,16 @@ export default {
     return new Promise((resolve, reject) => {
       axios
         .get(
-          `${process.env.REACT_APP_HTTPS_CMS_API_URL}/api/users?_format=json`
+          `${process.env.REACT_APP_HTTPS_CMS_API_URL}/api/users?_format=json`,
+          {
+            withCredentials: true,
+            headers: {
+              Accept: 'application/hal+json',
+              'Content-Type': 'application/hal+json',
+              'X-CSRF-Token': this.csrf_token,
+              Authorization: 'Basic'
+            }
+          }
         )
         .then(response => {
           this.currently_logged_in_user = response.data.user;
