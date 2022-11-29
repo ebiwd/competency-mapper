@@ -14,7 +14,6 @@ export async function login(username, password) {
     localStorage.setItem('logout_token', data.logout_token);
     localStorage.setItem('user', data.current_user.name);
     localStorage.setItem('userid', data.current_user.uid);
-    console.log(localStorage.getItem('roles'));
     return data;
   } catch (error) {
     logout();
@@ -28,7 +27,7 @@ export function logout() {
     .get(
       `${
         process.env.REACT_APP_HTTPS_CMS_API_URL
-      }/user/logout?_format=json&token=${logout_token}`,
+      }/user/logout?_format=json&token=${logout_token}&timestamp=${Date.now()}`,
       {
         withCredentials: true
       }
