@@ -111,7 +111,6 @@ class ManageCompetency extends React.Component {
       this.props.enqueueSnackbar('Unable to perform the request', {
         variant: 'error'
       });
-      console.log(e);
     } finally {
       this.activeRequests.finishRequest();
     }

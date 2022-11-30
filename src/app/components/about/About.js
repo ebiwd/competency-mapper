@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 const About = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('scrolled');
   }, []);
 
   return (

@@ -30,12 +30,6 @@ const ProfileList = props => {
   useEffect(() => {
     const fetchData = async () => {
       await setGuestProfile(JSON.parse(localStorage.getItem('guestProfile')));
-
-      console.log(
-        'api call',
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
-      );
-
       await fetch(
         `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
       )

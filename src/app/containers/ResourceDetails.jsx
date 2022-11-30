@@ -32,7 +32,6 @@ class ResourceDetails extends React.Component {
     this.setState({ showModal: true });
     this.setState({ selectedFramework: event });
     temp.preventDefault();
-    //console.log(event);
   }
 
   handleCloseModal() {

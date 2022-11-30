@@ -71,7 +71,6 @@ class AttributeMap extends React.Component {
           childItems[i].getAttribute('data-id')
         );
         this.setState({ selectedAttributes });
-        //console.log(this.state.selectedAttributes);
       }
     } else {
       for (let i = 0; i < childItems.length; i++) {
@@ -84,7 +83,6 @@ class AttributeMap extends React.Component {
             1
           );
           this.setState({ selectedAttributes });
-          //console.log(this.state.selectedAttributes);
         }
       }
     }
@@ -99,14 +97,12 @@ class AttributeMap extends React.Component {
       selectedAttributes.push(id);
       this.setState({ selectedAttributes });
       document.getElementById(e.target.name).checked = true;
-      console.log(selectedAttributes);
     } else {
       //selectedAttributes.pop(id);
       selectedAttributes.splice(selectedAttributes.indexOf(id), 1);
       this.setState({ selectedAttributes });
       if (!$(':checkbox[name=' + e.target.name + ']').is(':checked')) {
         document.getElementById(e.target.name).checked = false;
-        //console.log(this.state.selectedAttributes);
       }
     }
   }

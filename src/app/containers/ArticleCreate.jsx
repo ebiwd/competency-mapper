@@ -34,8 +34,6 @@ class ArticleCreate extends React.Component {
     let token = localStorage.getItem('csrf_token');
     let fid = '';
 
-    console.log(this.state.file);
-
     let response = await fetch(
       apiUrl + '/file/upload/node/article/field_image?_format=hal_json',
       {
@@ -106,7 +104,6 @@ class ArticleCreate extends React.Component {
                   <Dropzone
                     ref="fileref"
                     onDrop={acceptedFiles => {
-                      //console.log(acceptedFiles)
                       const reader = new FileReader();
 
                       reader.onabort = () =>
@@ -126,7 +123,6 @@ class ArticleCreate extends React.Component {
                           }
                         }
                         this.setState({ file: reader.result });
-                        //console.log(binaryStr)
                       };
                       document
                         .getElementById('fileupload')

@@ -37,7 +37,6 @@ const FAIRDownload = () => {
     if (target.checked) {
       let index = temp.indexOf(e.target.name);
       temp.splice(index, 1);
-      console.log(index);
     } else {
       temp.push(...facets, e.target.name);
     }

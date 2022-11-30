@@ -95,7 +95,6 @@ class ResourcesList extends React.Component {
   }
 
   archiveHandle(rid, status, event) {
-    console.log(status);
     let archivedStatus = '';
     if (status === 1) {
       archivedStatus = false;
@@ -215,7 +214,6 @@ class ResourcesList extends React.Component {
 
   render() {
     let resources = this.state.resources;
-    console.log('all resources', resources);
     var ListOfResources = '';
     if (resources) {
       ListOfResources = resources.map((item, index) => (
