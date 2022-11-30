@@ -111,7 +111,6 @@ export const ProfileViewGuest = props => {
     ).expertise_levels.length;
 
     width2 = data ? 100 / ((totalLevels - 1) / data.rating_level) : 0;
-    console.log(data);
     return width2;
   };
 

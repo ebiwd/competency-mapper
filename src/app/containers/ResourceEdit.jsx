@@ -129,7 +129,7 @@ class ResourceEdit extends React.Component {
             }
           }
         )
-        .then(response => {
+        .then(() => {
           this.redirectTo();
         });
     } else {

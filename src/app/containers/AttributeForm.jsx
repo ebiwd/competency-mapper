@@ -114,7 +114,6 @@ class AttributeForm extends React.Component {
     let competencyID = this.props.selectedCompetencyID;
     let competecyUUID = this.props.selectedCompetencyUUID;
 
-    //console.log(attributeTypes);
     let attributeTypeID = '';
     let attributeTypeUUID = '';
 

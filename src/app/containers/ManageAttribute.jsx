@@ -41,7 +41,6 @@ class ManageAttribute extends React.Component {
     this.setState({ showModalPosition: true });
     this.setState({ competency: competency });
     this.setState({ typetitle: e.target.dataset.typetitle });
-    console.log(e.target.dataset.typetitle);
   }
 
   closeModalPosition() {
@@ -82,7 +81,6 @@ class ManageAttribute extends React.Component {
 
   setAttributes(e) {
     this.setState({ newAttributes: e.target.value });
-    console.log(e.target.value);
   }
 
   async saveAttributes(e) {

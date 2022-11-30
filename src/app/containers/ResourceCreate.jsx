@@ -2,7 +2,6 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl, apiUrlWithHTTP } from '../services/http/http';
-import { slugify } from '../services/util/slugifier';
 
 class ResourceCreate extends React.Component {
   constructor(props) {
@@ -58,8 +57,6 @@ class ResourceCreate extends React.Component {
         this.props.history.push('/all-training-resources');
         //this.setState({'updateFlag': false});
       }, 1000);
-
-      console.log('componentDidUpdate');
     }
   }
 
@@ -196,14 +193,14 @@ class ResourceCreate extends React.Component {
         })
       })
         .then(response => response.json())
-        .then(data =>
+        .then(data => {
+          let newly_created_training_resource_slug = data._links.self.href
+            .split('/')[4]
+            .split('?')[0];
           this.props.history.push({
-            pathname: `/training-resources/${slugify(title)}`,
-            state: {
-              training_resource_id: data.nid[0].value
-            }
-          })
-        );
+            pathname: `/training-resources/${newly_created_training_resource_slug}`
+          });
+        });
     } else {
       alert('Incorrect dates');
     }

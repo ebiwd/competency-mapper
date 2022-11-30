@@ -193,8 +193,6 @@ class BodyService {
       });
     });
 
-    //  console.log(mappingBody)
-
     return {
       type: [
         {
