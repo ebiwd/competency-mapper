@@ -1,6 +1,6 @@
 import React from 'react';
 import { Route, Switch } from 'react-router-dom';
-import { apiUrl } from '../services/http/http';
+import { apiUrl, apiUrlWithHTTP } from '../services/http/http';
 import axios from 'axios';
 import CKEditor from 'react-ckeditor-component';
 
@@ -36,7 +36,7 @@ class ResourceEdit extends React.Component {
       let data_to_send = {
         _links: {
           type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
+            href: `${apiUrlWithHTTP}/rest/type/node/training_resource`
           }
         },
         title: [
