@@ -22,6 +22,7 @@ export async function login(username, password) {
 }
 
 export function logout() {
+  alert('logout');
   let logout_token = localStorage.getItem('logout_token');
   axios
     .get(
