@@ -13,19 +13,7 @@ class ResourceEdit extends React.Component {
       csrf: '',
       updateFlag: false,
       path: this.props.location.pathname.split('/'),
-      nid: '',
-      title: '',
-      dates: '',
-      dates2: '',
-      type: '',
-      description: '',
-      location: '',
-      url: '',
-      target_audience: '',
-      learning_outcomes: '',
-      keywords: '',
-      organisers: '',
-      trainers: ''
+      training_resource_slug: ''
     };
   }
 
@@ -37,7 +25,6 @@ class ResourceEdit extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    console.log('current tr', this.state.training_resource);
     let csrf = localStorage.getItem('csrf_token');
 
     if (
@@ -143,7 +130,7 @@ class ResourceEdit extends React.Component {
           }
         )
         .then(response => {
-          this.props.redirectTo();
+          this.redirectTo();
         });
     } else {
       alert('Incorrect dates');
@@ -152,7 +139,7 @@ class ResourceEdit extends React.Component {
   }
 
   componentDidMount() {
-    this.setState({ nid: this.state.path[3] });
+    this.setState({ training_resource_slug: this.state.path[3] });
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -171,6 +158,7 @@ class ResourceEdit extends React.Component {
   }
 
   handleChange(event) {
+    console.log('TR', this.state.training_resource);
     let fields = this.state.training_resource;
     let value = event.target.value;
     fields[event.target.name] = value.replace(/(<([^>]+)>)/gi, '');
@@ -184,7 +172,9 @@ class ResourceEdit extends React.Component {
   }
 
   redirectTo() {
-    this.props.history.push('/training-resources/' + this.state.nid);
+    this.props.history.push(
+      '/training-resources/' + this.state.training_resource_slug
+    );
   }
 
   buildTrainingResourceEditForm() {
@@ -399,7 +389,11 @@ class ResourceEdit extends React.Component {
 
 const EditResources = () => (
   <Switch>
-    <Route exact path="/training-resource/edit/:nid" component={ResourceEdit} />
+    <Route
+      exact
+      path="/training-resource/edit/:training_resource_slug"
+      component={ResourceEdit}
+    />
   </Switch>
 );
 
