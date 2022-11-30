@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { apiUrl } from '../../services/http/http';
+import auth from '../../services/util/auth';
 
 class Navigation extends Component {
   navRef = React.createRef();
@@ -29,12 +30,6 @@ class Navigation extends Component {
         });
       });
   }
-
-  logout = async () => {
-    const { onLogout } = this.props;
-    await onLogout();
-  };
-
   render() {
     const { roles } = this.props;
     const frameworkResources = (
@@ -91,7 +86,12 @@ class Navigation extends Component {
           <span
             className="vf-link"
             href="#" // eslint-disable-line jsx-a11y/anchor-is-valid
-            onClick={this.logout}
+            onClick={event => {
+              event.preventDefault();
+              auth.logout().then(() => {
+                window.location.reload();
+              });
+            }}
             style={{ cursor: 'pointer' }}
           >
             Logout
