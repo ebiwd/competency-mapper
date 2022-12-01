@@ -275,7 +275,7 @@ class ResourceDetails extends React.Component {
                 {check_array ? (
                   item.competency_profile.map((profile, index) => {
                     return (
-                      <div className="vf-grid" key={index}>
+                      <div className="embl-grid" key={index}>
                         {this.state.frameworks.map(framework => {
                           if (framework.nid === profile.id) {
                             framework.attribute_types.map(type => {
