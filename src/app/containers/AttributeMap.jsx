@@ -3,6 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { apiUrl } from '../services/http/http';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
+import { extractSlugFromBackendUrl } from '../services/util/slugifier';
 
 const $ = window.$;
 
@@ -13,8 +14,7 @@ class AttributeMap extends React.Component {
     super(props);
     this.state = {
       data: [],
-      //framework: this.props.selectedFramework,
-      //resourceID: this.props.resourceID,
+      resourceSlug: '',
       framework: this.props.location.pathname.split('/')[4].replace(/ /g, ''),
       framework_id: '',
       resourceID: this.props.location.pathname.split('/')[2],
@@ -44,18 +44,22 @@ class AttributeMap extends React.Component {
 
     try {
       this.activeRequests.startRequest();
-      await Promise.all([
+      var response_data = await Promise.all([
         this.competencyService.attrmap(
           this.state.resourceID,
           attributeIDs,
           framework_id
         )
       ]);
+      // this.setState({resourceSlug: extractSlugFromBackendUrl(response_data._links.self.href)})
     } catch (error) {
       this.setState({ loadingError: true });
     } finally {
       this.activeRequests.finishRequest();
-      this.props.history.push('/training-resources/' + this.state.resourceID);
+      this.props.history.push(
+        '/training-resources/' +
+          extractSlugFromBackendUrl(response_data[0]._links.self.href)
+      );
     }
   }
 
@@ -132,8 +136,6 @@ class AttributeMap extends React.Component {
         });
       });
 
-    console.log(this.state.resourceDetails);
-
     let selectedAttributes = [];
     this.state.resourceDetails.competency_profile.map(profile => {
       //if(profile.title.toLowerCase() == this.state.framewor  k){
@@ -153,7 +155,6 @@ class AttributeMap extends React.Component {
 
     this.setState({ selectedAttributes: selectedAttributes });
 
-    //console.log(this.state.framework);
     let csrfURL = `${apiUrl}/rest/session/token`;
     fetch(csrfURL)
       .then(Response => Response)
@@ -180,16 +181,12 @@ class AttributeMap extends React.Component {
           if (version.status === 'live') {
             latest_version = version.number;
             this.state.framework_id = detail.nid;
-            console.log(detail.nid);
           }
           return null;
         });
       }
       return null;
     });
-
-    console.log(latest_version);
-
     let fetchCompetencyList =
       `${apiUrl}` +
       '/api/' +
@@ -212,7 +209,6 @@ class AttributeMap extends React.Component {
   }
 
   render() {
-    //console.log(this.state.data);
     let frameworkDetails = this.state.frameworkdetails;
     let data = this.state.data;
     let frameworkDefs = [];
@@ -237,8 +233,6 @@ class AttributeMap extends React.Component {
         });
         return null;
       });
-
-      //console.log(selectedAttributesArray);
     }
     //this.loadSelectedAttributes();
 
@@ -262,9 +256,6 @@ class AttributeMap extends React.Component {
         });
       }
     });
-
-    // console.log(data);
-
     const ListOfCompetencies = data.map(item =>
       item.domains.map((domain, did) => (
         <tbody>
@@ -353,7 +344,6 @@ class AttributeMap extends React.Component {
         </tbody>
       ))
     );
-    console.log(this.state.data);
     return (
       <div>
         <h2>{resDetails.title}</h2>

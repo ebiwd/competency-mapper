@@ -2,6 +2,7 @@ import React from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
 import CKEditor from 'react-ckeditor-component';
 import { apiUrl, apiUrlWithHTTP } from '../services/http/http';
+import { extractSlugFromBackendUrl } from '../services/util/slugifier';
 
 class ResourceCreate extends React.Component {
   constructor(props) {
@@ -194,11 +195,10 @@ class ResourceCreate extends React.Component {
       })
         .then(response => response.json())
         .then(data => {
-          let newly_created_training_resource_slug = data._links.self.href
-            .split('/')[4]
-            .split('?')[0];
           this.props.history.push({
-            pathname: `/training-resources/${newly_created_training_resource_slug}`
+            pathname: `/training-resources/${extractSlugFromBackendUrl(
+              data._links.self.href
+            )}`
           });
         });
     } else {
