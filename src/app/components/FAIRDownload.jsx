@@ -183,10 +183,7 @@ const FAIRDownload = () => {
             ) : (
               <tr>
                 <td>
-                  <img
-                    alt="progress"
-                    src="/dev-competency-mapper/progressbar.gif"
-                  />
+                  <img alt="progress" src="/progressbar.gif" />
                   <h4>Loading data...</h4>
                 </td>
               </tr>
