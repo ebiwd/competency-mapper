@@ -2,7 +2,7 @@ import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 import Pagination from 'react-js-pagination';
-import { apiUrl } from '../services/http/http';
+import { apiUrl, apiUrlWithHTTP } from '../services/http/http';
 import auth from '../services/util/auth';
 
 class ResourcesList extends React.Component {
@@ -115,7 +115,7 @@ class ResourcesList extends React.Component {
       body: JSON.stringify({
         _links: {
           type: {
-            href: `${apiUrl}/rest/type/node/training_resource`
+            href: `${apiUrlWithHTTP}/rest/type/node/training_resource`
           }
         },
         field_archived: [
