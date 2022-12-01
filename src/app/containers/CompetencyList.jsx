@@ -290,16 +290,8 @@ class CompetencyList extends Component {
       )
     );
 
-    const changeTabURL = url => {
-      this.props.history.push(url);
-      // if (this.state.pathnames_count == 4) {
-      //   this.props.history.push(
-      //     `${this.props.history.location.pathname}/${url}`
-      //   );
-      //   this.setState({ pathnames_count: 5 });
-      // } else {
-      //   this.props.history.push(url);
-      // }
+    const changeTabURL = e => {
+      e.currentTarget.children[0].click();
     };
 
     return (
@@ -328,10 +320,9 @@ class CompetencyList extends Component {
               })
             }
           >
-            {console.log(this.state.selectedTabIndex)}
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
-                <Tab onClick={e => changeTabURL(`career-profiles`)}>
+                <Tab onClick={e => changeTabURL(e)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -342,7 +333,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.profileCount > 0 ? (
-                <Tab onClick={e => changeTabURL(`career-profiles`)}>
+                <Tab onClick={e => changeTabURL(e)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -356,7 +347,7 @@ class CompetencyList extends Component {
                 ''
               )}
               {localStorage.getItem('roles') ? (
-                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
+                <Tab onClick={e => changeTabURL(e)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -367,7 +358,7 @@ class CompetencyList extends Component {
                   </Link>
                 </Tab>
               ) : this.state.pathwayCount > 0 ? (
-                <Tab onClick={e => changeTabURL(`learning-pathways`)}>
+                <Tab onClick={e => changeTabURL(e)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -381,7 +372,7 @@ class CompetencyList extends Component {
                 ''
               )}
 
-              <Tab onClick={e => changeTabURL(`competencies`)}>
+              <Tab onClick={e => changeTabURL(e)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
@@ -393,7 +384,7 @@ class CompetencyList extends Component {
               </Tab>
 
               {this.state.trainingResourcesExist ? (
-                <Tab onClick={e => changeTabURL(`training-resources`)}>
+                <Tab onClick={e => changeTabURL(e)}>
                   <Link
                     to={`/framework/${framework}/${
                       this.props.match.params.version
@@ -406,7 +397,7 @@ class CompetencyList extends Component {
               ) : (
                 ''
               )}
-              <Tab onClick={e => changeTabURL(`export`)}>
+              <Tab onClick={e => changeTabURL(e)}>
                 <Link
                   to={`/framework/${framework}/${
                     this.props.match.params.version
