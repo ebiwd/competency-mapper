@@ -361,7 +361,7 @@ class VFTabsCompetencyList extends Component {
             <img
               alt="progress"
               style={{ width: '7%' }}
-              src="/dev-competency-mapper/progressbar.gif"
+              src="/progressbar.gif"
             />
           </div>
         )}

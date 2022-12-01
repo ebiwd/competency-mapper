@@ -97,10 +97,11 @@ class CompetencyList extends Component {
     let selectedTabIndex = 0;
     for (let i = 0; i < this.state.visibleTabs.length; i++) {
       if (currentUrl.includes(this.state.visibleTabs[i])) {
+        console.log(this.state.visibleTabs[i]);
         selectedTabIndex = i;
       }
     }
-    this.setState({
+    await this.setState({
       selectedTabIndex: selectedTabIndex
     });
   }
@@ -290,14 +291,15 @@ class CompetencyList extends Component {
     );
 
     const changeTabURL = url => {
-      if (this.state.pathnames_count == 4) {
-        this.props.history.push(
-          `${this.props.history.location.pathname}/${url}`
-        );
-        this.setState({ pathnames_count: 5 });
-      } else {
-        this.props.history.push(url);
-      }
+      this.props.history.push(url);
+      // if (this.state.pathnames_count == 4) {
+      //   this.props.history.push(
+      //     `${this.props.history.location.pathname}/${url}`
+      //   );
+      //   this.setState({ pathnames_count: 5 });
+      // } else {
+      //   this.props.history.push(url);
+      // }
     };
 
     return (
@@ -326,6 +328,7 @@ class CompetencyList extends Component {
               })
             }
           >
+            {console.log(this.state.selectedTabIndex)}
             <TabList className="vf-tabs__list">
               {localStorage.getItem('roles') ? (
                 <Tab onClick={e => changeTabURL(`career-profiles`)}>
@@ -530,7 +533,7 @@ class CompetencyList extends Component {
             <img
               alt="progress"
               style={{ width: '7%' }}
-              src="/dev-competency-mapper/progressbar.gif"
+              src="/progressbar.gif"
             />
           </div>
         )}

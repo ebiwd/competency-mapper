@@ -362,10 +362,7 @@ class ResourcesList extends React.Component {
             )
           ) : (
             <center>
-              <img
-                alt="progress"
-                src="/dev-competency-mapper/progressbar.gif"
-              />
+              <img alt="progress" src="/progressbar.gif" />
               <h4>Loading resources</h4>
             </center>
           )}
