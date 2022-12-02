@@ -7,6 +7,7 @@ const Copyright = framework => {
     <>
       <figure className="vf-figure vf-figure--align vf-figure--align-inline-start">
         <img
+          alt=""
           style={{ width: '125px', marginTop: '5px' }}
           className="vf-figure__image"
           src={CCBY_IMG}

@@ -283,11 +283,18 @@ class ResourcesList extends React.Component {
         >
           <div className="vf-grid vf-grid__col-6">
             <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
+              <label
+                class="vf-form__label vf-u-sr-only | vf-search__label"
+                for="search_box"
+              >
+                Search training resources
+              </label>
               <input
                 type="search"
                 onChange={this.filter.bind(this)}
                 placeholder="Type to search"
                 className="vf-form__input | vf-search__item"
+                id="search_box"
               />
             </div>
             <div className="vf-form__item vf-grid__col--span-1">
