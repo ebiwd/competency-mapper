@@ -128,17 +128,17 @@ const ProfileList = props => {
       <div className="introduction">
         <div className="vf-grid vf-grid__col-2">
           <div>
-            <h5>
+            <h4>
               <i className="icon icon-common icon-search-document" /> Discover
               and explore{' '}
-            </h5>
+            </h4>
             <p>Explore career profiles within this competency framework</p>
           </div>
           <div>
-            <h5>
+            <h4>
               <i className="icon icon-common icon-user-plus" /> Create your own
               profile
-            </h5>
+            </h4>
             <p>
               Create your own profile and assess yourself against the
               competencies
@@ -199,6 +199,7 @@ const ProfileList = props => {
           {guestProfile ? (
             <div className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--block">
               <img
+                alt=""
                 src={
                   guestProfile.image[0] ? guestProfile.image[0].url : user_icon
                 }
@@ -249,7 +250,7 @@ const ProfileList = props => {
             </div>
           ) : (
             <article className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--inline">
-              <img src={user_icon} className="vf-profile__image" />
+              <img alt="" src={user_icon} className="vf-profile__image" />
 
               <Link
                 className="vf-button vf-button--primary vf-button--sm"
@@ -269,11 +270,13 @@ const ProfileList = props => {
                         <article className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--inline">
                           {profile.image[0] ? (
                             <img
+                              alt=""
                               src={profile.image[0].url}
                               className="vf-profile__image"
                             />
                           ) : (
                             <img
+                              alt=""
                               src={user_icon}
                               className="vf-profile__image"
                             />
@@ -313,11 +316,16 @@ const ProfileList = props => {
                         <p className={profile.publishing_status}>
                           {profile.image[0] ? (
                             <img
+                              alt=""
                               src={profile.image[0].url}
                               className="profile_img"
                             />
                           ) : (
-                            <img src={user_icon} className="profile_img" />
+                            <img
+                              alt=""
+                              src={user_icon}
+                              className="profile_img"
+                            />
                           )}
                         </p>
 
