@@ -584,3 +584,27 @@ code {
   text-decoration: none !important;
   color: black !important;
 }
+.suggestions_results {
+  position: absolute;
+  display: block;
+  background-color: #fff;
+  color: #222;
+  border: 1px solid #aaa;
+  padding: 0;
+  margin: 0;
+  max-height: 400px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  z-index: 20;
+  min-width: 300px;
+  width: 50%;
+  max-width: 500px;
+}
+
+.suggestions_results li {
+  list-style-type: none;
+  cursor: pointer;
+  padding: 0.3em 1em 0.3em 0.5em;
+  display: block;
+  margin: 0;
+}

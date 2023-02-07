@@ -157,8 +157,13 @@ class Root extends Component {
                   path="/training-resource/edit/:slug"
                   component={ResourceEdit}
                 />
-                <ProtectedRoute
+                {/* <ProtectedRoute
                   condition={user.roles.includes('content_manager')}
+                  path="/training-resource/create"
+                  component={ResourceCreate}
+                /> */}
+
+                <Route
                   path="/training-resource/create"
                   component={ResourceCreate}
                 />
