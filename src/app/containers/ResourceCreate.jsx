@@ -21,6 +21,7 @@ class ResourceCreate extends React.Component {
     this.changeDates2 = this.changeDates2.bind(this);
     this.changeKeywords = this.changeKeywords.bind(this);
     this.changeProvider = this.changeProvider.bind(this);
+    this.changeCategory = this.changeCategory.bind(this);
     this.getAutocomplete = this.getAutocomplete.bind(this);
     this.optionClick = this.optionClick.bind(this);
 
@@ -42,7 +43,8 @@ class ResourceCreate extends React.Component {
       dates2: '',
       keywords: '',
       tessResources: [],
-      provider: 'European+Bioinformatics+Institute+%28EBI%29',
+      provider: '',
+      category: 'events',
       showAutocomplete: false,
       autocompleteTerm: ''
     };
@@ -118,10 +120,24 @@ class ResourceCreate extends React.Component {
     //     this.setState({ csrf: findresponse2 });
     //   });
 
+    fetch(`https://tess.elixir-europe.org/events?page_size=100`, {
+      method: 'GET',
+      headers: {
+        accept: 'application/vnd.api+json'
+      }
+    })
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ tessResources: response });
+      });
+  }
+
+  changeCategory(value) {
+    this.setState({ category: value.toLowerCase() });
     fetch(
-      `https://tess.elixir-europe.org/events?content_provider=${
+      `https://tess.elixir-europe.org/${value.toLowerCase()}?content_provider=${
         this.state.provider
-      }`,
+      }&page_size=100`,
       {
         method: 'GET',
         headers: {
@@ -135,20 +151,8 @@ class ResourceCreate extends React.Component {
       });
   }
 
-  changeProvider(provider) {
-    fetch(
-      `https://tess.elixir-europe.org/events?content_provider=${provider}`,
-      {
-        method: 'GET',
-        headers: {
-          accept: 'application/vnd.api+json'
-        }
-      }
-    )
-      .then(response => response.json())
-      .then(response => {
-        this.setState({ tessResources: response });
-      });
+  changeProvider(value) {
+    this.setState({ provider: value });
   }
 
   getAutocomplete(e) {
@@ -163,8 +167,12 @@ class ResourceCreate extends React.Component {
     let selectedResource = this.state.tessResources.data.filter(
       item => item.id === id
     );
-    let startDate = selectedResource[0].attributes.start.slice(0, 10);
-    let endDate = selectedResource[0].attributes.end.slice(0, 10);
+    let startDate = '';
+    let endDate = '';
+    if (this.state.category === 'events') {
+      startDate = selectedResource[0].attributes.start.slice(0, 10);
+      endDate = selectedResource[0].attributes.end.slice(0, 10);
+    }
 
     this.setState({
       showAutocomplete: false,
@@ -342,23 +350,38 @@ class ResourceCreate extends React.Component {
               id={'resource_create_form'}
               onSubmit={this.handleSubmit.bind(this)}
             >
-              <div className="vf-form__item">
-                <strong>Select provider from TeSS:</strong>
-                <select
-                  className="vf-form__select"
-                  ref={'provider'}
-                  onChange={e => this.changeProvider(e.currentTarget.value)}
-                >
-                  <option>-None-</option>
-                  {this.state.tessResources.meta
-                    ? this.state.tessResources.meta['available-facets'][
-                        'content-provider'
-                      ].map(provider => {
-                        return <option>{provider.value}</option>;
-                      })
-                    : ''}
-                </select>
+              <div className="vf-grid">
+                <div className="vf-form__item">
+                  <strong>Select provider from TeSS:</strong>
+                  <select
+                    className="vf-form__select"
+                    ref={'provider'}
+                    onChange={e => this.changeProvider(e.currentTarget.value)}
+                  >
+                    <option>-None-</option>
+                    {this.state.tessResources.meta
+                      ? this.state.tessResources.meta['available-facets'][
+                          'content-provider'
+                        ].map(provider => {
+                          return <option>{provider.value}</option>;
+                        })
+                      : ''}
+                  </select>
+                </div>
+                <div className="vf-form__item">
+                  <strong>Category:</strong>
+                  <select
+                    className="vf-form__select"
+                    ref={'provider'}
+                    onChange={e => this.changeCategory(e.currentTarget.value)}
+                  >
+                    <option>-None-</option>
+                    <option>Events</option>
+                    <option>Materials</option>
+                  </select>
+                </div>
               </div>
+
               <div className="vf-u-margin__bottom--600" />
 
               <div className="vf-form__item">
@@ -373,7 +396,9 @@ class ResourceCreate extends React.Component {
                   value={this.state.title}
                   onChange={evt => this.changeTitle(evt)}
                 />
-                {this.state.showAutocomplete === true ? (
+                {this.state.showAutocomplete === true &&
+                this.state.provider &&
+                this.state.category ? (
                   <ul className="vf-list suggestions_results">
                     {this.state.tessResources.data
                       .filter(resource =>
@@ -381,9 +406,10 @@ class ResourceCreate extends React.Component {
                           .toLowerCase()
                           .includes(this.state.autocompleteTerm)
                       )
-                      .map(item => {
+                      .map((item, key) => {
                         return (
                           <li
+                            key={key}
                             className={`vf-list__item`}
                             onClick={() => this.optionClick(item.id)}
                           >
