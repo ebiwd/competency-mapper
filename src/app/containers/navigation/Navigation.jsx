@@ -15,20 +15,20 @@ class Navigation extends Component {
   }
 
   componentDidMount() {
-    // let token = localStorage.getItem('csrf_token');
-    // fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
-    //   method: 'GET',
-    //   credentials: 'include',
-    //   headers: {
-    //     'X-CSRF-Token': token
-    //   }
-    // })
-    //   .then(Response => Response.json())
-    //   .then(findresponse => {
-    //     this.setState({
-    //       frameworks: findresponse
-    //     });
-    //   });
+    let token = localStorage.getItem('csrf_token');
+    fetch(`${apiUrl}/api/authorisation/${this.state.user}?_format=json`, {
+      method: 'GET',
+      credentials: 'include',
+      headers: {
+        'X-CSRF-Token': token
+      }
+    })
+      .then(Response => Response.json())
+      .then(findresponse => {
+        this.setState({
+          frameworks: findresponse
+        });
+      });
   }
   render() {
     const { roles } = this.props;
