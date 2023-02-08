@@ -163,6 +163,11 @@ class Root extends Component {
                   component={ResourceCreate}
                 />
 
+                {/* <Route
+                  path="/training-resource/create"
+                  component={ResourceCreate}
+                /> */}
+
                 <ProtectedRoute
                   condition={user.roles.includes('framework_manager')}
                   path="/framework/:framework/competency/:cid/attribute/:aid/settings"

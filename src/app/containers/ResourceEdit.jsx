@@ -195,6 +195,14 @@ class ResourceEdit extends React.Component {
     return (
       <div>
         <h2>Edit Training Resources</h2>
+        {this.state.training_resource.tess_id ? (
+          <p>
+            Tess content provider:{' '}
+            {this.state.training_resource.tess_content_provider}
+          </p>
+        ) : (
+          ''
+        )}
         <p>(* fields are mandatory)</p>
         <div className="row">
           <div className="column large-12 callout">

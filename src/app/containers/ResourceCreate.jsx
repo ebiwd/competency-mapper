@@ -8,28 +8,60 @@ class ResourceCreate extends React.Component {
   constructor(props) {
     super(props);
     //this.onChange = this.onChange.bind(this);
+    this.changeTitle = this.changeTitle.bind(this);
     this.changeDescription = this.changeDescription.bind(this);
+    this.changeType = this.changeType.bind(this);
     this.changeTargetAudience = this.changeTargetAudience.bind(this);
     this.changeLearningOutcomes = this.changeLearningOutcomes.bind(this);
     this.changeOrganisers = this.changeOrganisers.bind(this);
     this.changeTrainers = this.changeTrainers.bind(this);
+    this.changeLocation = this.changeLocation.bind(this);
+    this.changeUrl = this.changeUrl.bind(this);
+    this.changeDates = this.changeDates.bind(this);
+    this.changeDates2 = this.changeDates2.bind(this);
+    this.changeKeywords = this.changeKeywords.bind(this);
+    this.changeProvider = this.changeProvider.bind(this);
+    this.changeCategory = this.changeCategory.bind(this);
+    this.getAutocomplete = this.getAutocomplete.bind(this);
+    this.optionClick = this.optionClick.bind(this);
 
     this.state = {
       data: [],
       csrf: '',
       updateFlag: false,
       content: 'content',
+      tess_id: '',
+      title: '',
       description: '',
+      type: '',
       target_audience: '',
       learning_outcomes: '',
+      location: '',
+      url: '',
       organisers: '',
-      trainers: ''
+      trainers: '',
+      dates: '',
+      dates2: '',
+      keywords: '',
+      tessResources: [],
+      provider: '',
+      category: '',
+      showAutocomplete: false,
+      autocompleteTerm: ''
     };
+  }
+
+  changeTitle(evt) {
+    this.setState({ title: evt.currentTarget.value });
   }
 
   changeDescription(evt) {
     let newContent = evt.editor.getData();
     this.setState({ description: newContent });
+  }
+
+  changeType(evt) {
+    this.setState({ type: evt.currentTarget.value });
   }
 
   changeTargetAudience(evt) {
@@ -52,6 +84,26 @@ class ResourceCreate extends React.Component {
     this.setState({ trainers: newContent });
   }
 
+  changeLocation(evt) {
+    this.setState({ location: evt.currentTarget.value });
+  }
+
+  changeUrl(evt) {
+    this.setState({ url: evt.currentTarget.value });
+  }
+
+  changeDates(evt) {
+    this.setState({ dates: evt.currentTarget.value });
+  }
+
+  changeDates2(evt) {
+    this.setState({ dates2: evt.currentTarget.value });
+  }
+
+  changeKeywords(evt) {
+    this.setState({ keywords: evt.currentTarget.value });
+  }
+
   componentDidUpdate(prevProps, prevState) {
     if (this.state.updateFlag) {
       setTimeout(() => {
@@ -62,12 +114,91 @@ class ResourceCreate extends React.Component {
   }
 
   componentDidMount() {
-    let csrfURL = `${apiUrl}/rest/session/token`;
-    fetch(csrfURL)
-      .then(Response => Response)
-      .then(findresponse2 => {
-        this.setState({ csrf: findresponse2 });
+    // let csrfURL = `${apiUrl}/rest/session/token`;
+    // fetch(csrfURL)
+    //   .then(Response => Response)
+    //   .then(findresponse2 => {
+    //     this.setState({ csrf: findresponse2 });
+    //   });
+    // fetch(`https://tess.elixir-europe.org/events?page_size=100`, {
+    //   method: 'GET',
+    //   headers: {
+    //     accept: 'application/vnd.api+json'
+    //   }
+    // })
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     this.setState({ tessResources: response });
+    //   });
+  }
+
+  changeCategory(value) {
+    this.setState({ category: value.toLowerCase() });
+    fetch(
+      `https://tess.elixir-europe.org/${value.toLowerCase()}?page_size=100`,
+      {
+        method: 'GET',
+        headers: {
+          accept: 'application/vnd.api+json'
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ tessResources: response });
       });
+  }
+
+  changeProvider(value) {
+    this.setState({ provider: value });
+    fetch(
+      `https://tess.elixir-europe.org/${this.state.category.toLowerCase()}?content_provider=${value}&page_size=500`,
+      {
+        method: 'GET',
+        headers: {
+          accept: 'application/vnd.api+json'
+        }
+      }
+    )
+      .then(response => response.json())
+      .then(response => {
+        this.setState({ tessResources: response });
+      });
+  }
+
+  getAutocomplete(e) {
+    console.log(e.currentTarget.value);
+    this.setState({
+      showAutocomplete: true,
+      autocompleteTerm: e.currentTarget.value
+    });
+  }
+
+  optionClick(id) {
+    let selectedResource = this.state.tessResources.data.filter(
+      item => item.id === id
+    );
+    let startDate = '';
+    let endDate = '';
+    if (this.state.category === 'events') {
+      startDate = selectedResource[0].attributes.start.slice(0, 10);
+      endDate = selectedResource[0].attributes.end.slice(0, 10);
+    }
+
+    this.setState({
+      showAutocomplete: false,
+      title: selectedResource[0].attributes.title,
+      description: selectedResource[0].attributes.description,
+      target_audience: selectedResource[0].attributes[
+        'target-audience'
+      ].toString(),
+      location: selectedResource[0].attributes.venue,
+      url: selectedResource[0].attributes.url,
+      organisers: selectedResource[0].attributes.organizer,
+      dates: startDate,
+      dates2: endDate,
+      keywords: selectedResource[0].attributes.keywords.toString()
+    });
   }
 
   dateValidate(d1, d2) {
@@ -83,22 +214,31 @@ class ResourceCreate extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    let title = this.refs.title.value;
-    let dates = this.refs.dates.value;
-    let dates2 = this.refs.dates2.value;
+    // let title = this.refs.title.value;
+    // let dates = this.refs.dates.value;
+    // let dates2 = this.refs.dates2.value;
+    let title = this.state.title;
+    let dates = this.state.dates;
+    let dates2 = this.state.dates2;
     let type = 'Online';
-    if (this.refs.type.value) {
-      type = this.refs.type.value;
+    if (this.state.type) {
+      type = this.state.type;
     }
 
     let description = this.state.description;
-    let location = this.refs.location.value;
-    let url = this.refs.url.value;
+    // let location = this.refs.location.value;
+    // let url = this.refs.url.value;
+    let location = this.state.location;
+    let url = this.state.url;
     let target_audience = this.state.target_audience;
     let learning_outcomes = this.state.learning_outcomes;
-    let keywords = this.refs.keywords.value;
+    // let keywords = this.refs.keywords.value;
+    let keywords = this.state.keywords;
     let organisers = this.state.organisers;
     let trainers = this.state.trainers;
+    let tess_id = this.state.tess_id;
+    let tess_category = this.state.category;
+    let tess_conten_provider = this.state.provider;
 
     let token = localStorage.getItem('csrf_token');
 
@@ -185,6 +325,21 @@ class ResourceCreate extends React.Component {
               format: 'basic_html'
             }
           ],
+          field_tess_id: [
+            {
+              value: tess_id
+            }
+          ],
+          field_tess_category: [
+            {
+              value: tess_category
+            }
+          ],
+          field_tess_content_provider: [
+            {
+              value: tess_conten_provider
+            }
+          ],
 
           type: [
             {
@@ -226,6 +381,40 @@ class ResourceCreate extends React.Component {
               id={'resource_create_form'}
               onSubmit={this.handleSubmit.bind(this)}
             >
+              <div className="vf-grid">
+                <div className="vf-form__item">
+                  <strong>Select category from TeSS:</strong>
+                  <select
+                    className="vf-form__select"
+                    ref={'provider'}
+                    onChange={e => this.changeCategory(e.currentTarget.value)}
+                  >
+                    <option>-None-</option>
+                    <option>Events</option>
+                    <option>Materials</option>
+                  </select>
+                </div>
+                <div className="vf-form__item">
+                  <strong>Select provider from TeSS:</strong>
+                  <select
+                    className="vf-form__select"
+                    ref={'provider'}
+                    onChange={e => this.changeProvider(e.currentTarget.value)}
+                  >
+                    <option>-None-</option>
+                    {this.state.tessResources.meta
+                      ? this.state.tessResources.meta['available-facets'][
+                          'content-provider'
+                        ].map(provider => {
+                          return <option>{provider.value}</option>;
+                        })
+                      : ''}
+                  </select>
+                </div>
+              </div>
+
+              <div className="vf-u-margin__bottom--600" />
+
               <div className="vf-form__item">
                 <strong>Title *</strong>
                 <input
@@ -234,7 +423,35 @@ class ResourceCreate extends React.Component {
                   ref="title"
                   required
                   placeholder="Title"
+                  onKeyDown={e => this.getAutocomplete(e)}
+                  value={this.state.title}
+                  onChange={evt => this.changeTitle(evt)}
                 />
+                {this.state.showAutocomplete === true &&
+                this.state.provider &&
+                this.state.category ? (
+                  <ul className="vf-list suggestions_results">
+                    {this.state.tessResources.data
+                      .filter(resource =>
+                        resource.attributes.title
+                          .toLowerCase()
+                          .includes(this.state.autocompleteTerm)
+                      )
+                      .map((item, key) => {
+                        return (
+                          <li
+                            key={key}
+                            className={`vf-list__item`}
+                            onClick={() => this.optionClick(item.id)}
+                          >
+                            {item.attributes.title}
+                          </li>
+                        );
+                      })}
+                  </ul>
+                ) : (
+                  ''
+                )}
               </div>
               <div className="vf-u-margin__bottom--600" />
               <div className="vf-grid">
@@ -245,6 +462,8 @@ class ResourceCreate extends React.Component {
                     className="vf-form__input"
                     ref="dates"
                     placeholder="Date"
+                    value={this.state.dates}
+                    onChange={evt => this.changeDates(evt)}
                   />
                 </div>
                 <div className="vf-form__item">
@@ -254,13 +473,18 @@ class ResourceCreate extends React.Component {
                     className="vf-form__input"
                     ref="dates2"
                     placeholder="Date"
+                    value={this.state.dates2}
+                    onChange={evt => this.changeDates2(evt)}
                   />
                 </div>
               </div>
               <div className="vf-u-margin__bottom--600" />
               <div className="vf-form__item">
                 <strong>Event type *</strong>
-                <select className="vf-form__select" ref={'type'}>
+                <select
+                  className="vf-form__select"
+                  selectedOption={this.state.type}
+                >
                   <option value={'Online'}>Online</option>
                   <option value={'Face-to-Face'}>Face-to-Face</option>
                   <option value={'Webinar'}>Webinar</option>
@@ -287,6 +511,8 @@ class ResourceCreate extends React.Component {
                   className="vf-form__input"
                   ref="location"
                   placeholder="Location"
+                  value={this.state.location}
+                  onChange={evt => this.changeLocation(evt)}
                 />
               </div>
               <div className="vf-u-margin__bottom--600" />
@@ -298,6 +524,8 @@ class ResourceCreate extends React.Component {
                   ref="url"
                   required
                   placeholder="URL"
+                  value={this.state.url}
+                  onChange={evt => this.changeUrl(evt)}
                 />
               </div>
               <div className="vf-u-margin__bottom--600" />
@@ -352,6 +580,8 @@ class ResourceCreate extends React.Component {
                   className="vf-form__input"
                   ref="keywords"
                   placeholder="Keywords"
+                  value={this.state.keywords}
+                  onChange={evt => this.changeKeywords(evt)}
                 />
               </div>
               <div className="vf-u-margin__bottom--600" />
