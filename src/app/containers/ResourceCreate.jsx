@@ -237,7 +237,9 @@ class ResourceCreate extends React.Component {
     let organisers = this.state.organisers;
     let trainers = this.state.trainers;
     let tess_id = this.state.tess_id;
-    let tess_category = this.state.category;
+    let tess_category = this.state.category
+      ? this.state.category.charAt(0).toUpperCase() + word.slice(1)()
+      : '';
     let tess_conten_provider = this.state.provider;
 
     let token = localStorage.getItem('csrf_token');
