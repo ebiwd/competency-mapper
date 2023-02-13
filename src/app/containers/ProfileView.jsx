@@ -190,7 +190,7 @@ export const ProfileView = props => {
             <div key={domainIndex}>
               <div>
                 <div class="vf-u-padding__top--800" />
-                <h4>{domain.title}</h4> {(domainsList += domain.title)}
+                <h4>{domain.title}</h4> {(domainsList += domain.title + ',')}
               </div>
             </div>
             <div>
