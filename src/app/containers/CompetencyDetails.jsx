@@ -201,7 +201,9 @@ class CompetencyDetails extends React.Component {
             <meta property="og:title" content={competencies[0].title} />
             <meta
               property="keywords"
-              content="competency, competency-based training"
+              content={`competency, competency-based training, ${
+                competencies[0].domain
+              }`}
             />
           </MetaTags>
         ) : (
