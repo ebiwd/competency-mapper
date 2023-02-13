@@ -509,8 +509,8 @@ class ResourceDetails extends React.Component {
     );
 
     return (
-      <div className={'row'}>
-        <div className={'column large-12'}>
+      <div>
+        <div>
           {Resource}
           {this.mappingBlock()}
         </div>

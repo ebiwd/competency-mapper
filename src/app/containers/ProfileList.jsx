@@ -29,23 +29,28 @@ const ProfileList = props => {
 
   useEffect(() => {
     const fetchData = async () => {
-      await setGuestProfile(JSON.parse(localStorage.getItem('guestProfile')));
-      await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
-      )
-        .then(Response => Response.json())
-        .then(findresponse => {
-          setProfiles(findresponse);
-        });
-      if (userName) {
-        await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
-          method: 'GET',
-          credentials: 'include'
-        })
+      try {
+        let tempguestProfile = JSON.parse(localStorage.getItem('guestProfile'));
+        setGuestProfile(tempguestProfile ? tempguestProfile : '');
+        await fetch(
+          `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles/?_format=json&source=competencyhub&timestamp=${needTimeStamp}`
+        )
           .then(Response => Response.json())
           .then(findresponse => {
-            setUserFrameworks(findresponse);
+            setProfiles(findresponse);
           });
+        if (userName) {
+          await fetch(`${apiUrl}/api/authorisation/${userName}?_format=json`, {
+            method: 'GET',
+            credentials: 'include'
+          })
+            .then(Response => Response.json())
+            .then(findresponse => {
+              setUserFrameworks(findresponse);
+            });
+        }
+      } catch (e) {
+        console.log(e.message);
       }
     };
 

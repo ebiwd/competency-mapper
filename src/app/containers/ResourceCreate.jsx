@@ -45,10 +45,24 @@ class ResourceCreate extends React.Component {
       keywords: '',
       tessResources: [],
       provider: '',
+      providers: [],
       category: '',
       showAutocomplete: false,
-      autocompleteTerm: ''
+      autocompleteTerm: '',
+      loading: false
     };
+  }
+
+  showLoadingStyle() {
+    if (this.state.loading) {
+      return {
+        background: 'url(../progressbar.gif)',
+        backgroundSize: '8%',
+        backgroundRepeat: 'no-repeat',
+        backgroundPositionX: 'right'
+      };
+    }
+    return;
   }
 
   changeTitle(evt) {
@@ -133,9 +147,23 @@ class ResourceCreate extends React.Component {
   }
 
   changeCategory(value) {
-    this.setState({ category: value.toLowerCase() });
+    this.setState({ category: value.toLowerCase(), loading: true });
+    // fetch(
+    //   `https://tess.elixir-europe.org/${value.toLowerCase()}?page_size=5000&include_expired=true`,
+    //   {
+    //     method: 'GET',
+    //     headers: {
+    //       accept: 'application/vnd.api+json'
+    //     }
+    //   }
+    // )
+    //   .then(response => response.json())
+    //   .then(response => {
+    //     this.setState({ tessResources: response, loading: false });
+    //   });
+
     fetch(
-      `https://tess.elixir-europe.org/${value.toLowerCase()}?page_size=100`,
+      `https://tess.elixir-europe.org/content_providers?page_size=200&sort=asc`,
       {
         method: 'GET',
         headers: {
@@ -145,14 +173,17 @@ class ResourceCreate extends React.Component {
     )
       .then(response => response.json())
       .then(response => {
-        this.setState({ tessResources: response });
+        this.setState({ providers: response, loading: false });
       });
   }
 
   changeProvider(value) {
-    this.setState({ provider: value });
+    this.setState({ provider: value, loading: true });
+    let category = this.state.category.toLowerCase();
+    let extraParams =
+      category === 'events' ? '&include_expired=true&sort=late' : '';
     fetch(
-      `https://tess.elixir-europe.org/${this.state.category.toLowerCase()}?content_provider=${value}&page_size=500`,
+      `https://tess.elixir-europe.org/${category}?content_provider=${value}&page_size=5000${extraParams}`,
       {
         method: 'GET',
         headers: {
@@ -162,7 +193,7 @@ class ResourceCreate extends React.Component {
     )
       .then(response => response.json())
       .then(response => {
-        this.setState({ tessResources: response });
+        this.setState({ tessResources: response, loading: false });
       });
   }
 
@@ -238,7 +269,8 @@ class ResourceCreate extends React.Component {
     let trainers = this.state.trainers;
     let tess_id = this.state.tess_id;
     let tess_category = this.state.category
-      ? this.state.category.charAt(0).toUpperCase() + word.slice(1)()
+      ? this.state.category.charAt(0).toUpperCase() +
+        this.state.category.slice(1)
       : '';
     let tess_conten_provider = this.state.provider;
 
@@ -366,18 +398,16 @@ class ResourceCreate extends React.Component {
   render() {
     return (
       <div>
-        <p>
-          <nav>
-            <Link to={`/`}>Home</Link> /{' '}
-            <Link to={`/all-training-resources`}>All training resources</Link> /
-            Create resource{' '}
-          </nav>
-        </p>
+        <nav>
+          <Link to={`/`}>Home</Link> /{' '}
+          <Link to={`/all-training-resources`}>All training resources</Link> /
+          Create resource{' '}
+        </nav>
         <h2>Create Training Resource</h2>
         <p>(* fields are mandatory)</p>
 
-        <div className="row">
-          <div className="column large-12 callout">
+        <div>
+          <div>
             <form
               className="vf-form"
               id={'resource_create_form'}
@@ -387,6 +417,7 @@ class ResourceCreate extends React.Component {
                 <div className="vf-form__item">
                   <strong>Select category from TeSS:</strong>
                   <select
+                    style={this.showLoadingStyle()}
                     className="vf-form__select"
                     ref={'provider'}
                     onChange={e => this.changeCategory(e.currentTarget.value)}
@@ -397,24 +428,35 @@ class ResourceCreate extends React.Component {
                   </select>
                 </div>
                 <div className="vf-form__item">
-                  <strong>Select provider from TeSS:</strong>
-                  <select
-                    className="vf-form__select"
-                    ref={'provider'}
-                    onChange={e => this.changeProvider(e.currentTarget.value)}
-                  >
-                    <option>-None-</option>
-                    {this.state.tessResources.meta
-                      ? this.state.tessResources.meta['available-facets'][
+                  <div>
+                    <strong>Select provider from TeSS:</strong>
+                    <select
+                      style={this.showLoadingStyle()}
+                      className="vf-form__select"
+                      ref={'provider'}
+                      onChange={e => this.changeProvider(e.currentTarget.value)}
+                    >
+                      <option>-None-</option>
+                      {/* {this.state.tessResources.meta
+                        ? this.state.tessResources.meta['available-facets'][
                           'content-provider'
-                        ].map(provider => {
-                          return <option>{provider.value}</option>;
+                        ].map((provider, key) => {
+                          return <option key={key}>{provider.value}</option>;
                         })
-                      : ''}
-                  </select>
+                        : ''} */}
+                      {this.state.providers.data
+                        ? this.state.providers.data.map((provider, key) => {
+                            return (
+                              <option key={key}>
+                                {provider.attributes.title}
+                              </option>
+                            );
+                          })
+                        : ''}
+                    </select>
+                  </div>
                 </div>
               </div>
-
               <div className="vf-u-margin__bottom--600" />
 
               <div className="vf-form__item">
@@ -446,7 +488,12 @@ class ResourceCreate extends React.Component {
                             className={`vf-list__item`}
                             onClick={() => this.optionClick(item.id)}
                           >
-                            {item.attributes.title}
+                            <p>
+                              {item.attributes.title}{' '}
+                              {this.state.category === 'events'
+                                ? '-' + item.attributes.start.slice(0, 4)
+                                : ''}{' '}
+                            </p>
                           </li>
                         );
                       })}
@@ -485,7 +532,8 @@ class ResourceCreate extends React.Component {
                 <strong>Event type *</strong>
                 <select
                   className="vf-form__select"
-                  selectedOption={this.state.type}
+                  // selectedOption={this.state.type}
+                  onChange={e => this.changeType(e)}
                 >
                   <option value={'Online'}>Online</option>
                   <option value={'Face-to-Face'}>Face-to-Face</option>
@@ -513,7 +561,7 @@ class ResourceCreate extends React.Component {
                   className="vf-form__input"
                   ref="location"
                   placeholder="Location"
-                  value={this.state.location}
+                  value={this.state.location || ''}
                   onChange={evt => this.changeLocation(evt)}
                 />
               </div>
