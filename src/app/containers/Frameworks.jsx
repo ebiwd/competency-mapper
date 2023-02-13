@@ -9,6 +9,7 @@ import { login, logout } from '../services/auth/auth';
 import Association from './Association';
 import masterList from './masterList.json';
 import auth from '../services/util/auth';
+import { MetaTags } from 'react-meta-tags';
 
 class Frameworks extends Component {
   state = {
@@ -55,6 +56,18 @@ class Frameworks extends Component {
   render() {
     return (
       <div>
+        <MetaTags>
+          <title>Competency hub</title>
+          <meta property="og:title" content="Competency hub" />
+          <meta
+            name="description"
+            content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific area of life sciences and relate them to training resources and career profiles"
+          />
+          <meta
+            property="keywords"
+            content="competency, life sciences, career development, computational biology, bioinformatics"
+          />
+        </MetaTags>
         <section className="vf-u-fullbleed vf-u-background-color-ui--grey--light vf-u-padding__top--800">
           <h2>Who is the Competency Hub for?</h2>
           <FrameworkButtons frameworkDetails={masterList} />

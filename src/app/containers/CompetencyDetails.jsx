@@ -6,6 +6,7 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import CompetencyService from '../services/competency/competency';
 import CoursesService from '../services/courses/courses';
 import { slugify } from '../services/util/slugifier';
+import MetaTags from 'react-meta-tags';
 
 class CompetencyDetails extends React.Component {
   activeRequests = new ActiveRequestsService();
@@ -18,15 +19,9 @@ class CompetencyDetails extends React.Component {
     frameworkData: [],
     competencyId: this.props.match.params.cid,
     attributeDefs: [],
-    resources: []
+    resources: [],
+    competency: []
   };
-
-  // slugify(string) {
-  //   return string
-  //     .toLowerCase()
-  //     .replace(/[^\w ]+/g, '')
-  //     .replace(/ +/g, '-');
-  // }
 
   async componentDidMount() {
     try {
@@ -135,7 +130,6 @@ class CompetencyDetails extends React.Component {
     } = this.state;
 
     const competencies = [];
-    console.log(frameworkData);
     frameworkData.forEach(item =>
       item.domains.forEach(domain =>
         domain.competencies.forEach(competency => {
@@ -200,35 +194,21 @@ class CompetencyDetails extends React.Component {
 
     return (
       <div>
-        <div>
-          {/* {frameworkData.length > 0 ? (
-            <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
-              <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
-                <li className="vf-breadcrumbs__item">
-                  <Link to="/" className="vf-breadcrumbs__link">
-                    Home
-                  </Link>
-                </li>
-                <li className="vf-breadcrumbs__item">
-                  <Link
-                    to={`/framework/${frameworkData[0].title.toLowerCase()}/${
-                      frameworkData[0].version
-                    }`}
-                  >
-                    {frameworkData[0].title} {frameworkData[0].version}
-                  </Link>{' '}
-                </li>
-                <li className="vf-breadcrumbs__item" aria-current="location">
-                  Competency details
-                </li>
-              </ul>
-            </nav>
-          ) : (
-            ''
-          )} */}
+        {competencies.length > 0 ? (
+          <MetaTags>
+            <title>{competencies[0].title}</title>
+            <meta name="description" content={competencies[0].title} />
+            <meta property="og:title" content={competencies[0].title} />
+            <meta
+              property="keywords"
+              content="competency, competency-based training"
+            />
+          </MetaTags>
+        ) : (
+          ''
+        )}
 
-          {competencyDetails}
-        </div>
+        {competencyDetails}
       </div>
     );
   }

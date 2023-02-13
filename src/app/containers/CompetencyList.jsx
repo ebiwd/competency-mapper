@@ -22,6 +22,7 @@ import { Switch, Route, Link } from 'react-router-dom';
 import jsonData from './masterList.json';
 import Copyright from './Copyright';
 import auth from '../services/util/auth';
+import { MetaTags } from 'react-meta-tags';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -296,6 +297,29 @@ class CompetencyList extends Component {
 
     return (
       <>
+        <MetaTags>
+          <title>
+            {
+              jsonData.filter(item => item.title === this.state.framework)[0]
+                .desc
+            }
+          </title>
+          <meta
+            property="og:title"
+            content={
+              jsonData.filter(item => item.title === this.state.framework)[0]
+                .desc
+            }
+          />
+          <meta name="description" content={frameworkDescription} />
+          <meta
+            property="keywords"
+            content={`training, competencies, career profiles, ${
+              jsonData.filter(item => item.title === this.state.framework)[0]
+                .desc
+            }`}
+          />
+        </MetaTags>
         <div className="vf-u-margin__top--400" />
         <h2>
           {' '}
@@ -528,36 +552,6 @@ class CompetencyList extends Component {
             />
           </div>
         )}
-
-        {/* <div className="vf-tabs">
-          <ul className="vf-tabs__list" data-vf-js-tabs>
-            <li className="vf-tabs__item">
-              <a className="vf-tabs__link" href="#vf-tabs__section--competencies">Competencies</a>
-            </li>
-            <li className="vf-tabs__item">
-              <a className="vf-tabs__link" href="#vf-tabs__section--training-resources">Training resources</a>
-            </li>
-            <li className="vf-tabs__item">
-              <a className="vf-tabs__link" href="#vf-tabs__section--export">Export</a>
-            </li>
-          </ul>
-        </div>
-
-        <div className="vf-tabs-content" data-vf-js-tabs-content>
-          <section className="vf-tabs__section" id="vf-tabs__section--competencies">
-            <h2>Section 1</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam euismod, tortor nec pharetra ultricies, ante erat imperdiet velit, nec laoreet enim lacus a velit. <a className="vf-link" href="#">Nam luctus</a>, enim in interdum condimentum, nisl diam iaculis lorem, vel volutpat mi leo sit amet lectus. Praesent non odio bibendum magna bibendum accumsan.</p>
-          </section>
-          <section className="vf-tabs__section" id="vf-tabs__section--training-resources">
-            <h2>Section 2</h2>
-            <p>Nullam at diam nec arcu suscipit auctor non a erat. Sed et magna semper, eleifend magna non, facilisis nisl. Proin et est et lorem dictum finibus ut nec turpis. Aenean nisi tortor, euismod a mauris a, mattis scelerisque tortor. Sed dolor risus, varius a nibh id, condimentum lacinia est. In lacinia cursus odio a aliquam. Curabitur tortor magna, laoreet ut rhoncus at, sodales consequat tellus.</p>
-            <a className='vf-link' href="https://www.ebi.ac.uk/training/on-demand">Click to view the resource</a>
-          </section>
-          <section className="vf-tabs__section" id="vf-tabs__section--export">
-            <h2>Section 3</h2>
-            <p>Testing</p>
-          </section>
-        </div> */}
       </>
     );
   }
