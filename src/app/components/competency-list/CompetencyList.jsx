@@ -86,7 +86,7 @@ function CompetencyList({
               <span>
                 <i className="icon icon-spacer icon-common icon-info" />
                 {trainingResourcesExist
-                  ? 'View training resources mapped to this competency'
+                  ? 'View training resources associated with this competency'
                   : 'View more information about this competency'}
               </span>
             </Link>

@@ -188,7 +188,7 @@ class CompetencyDetails extends React.Component {
 
               {resources.length === 0 ? null : (
                 <div id="training-resources-block">
-                  <h2>Training resources mapped to this competency</h2>
+                  <h2>Training resources associated with this competency</h2>
                   <ul>{this.resourceBlock()}</ul>
                 </div>
               )}
@@ -199,9 +199,9 @@ class CompetencyDetails extends React.Component {
     ));
 
     return (
-      <div className="row">
-        <div className="column large-12">
-          {frameworkData.length > 0 ? (
+      <div>
+        <div>
+          {/* {frameworkData.length > 0 ? (
             <nav className="vf-breadcrumbs" aria-label="Breadcrumb">
               <ul className="vf-breadcrumbs__list | vf-list vf-list--inline">
                 <li className="vf-breadcrumbs__item">
@@ -225,7 +225,7 @@ class CompetencyDetails extends React.Component {
             </nav>
           ) : (
             ''
-          )}
+          )} */}
 
           {competencyDetails}
         </div>
