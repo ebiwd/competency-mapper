@@ -510,7 +510,7 @@ class ResourceDetails extends React.Component {
             )}
             {item.tess_content_provider ? (
               <p>
-                <strong>Tess content provider:</strong>{' '}
+                <strong>TeSS content provider:</strong>{' '}
                 {item.tess_content_provider}
               </p>
             ) : (
