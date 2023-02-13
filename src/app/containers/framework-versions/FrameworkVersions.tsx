@@ -81,7 +81,7 @@ export const FrameworkVersion: React.FC<Props> = ({ versions, framework }) => {
         </div>
       </Modal>
       <div>
-        <h5>Framework versions</h5>
+        <h3 className="vf-u-type__text-heading--4">Framework versions</h3>
         {versions.length === 0 ? (
           'No previous versions'
         ) : (

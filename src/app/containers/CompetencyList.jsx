@@ -507,7 +507,8 @@ class CompetencyList extends Component {
                   />
                 </div>
               </form>
-              <table>{domainList}</table>
+              <div className="vf-u-margin__top--800" />
+              <div>{domainList}</div>
               <div className="vf-u-margin__top--800" />
               <div className="vf-grid">
                 <div>
@@ -538,7 +539,7 @@ class CompetencyList extends Component {
             <TabPanel>
               <FAIRDownload />
               <FrameworkVersions framework={framework} versions={versions} />
-              <div className="vf-u-margin__top--1600" />
+              <div className="vf-u-margin__top--1200" />
             </TabPanel>
           </Tabs>
         ) : (

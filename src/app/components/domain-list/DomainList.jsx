@@ -26,14 +26,10 @@ function DomainList({
   ));
 
   return (
-    <tbody style={{ border: 'none' }}>
-      <tr>
-        <td>
-          <h2 style={{ marginBottom: 0 }}> {domain.title}</h2>
-        </td>
-      </tr>
+    <div style={{ border: 'none' }}>
+      <h2 style={{ marginBottom: 0 }}> {domain.title}</h2>
       {competencies}
-    </tbody>
+    </div>
   );
 }
 
