@@ -7,6 +7,7 @@ import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import auth from '../services/util/auth';
+import { MetaTags } from 'react-meta-tags';
 
 class ResourceDetails extends React.Component {
   constructor(props) {
@@ -235,6 +236,18 @@ class ResourceDetails extends React.Component {
     let check_array = Array.isArray(item.competency_profile);
     const Resource = (
       <>
+        <MetaTags>
+          <title>{item.title}</title>
+          <meta property="og:title" content={item.title} />
+          <meta
+            name="description"
+            content="The training resources pages include information about specific training events or materials that are relevant to develop specific competencies, which are linked to from the training resources page."
+          />
+          <meta
+            property="keywords"
+            content="training, learning, competencies, competency-based training, learning outcomes"
+          />
+        </MetaTags>
         <h2>{item.title}</h2>
         <div className="vf-grid  vf-grid__col-4">
           <div className="vf-grid__col--span-3">

@@ -7,6 +7,7 @@ import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 import auth from '../services/util/auth';
+import { MetaTags } from 'react-meta-tags';
 
 export const ProfileView = props => {
   let history = useHistory();
@@ -46,6 +47,7 @@ export const ProfileView = props => {
   var mapping = [];
   var user_roles = auth.currently_logged_in_user.roles;
   var userName = auth.currently_logged_in_user.username;
+  var domainsList = '';
 
   let width2 = '';
 
@@ -188,7 +190,7 @@ export const ProfileView = props => {
             <div key={domainIndex}>
               <div>
                 <div class="vf-u-padding__top--800" />
-                <h4>{domain.title}</h4>{' '}
+                <h4>{domain.title}</h4> {(domainsList += domain.title)}
               </div>
             </div>
             <div>
@@ -199,12 +201,6 @@ export const ProfileView = props => {
                       <div className="vf-grid__col--span-3">
                         <details className="vf-details" close>
                           <summary className="vf-details--summary">
-                            {/* {competency.title.length > 150
-                              ? competency.title
-                                  .split(' ')
-                                  .splice(0, 18)
-                                  .join(' ') + ' ..'
-                              : competency.title} */}
                             {competency.title}
                           </summary>
                           {attribute_types.map((attribute_type, typeIndex) => {
@@ -273,64 +269,6 @@ export const ProfileView = props => {
                         </div>
                       </div>
                     </div>
-                    {/* <div className="profile_collapsible">
-                      <Collapsible
-                        trigger={
-                          <div className="open-close-title">
-                            <i className="icon icon-common icon-angle-right icon-custom" />
-                          </div>
-                        }
-                        triggerWhenOpen={
-                          <div className="open-close-title">
-                            <i className="icon icon-common icon-angle-down icon-custom" />
-                          </div>
-                        }
-                      >
-                        {attribute_types.map((attribute_type, typeIndex) => {
-                          return (
-                            <div
-                              key={typeIndex}
-                              className="accordion-item is-active"
-                              data-accordion-item
-                            >
-                              <div className="embl-grid">
-                                <div />
-                                <ul className="vf-list">
-                                  <div>
-                                    <strong> {attribute_type} </strong>
-                                  </div>
-                                  {competency.attributes
-                                    .filter(
-                                      attribute =>
-                                        attribute.type === attribute_type
-                                    )
-                                    .map((attribute, attrIndex) => {
-                                      return (
-                                        <li
-                                          key={attrIndex}
-                                          className="vf-list__item"
-                                        >
-                                          <span style={{ marginRight: '20px' }}>
-                                            {getAttributeStatus(
-                                              attribute.id,
-                                              'profile1'
-                                            ) ? (
-                                              <i className="icon icon-common icon-check" />
-                                            ) : (
-                                              '-'
-                                            )}
-                                          </span>
-                                          <span>{attribute.title}</span>
-                                        </li>
-                                      );
-                                    })}
-                                </ul>
-                              </div>
-                            </div>
-                          );
-                        })}
-                      </Collapsible>
-                    </div> */}
                   </React.Fragment>
                 ))}
               </div>
@@ -350,6 +288,21 @@ export const ProfileView = props => {
       {generateProfileView()}
       {profile ? (
         <>
+          <MetaTags>
+            <title>{`${profile.title} - ${profile.job_title}`}</title>
+            <meta
+              property="og:title"
+              content={`${profile.title} - ${profile.job_title}`}
+            />
+            <meta
+              name="description"
+              content="Career profiles describe the background and activities of a specific professional role and list the competencies that a person in that role should have and at which level they are required"
+            />
+            <meta
+              property="keywords"
+              content={`career profile, career development, ${domainsList}`}
+            />
+          </MetaTags>
           <div key={profileId} id="profile">
             <div style={{ float: 'right' }}>
               {user_roles.includes('framework_manager') &&
