@@ -1,0 +1,22 @@
+diff a/public/index.html b/public/index.html	(rejected hunks)
+@@ -137,2 +137,12 @@
+-    <link rel="import" href="https://www.embl.org/api/v1/pattern.html?filter-content-type=article&filter-id=6682&pattern=node-body&source=contenthub" data-target="self" data-embl-js-content-hub-loader>
+-    <link rel="stylesheet" href="https://assets.emblstatic.net/vf/v2/assets/ebi-header-footer/ebi-header-footer.css" type="text/css" media="all" />
++    <link
++      rel="import"
++      href="https://www.embl.org/api/v1/pattern.html?filter-content-type=article&filter-id=6682&pattern=node-body&source=contenthub"
++      data-target="self"
++      data-embl-js-content-hub-loader
++    />
++    <link
++      rel="stylesheet"
++      href="https://assets.emblstatic.net/vf/v2/assets/ebi-header-footer/ebi-header-footer.css"
++      type="text/css"
++      media="all"
++    />
+@@ -142 +152,4 @@
+-    <script defer="defer" src="//ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/js/script.js"></script>
++    <script
++      defer="defer"
++      src="//ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/js/script.js"
++    ></script>
