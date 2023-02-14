@@ -134,34 +134,10 @@ class ResourceCreate extends React.Component {
     //   .then(findresponse2 => {
     //     this.setState({ csrf: findresponse2 });
     //   });
-    // fetch(`https://tess.elixir-europe.org/events?page_size=100`, {
-    //   method: 'GET',
-    //   headers: {
-    //     accept: 'application/vnd.api+json'
-    //   }
-    // })
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     this.setState({ tessResources: response });
-    //   });
   }
 
   changeCategory(value) {
     this.setState({ category: value.toLowerCase(), loading: true });
-    // fetch(
-    //   `https://tess.elixir-europe.org/${value.toLowerCase()}?page_size=5000&include_expired=true`,
-    //   {
-    //     method: 'GET',
-    //     headers: {
-    //       accept: 'application/vnd.api+json'
-    //     }
-    //   }
-    // )
-    //   .then(response => response.json())
-    //   .then(response => {
-    //     this.setState({ tessResources: response, loading: false });
-    //   });
-
     fetch(
       `https://tess.elixir-europe.org/content_providers?page_size=200&sort=asc`,
       {
@@ -245,9 +221,6 @@ class ResourceCreate extends React.Component {
 
   handleSubmit(event) {
     event.preventDefault();
-    // let title = this.refs.title.value;
-    // let dates = this.refs.dates.value;
-    // let dates2 = this.refs.dates2.value;
     let title = this.state.title;
     let dates = this.state.dates;
     let dates2 = this.state.dates2;
@@ -257,13 +230,10 @@ class ResourceCreate extends React.Component {
     }
 
     let description = this.state.description;
-    // let location = this.refs.location.value;
-    // let url = this.refs.url.value;
     let location = this.state.location;
     let url = this.state.url;
     let target_audience = this.state.target_audience;
     let learning_outcomes = this.state.learning_outcomes;
-    // let keywords = this.refs.keywords.value;
     let keywords = this.state.keywords;
     let organisers = this.state.organisers;
     let trainers = this.state.trainers;
@@ -275,8 +245,6 @@ class ResourceCreate extends React.Component {
     let tess_conten_provider = this.state.provider;
 
     let token = localStorage.getItem('csrf_token');
-
-    //alert(learning_outcomes);
     if (this.dateValidate(dates, dates2)) {
       fetch(`${apiUrl}/node?_format=hal_json`, {
         credentials: 'include',
@@ -389,6 +357,7 @@ class ResourceCreate extends React.Component {
               data._links.self.href
             )}`
           });
+          // console.log(data.path);
         });
     } else {
       alert('Incorrect dates');
