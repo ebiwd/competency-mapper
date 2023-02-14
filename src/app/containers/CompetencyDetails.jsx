@@ -203,6 +203,10 @@ class CompetencyDetails extends React.Component {
               property="keywords"
               content={`competency, competency-based training, ${
                 competencies[0].domain
+              }, ${
+                competencies[0].framework === 'ISCB'
+                  ? 'computational biology competencies'
+                  : ''
               }`}
             />
           </MetaTags>
