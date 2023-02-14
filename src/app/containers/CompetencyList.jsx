@@ -317,6 +317,10 @@ class CompetencyList extends Component {
             content={`training, competencies, career profiles, ${
               jsonData.filter(item => item.title === this.state.framework)[0]
                 .desc
+            }${
+              frameworkName === 'ISCB'
+                ? ', computational biology competencies'
+                : ''
             }`}
           />
         </MetaTags>
