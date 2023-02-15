@@ -145,7 +145,7 @@ class Root extends Component {
           </Switch>
 
           <section id="main-content-area" className="row" role="main">
-            <main className="column">
+            <div>
               <Switch>
                 <ProtectedRoute
                   condition={user.roles.includes('content_manager')}
@@ -315,7 +315,7 @@ class Root extends Component {
                 <Route path="/login" component={Login} />
                 <Route path="/" component={Frameworks} />
               </Switch>
-            </main>
+            </div>
           </section>
           {/* <Footer /> */}
         </SnackbarProvider>
