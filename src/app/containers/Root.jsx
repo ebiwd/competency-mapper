@@ -39,6 +39,7 @@ import { SnackbarProvider } from 'notistack';
 import { login, logout } from '../services/auth/auth';
 import ActiveRequestsService from '../services/active-requests/active-requests';
 import auth from '../services/util/auth';
+import sitemapGenerator from './sitemapGenerator';
 
 class Root extends Component {
   state = {
@@ -313,6 +314,7 @@ class Root extends Component {
                 />
                 <Route path="/about" component={About} />
                 <Route path="/login" component={Login} />
+                <Route path="/sitemap" component={sitemapGenerator} />
                 <Route path="/" component={Frameworks} />
               </Switch>
             </div>

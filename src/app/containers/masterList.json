@@ -6,7 +6,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-09/iscb_logo.png?w=180",
     "alt": "ISCB - International Society for Computational Biology home ",
     "link": "https://www.iscb.org/",
-    "card_link": "./framework/iscb/3.0"
+    "card_link": "./framework/iscb/3.0",
+    "url": "https://competency.ebi.ac.uk/framework/iscb/3.0",
+    "version": "3.0"
   },
   {
     "title": "bioexcel",
@@ -15,7 +17,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2020-10/Bioexcel_logo_no_subheading_updated_RGB.png?w=220",
     "alt": "BioExcel - Centre of Excellence for Computational Biomolecular Research home",
     "link": "https://bioexcel.eu/",
-    "card_link": "./framework/bioexcel/3.0"
+    "card_link": "./framework/bioexcel/3.0",
+    "url": "https://competency.ebi.ac.uk/framework/bioexcel/3.0",
+    "version": "3.0"
   },
   {
     "title": "permedcoe",
@@ -24,7 +28,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2021-04/PerMedCoE_WHITE%20background.jpg?w=250",
     "alt": "PerMedCoE - HPC/Exascale Centre of Excellence for Personalised Medicine in Europe home",
     "link": "https://permedcoe.eu/",
-    "card_link": "./framework/permedcoe/2.1"
+    "card_link": "./framework/permedcoe/2.1",
+    "url": "https://competency.ebi.ac.uk/framework/permedcoe/2.1",
+    "version": "2.1"
   },
   {
     "title": "arise",
@@ -33,7 +39,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2021-09/ARISE_logo.jpg?w=200",
     "alt": "ARISE- Career Accelerator for Research Infrastructure Scientists home",
     "link": "https://www.embl.org/about/info/arise/",
-    "card_link": "./framework/arise/0.5"
+    "card_link": "./framework/arise/0.5",
+    "url": "https://competency.ebi.ac.uk/framework/arise/0.5",
+    "version": "0.5"
   },
   {
     "title": "ritrain",
@@ -42,7 +50,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-09/ritrain.png?w=120",
     "alt": "RItrain - Research Infrastructure Training Programme home",
     "link": "http://ritrain.eu/",
-    "card_link": "./framework/ritrain/1.0"
+    "card_link": "./framework/ritrain/1.0",
+    "url": "https://competency.ebi.ac.uk/framework/ritrain/1.0",
+    "version": "1.0"
   },
   {
     "title": "corbel",
@@ -51,7 +61,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2022-03/CORBEL-Logo.jpg?w=200?w=200",
     "alt": "CORBEL: Coordinated Research Infrastructures Building Enduring Life-science Services home",
     "link": "https://www.corbel-project.eu/home.html",
-    "card_link": "./framework/corbel/1.1"
+    "card_link": "./framework/corbel/1.1",
+    "url": "https://competency.ebi.ac.uk/framework/corbel/1.1",
+    "version": "1.1"
   },
   {
     "title": "datasteward",
@@ -60,7 +72,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2020-10/datasteward.jpg?w=280",
     "alt": "Training and competencies for data stewardship",
     "link": "https://www.dtls.nl/fair-data/training/",
-    "card_link": "./framework/datasteward/1.0"
+    "card_link": "./framework/datasteward/1.0",
+    "url": "https://competency.ebi.ac.uk/framework/datasteward/1.0",
+    "version": "1.0"
   },
   {
     "title": "cineca",
@@ -69,7 +83,9 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2019-12/cineca.png?w=200",
     "alt": "CINECA - Common Infrastructure for National Cohorts in Europe, Canada, and Africa home",
     "link": "https://www.cineca-project.eu/",
-    "card_link": "./framework/cineca/1.0"
+    "card_link": "./framework/cineca/1.0",
+    "url": "https://competency.ebi.ac.uk/framework/cineca/1.0",
+    "version": "1.0"
   },
   {
     "title": "nhs",
@@ -78,6 +94,8 @@
     "src": "https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/sites/default/files/2018-06/nhs_logo.png?w=350",
     "alt": "NHS - Health Education England",
     "link": "https://www.hee.nhs.uk/our-work/building-our-future-digital-workforce/future-clinical-bioinformaticians-nhs",
-    "card_link": "./framework/nhs/1.0"
+    "card_link": "./framework/nhs/1.0",
+    "url": "https://competency.ebi.ac.uk/framework/nhs/1.0",
+    "version": "1.0"
   }
 ]
