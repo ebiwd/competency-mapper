@@ -248,10 +248,10 @@ class ResourceDetails extends React.Component {
             content="training, learning, competencies, competency-based training, learning outcomes"
           />
         </MetaTags>
-        <h2>{item.title}</h2>
+        <h1>{item.title}</h1>
         <div className="vf-grid  vf-grid__col-4">
           <div className="vf-grid__col--span-3">
-            <h3>Overview</h3>
+            <h2>Overview</h2>
             {item.description ? Parser(item.description) : ''}
 
             {item.url ? (
@@ -279,7 +279,7 @@ class ResourceDetails extends React.Component {
             {/*{item.trainers ? Parser('<h3>Trainers</h3>' + item.trainers) : ''}*/}
 
             <div>
-              <h3>Associated competencies</h3>
+              <h2>Associated competencies</h2>
               <p>
                 This resource provides learning to support the development of
                 the following competencies
