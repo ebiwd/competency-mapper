@@ -29,625 +29,625 @@
   <url>
     <loc>https://competency.ebi.ac.uk/framework/nhs/1.0</loc>
   </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8193/martha-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8194/carmen</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8195/norma</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8196/soroush</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8197/ola</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8198/bastian</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8199/prabhu</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8200/oren</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8201/kristen</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8202/nic</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8203/ibironke</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8204/zach</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8205/hayoon</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8456/antonio</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8457/sophia</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8458/gabriel</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8460/lourdes</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8461/oskar</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/9908/carla</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10115/alex-2</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10117/kyo-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10119/sam-2</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10121/kim-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10123/luca-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10125/andrea-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10217/sofie</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10243/test1-2</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10245/test-5</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10283/ekei</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10285/marian-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10293/ekei-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10295/ade-2</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10297/kai-8</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10299/sam-3</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10301/eider-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10303/greg-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10305/ari-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10307/roland-1</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10327/marta-0</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7950</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7938</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7939</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7940</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7941</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7942</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7943</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7944</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7945</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7946</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7947</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7948</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7949</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5659</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5660</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5661</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5662</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1213</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5687</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1219</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5703</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5700</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1209</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1224</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/10017</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/28</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/27</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1225</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1226</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1227</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8214</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8215</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8216</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8217</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8218</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8219</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8220</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8221</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8222</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8223</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8378</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8224</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8225</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8226</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8228</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8227</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8229</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8230</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8231</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9284</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9286</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9288</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9290</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9292</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9294</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9296</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9298</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9300</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9302</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9304</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9306</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9308</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9310</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9316</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9318</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9320</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9322</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9890</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9892</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9906</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9312</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6767</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6773</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6774</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6775</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6776</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6777</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6778</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6779</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6780</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6781</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6782</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6783</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6784</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6785</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6786</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6787</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6788</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6789</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6790</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6791</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6792</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6793</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6794</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/29</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/30</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/31</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/32</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/106</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/107</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/6399</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/109</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/110</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/112</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/113</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/114</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/115</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/116</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/117</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/118</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7271</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7264</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7268</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7269</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7270</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7272</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7280</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7277</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7278</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7279</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7273</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7274</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7275</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7276</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7281</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7282</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7283</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7303</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7304</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7305</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7459</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7460</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7572</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7489</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7614</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7615</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7673</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7674</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7675</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7730</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7731</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7732</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7795</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7796</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7797</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7839</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7840</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7841</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7872</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7873</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7874</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10129</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10131</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10133</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10135</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10137</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10139</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10141</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10143</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10145</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10147</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10149</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10151</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10153</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10155</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10157</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10159</loc>
+  </url>
+  <url>
+    <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10161</loc>
+  </url>
 </urlset>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8193/martha-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8194/carmen</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8195/norma</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8196/soroush</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8197/ola</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8198/bastian</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8199/prabhu</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8200/oren</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8201/kristen</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8202/nic</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8203/ibironke</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8204/zach</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8205/hayoon</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8456/antonio</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8457/sophia</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8458/gabriel</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8460/lourdes</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/8461/oskar</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/profile/view/9908/carla</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10115/alex-2</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10117/kyo-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10119/sam-2</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10121/kim-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10123/luca-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10125/andrea-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10217/sofie</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10243/test1-2</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/profile/view/10245/test-5</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10283/ekei</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10285/marian-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10293/ekei-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10295/ade-2</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10297/kai-8</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10299/sam-3</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10301/eider-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10303/greg-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10305/ari-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10307/roland-1</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/profile/view/10327/marta-0</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7950</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7938</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7939</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7940</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7941</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7942</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7943</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7944</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7945</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7946</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7947</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7948</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/iscb/3.0/competency/details/7949</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5659</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5660</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5661</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5662</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1213</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5687</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1219</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5703</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/5700</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1209</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1224</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/10017</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/28</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/27</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1225</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1226</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/bioexcel/3.0/competency/details/1227</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8214</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8215</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8216</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8217</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8218</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8219</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8220</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8221</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8222</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8223</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8378</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8224</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8225</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8226</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8228</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8227</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8229</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8230</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/permedcoe/2.1/competency/details/8231</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9284</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9286</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9288</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9290</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9292</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9294</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9296</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9298</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9300</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9302</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9304</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9306</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9308</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9310</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9316</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9318</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9320</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9322</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9890</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9892</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9906</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/arise/0.5/competency/details/9312</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6767</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6773</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6774</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6775</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6776</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6777</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6778</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6779</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6780</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6781</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6782</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6783</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6784</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6785</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6786</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6787</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6788</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6789</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6790</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6791</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6792</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6793</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/ritrain/1.0/competency/details/6794</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/29</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/30</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/31</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/32</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/106</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/107</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/6399</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/109</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/110</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/112</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/113</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/114</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/115</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/116</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/117</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/corbel/1.1/competency/details/118</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7271</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7264</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7268</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7269</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7270</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7272</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7280</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7277</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7278</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7279</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7273</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7274</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7275</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7276</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7281</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7282</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/cineca/1.0/competency/details/7283</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7303</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7304</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7305</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7459</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7460</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7572</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7489</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7614</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7615</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7673</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7674</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7675</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7730</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7731</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7732</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7795</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7796</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7797</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7839</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7840</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7841</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7872</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7873</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/datasteward/1.0/competency/details/7874</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10129</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10131</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10133</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10135</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10137</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10139</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10141</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10143</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10145</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10147</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10149</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10151</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10153</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10155</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10157</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10159</loc>
-</url>
-<url>
-  <loc>https://competency.ebi.ac.uk/framework/nhs/1.0/competency/details/10161</loc>
-</url>
