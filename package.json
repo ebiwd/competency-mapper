@@ -65,7 +65,7 @@
     "babel-register": "^6.26.0",
     "gh-pages": "^2.0.1",
     "husky": "^2.3.0",
-    "lint-staged": "^8.1.7",
+    "lint-staged": "^13.1.2",
     "npm-check-updates": "^3.1.10",
     "prettier": "1.16.4",
     "source-map-explorer": "^2.0.0",
