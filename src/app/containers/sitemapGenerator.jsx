@@ -6,6 +6,9 @@ const sitemapGenerator = () => {
   var sitemap = '';
   const generate = () => {
     sitemap = `<urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'><url><loc>https://competency.ebi.ac.uk</loc></url>`;
+    sitemap += `<url><loc>https://competency.ebi.ac.uk/about</loc></url>`;
+    sitemap += `<url><loc>https://competency.ebi.ac.uk/develop-your-coures</loc></url>`;
+    sitemap += `<url><loc>https://competency.ebi.ac.uk/documentation</loc></url>`;
     masterList.map(async item => {
       sitemap += `<url><loc>${item.url}</loc></url>`;
       const temp = async () => {
@@ -47,19 +50,18 @@ const sitemapGenerator = () => {
         // Get training resources
         let resource_links = '';
         const resources = await getResourceLinks(item.title);
-        if (framework.length > 0) {
-          framework.map(data => {
-            data.domains.map(domain => {
-              domain.competencies.map(competency => {
-                competency_links += `<url><loc>https://competency.ebi.ac.uk/framework/${
-                  item.title
-                }/${item.version}/competency/details/${
-                  competency.id
-                }</loc></url>`;
-              });
-            });
+        if (resources.length > 0) {
+          resources.map(resource => {
+            let url = resource.view_node.replace(
+              '/training',
+              '/training-resources'
+            );
+            resource_links += `<url><loc>https://competency.ebi.ac.uk${url}</loc></url>`;
           });
         }
+
+        // Add resources to sitemap
+        sitemap += resource_links;
 
         console.log(sitemap);
       };
@@ -95,7 +97,7 @@ const getCompetencyLinks = async (framework, version) => {
 
 const getResourceLinks = async framework => {
   const results = await fetch(
-    `${apiUrl}/api/resources?_format=json&source=competencyhub`
+    `${apiUrl}/api/v1/all-training-resources?_format=json&source=competencyhub`
   )
     .then(Response => Response.json())
     .then(findresponse => {
