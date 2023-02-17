@@ -69,7 +69,9 @@ class CompetencyDetails extends React.Component {
     const allFrameworks = await this.competencyService.getAllFrameworks();
     const { framework } = this.state;
     const frameworkMatch = allFrameworks.filter(
-      item => item.name.toLowerCase() === framework
+      item =>
+        item.name.toLowerCase().replace(/ /g, '') ===
+        framework.replace(/ /g, '')
     );
     if (frameworkMatch.length) {
       const attributeDefs = frameworkMatch[0].attribute_types.map(
