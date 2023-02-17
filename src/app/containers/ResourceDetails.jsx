@@ -87,17 +87,21 @@ class ResourceDetails extends React.Component {
                 <li style={{ display: 'inline', margin: '5px' }}>
                   <Link
                     to={
-                      '/training-resources/' +
-                      (this.props.location.state
-                        ? this.props.location.state.training_resource_id
-                        : this.state.resourcePath[2]) +
-                      '/map/' +
-                      item.title.toLowerCase().replace(/ /g, '')
+                      // '/training-resources/' +
+                      // (this.props.location.state
+                      //   ? this.props.location.state.training_resource_id
+                      //   : this.state.resourcePath[2]) +
+                      // '/map/' +
+                      // item.title.toLowerCase().replace(/ /g, '')
+                      `/training-resources/${
+                        this.state.resource.nid.value
+                      }/map/${item.title.toLowerCase().replace(/ /g, '')}`
                     }
                   >
                     {' '}
                     <i className="fas fa-tags" /> {item.title}{' '}
                   </Link>
+                  {console.log(this.props.location.state.training_resource_id)}
                 </li>
               );
             })}
