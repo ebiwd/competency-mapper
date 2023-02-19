@@ -48,6 +48,7 @@ const Footer = () => {
               src={EU}
               loading="lazy"
               width="120px"
+              height={'auto'}
               alt=""
             />
           </figure>
@@ -57,6 +58,7 @@ const Footer = () => {
               src={PerMed}
               loading="lazy"
               width="170px"
+              height={'auto'}
               alt=""
             />
           </figure>
@@ -66,6 +68,7 @@ const Footer = () => {
               src={BioExcel}
               loading="lazy"
               width="180px"
+              height={'auto'}
               style={{ backgroundColor: '#fff', padding: '7px' }}
               alt=""
             />

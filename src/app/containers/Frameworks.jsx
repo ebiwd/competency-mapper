@@ -59,6 +59,16 @@ class Frameworks extends Component {
         <MetaTags>
           <title>Competency hub</title>
           <meta property="og:title" content="Competency hub" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://competemcy.ebi.ac.uk" />
+          <meta
+            property="og:image"
+            content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+          />
+          <meta
+            property="og:description"
+            content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific area of life sciences and relate them to training resources and career profiles"
+          />
           <meta
             name="description"
             content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific area of life sciences and relate them to training resources and career profiles"

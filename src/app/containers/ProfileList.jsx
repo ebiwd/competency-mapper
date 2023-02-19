@@ -209,6 +209,10 @@ const ProfileList = props => {
                   guestProfile.image[0] ? guestProfile.image[0].url : user_icon
                 }
                 className="vf-profile__image"
+                width={'auto'}
+                height={'auto'}
+                title={guestProfile.job_title}
+                loading="lazy"
               />
               <div>
                 <h4 className="vf-profile__title">
@@ -255,7 +259,15 @@ const ProfileList = props => {
             </div>
           ) : (
             <article className="vf-profile vf-profile--very-easy vf-profile--small vf-profile--inline">
-              <img alt="" src={user_icon} className="vf-profile__image" />
+              <img
+                alt=""
+                src={user_icon}
+                className="vf-profile__image"
+                width={'auto'}
+                height={'auto'}
+                title={'guest profile'}
+                loading="lazy"
+              />
 
               <Link
                 className="vf-button vf-button--primary vf-button--sm"
@@ -278,6 +290,10 @@ const ProfileList = props => {
                               alt=""
                               src={profile.image[0].url}
                               className="vf-profile__image"
+                              width={'auto'}
+                              height={'auto'}
+                              title={profile.job_title}
+                              loading="lazy"
                             />
                           ) : (
                             <img

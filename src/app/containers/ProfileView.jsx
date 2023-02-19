@@ -294,6 +294,21 @@ export const ProfileView = props => {
               property="og:title"
               content={`${profile.title} - ${profile.job_title}`}
             />
+            <meta property="og:type" content="website" />
+            <meta
+              property="og:url"
+              content={`https://competency.ebi.ac.uk${
+                props.history.location.pathname
+              }`}
+            />
+            <meta
+              property="og:image"
+              content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+            />
+            <meta
+              property="og:description"
+              content="Career profiles describe the background and activities of a specific professional role and list the competencies that a person in that role should have and at which level they are required"
+            />
             <meta
               name="description"
               content="Career profiles describe the background and activities of a specific professional role and list the competencies that a person in that role should have and at which level they are required"
@@ -354,6 +369,10 @@ export const ProfileView = props => {
                     alt=""
                     style={{ display: 'block', maxWidth: '200px' }}
                     src={profile.image[0] ? profile.image[0].url : ''}
+                    width={'auto'}
+                    height={'auto'}
+                    title={`${profile.title - profile.job_title}`}
+                    loading="lazy"
                   />
                 </center>
                 <p />

@@ -201,6 +201,21 @@ class CompetencyDetails extends React.Component {
             <title>{competencies[0].title}</title>
             <meta name="description" content={competencies[0].title} />
             <meta property="og:title" content={competencies[0].title} />
+            <meta property="og:type" content="website" />
+            <meta
+              property="og:url"
+              content={`https://competency.ebi.ac.uk${
+                this.props.history.location.pathname
+              }`}
+            />
+            <meta
+              property="og:image"
+              content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+            />
+            <meta
+              property="og:description"
+              content="Details of a competency e.g. attributes and associated training resources"
+            />
             <meta
               property="keywords"
               content={`competency, competency-based training, ${

@@ -311,6 +311,18 @@ class CompetencyList extends Component {
                 .desc
             }
           />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:url"
+            content={`https://competency.ebi.ac.uk${
+              this.props.history.location.pathname
+            }`}
+          />
+          <meta
+            property="og:image"
+            content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+          />
+          <meta property="og:description" content={frameworkDescription} />
           <meta name="description" content={frameworkDescription} />
           <meta
             property="keywords"

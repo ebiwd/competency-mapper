@@ -11,6 +11,10 @@ const Copyright = framework => {
           style={{ width: '125px', marginTop: '5px' }}
           className="vf-figure__image"
           src={CCBY_IMG}
+          width={'auto'}
+          height={'auto'}
+          title="copyright"
+          loading="lazy"
         />
       </figure>
       <p>
