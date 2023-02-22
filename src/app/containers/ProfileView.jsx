@@ -190,7 +190,10 @@ export const ProfileView = props => {
             <div key={domainIndex}>
               <div>
                 <div class="vf-u-padding__top--800" />
-                <h4>{domain.title}</h4> {(domainsList += domain.title + ',')}
+                <h4>{domain.title}</h4>{' '}
+                <span style={{ visibility: 'hidden' }}>
+                  {(domainsList += domain.title + ',')}
+                </span>
               </div>
             </div>
             <div>
@@ -371,7 +374,6 @@ export const ProfileView = props => {
                     src={profile.image[0] ? profile.image[0].url : ''}
                     width={'auto'}
                     height={'auto'}
-                    title={`${profile.title - profile.job_title}`}
                     loading="lazy"
                   />
                 </center>

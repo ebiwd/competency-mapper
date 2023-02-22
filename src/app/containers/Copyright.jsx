@@ -13,7 +13,6 @@ const Copyright = framework => {
           src={CCBY_IMG}
           width={'auto'}
           height={'auto'}
-          title="copyright"
           loading="lazy"
         />
       </figure>

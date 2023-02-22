@@ -156,8 +156,7 @@ class ResourceCreate extends React.Component {
   changeProvider(value) {
     this.setState({ provider: value, loading: true });
     let category = this.state.category.toLowerCase();
-    let extraParams =
-      category === 'events' ? '&include_expired=true&sort=late' : '';
+    let extraParams = category === 'events' ? '&sort=late' : '';
     fetch(
       `https://tess.elixir-europe.org/${category}?content_provider=${value}&page_size=5000${extraParams}`,
       {
@@ -414,13 +413,15 @@ class ResourceCreate extends React.Component {
                         })
                         : ''} */}
                       {this.state.providers.data
-                        ? this.state.providers.data.map((provider, key) => {
-                            return (
-                              <option key={key}>
-                                {provider.attributes.title}
-                              </option>
-                            );
-                          })
+                        ? this.state.providers.data
+                            .filter(provider => provider.id !== '2')
+                            .map((provider, key) => {
+                              return (
+                                <option key={key}>
+                                  {provider.attributes.title}
+                                </option>
+                              );
+                            })
                         : ''}
                     </select>
                   </div>

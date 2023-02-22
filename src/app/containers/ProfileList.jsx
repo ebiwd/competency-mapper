@@ -211,7 +211,6 @@ const ProfileList = props => {
                 className="vf-profile__image"
                 width={'auto'}
                 height={'auto'}
-                title={guestProfile.job_title}
                 loading="lazy"
               />
               <div>
@@ -265,7 +264,6 @@ const ProfileList = props => {
                 className="vf-profile__image"
                 width={'auto'}
                 height={'auto'}
-                title={'guest profile'}
                 loading="lazy"
               />
 
@@ -292,7 +290,6 @@ const ProfileList = props => {
                               className="vf-profile__image"
                               width={'auto'}
                               height={'auto'}
-                              title={profile.job_title}
                               loading="lazy"
                             />
                           ) : (
