@@ -67,10 +67,11 @@ export const ProfileMap = props => {
     fetchData();
 
     if (mapping) {
-      let checkBoxes = $('input:checkbox');
-      checkBoxes.each(function(index, item, arr) {
-        console.log('test ' + item.dataset);
-      });
+      // let checkBoxes = $('input:checkbox');
+      // checkBoxes.each(function(index, item, arr) {
+      //   console.log('test ' + item.dataset);
+      // });
+      console.log(mapping);
     }
   }, [profileId, frameworkName, frameworkVersion, mapping]);
 
