@@ -8,6 +8,7 @@ import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 class ResourceDetails extends React.Component {
   constructor(props) {
@@ -242,6 +243,21 @@ class ResourceDetails extends React.Component {
         <MetaTags>
           <title>{item.title}</title>
           <meta property="og:title" content={item.title} />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:url"
+            content={`https://competency.ebi.ac.uk${
+              this.props.history.location.pathname
+            }`}
+          />
+          <meta
+            property="og:image"
+            content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+          />
+          <meta
+            property="og:description"
+            content="The training resources pages include information about specific training events or materials that are relevant to develop specific competencies, which are linked to from the training resources page."
+          />
           <meta
             name="description"
             content="The training resources pages include information about specific training events or materials that are relevant to develop specific competencies, which are linked to from the training resources page."
@@ -251,6 +267,9 @@ class ResourceDetails extends React.Component {
             content="training, learning, competencies, competency-based training, learning outcomes"
           />
         </MetaTags>
+        <Helmet>
+          <link rel="canonical" href={this.props.location.pathname} />
+        </Helmet>
         <h1>{item.title}</h1>
         <div className="vf-grid  vf-grid__col-4">
           <div className="vf-grid__col--span-3">

@@ -65,6 +65,8 @@ const PathwaysList = props => {
                               alt="profile"
                               src={pathway.image[0].url}
                               className="vf-profile__image"
+                              width={'auto'}
+                              height={'auto'}
                             />
                           </div>
                         ) : (
@@ -72,6 +74,8 @@ const PathwaysList = props => {
                             alt="pathway"
                             src={user_icon}
                             className="vf-profile__image"
+                            width={'auto'}
+                            height={'auto'}
                           />
                         )}
                         <h3 className="vf-profile__title">
@@ -104,6 +108,8 @@ const PathwaysList = props => {
                             alt="profile"
                             src={pathway.image[0].url}
                             className="vf-profile__image"
+                            width={'auto'}
+                            height={'auto'}
                           />
                         </div>
                       ) : (
@@ -111,6 +117,8 @@ const PathwaysList = props => {
                           alt="pathway"
                           src={user_icon}
                           className="vf-profile__image"
+                          width={'auto'}
+                          height={'auto'}
                         />
                       )}
                       <h3 className="vf-profile__title">

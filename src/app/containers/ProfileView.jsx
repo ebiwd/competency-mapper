@@ -8,6 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 export const ProfileView = props => {
   let history = useHistory();
@@ -190,7 +191,10 @@ export const ProfileView = props => {
             <div key={domainIndex}>
               <div>
                 <div class="vf-u-padding__top--800" />
-                <h4>{domain.title}</h4> {(domainsList += domain.title + ',')}
+                <h4>{domain.title}</h4>{' '}
+                <span style={{ visibility: 'hidden' }}>
+                  {(domainsList += domain.title + ',')}
+                </span>
               </div>
             </div>
             <div>
@@ -294,6 +298,21 @@ export const ProfileView = props => {
               property="og:title"
               content={`${profile.title} - ${profile.job_title}`}
             />
+            <meta property="og:type" content="website" />
+            <meta
+              property="og:url"
+              content={`https://competency.ebi.ac.uk${
+                props.history.location.pathname
+              }`}
+            />
+            <meta
+              property="og:image"
+              content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+            />
+            <meta
+              property="og:description"
+              content="Career profiles describe the background and activities of a specific professional role and list the competencies that a person in that role should have and at which level they are required"
+            />
             <meta
               name="description"
               content="Career profiles describe the background and activities of a specific professional role and list the competencies that a person in that role should have and at which level they are required"
@@ -303,6 +322,9 @@ export const ProfileView = props => {
               content={`career profile, career development, ${domainsList}`}
             />
           </MetaTags>
+          <Helmet>
+            <link rel="canonical" href={props.location.pathname} />
+          </Helmet>
           <div key={profileId} id="profile">
             <div style={{ float: 'right' }}>
               {user_roles.includes('framework_manager') &&
@@ -354,6 +376,9 @@ export const ProfileView = props => {
                     alt=""
                     style={{ display: 'block', maxWidth: '200px' }}
                     src={profile.image[0] ? profile.image[0].url : ''}
+                    width={'auto'}
+                    height={'auto'}
+                    loading="lazy"
                   />
                 </center>
                 <p />

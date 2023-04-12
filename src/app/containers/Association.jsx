@@ -11,6 +11,8 @@ const Association = framework => {
             src={data.src}
             alt={data.alt}
             loading="lazy"
+            width={'auto'}
+            height={'auto'}
           />
         </figure>
       </a>

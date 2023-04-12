@@ -10,6 +10,7 @@ import Association from './Association';
 import masterList from './masterList.json';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 class Frameworks extends Component {
   state = {
@@ -59,6 +60,16 @@ class Frameworks extends Component {
         <MetaTags>
           <title>Competency hub</title>
           <meta property="og:title" content="Competency hub" />
+          <meta property="og:type" content="website" />
+          <meta property="og:url" content="https://competemcy.ebi.ac.uk" />
+          <meta
+            property="og:image"
+            content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+          />
+          <meta
+            property="og:description"
+            content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific area of life sciences and relate them to training resources and career profiles"
+          />
           <meta
             name="description"
             content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific area of life sciences and relate them to training resources and career profiles"
@@ -68,6 +79,9 @@ class Frameworks extends Component {
             content="competency, life sciences, career development, computational biology, bioinformatics"
           />
         </MetaTags>
+        <Helmet>
+          <link rel="canonical" href={this.props.location.pathname} />
+        </Helmet>
         <section className="vf-u-fullbleed vf-u-background-color-ui--grey--light vf-u-padding__top--800">
           <h2>Who is the Competency Hub for?</h2>
           <FrameworkButtons frameworkDetails={masterList} />
