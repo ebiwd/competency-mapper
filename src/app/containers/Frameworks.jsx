@@ -10,6 +10,7 @@ import Association from './Association';
 import masterList from './masterList.json';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 class Frameworks extends Component {
   state = {
@@ -78,6 +79,9 @@ class Frameworks extends Component {
             content="competency, life sciences, career development, computational biology, bioinformatics"
           />
         </MetaTags>
+        <Helmet>
+          <link rel="canonical" href={this.props.location.pathname} />
+        </Helmet>
         <section className="vf-u-fullbleed vf-u-background-color-ui--grey--light vf-u-padding__top--800">
           <h2>Who is the Competency Hub for?</h2>
           <FrameworkButtons frameworkDetails={masterList} />

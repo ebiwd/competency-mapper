@@ -8,6 +8,7 @@ import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 class ResourceDetails extends React.Component {
   constructor(props) {
@@ -266,6 +267,9 @@ class ResourceDetails extends React.Component {
             content="training, learning, competencies, competency-based training, learning outcomes"
           />
         </MetaTags>
+        <Helmet>
+          <link rel="canonical" href={this.props.location.pathname} />
+        </Helmet>
         <h1>{item.title}</h1>
         <div className="vf-grid  vf-grid__col-4">
           <div className="vf-grid__col--span-3">

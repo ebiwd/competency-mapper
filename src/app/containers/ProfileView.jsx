@@ -8,6 +8,7 @@ import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 export const ProfileView = props => {
   let history = useHistory();
@@ -321,6 +322,9 @@ export const ProfileView = props => {
               content={`career profile, career development, ${domainsList}`}
             />
           </MetaTags>
+          <Helmet>
+            <link rel="canonical" href={props.location.pathname} />
+          </Helmet>
           <div key={profileId} id="profile">
             <div style={{ float: 'right' }}>
               {user_roles.includes('framework_manager') &&

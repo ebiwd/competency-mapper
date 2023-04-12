@@ -23,6 +23,7 @@ import jsonData from './masterList.json';
 import Copyright from './Copyright';
 import auth from '../services/util/auth';
 import { MetaTags } from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 class CompetencyList extends Component {
   static propTypes = {
@@ -336,6 +337,9 @@ class CompetencyList extends Component {
             }`}
           />
         </MetaTags>
+        <Helmet>
+          <link rel="canonical" href={this.props.location.pathname} />
+        </Helmet>
         <div className="vf-u-margin__top--400" />
         <h2>
           {' '}

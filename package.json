@@ -28,6 +28,7 @@
     "react-dom": "^16.8.6",
     "react-drag-and-drop": "^3.0.0",
     "react-dropzone": "^10.1.10",
+    "react-helmet": "^6.1.0",
     "react-js-pagination": "^3.0.3",
     "react-json-csv": "^2.0.0",
     "react-meta-tags": "^1.0.1",

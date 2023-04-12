@@ -1,5 +1,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import MetaTags from 'react-meta-tags';
+import { Helmet } from 'react-helmet';
 
 const About = () => {
   useEffect(() => {
@@ -8,6 +10,36 @@ const About = () => {
 
   return (
     <>
+      <>
+        <MetaTags>
+          <title>About competency hub</title>
+          <meta property="og:title" content="About competency hub" />
+          <meta property="og:type" content="website" />
+          <meta
+            property="og:url"
+            content={`https://competency.ebi.ac.uk/about`}
+          />
+          <meta
+            property="og:image"
+            content="https://acxngcvroo.cloudimg.io/v7/https://cms.competency.ebi.ac.uk/themes/custom/ebi_academy/images/mastheads/CH_Jigsaw.jpg"
+          />
+          <meta
+            property="og:description"
+            content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific field and relate them to training resources and career profiles"
+          />
+          <meta
+            name="description"
+            content="The Competency Hub is a repository of competency frameworks that define the abilities required by professionals in a specific field and relate them to training resources and career profiles"
+          />
+          <meta
+            property="keywords"
+            content="competency, life sciences, career development, computational biology, bioinformatics"
+          />
+        </MetaTags>
+        <Helmet>
+          <link rel="canonical" href="https://www.competency.ebi.ac.uk/about" />
+        </Helmet>
+      </>
       <h2>About the Competency Hub</h2>
       <h3>Competency</h3>
       <p>
