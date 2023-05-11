@@ -97,9 +97,9 @@ export const ProfileMapGuest = props => {
     console.log(checkBoxes);
 
     if (expertise_id === expertise_not_applicable) {
-      checkBoxes.each(function(index, item, arr) {
-        item.checked = false;
-        item.disabled = true;
+      checkBoxes.forEach(function(index, item, arr) {
+        index.checked = false;
+        index.disabled = true;
       });
       //console.log(tempMapping.find(o => o.competency == competency_id))
       // tempMapping.splice(
@@ -115,17 +115,19 @@ export const ProfileMapGuest = props => {
         let o = tempMapping.find(o => o.competency === competency_id);
         o.expertise = expertise_id;
 
-        checkBoxes.each(function(index, item, arr) {
-          attributesList.push(item.id);
-          item.checked = true;
-          item.disabled = false;
+        checkBoxes.forEach(function(index, item, arr) {
+          attributesList.push(index.id);
+          index.checked = true;
+          index.disabled = false;
         });
         o.attributes = attributesList;
       } else {
-        checkBoxes.each(function(index, item, arr) {
-          attributesList.push(item.id);
-          item.checked = true;
-          item.disabled = false;
+        checkBoxes.forEach(function(index, item, arr) {
+          attributesList.push(index.id);
+          // item.checked = true;
+          // item.disabled = false;
+          index.checked = true;
+          index.disabled = false;
         });
         tempMapping.push({
           competency: competency_id,
