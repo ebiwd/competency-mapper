@@ -90,7 +90,11 @@ export const ProfileMapGuest = props => {
     let tempMapping = mapping;
 
     let attributesList = [];
-    let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
+    // let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
+    let checkBoxes = document.querySelectorAll(
+      '[data-competency="' + competency_id + '"]'
+    );
+    console.log(checkBoxes);
 
     if (expertise_id === expertise_not_applicable) {
       checkBoxes.each(function(index, item, arr) {
