@@ -41,7 +41,7 @@ export const ProfileMap = props => {
   useEffect(() => {
     const fetchData = async () => {
       await fetch(
-        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub`
+        `${apiUrl}/api/${frameworkName}/${frameworkVersion}/profiles?_format=json&id=${profileId}&source=competencyhub&timestamp=${Date.now()}`
       )
         .then(Response => Response.json())
         .then(findresponse => {
@@ -67,10 +67,11 @@ export const ProfileMap = props => {
     fetchData();
 
     if (mapping) {
-      let checkBoxes = $('input:checkbox');
-      checkBoxes.each(function(index, item, arr) {
-        console.log('test ' + item.dataset);
-      });
+      // let checkBoxes = $('input:checkbox');
+      // checkBoxes.each(function(index, item, arr) {
+      //   console.log('test ' + item.dataset);
+      // });
+      // console.log(mapping);
     }
   }, [profileId, frameworkName, frameworkVersion, mapping]);
 
@@ -78,7 +79,7 @@ export const ProfileMap = props => {
     e.preventDefault();
 
     let response = await profileService.mapProfile(profileId, mapping);
-    console.log(response);
+    // console.log(response);
     props.history.push(
       `/framework/${frameworkName}/${frameworkVersion}/profile/view/${profileId}/alias`
     );
@@ -88,13 +89,18 @@ export const ProfileMap = props => {
     let competency_id = event.target[event.target.selectedIndex].getAttribute(
       'data-competency'
     );
+    console.log('competency_id: ' + competency_id);
     let expertise_id = event.target[event.target.selectedIndex].getAttribute(
       'data-expertise'
     );
     let tempMapping = mapping;
 
     let attributesList = [];
-    let checkBoxes = $('input:checkbox[data-competency=' + competency_id + ']');
+    // let checkBoxes = $('input:checkbox[data-competency="' + competency_id + '"]');
+    let checkBoxes = document.querySelectorAll(
+      '[data-competency="' + competency_id + '"]'
+    );
+    console.log(checkBoxes);
 
     if (expertise_id === expertise_not_applicable) {
       checkBoxes.each(function(index, item, arr) {
@@ -105,7 +111,7 @@ export const ProfileMap = props => {
       console.log(tempMapping);
       // Remove the NA competency from the temp array
       tempMapping = tempMapping.filter(o => o.competency !== competency_id);
-      console.log(tempMapping);
+      // console.log(tempMapping);
     } else if (tempMapping) {
       if (tempMapping.find(o => o.competency === competency_id)) {
         let o = tempMapping.find(o => o.competency === competency_id);
@@ -148,7 +154,7 @@ export const ProfileMap = props => {
       }
       setMapping(tempMapping);
     }
-    console.log(mapping);
+    // console.log(mapping);
   };
 
   const generateForm = () => {
@@ -200,7 +206,7 @@ export const ProfileMap = props => {
       if (!mapping) {
         setMapping(profile.profile_mapping);
       }
-      console.log(mapping);
+      // console.log(mapping);
     }
 
     if (framework) {
