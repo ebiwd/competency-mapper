@@ -369,7 +369,7 @@ export const ProfilesCompareButterfly = props => {
       <div>{competencyView}</div>
       <div className="vf-grid">
         <div />
-        <div style={{ textAling: 'center' }}>
+        {/* <div style={{ textAling: 'center' }}>
           {isGuestProfile ? (
             <button
               to={'#'}
@@ -381,7 +381,7 @@ export const ProfilesCompareButterfly = props => {
           ) : (
             ''
           )}
-        </div>
+        </div> */}
         <div style={{ textAling: 'center' }} className="submit_fixed">
           <button
             href="#"
