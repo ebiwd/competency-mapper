@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
+const $ = window.$;
+
 const Breadcrumbs = () => {
   let location = useLocation();
   let pathname = location.pathname;
@@ -68,9 +70,11 @@ const Breadcrumbs = () => {
               {convertFrameworkName(frameworkName)} {frameworkVersion}
             </Link>
           </li>
-          <li className="vf-breadcrumbs__item" aria-current="location">
-            View career profile
-          </li>
+          <li
+            className="vf-breadcrumbs__item"
+            aria-current="location"
+            id="bc_location"
+          />
         </>
       );
     } else if (pathname.includes('competency')) {

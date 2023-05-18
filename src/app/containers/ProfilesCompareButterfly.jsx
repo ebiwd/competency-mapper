@@ -82,19 +82,15 @@ export const ProfilesCompareButterfly = props => {
     } else {
       mapping = profile2.profile_mapping;
     }
-    //console.log(mapping)
+
     if (mapping) {
       let attribute_check_status = mapping.find(o =>
         o.attributes.find(a => a === attribute)
       );
-      //console.log(attribute_check_status)
+
       return attribute_check_status ? true : false;
     }
   };
-
-  // const getAttributeRows = competency => {
-  //   console.log('hi ' + competency);
-  // };
 
   const generateProfileView = () => {
     if (frameworkInfo) {
@@ -172,7 +168,6 @@ export const ProfilesCompareButterfly = props => {
               includeSummary.push(competency.id);
             }
 
-            console.log(totalLevels);
             let width1 = profile1Expertise
               ? 100 / ((totalLevels - 1) / profile1Expertise.rating_level)
               : 0;

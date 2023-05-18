@@ -16,13 +16,15 @@ export async function login(username, password) {
     localStorage.setItem('userid', data.current_user.uid);
     return data;
   } catch (error) {
+    // console.log(error)
     logout();
-    alert(`Login failed with ${error.response.data}`);
+    alert(
+      `Login failed. Please try again and make sure you are using the correct username and password.`
+    );
   }
 }
 
 export function logout() {
-  alert('logout');
   let logout_token = localStorage.getItem('logout_token');
   axios
     .get(

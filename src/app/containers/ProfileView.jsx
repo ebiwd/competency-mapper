@@ -128,6 +128,11 @@ export const ProfileView = props => {
     }
   };
 
+  // {document.addEventListener("DOMContentLoaded", function (event) {
+  //   // console.log(document.querySelectorAll('[data-profileid]'))
+  //   document.getElementById('bc_location').innerText = 'Prakash'
+  // })}
+
   const getBarWidth = data => {
     let totalLevels = frameworkInfo.find(
       info => info.title.toLowerCase() === frameworkName
@@ -365,9 +370,16 @@ export const ProfileView = props => {
                 />
               )}
             </div>
-            <h1 style={{ marginTop: '1em', marginBottom: '1em' }}>
+            <h1
+              style={{ marginTop: '1em', marginBottom: '1em' }}
+              data-profileid="1"
+            >
               {profile.title} - {profile.job_title}
             </h1>
+            {
+              (document.getElementById('bc_location').innerText =
+                profile.title + ' - ' + profile.job_title)
+            }
 
             <div className={profile.publishing_status + ' embl-grid'}>
               <div>

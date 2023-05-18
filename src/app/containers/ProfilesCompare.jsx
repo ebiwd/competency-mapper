@@ -31,6 +31,9 @@ export const ProfilesCompare = props => {
   const [link2, setLink2] = useState();
 
   const redirectToCompare = e => {
+    if (!profile1.id) {
+      profile1.id = 'guest';
+    }
     if (selectedProfileId) {
       history.push(
         `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${

@@ -10,7 +10,7 @@ import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import user_icon from './user_icon.png';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
-//const $ = window.$;
+import masterList from './masterList.json';
 
 export const ProfileViewGuest = props => {
   let history = useHistory();
@@ -40,7 +40,7 @@ export const ProfileViewGuest = props => {
   const redirectToCompare = e => {
     if (selectedProfileId) {
       history.push(
-        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${'guest'}/${selectedProfileId}`
+        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/guest/${selectedProfileId}`
       );
     } else {
       setComparisonError('Select a role to compare');
@@ -159,7 +159,6 @@ export const ProfileViewGuest = props => {
 
     if (profile) {
       mapping = profile.profile_mapping;
-      console.log(mapping);
     }
 
     if (framework) {
@@ -285,9 +284,13 @@ export const ProfileViewGuest = props => {
       {generateProfileView()}
       {profile ? (
         <div id="profile">
-          <h2 style={{ marginTop: '1em', marginBottom: '1em' }}>
+          <h1 style={{ marginTop: '1em', marginBottom: '1em' }}>
             {profile.title} - {profile.job_title}
-          </h2>
+          </h1>
+          {
+            (document.getElementById('bc_location').innerText =
+              profile.title + ' - ' + profile.job_title)
+          }
 
           <div style={{ float: 'right' }}>
             <ProfileComparisonModal
@@ -297,8 +300,8 @@ export const ProfileViewGuest = props => {
               setSelectedProfileId={id => {
                 setSelectedProfileId(id);
               }}
-              redirectToCompare={() => {
-                redirectToCompare();
+              redirectToCompare={e => {
+                redirectToCompare(e);
               }}
             />
             <ul>
@@ -365,11 +368,20 @@ export const ProfileViewGuest = props => {
             </div>
             <p />
           </div>
-          <p>&nbsp;</p>
+          {/* <p>This profile has been created in {masterList.filter(item => item.title == frameworkName)[0].desc} ({frameworkFullName}) framework.</p> */}
+          <div class="vf-banner vf-banner--alert vf-banner--info">
+            <div class="vf-banner__content">
+              <p class="vf-banner__text">
+                This profile has been created in{' '}
+                {masterList.filter(item => item.title == frameworkName)[0].desc}{' '}
+                ({frameworkFullName}) framework.
+              </p>
+            </div>
+          </div>
+          <p />
 
           <div className="vf-grid vf-grid__col-4">
             <div className="vf-grid__col--span-1">
-              {' '}
               <h5 style={{ marginTop: '25px' }}>
                 {frameworkFullName} {frameworkVersion} / Competencies
               </h5>
