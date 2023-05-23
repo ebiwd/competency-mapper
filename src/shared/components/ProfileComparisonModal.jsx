@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import ReactModal from 'react-modal';
+import masterList from '../../app/containers/masterList.json';
 
 const customStyles = {
   content: {
@@ -84,9 +85,22 @@ export const ProfileComparisonModal = props => {
                   X
                 </span>
               </h2>
-
+              {currentProfile.id ? (
+                ''
+              ) : (
+                <p>
+                  This profile has been created in the{' '}
+                  {
+                    masterList.filter(
+                      item => item.title == currentProfile.frameworkName
+                    )[0].desc
+                  }{' '}
+                  {console.log(currentProfile)}
+                  framework.
+                </p>
+              )}
               <p>
-                Select a profile to compare{' '}
+                Select a framework profile to compare{' '}
                 <strong>{currentProfile.job_title} with:</strong>
               </p>
 

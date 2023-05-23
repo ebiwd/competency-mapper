@@ -71,7 +71,11 @@ export const ProfileViewGuest = props => {
       )
         .then(Response => Response.json())
         .then(findresponse => {
-          setProfiles(findresponse);
+          const profilesExcludingCurrentProfile = findresponse.filter(
+            p =>
+              p.id !== props.match.params.id && p.publishing_status === 'Live'
+          );
+          setProfiles(profilesExcludingCurrentProfile);
         });
     };
     fetchData();
@@ -159,6 +163,8 @@ export const ProfileViewGuest = props => {
 
     if (profile) {
       mapping = profile.profile_mapping;
+      document.getElementById('bc_location').innerText =
+        profile.title + ' - ' + profile.job_title;
     }
 
     if (framework) {
@@ -287,10 +293,6 @@ export const ProfileViewGuest = props => {
           <h1 style={{ marginTop: '1em', marginBottom: '1em' }}>
             {profile.title} - {profile.job_title}
           </h1>
-          {
-            (document.getElementById('bc_location').innerText =
-              profile.title + ' - ' + profile.job_title)
-          }
 
           <div style={{ float: 'right' }}>
             <ProfileComparisonModal
@@ -368,17 +370,6 @@ export const ProfileViewGuest = props => {
             </div>
             <p />
           </div>
-          {/* <p>This profile has been created in {masterList.filter(item => item.title == frameworkName)[0].desc} ({frameworkFullName}) framework.</p> */}
-          <div class="vf-banner vf-banner--alert vf-banner--info">
-            <div class="vf-banner__content">
-              <p class="vf-banner__text">
-                This profile has been created in{' '}
-                {masterList.filter(item => item.title == frameworkName)[0].desc}{' '}
-                ({frameworkFullName}) framework.
-              </p>
-            </div>
-          </div>
-          <p />
 
           <div className="vf-grid vf-grid__col-4">
             <div className="vf-grid__col--span-1">

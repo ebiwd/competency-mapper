@@ -390,31 +390,6 @@ class CompetencyList extends Component {
               ) : (
                 ''
               )}
-              {localStorage.getItem('roles') ? (
-                <Tab onClick={e => changeTabURL(e)}>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/learning-pathways`}
-                    className="customTabLinks"
-                  >
-                    Learning pathways
-                  </Link>
-                </Tab>
-              ) : this.state.pathwayCount > 0 ? (
-                <Tab onClick={e => changeTabURL(e)}>
-                  <Link
-                    to={`/framework/${framework}/${
-                      this.props.match.params.version
-                    }/learning-pathways`}
-                    className="customTabLinks"
-                  >
-                    Learning pathways
-                  </Link>
-                </Tab>
-              ) : (
-                ''
-              )}
 
               <Tab onClick={e => changeTabURL(e)}>
                 <Link
@@ -436,6 +411,32 @@ class CompetencyList extends Component {
                     className="customTabLinks"
                   >
                     Training resources
+                  </Link>
+                </Tab>
+              ) : (
+                ''
+              )}
+
+              {localStorage.getItem('roles') ? (
+                <Tab onClick={e => changeTabURL(e)}>
+                  <Link
+                    to={`/framework/${framework}/${
+                      this.props.match.params.version
+                    }/learning-pathways`}
+                    className="customTabLinks"
+                  >
+                    Learning pathways
+                  </Link>
+                </Tab>
+              ) : this.state.pathwayCount > 0 ? (
+                <Tab onClick={e => changeTabURL(e)}>
+                  <Link
+                    to={`/framework/${framework}/${
+                      this.props.match.params.version
+                    }/learning-pathways`}
+                    className="customTabLinks"
+                  >
+                    Learning pathways
                   </Link>
                 </Tab>
               ) : (
@@ -489,22 +490,6 @@ class CompetencyList extends Component {
               ''
             )}
 
-            {localStorage.getItem('roles') ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-                <div className="vf-u-margin__top--1600" />
-              </TabPanel>
-            ) : this.state.pathwayCount > 0 ? (
-              <TabPanel>
-                <PathwaysList framework={framework} />
-                <FrameworkVersions framework={framework} versions={versions} />
-                <div className="vf-u-margin__top--1600" />
-              </TabPanel>
-            ) : (
-              ''
-            )}
-
             <TabPanel>
               <form
                 action="#"
@@ -551,6 +536,21 @@ class CompetencyList extends Component {
                   version={frameworkVersion}
                   frameworkId={frameWorkId}
                 />
+              </TabPanel>
+            ) : (
+              ''
+            )}
+            {localStorage.getItem('roles') ? (
+              <TabPanel>
+                <PathwaysList framework={framework} />
+                <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--1600" />
+              </TabPanel>
+            ) : this.state.pathwayCount > 0 ? (
+              <TabPanel>
+                <PathwaysList framework={framework} />
+                <FrameworkVersions framework={framework} versions={versions} />
+                <div className="vf-u-margin__top--1600" />
               </TabPanel>
             ) : (
               ''

@@ -187,6 +187,9 @@ export const ProfileView = props => {
 
     if (profile) {
       mapping = profile.profile_mapping;
+
+      document.getElementById('bc_location').innerText =
+        profile.title + ' - ' + profile.job_title;
     }
 
     if (framework) {
@@ -376,10 +379,6 @@ export const ProfileView = props => {
             >
               {profile.title} - {profile.job_title}
             </h1>
-            {
-              (document.getElementById('bc_location').innerText =
-                profile.title + ' - ' + profile.job_title)
-            }
 
             <div className={profile.publishing_status + ' embl-grid'}>
               <div>

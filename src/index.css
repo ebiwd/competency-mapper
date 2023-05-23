@@ -472,7 +472,7 @@ table tbody tr:nth-child(even) {
 
 .customModal {
   background: #b2dbbf;
-  max-width: 500px;
+  max-width: 600px;
   width: 100%;
 }
 
@@ -580,6 +580,9 @@ code {
   z-index: 11000 !important;
 }
 
+.ReactModal__Content {
+  height: 300px !important;
+}
 .customTabLinks {
   text-decoration: none !important;
   color: black !important;
