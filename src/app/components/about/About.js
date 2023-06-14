@@ -139,7 +139,7 @@ const About = () => {
           Competency Hub to design competency-based courses and course
           programmes.
         </p>
-
+        <div className="vf-u-margin--400" />
         <h3>Additional documentation</h3>
         <p>
           The following are documents that explain how some of the competency

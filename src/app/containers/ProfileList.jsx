@@ -169,32 +169,9 @@ const ProfileList = props => {
                     Create reference profile{' '}
                     <i className="icon icon-common icon-user-plus" />
                   </Link>
-                  {/* <Link
-                    onClick={e => redirectToCompare(e)}
-                    className="vf-button vf-button--tertiary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-                      profilesToCompare[0]
-                    }/${profilesToCompare[1]}`}
-                  >
-                    {' '}
-                    Compare selected profiles{' '}
-                    <i className="icon icon-common icon-compare" />
-                  </Link> */}
                 </span>
               ) : (
-                <span>
-                  {/* <Link
-                    onClick={e => redirectToCompare(e)}
-                    className="vf-button vf-button--tertiary vf-button--sm"
-                    to={`/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-                      profilesToCompare[0]
-                    }/${profilesToCompare[1]}`}
-                  >
-                    {' '}
-                    Compare selected profiles{' '}
-                    <i className="icon icon-common icon-compare" />
-                  </Link> */}
-                </span>
+                <span />
               )}
             </span>
           </div>
@@ -225,17 +202,6 @@ const ProfileList = props => {
                   </Link>
                 </h4>
 
-                {/*<span>*/}
-                {/*  <label>*/}
-                {/*    <input*/}
-                {/*      type="checkbox"*/}
-                {/*      onClick={e => setProfilesToCompare(e)}*/}
-                {/*      data-profileid="guest"*/}
-                {/*    />*/}
-                {/*    Click to compare*/}
-                {/*  </label>*/}
-                {/*</span>*/}
-
                 <div
                   style={{
                     color: '#999',
@@ -245,8 +211,6 @@ const ProfileList = props => {
                 >
                   <span>
                     <hr className="vf-divider | vf-u-fullbleed" />
-                    {/* Your profile {guestProfile.frameworkName} -{' '}
-                    {guestProfile.versionNumber} */}
                   </span>
 
                   <Link onClick={e => handleDelete(e)} to={`#`}>
@@ -301,14 +265,14 @@ const ProfileList = props => {
                           )}
                           <h4 className="vf-profile__title">
                             {profile.job_title ? (
-                              <Link
+                              <a
                                 className="vf-profile__link"
-                                to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${
+                                href={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${
                                   profile.id
                                 }${profile.url_alias}`}
                               >
                                 {profile.job_title}
-                              </Link>
+                              </a>
                             ) : (
                               'Job title'
                             )}
@@ -321,16 +285,6 @@ const ProfileList = props => {
                   return (
                     <div>
                       <div className="profile_badge">
-                        {/*<span>*/}
-                        {/*  <label>*/}
-                        {/*    <input*/}
-                        {/*      type="checkbox"*/}
-                        {/*      onClick={e => setProfilesToCompare(e)}*/}
-                        {/*      data-profileid={profile.id}*/}
-                        {/*    />*/}
-                        {/*    Click to compare*/}
-                        {/*  </label>*/}
-                        {/*</span>*/}
                         <p className={profile.publishing_status}>
                           {profile.image[0] ? (
                             <img
@@ -354,14 +308,14 @@ const ProfileList = props => {
                                 ? profile.job_title
                                 : 'Job title'}
                             </h4>
-                            <Link
-                              to={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${
+                            <a
+                              href={`/framework/${frameworkName}/${frameworkVersion}/profile/view/${
                                 profile.id
                               }${profile.url_alias}`}
                             >
                               View profile{' '}
                               <i className="icon icon-common icon-angle-right" />
-                            </Link>
+                            </a>
                             <p>&nbsp;</p>
                           </div>
                         </div>

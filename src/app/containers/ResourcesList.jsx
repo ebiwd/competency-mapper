@@ -374,27 +374,10 @@ class ResourcesList extends React.Component {
             </center>
           )}
         </table>
-        {/* <nav className="vf-pagination" aria-label="Pagination">
-          <Pagination
-            activePage={this.state.activePage}
-            itemsCountPerPage={50}
-            totalItemsCount={this.state.totalItemsCount}
-            pageRangeDisplayed={5}
-            onChange={e => this.handlePageChange(e)}
-            innerclassName="vf-pagination__list"
-            itemclassName="vf-pagination__item"
-            itemClassPrev="vf-pagination__item--previous-page"
-            itemClassNext="vf-pagination__item--next-page"
-            linkclassName="vf-pagination__link vf-pagination__label"
-            activeclassName="vf-pagination__item--is-active"
-            prevPageText="Previous"
-            nextPageText="Next"
-          />
-        </nav> */}
         <nav className="vf-pagination" aria-label="Pagination">
           <Pagination
             activePage={this.state.activePage}
-            itemsCountPerPage={15}
+            itemsCountPerPage={50}
             totalItemsCount={this.state.totalItemsCount}
             pageRangeDisplayed={10}
             onChange={e => this.handlePageChange(e)}

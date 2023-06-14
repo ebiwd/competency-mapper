@@ -80,19 +80,25 @@ class CompetencyList extends Component {
     let visibleTabs = [];
     if (auth.currently_logged_in_user.is_logged_in) {
       visibleTabs.push('career-profiles');
+      visibleTabs.push('competencies');
+      visibleTabs.push('training-resources');
       visibleTabs.push('learning-pathways');
     } else {
       if (this.state.profileCount > 0) {
         visibleTabs.push('career-profiles');
       }
+      visibleTabs.push('competencies');
+      if (this.state.trainingResourcesExist) {
+        visibleTabs.push('training-resources');
+      }
       if (this.state.pathwayCount > 0) {
         visibleTabs.push('learning-pathways');
       }
     }
-    visibleTabs.push('competencies');
-    if (this.state.trainingResourcesExist) {
-      visibleTabs.push('training-resources');
-    }
+    // visibleTabs.push('competencies');
+    // if (this.state.trainingResourcesExist) {
+    //   visibleTabs.push('training-resources');
+    // }
     visibleTabs.push('export');
     await this.setState({ visibleTabs: visibleTabs });
     let currentUrl = window.location.href;
@@ -353,7 +359,7 @@ class CompetencyList extends Component {
           <span className="vf-badge vf-badge--primary"> {frameworkStatus}</span>
         </p>
         <p>{frameworkDescription}</p>
-
+        {console.log(this.state.visibleTabs)}
         {this.state.allResourcesFetched ? (
           <Tabs
             className="vf-tabs ch_tabs__list"

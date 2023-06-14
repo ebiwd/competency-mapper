@@ -112,7 +112,7 @@ export const ProfileComparisonModal = props => {
                     props.setSelectedProfileId(e.target.value);
                   }}
                 >
-                  <option value="0">Select role</option>
+                  <option value="0">Select profile</option>
                   {localStorage.getItem('guestProfile') &&
                   includeGuestProfile ? (
                     <option value={'guest'}>
