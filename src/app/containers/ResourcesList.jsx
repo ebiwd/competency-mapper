@@ -262,7 +262,7 @@ class ResourcesList extends React.Component {
             )}
           </td>
           <td className="vf-table__cell">
-            {auth.currently_logged_in_user.id == item.author ? (
+            {auth.currently_logged_in_user.id === item.author ? (
               <Link to={`/training-resource/edit/${item.slug}`}>
                 <i className="fas fa-edit" />{' '}
               </Link>

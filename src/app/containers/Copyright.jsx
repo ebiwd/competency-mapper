@@ -1,5 +1,5 @@
 import React from 'react';
-import Parser from 'html-react-parser';
+// import Parser from 'html-react-parser';
 import CCBY_IMG from '../components/assets/CC_BY.png';
 
 const Copyright = framework => {

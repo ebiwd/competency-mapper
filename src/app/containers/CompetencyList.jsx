@@ -1,4 +1,4 @@
-import React, { Component, history } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
@@ -17,7 +17,7 @@ import ActiveRequestsService from '../services/active-requests/active-requests';
 import { safeFlat, removeHtmlTags } from '../services/util/util';
 import FAIRDownload from '../components/FAIRDownload';
 import CoursesService from '../services/courses/courses';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import jsonData from './masterList.json';
 import Copyright from './Copyright';

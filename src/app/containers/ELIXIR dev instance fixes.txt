@@ -1,0 +1,11 @@
+ELIXIR dev instance fixes:
+- Map not loading - Fixed
+- CSV images not loading for Admins
+-
+
+Views:
+- Dashboard admins only block
+-
+
+Blocks:
+- CSS and JS for admin dashboard is not Admin dashboard

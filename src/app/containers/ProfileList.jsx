@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+// import { useHistory } from 'react-router-dom';
 
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ import 'react-confirm-alert/src/react-confirm-alert.css';
 import auth from '../services/util/auth';
 
 const ProfileList = props => {
-  let history = useHistory();
+  // let history = useHistory();
 
   const frameworkName = props.framework;
   const frameworkVersion = props.version;
@@ -20,7 +20,7 @@ const ProfileList = props => {
   const [profiles, setProfiles] = useState();
   const [userFrameworks, setUserFrameworks] = useState([]);
 
-  var profilesToCompare = [];
+  // var profilesToCompare = [];
   const needTimeStamp = auth.currently_logged_in_user.is_logged_in
     ? '&timestamp=' + Date.now()
     : '';
@@ -55,36 +55,36 @@ const ProfileList = props => {
     };
 
     fetchData();
-  }, [frameworkVersion, frameworkName, userName]);
+  }, [frameworkVersion, frameworkName, userName, needTimeStamp]);
 
-  const setProfilesToCompare = e => {
-    if (profilesToCompare.length > 2) {
-      alert('You have to select two profiles to compare.');
-      return;
-    }
+  // const setProfilesToCompare = e => {
+  //   if (profilesToCompare.length > 2) {
+  //     alert('You have to select two profiles to compare.');
+  //     return;
+  //   }
 
-    if (e.target.checked) {
-      profilesToCompare.push(e.target.getAttribute('data-profileid'));
-    } else {
-      profilesToCompare = profilesToCompare.filter(function(value, index, arr) {
-        return value !== e.target.getAttribute('data-profileid');
-      });
-    }
-  };
+  //   if (e.target.checked) {
+  //     profilesToCompare.push(e.target.getAttribute('data-profileid'));
+  //   } else {
+  //     profilesToCompare = profilesToCompare.filter(function(value, index, arr) {
+  //       return value !== e.target.getAttribute('data-profileid');
+  //     });
+  //   }
+  // };
 
-  const redirectToCompare = e => {
-    e.preventDefault();
-    if (profilesToCompare.length !== 2) {
-      alert('You have to select two profiles to compare.');
-      return;
-    } else {
-      history.push(
-        `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
-          profilesToCompare[0]
-        }/${profilesToCompare[1]}`
-      );
-    }
-  };
+  // const redirectToCompare = e => {
+  //   e.preventDefault();
+  //   if (profilesToCompare.length !== 2) {
+  //     alert('You have to select two profiles to compare.');
+  //     return;
+  //   } else {
+  //     history.push(
+  //       `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/${
+  //         profilesToCompare[0]
+  //       }/${profilesToCompare[1]}`
+  //     );
+  //   }
+  // };
 
   const handleDelete = e => {
     e.preventDefault();

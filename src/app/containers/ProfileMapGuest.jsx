@@ -10,7 +10,7 @@ import user_icon from './user_icon.png';
 import ReactTooltip from 'react-tooltip';
 import jsonData from './masterList.json';
 
-const $ = window.$;
+// const $ = window.$;
 
 export const ProfileMapGuest = props => {
   const profileService = new ProfileService();
@@ -157,42 +157,72 @@ export const ProfileMapGuest = props => {
     console.log(mapping);
   };
 
+  const setExpertiseLevels = levels => {
+    levels.map((level, index) => {
+      expertise_levels[level.id] = level.title;
+      expertise_not_applicable =
+        level.title === 'Not applicable' ? level.id : '';
+      expertise_levels_legend.push(
+        <li
+          key={index}
+          className="vf-list__item"
+          style={{ textAlign: 'center' }}
+        >
+          <div
+            data-tip={level.description ? level.description : 'NA'}
+            data-html={true}
+            data-type="info"
+            data-multiline={true}
+          >
+            <span className="vf-badge vf-badge--tertiary">
+              {' '}
+              {level.rating_level}{' '}
+            </span>{' '}
+            <span> {level.title}</span>
+          </div>
+          <ReactTooltip className="tooltip-custom" />
+        </li>
+      );
+      return null;
+    });
+  };
+
   const generateForm = () => {
     if (frameworkInfo) {
       frameworkInfo.forEach(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          //frameworkLogo = info.logo[0].url;
-          //frameworkDesc = info.description;
-          info.expertise_levels.map(
-            (level, levelIndex) => (
-              (expertise_levels[level.id] = level.title),
-              level.title === 'Not applicable'
-                ? (expertise_not_applicable = level.id)
-                : '',
-              expertise_levels_legend.push(
-                <li
-                  key={levelIndex}
-                  className="vf-list__item"
-                  style={{ textAlign: 'center' }}
-                >
-                  <div
-                    data-tip={level.description ? level.description : 'NA'}
-                    data-html={true}
-                    data-type="info"
-                    data-multiline={true}
-                  >
-                    <span className="vf-badge vf-badge--tertiary">
-                      {' '}
-                      {level.rating_level}{' '}
-                    </span>{' '}
-                    <span> {level.title}</span>
-                  </div>
-                  <ReactTooltip className="tooltip-custom" />
-                </li>
-              )
-            )
-          );
+          setExpertiseLevels(info.expertise_levels);
+
+          // info.expertise_levels.map(
+          //   (level, levelIndex) => (
+          //     expertise_levels[level.id] = level.title,
+          //     level.title === 'Not applicable'
+          //       ? (expertise_not_applicable = level.id)
+          //       : '',
+          //     expertise_levels_legend.push(
+          //       <li
+          //         key={levelIndex}
+          //         className="vf-list__item"
+          //         style={{ textAlign: 'center' }}
+          //       >
+          //         <div
+          //           data-tip={level.description ? level.description : 'NA'}
+          //           data-html={true}
+          //           data-type="info"
+          //           data-multiline={true}
+          //         >
+          //           <span className="vf-badge vf-badge--tertiary">
+          //             {' '}
+          //             {level.rating_level}{' '}
+          //           </span>{' '}
+          //           <span> {level.title}</span>
+          //         </div>
+          //         <ReactTooltip className="tooltip-custom" />
+          //       </li>
+          //     )
+          //   )
+          // );
         }
       });
       frameworkInfo.map(info => {

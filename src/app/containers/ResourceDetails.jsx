@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import ReactModal from 'react-modal';
 import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
-import ItemVersions from '../containers/framework-versions/VersionNotice';
+// import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import auth from '../services/util/auth';
@@ -234,7 +234,7 @@ class ResourceDetails extends React.Component {
     let selectedCompetencies = [];
     let attribute_types = [];
     let item = this.state.resource;
-    let frameworkLiveVersion = '';
+    // let frameworkLiveVersion = '';
 
     let link = '/bioexcel/1.1';
     let check_array = Array.isArray(item.competency_profile);
@@ -319,9 +319,9 @@ class ResourceDetails extends React.Component {
                               }
                               return null;
                             });
-                            frameworkLiveVersion = framework.versions.find(
-                              version => version.status === 'live'
-                            );
+                            // frameworkLiveVersion = framework.versions.find(
+                            //   version => version.status === 'live'
+                            // );
                           }
 
                           return null;

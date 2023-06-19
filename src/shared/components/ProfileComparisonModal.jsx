@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import ReactModal from 'react-modal';
 import masterList from '../../app/containers/masterList.json';
 
@@ -92,7 +92,7 @@ export const ProfileComparisonModal = props => {
                   This profile has been created in the{' '}
                   {
                     masterList.filter(
-                      item => item.title == currentProfile.frameworkName
+                      item => item.title === currentProfile.frameworkName
                     )[0].desc
                   }{' '}
                   {console.log(currentProfile)}

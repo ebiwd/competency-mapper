@@ -23,10 +23,10 @@ class AttributeDemap extends React.Component {
 
   async demap(e) {
     //alert("mapping removed");
-    let resource = 1034;
-    let items = [20, 21];
+    // let resource = 1034;
+    // let items = [20, 21];
     //this.activeRequests.startRequest();
-    let result = await this.competencyService.demap(resource, items);
+    // let result = await this.competencyService.demap(resource, items);
     //this.activeRequests.finishRequest();
     //this.props.history.push("/training-resources/"+this.props.location.pathname.split('/')[2]);
     //e.preventDefault();

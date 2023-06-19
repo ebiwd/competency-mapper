@@ -1,8 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
-const $ = window.$;
-
 const Breadcrumbs = () => {
   let location = useLocation();
   let pathname = location.pathname;

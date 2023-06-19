@@ -8,7 +8,6 @@ import ActiveRequestsService from '../../services/active-requests/active-request
 import CoursesService from '../../services/courses/courses';
 import { safeFlat } from '../../services/util/util';
 import Pagination from 'react-js-pagination';
-import { slugify } from '../../services/util/slugifier';
 
 class Courses extends Component {
   static propTypes = {
@@ -108,7 +107,7 @@ class Courses extends Component {
 
   filterCourses(allCourses) {
     const { framework } = this.state;
-    const { version } = this.state;
+    // const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
       if (course.archived === 'archived') {
@@ -156,7 +155,7 @@ class Courses extends Component {
     const {
       filteredCourses,
       framework,
-      filter,
+      // filter,
       loadingError,
       version
     } = this.state;
@@ -165,7 +164,7 @@ class Courses extends Component {
       return <ErrorLoading />;
     }
 
-    let duplicates = [];
+    // let duplicates = [];
 
     const competencyList = competencies =>
       competencies

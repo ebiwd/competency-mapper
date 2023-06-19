@@ -10,7 +10,7 @@ import Collapsible from 'react-collapsible';
 import ReactTooltip from 'react-tooltip';
 import user_icon from './user_icon.png';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
-import masterList from './masterList.json';
+// import masterList from './masterList.json';
 
 export const ProfileViewGuest = props => {
   let history = useHistory();
@@ -73,7 +73,8 @@ export const ProfileViewGuest = props => {
         .then(findresponse => {
           const profilesExcludingCurrentProfile = findresponse.filter(
             p =>
-              p.id !== props.match.params.id && p.publishing_status === 'Live'
+              // p.id !== props.match.params.id && p.publishing_status === 'Live'
+              p.id !== 'guest' && p.publishing_status === 'Live'
           );
           setProfiles(profilesExcludingCurrentProfile);
         });

@@ -5,7 +5,7 @@ import { withSnackbar } from 'notistack';
 import PropTypes from 'prop-types';
 import LoginForm from './login-form/LoginForm';
 import Footer from '../components/Footer';
-import { login, logout } from '../services/auth/auth';
+import { login } from '../services/auth/auth';
 import Association from './Association';
 import masterList from './masterList.json';
 import auth from '../services/util/auth';

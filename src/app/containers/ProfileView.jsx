@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
+
 import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 import auth from '../services/util/auth';
@@ -21,7 +21,7 @@ export const ProfileView = props => {
   const [selectedProfileId, setSelectedProfileId] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [comparisonError, setComparisonError] = useState(null);
   const [userFrameworks, setUserFrameworks] = useState([]);
 
@@ -61,7 +61,8 @@ export const ProfileView = props => {
         .then(findresponse => {
           const profilesExcludingCurrentProfile = findresponse.filter(
             p =>
-              p.id !== props.match.params.id && p.publishing_status === 'Live'
+              // p.id !== props.match.params.id && p.publishing_status === 'Live'
+              p.id !== profileId && p.publishing_status === 'Live'
           );
           setProfiles(profilesExcludingCurrentProfile);
         });
@@ -101,7 +102,8 @@ export const ProfileView = props => {
       }
     };
     fetchData();
-  }, [profileId, frameworkVersion, frameworkName, userName, showModal]);
+    //}, [profileId, frameworkVersion, frameworkName, userName, showModal]);
+  }, [profileId, frameworkVersion, frameworkName, userName, needTimeStamp]);
 
   const getExpertise = competency => {
     if (mapping) {

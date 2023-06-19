@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Collapsible from 'react-collapsible';
 import { Link } from 'react-router-dom';
 
 import { groupBy } from 'lodash-es';

@@ -1,25 +1,7 @@
 import React from 'react';
-
-import { removeHtmlTags } from '../../services/util/util';
 import Parser from 'html-react-parser';
-import { Link } from 'react-router-dom';
 
 function FrameworkButton({ desc, sub_text, card_link }) {
-  // let description = removeHtmlTags(framework.description);
-  // if (description.length > 120) {
-  //   description = `${description.slice(0, 120).trim()}...`;
-  // }
-  // const liveVersion = framework.versions.reduce((prevVersion, newVersion) => {
-  //   if (newVersion.status === 'live') {
-  //     return newVersion.number;
-  //   }
-  //   return prevVersion;
-  // }, null);
-
-  // if (liveVersion === null) {
-  //   return null;
-  // }
-
   return (
     <article className="vf-card vf-card--brand vf-card--bordered">
       <div className="vf-card__content | vf-stack vf-stack--400">
@@ -45,29 +27,6 @@ function FrameworkButton({ desc, sub_text, card_link }) {
         {sub_text ? Parser(sub_text) : ''}
       </div>
     </article>
-    // {<article className="vf-card vf-card--primary">
-    //   <div className="vf-card__content | vf-stack vf-stack--400">
-    //     <div className="vf-card__title">
-    //       <Link
-    //         className="vf-card__link"
-    //         data-equalizer-watch
-    //         to={`/framework/${framework.title
-    //           .toLowerCase()
-    //           .replace(/ /g, '')}/${liveVersion}`}
-    //       >
-    //         {framework.title}
-    //       </Link>
-    //     </div>
-
-    //     <div className="vf-card__text">
-    //       {tempDesc.map(item =>
-    //         item.title === framework.title.toLowerCase().replace(/ /g, '')
-    //           ? item.desc
-    //           : ''
-    //       )}
-    //     </div>
-    //   </div>
-    // </article>}
   );
 }
 
