@@ -93,8 +93,8 @@ export const ProfilesCompare = props => {
           .then(findresponse => {
             const profilesExcludingCurrentProfile = findresponse.filter(
               p =>
-                p.id !== props.match.params.profile1 &&
-                p.publishing_status === 'Live'
+                // p.id !== props.match.params.profile1 &&
+                p.id !== profile1Id && p.publishing_status === 'Live'
             );
             setProfiles(profilesExcludingCurrentProfile);
           });

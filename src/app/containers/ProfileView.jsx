@@ -3,7 +3,7 @@ import { Switch, Route, useHistory } from 'react-router-dom';
 import Parser from 'html-react-parser';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
-import Collapsible from 'react-collapsible';
+
 import ReactTooltip from 'react-tooltip';
 import { ProfileComparisonModal } from '../../shared/components/ProfileComparisonModal';
 import auth from '../services/util/auth';
@@ -21,7 +21,7 @@ export const ProfileView = props => {
   const [selectedProfileId, setSelectedProfileId] = useState();
   const [framework, setFramework] = useState();
   const [frameworkInfo, setFrameworkInfo] = useState();
-  const [showModal, setShowModal] = useState(false);
+  // const [showModal, setShowModal] = useState(false);
   const [comparisonError, setComparisonError] = useState(null);
   const [userFrameworks, setUserFrameworks] = useState([]);
 
@@ -61,7 +61,8 @@ export const ProfileView = props => {
         .then(findresponse => {
           const profilesExcludingCurrentProfile = findresponse.filter(
             p =>
-              p.id !== props.match.params.id && p.publishing_status === 'Live'
+              // p.id !== props.match.params.id && p.publishing_status === 'Live'
+              p.id !== profileId && p.publishing_status === 'Live'
           );
           setProfiles(profilesExcludingCurrentProfile);
         });
@@ -101,7 +102,8 @@ export const ProfileView = props => {
       }
     };
     fetchData();
-  }, [profileId, frameworkVersion, frameworkName, userName, showModal]);
+    //}, [profileId, frameworkVersion, frameworkName, userName, showModal]);
+  }, [profileId, frameworkVersion, frameworkName, userName, needTimeStamp]);
 
   const getExpertise = competency => {
     if (mapping) {
@@ -198,7 +200,7 @@ export const ProfileView = props => {
           <React.Fragment key={itemIndex + domainIndex}>
             <div key={domainIndex}>
               <div>
-                <div class="vf-u-padding__top--800" />
+                <div className="vf-u-padding__top--800" />
                 <h4>{domain.title}</h4>{' '}
                 <span style={{ visibility: 'hidden' }}>
                   {(domainsList += domain.title + ',')}
@@ -211,7 +213,7 @@ export const ProfileView = props => {
                   <React.Fragment key={compIndex}>
                     <div className="vf-grid vf-grid__col-4">
                       <div className="vf-grid__col--span-3">
-                        <details className="vf-details" close>
+                        <details className="vf-details" close="true">
                           <summary className="vf-details--summary">
                             {competency.title}
                           </summary>
@@ -296,7 +298,7 @@ export const ProfileView = props => {
   };
 
   return (
-    <div key={'unique'}>
+    <div>
       {generateProfileView()}
       {profile ? (
         <>
@@ -333,8 +335,8 @@ export const ProfileView = props => {
           <Helmet>
             <link rel="canonical" href={props.location.pathname} />
           </Helmet>
-          <div key={profileId} id="profile">
-            <div style={{ float: 'right' }}>
+          <div key={'profile'} id="profile">
+            <div key={'profile_div'} style={{ float: 'right' }}>
               {user_roles.includes('framework_manager') &&
               userFrameworks.length > 0 &&
               userFrameworks.includes(frameworkFullName) ? (

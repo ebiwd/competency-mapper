@@ -1,21 +1,13 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-//import { apiUrl } from '../services/http/http';
-//import ProfileService from '../services/profile/profile';
-//import ActiveRequestsService from '../services/active-requests/active-requests';
-//import { Link, Redirect } from 'react-router-dom';
-//import RadarChart from 'react-svg-radar-chart';
+// import { useHistory } from 'react-router-dom';
 import 'react-svg-radar-chart/build/css/index.css';
-//import user_icon from './user_icon.png';
 import Collapsible from 'react-collapsible';
 
 export const ProfilesCompareButterfly = props => {
-  let history = useHistory();
+  // let history = useHistory();
   const frameworkName = props.frameworkName;
   const frameworkVersion = props.frameworkVersion;
-  //const profile1Id = props.profile1Id;
-  //const profile2Id = props.profile2Id;
-  const isGuestProfile = props.isGuestProfile;
+  // const isGuestProfile = props.isGuestProfile;
 
   const profile1 = props.profile1;
   const profile2 = props.profile2;
@@ -320,16 +312,16 @@ export const ProfilesCompareButterfly = props => {
     window.print();
   };
 
-  const handleSummary = e => {
-    e.preventDefault();
-    history.push({
-      pathname: `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/guest/summary`,
-      state: {
-        profileJobTitle: profile1.job_title,
-        includeSummary: includeSummary
-      }
-    });
-  };
+  // const handleSummary = e => {
+  //   e.preventDefault();
+  //   history.push({
+  //     pathname: `/framework/${frameworkName}/${frameworkVersion}/profiles/compare/guest/summary`,
+  //     state: {
+  //       profileJobTitle: profile1.job_title,
+  //       includeSummary: includeSummary
+  //     }
+  //   });
+  // };
 
   return (
     <div id="">

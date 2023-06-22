@@ -383,16 +383,12 @@ export const ProfileMapDownload = props => {
       frameworkInfo.map(info => {
         if (info.title.toLowerCase() === frameworkName) {
           frameworkFullName = info.title;
-          //frameworkLogo = info.logo[0].url;
-          //frameworkDesc = info.description;
-          info.expertise_levels.map(
-            level => (
-              (expertise_levels[level.id] = level.title),
-              level.title === 'Not applicable'
-                ? (expertise_not_applicable = level.id)
-                : ''
-            )
-          );
+          info.expertise_levels.map(level => {
+            expertise_levels[level.id] = level.title;
+            expertise_not_applicable =
+              level.title === 'Not applicable' ? level.id : '';
+            return null;
+          });
         }
         return null;
       });

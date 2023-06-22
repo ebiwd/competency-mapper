@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import ReactModal from 'react-modal';
 import AttributeMap from './AttributeMap';
 import Parser from 'html-react-parser';
-import ItemVersions from '../containers/framework-versions/VersionNotice';
+// import ItemVersions from '../containers/framework-versions/VersionNotice';
 import { apiUrl } from '../services/http/http';
 import { Link } from 'react-router-dom';
 import auth from '../services/util/auth';
@@ -234,7 +234,7 @@ class ResourceDetails extends React.Component {
     let selectedCompetencies = [];
     let attribute_types = [];
     let item = this.state.resource;
-    let frameworkLiveVersion = '';
+    // let frameworkLiveVersion = '';
 
     let link = '/bioexcel/1.1';
     let check_array = Array.isArray(item.competency_profile);
@@ -306,7 +306,7 @@ class ResourceDetails extends React.Component {
                 This resource provides learning to support the development of
                 the following competencies
               </p>
-              <div>
+              <>
                 {check_array ? (
                   item.competency_profile.map((profile, index) => {
                     return (
@@ -319,9 +319,9 @@ class ResourceDetails extends React.Component {
                               }
                               return null;
                             });
-                            frameworkLiveVersion = framework.versions.find(
-                              version => version.status === 'live'
-                            );
+                            // frameworkLiveVersion = framework.versions.find(
+                            //   version => version.status === 'live'
+                            // );
                           }
 
                           return null;
@@ -359,89 +359,7 @@ class ResourceDetails extends React.Component {
                                             {competency.title}{' '}
                                           </a>
                                         </p>
-                                        {/* {competency.archived === 'archived' ? (
-                                          <ItemVersions
-                                            framework="bioexcel"
-                                            versions={link}
-                                          />
-                                        ) : (
-                                          ''
-                                        )} */}
                                       </span>
-                                      {/* <ul
-                                        className="vf-list"
-                                        style={{ marginLeft: '2rem' }}
-                                      >
-                                        {attribute_types.map((type, index) => (
-                                          <span key={index}>
-                                            <li className="vf-list__item vf-u-type__text-body--2">
-                                              {competency.attributes.find(
-                                                attribute =>
-                                                  attribute.type === type
-                                              )
-                                                ? type
-                                                : ''}
-                                              <div class="vf-u-margin__top--500" />
-                                              <ul className="vf-list vf-list--unordered">
-                                                {competency.attributes.map(
-                                                  (attribute, index) => {
-                                                    if (
-                                                      attribute.type === type
-                                                    ) {
-                                                      return (
-                                                        <li
-                                                          className="vf-list__item vf-u-type__text-body--2"
-                                                          key={index}
-                                                        >
-                                                          <span
-                                                            className={
-                                                              attribute.archived ===
-                                                              'archived'
-                                                                ? 'archived'
-                                                                : ''
-                                                            }
-                                                          >
-                                                            {attribute.title}
-                                                            {attribute.archived ===
-                                                            'archived' ? (
-                                                              <ItemVersions
-                                                                framework={
-                                                                  profile.title
-                                                                }
-                                                                version={
-                                                                  frameworkLiveVersion.number
-                                                                }
-                                                              />
-                                                            ) : (
-                                                              ''
-                                                            )}
-                                                            {attribute.archived ===
-                                                            'archived' ? (
-                                                              <a
-                                                                href={
-                                                                  '/training-resources/' +
-                                                                  item.id +
-                                                                  '/demap/' +
-                                                                  attribute.id
-                                                                }
-                                                              >
-                                                                <i className="fas fa-times-circle" />
-                                                              </a>
-                                                            ) : (
-                                                              ''
-                                                            )}
-                                                          </span>
-                                                        </li>
-                                                      );
-                                                    }
-                                                    return null;
-                                                  }
-                                                )}
-                                              </ul>
-                                            </li>
-                                          </span>
-                                        ))}
-                                      </ul> */}
                                     </li>
                                   )
                                 )}
@@ -453,11 +371,9 @@ class ResourceDetails extends React.Component {
                     );
                   })
                 ) : (
-                  <tr>
-                    <td />
-                  </tr>
+                  <div />
                 )}
-              </div>
+              </>
             </div>
           </div>
           <div className="vf-grid__col--span-1">

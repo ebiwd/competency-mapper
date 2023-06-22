@@ -8,7 +8,6 @@ import ActiveRequestsService from '../../services/active-requests/active-request
 import CoursesService from '../../services/courses/courses';
 import { safeFlat } from '../../services/util/util';
 import Pagination from 'react-js-pagination';
-import { slugify } from '../../services/util/slugifier';
 
 class Courses extends Component {
   static propTypes = {
@@ -68,7 +67,7 @@ class Courses extends Component {
       this.setState({ courses, filteredCourses: courses });
       if (courses.length > 0) {
         this.setState({
-          totalItemsCount: courses[0].hitcount
+          totalItemsCount: parseInt(courses[0].hitcount)
         });
       } else {
         this.setState({
@@ -76,7 +75,7 @@ class Courses extends Component {
         });
       }
       this.setState({
-        totalItemsCount: courses.length > 0 ? courses[0].hitcount : 0
+        totalItemsCount: courses.length > 0 ? parseInt(courses[0].hitcount) : 0
       });
       this.setState({
         loading: false
@@ -108,7 +107,7 @@ class Courses extends Component {
 
   filterCourses(allCourses) {
     const { framework } = this.state;
-    const { version } = this.state;
+    // const { version } = this.state;
     const filteredCourses = [];
     allCourses.forEach(course => {
       if (course.archived === 'archived') {
@@ -156,7 +155,7 @@ class Courses extends Component {
     const {
       filteredCourses,
       framework,
-      filter,
+      // filter,
       loadingError,
       version
     } = this.state;
@@ -165,7 +164,7 @@ class Courses extends Component {
       return <ErrorLoading />;
     }
 
-    let duplicates = [];
+    // let duplicates = [];
 
     const competencyList = competencies =>
       competencies
@@ -174,8 +173,8 @@ class Courses extends Component {
             all.findIndex(c => c.competency_id === competency.competency_id) ===
             index
         )
-        .map(competency => (
-          <li key={competency.id}>
+        .map((competency, key) => (
+          <li key={key}>
             <Link
               to={`/framework/${framework}/${version}/competency/details/${
                 competency.competency_id
@@ -233,8 +232,8 @@ class Courses extends Component {
               <div className="vf-grid vf-grid__col-4">
                 <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
                   <label
-                    class="vf-form__label vf-u-sr-only | vf-search__label"
-                    for="search_box"
+                    className="vf-form__label vf-u-sr-only | vf-search__label"
+                    htmlFor="search_box"
                   >
                     Search training resources
                   </label>

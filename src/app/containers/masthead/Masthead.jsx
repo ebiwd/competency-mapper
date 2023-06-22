@@ -1,16 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-//import ProgressBar from '../../../shared/components/progress-bar/progress-bar';
 import Navigation from '../navigation/Navigation';
-import LoginForm from '../login-form/LoginForm';
-import { createBrowserHistory } from 'history';
 
 class Masthead extends Component {
   static propTypes = {
-    user: PropTypes.string.isRequired,
-    roles: PropTypes.string.isRequired,
+    user: PropTypes.string,
+    roles: PropTypes.array.isRequired,
     onLogin: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired
   };

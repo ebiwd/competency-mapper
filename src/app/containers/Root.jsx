@@ -138,7 +138,7 @@ class Root extends Component {
           <Switch>
             <Masthead
               roles={user.roles}
-              user={user.username}
+              user={user.username ? user.username : ''}
               isActive={isActive}
               onLogin={this.handleLogin}
               onLogout={this.handleLogout}

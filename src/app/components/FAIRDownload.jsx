@@ -61,10 +61,10 @@ const FAIRDownload = () => {
           <h4>Identifiers</h4>
           <form action="#" className="vf-form | vf-search">
             {filters
-              ? filters.identifiers.map(filter => {
+              ? filters.identifiers.map((filter, key) => {
                   return (
                     <div
-                      key={filter}
+                      key={key}
                       className="vf-form__item vf-form__item--checkbox"
                     >
                       <input
@@ -91,18 +91,22 @@ const FAIRDownload = () => {
           <form action="#" className="vf-form | vf-search">
             <div className="vf-form__item" style={{ columnCount: '2' }}>
               {filters
-                ? filters.profiles.map(filter => {
+                ? filters.profiles.map((filter, key) => {
                     return (
-                      <div className="vf-form__item vf-form__item--checkbox">
+                      <div
+                        key={key}
+                        className="vf-form__item vf-form__item--checkbox"
+                      >
                         <input
                           type="checkbox"
                           id={filter}
                           name={filter}
                           className="vf-form__checkbox"
                           checked={!facets.includes(filter)}
-                          onClick={e => facetClick(e)}
+                          // onClick={e => facetClick(e)}
+                          onChange={e => facetClick(e)}
                         />
-                        <label for={filter} className="vf-form__label">
+                        <label htmlFor={filter} className="vf-form__label">
                           {filter}
                         </label>
                       </div>
@@ -151,9 +155,9 @@ const FAIRDownload = () => {
           <thead className="vf-table__header">
             <tr className="vf-table__row">
               {headers ? (
-                headers.map((header, index) => {
+                headers.map((header, key) => {
                   return (
-                    <th key={index} className="vf-table__heading">
+                    <th key={key} className="vf-table__heading">
                       {header}
                     </th>
                   );
@@ -165,9 +169,9 @@ const FAIRDownload = () => {
           </thead>
           <tbody className="vf-table__body">
             {data ? (
-              data.map((data, index) => {
+              data.map((data, key) => {
                 return (
-                  <tr key={index} className="vf-table__row">
+                  <tr key={key} className="vf-table__row">
                     {headers ? (
                       headers.map(header => (
                         <td key={header} className="vf-table__cell">

@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <div>
       <div className="vf-u-margin__top--1600" />
-      <hr class="vf-divider" />
+      <hr className="vf-divider" />
       <div className="vf-u-margin__top--1600" />
       <div>
         <div className="vf-grid">

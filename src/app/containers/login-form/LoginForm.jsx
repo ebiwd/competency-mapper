@@ -60,9 +60,21 @@ class LoginForm extends Component {
         </button>*/}
         <div>
           <h3>
-            <a href="#" onClick={e => this.OpenModal(e)}>
+            {/* <a href="#" onClick={e => this.OpenModal(e)}>
               Login as administrator
-            </a>
+            </a> */}
+            <button
+              style={{
+                margin: '0',
+                fontSize: '24px',
+                fontWeight: '500',
+                padding: '0'
+              }}
+              className="vf-button vf-button--link"
+              onClick={e => this.OpenModal(e)}
+            >
+              Login as administrator
+            </button>
           </h3>
           <p>Manage frameworks and competencies.</p>
         </div>

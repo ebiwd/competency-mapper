@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 const DevelopYourCourses = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('scrolled');
   }, []);
 
   return (
