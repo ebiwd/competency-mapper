@@ -200,7 +200,7 @@ export const ProfileView = props => {
           <React.Fragment key={itemIndex + domainIndex}>
             <div key={domainIndex}>
               <div>
-                <div class="vf-u-padding__top--800" />
+                <div className="vf-u-padding__top--800" />
                 <h4>{domain.title}</h4>{' '}
                 <span style={{ visibility: 'hidden' }}>
                   {(domainsList += domain.title + ',')}

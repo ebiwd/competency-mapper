@@ -105,7 +105,6 @@ class CompetencyList extends Component {
     let selectedTabIndex = 0;
     for (let i = 0; i < this.state.visibleTabs.length; i++) {
       if (currentUrl.includes(this.state.visibleTabs[i])) {
-        console.log(this.state.visibleTabs[i]);
         selectedTabIndex = i;
       }
     }
@@ -359,7 +358,6 @@ class CompetencyList extends Component {
           <span className="vf-badge vf-badge--primary"> {frameworkStatus}</span>
         </p>
         <p>{frameworkDescription}</p>
-        {console.log(this.state.visibleTabs)}
         {this.state.allResourcesFetched ? (
           <Tabs
             className="vf-tabs ch_tabs__list"

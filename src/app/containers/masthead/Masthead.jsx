@@ -5,8 +5,8 @@ import Navigation from '../navigation/Navigation';
 
 class Masthead extends Component {
   static propTypes = {
-    user: PropTypes.string.isRequired,
-    roles: PropTypes.string.isRequired,
+    user: PropTypes.string,
+    roles: PropTypes.array.isRequired,
     onLogin: PropTypes.func.isRequired,
     onLogout: PropTypes.func.isRequired
   };

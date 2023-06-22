@@ -8,8 +8,9 @@ function FrameworkButtons({ frameworkDetails }) {
       style={{ margin: '0' }}
     >
       <div className="vf-card-container__inner">
-        {frameworkDetails.map(framework => (
+        {frameworkDetails.map((framework, key) => (
           <FrameworkButton
+            key={key}
             desc={framework.desc}
             sub_text={framework.sub_text}
             card_link={framework.card_link}

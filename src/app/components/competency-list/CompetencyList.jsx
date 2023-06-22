@@ -41,58 +41,24 @@ function CompetencyList({
   }
 
   return (
-    <tr>
-      <td>
-        {/* <Collapsible
-          trigger={
-            <div className="open-close-title">
-              <span className="icon icon-common icon-angle-right float-left icon-custom" />
-              <span>{competency.title}</span>
-            </div>
-          }
-          triggerWhenOpen={
-            <div className="open-close-title">
-              <span className="icon icon-common icon-angle-down float-left icon-custom" />
-              <span>{competency.title}</span>
-            </div>
-          }
+    <details className="vf-details" close>
+      <summary className="vf-details--summary">{competency.title}</summary>
+      {attributes}
+      <div>
+        <Link
+          to={`/framework/${framework}/${version}/competency/details/${
+            competency.id
+          }?scroll=true`}
         >
-          <div>
-            {attributes}
-            <Link
-              to={`/framework/${framework}/${version}/competency/details/${
-                competency.id
-              }?scroll=true`}
-            >
-              <span>
-                <i className="icon icon-spacer icon-common icon-info" />
-                {trainingResourcesExist
-                  ? 'View training resources mapped to this competency'
-                  : 'View more information about this competency'}
-              </span>
-            </Link>
-          </div>
-        </Collapsible> */}
-        <details className="vf-details" close>
-          <summary className="vf-details--summary">{competency.title}</summary>
-          {attributes}
-          <div>
-            <Link
-              to={`/framework/${framework}/${version}/competency/details/${
-                competency.id
-              }?scroll=true`}
-            >
-              <span>
-                <i className="icon icon-spacer icon-common icon-info" />
-                {trainingResourcesExist
-                  ? 'View training resources associated with this competency'
-                  : 'View more information about this competency'}
-              </span>
-            </Link>
-          </div>
-        </details>
-      </td>
-    </tr>
+          <span>
+            <i className="icon icon-spacer icon-common icon-info" />
+            {trainingResourcesExist
+              ? 'View training resources associated with this competency'
+              : 'View more information about this competency'}
+          </span>
+        </Link>
+      </div>
+    </details>
   );
 }
 

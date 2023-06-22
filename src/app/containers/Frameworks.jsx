@@ -17,10 +17,10 @@ class Frameworks extends Component {
     frameworks: []
   };
   static propTypes = {
-    user: PropTypes.string.isRequired,
-    roles: PropTypes.string.isRequired,
-    onLogin: PropTypes.func.isRequired,
-    onLogout: PropTypes.func.isRequired
+    user: PropTypes.string,
+    roles: PropTypes.string,
+    onLogin: PropTypes.func,
+    onLogout: PropTypes.func
   };
 
   onLogin = (username, password) => {
@@ -126,8 +126,8 @@ class Frameworks extends Component {
         <div className="vf-u-margin__top--1200" />
         <h2>In association with</h2>
         <div className="vf-grid vf-grid__col-3">
-          {masterList.map(framework => {
-            return <Association framework={framework} />;
+          {masterList.map((framework, key) => {
+            return <Association framework={framework} key={key} />;
           })}
         </div>
         <div className="vf-u-margin__top--800" />

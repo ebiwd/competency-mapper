@@ -284,7 +284,7 @@ class ResourcesList extends React.Component {
           <div className="vf-grid vf-grid__col-6">
             <div className="vf-form__item | vf-search__item vf-grid__col--span-2">
               <label
-                class="vf-form__label vf-u-sr-only | vf-search__label"
+                className="vf-form__label vf-u-sr-only | vf-search__label"
                 for="search_box"
               >
                 Search training resources
