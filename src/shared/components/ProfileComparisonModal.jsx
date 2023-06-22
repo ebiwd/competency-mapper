@@ -127,11 +127,11 @@ export const ProfileComparisonModal = props => {
                   {profiles
                     ? profiles.map((profile, index) => {
                         return (
-                          <>
-                            <option value={profile.id}>
+                          <React.Fragment key={index}>
+                            <option key={index} value={profile.id}>
                               {profile.job_title}
                             </option>
-                          </>
+                          </React.Fragment>
                         );
                       })
                     : ''}

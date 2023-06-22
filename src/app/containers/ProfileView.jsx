@@ -213,7 +213,7 @@ export const ProfileView = props => {
                   <React.Fragment key={compIndex}>
                     <div className="vf-grid vf-grid__col-4">
                       <div className="vf-grid__col--span-3">
-                        <details className="vf-details" close>
+                        <details className="vf-details" close="true">
                           <summary className="vf-details--summary">
                             {competency.title}
                           </summary>
@@ -298,7 +298,7 @@ export const ProfileView = props => {
   };
 
   return (
-    <div key={'unique'}>
+    <div>
       {generateProfileView()}
       {profile ? (
         <>
@@ -335,8 +335,8 @@ export const ProfileView = props => {
           <Helmet>
             <link rel="canonical" href={props.location.pathname} />
           </Helmet>
-          <div key={profileId} id="profile">
-            <div style={{ float: 'right' }}>
+          <div key={'profile'} id="profile">
+            <div key={'profile_div'} style={{ float: 'right' }}>
               {user_roles.includes('framework_manager') &&
               userFrameworks.length > 0 &&
               userFrameworks.includes(frameworkFullName) ? (

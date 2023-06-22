@@ -41,7 +41,7 @@ function CompetencyList({
   }
 
   return (
-    <details className="vf-details" close>
+    <details className="vf-details" close="true">
       <summary className="vf-details--summary">{competency.title}</summary>
       {attributes}
       <div>

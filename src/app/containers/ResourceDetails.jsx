@@ -306,7 +306,7 @@ class ResourceDetails extends React.Component {
                 This resource provides learning to support the development of
                 the following competencies
               </p>
-              <div>
+              <>
                 {check_array ? (
                   item.competency_profile.map((profile, index) => {
                     return (
@@ -371,11 +371,9 @@ class ResourceDetails extends React.Component {
                     );
                   })
                 ) : (
-                  <tr>
-                    <td />
-                  </tr>
+                  <div />
                 )}
-              </div>
+              </>
             </div>
           </div>
           <div className="vf-grid__col--span-1">

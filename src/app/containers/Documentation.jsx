@@ -6,7 +6,6 @@ import data from './CompetencyHubAPIs.json';
 const Documentation = () => {
   useEffect(() => {
     window.scrollTo(0, 0);
-    console.log('scrolled');
   }, []);
 
   return (
